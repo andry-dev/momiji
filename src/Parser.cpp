@@ -406,6 +406,12 @@ namespace momiji
                                   parser_error::error_type::WrongOperandType);
             }
 
+            if (instr.operands[1].registerType == register_type::Address)
+            {
+                make_parser_error(m_column, m_line,
+                                  parser_error::error_type::WrongOperandType);
+            }
+
             switch (instr.dataType)
             {
             case data_type::Byte:
@@ -466,9 +472,11 @@ namespace momiji
             break;
 
         case utils::hash("divu"):
+            
             break;
 
         case utils::hash("mulu"):
+            
             break;
 
         case utils::hash("divs"):
