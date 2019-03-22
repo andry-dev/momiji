@@ -1,0 +1,13 @@
+[
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++   -I../include -I../external/nonstd  -g   -std=gnu++17 -o CMakeFiles/momiji.dir/src/main.cpp.o -c /home/andry/prj/cpp/momiji/src/main.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/main.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++   -I../include -I../external/nonstd  -g   -std=gnu++17 -o CMakeFiles/momiji.dir/src/Parser.cpp.o -c /home/andry/prj/cpp/momiji/src/Parser.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Parser.cpp"
+}
+]
