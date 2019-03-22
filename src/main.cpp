@@ -25,7 +25,8 @@ int main()
 {
     std::vector<momiji::cpu_t> cpu_states(1);
 
-    while (true)
+    bool should_loop = true;
+    while (should_loop)
     {
         std::cout << ">> ";
         std::string str;
@@ -33,25 +34,43 @@ int main()
 
         if (str.size() > 1 && str[0] == '!')
         {
-            if (str[1] == 'x')
+            switch (str[1])
             {
+            case 'x':
                 std::cout << std::hex;
-            }
+                break;
 
-            if (str[1] == 'd')
-            {
+            case 'd':
                 std::cout << std::dec;
-            }
+                break;
 
-            if (str[1] == 'p')
-            {
+            case 'p':
                 print_cpu(cpu_states.back());
                 std::cout << '\n';
-            }
-
-            if (str[1] == 'q')
-            {
                 break;
+
+            case 'q':
+                should_loop = false;
+                break;
+
+            case 'b':
+                if (cpu_states.size() > 1)
+                {
+                    cpu_states.pop_back();
+                }
+                else
+                {
+                    std::cout << "Can't go back!\n";
+                }
+                break;
+
+            case 'c':
+                std::cout << "Changes between runs: \n";
+                for (const auto& x : cpu_states)
+                {
+                    print_cpu(x);
+                    std::cout << "\n---\n";
+                }
             }
 
             continue;

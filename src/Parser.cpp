@@ -131,7 +131,9 @@ namespace momiji
         while (hasPositions())
         {
             const bool is_valid = currentPos() != 0;
-            const bool is_space = is_valid && (currentPos() == ' ' || currentPos() == '\t');
+            const bool is_space = is_valid &&
+                                  (currentPos() == ' ' ||
+                                   currentPos() == '\t');
 
 
             if (is_space || matchEndl() || skipComments())
@@ -273,17 +275,23 @@ namespace momiji
                     return false;
                 }
 
+                std::int32_t regNum = std::stoi((*str).substr(1));
+
+                if (regNum < 0 || regNum > 7)
+                {
+                    return false;
+                }
+
+                instr.operands[operandNum].operandType = operand_type::Register;
+                instr.operands[operandNum].value = regNum;
+
                 switch ((*str)[0])
                 {
                 case 'a':
-                    instr.operands[operandNum].operandType = operand_type::Register;
-                    instr.operands[operandNum].value = std::stoi((*str).substr(1));
                     instr.operands[operandNum].registerType = register_type::Address;
                     return true;
 
                 case 'd':
-                    instr.operands[operandNum].operandType = operand_type::Register;
-                    instr.operands[operandNum].value = std::stoi((*str).substr(1));
                     instr.operands[operandNum].registerType = register_type::Data;
                     return true;
                 }
@@ -390,25 +398,25 @@ namespace momiji
 
             if (!parseDataType(instr))
             {
-                make_parser_error(m_column, m_line,
+                return make_parser_error(m_column, m_line,
                                   parser_error::error_type::UnexpectedCharacter);
             }
 
             if (!tryImmReg(0, instr))
             {
-                make_parser_error(m_column, m_line,
+                return make_parser_error(m_column, m_line,
                                   parser_error::error_type::WrongOperandType);
             }
 
             if (!parseOperand(operand_type::Register, 1, instr))
             {
-                make_parser_error(m_column, m_line,
+                return make_parser_error(m_column, m_line,
                                   parser_error::error_type::WrongOperandType);
             }
 
             if (instr.operands[1].registerType == register_type::Address)
             {
-                make_parser_error(m_column, m_line,
+                return make_parser_error(m_column, m_line,
                                   parser_error::error_type::WrongOperandType);
             }
 
@@ -438,19 +446,19 @@ namespace momiji
 
             if (!parseDataType(instr))
             {
-                make_parser_error(m_column, m_line,
+                return make_parser_error(m_column, m_line,
                                   parser_error::error_type::UnexpectedCharacter);
             }
 
             if (!tryImmReg(0, instr))
             {
-                make_parser_error(m_column, m_line,
+                return make_parser_error(m_column, m_line,
                                   parser_error::error_type::WrongOperandType);
             }
 
             if (!parseOperand(operand_type::Register, 1, instr))
             {
-                make_parser_error(m_column, m_line,
+                return make_parser_error(m_column, m_line,
                                   parser_error::error_type::WrongOperandType);
             }
 
