@@ -479,18 +479,108 @@ namespace momiji
             }
             break;
 
-        case utils::hash("divu"):
-            
+        case utils::hash("muls"):
+            instr.numOperands = 2;
+            instr.instructionType = instruction_type::SignedMul;
+
+            if (!tryImmReg(0, instr))
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            if (!parseOperand(operand_type::Register, 1, instr))
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            if (instr.operands[0].registerType == register_type::Address ||
+                instr.operands[1].registerType == register_type::Address)
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            instr.executefn = op_impl::muls;
             break;
 
         case utils::hash("mulu"):
-            
+            instr.numOperands = 2;
+            instr.instructionType = instruction_type::UnsignedMul;
+
+            if (!tryImmReg(0, instr))
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            if (!parseOperand(operand_type::Register, 1, instr))
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            if (instr.operands[0].registerType == register_type::Address ||
+                instr.operands[1].registerType == register_type::Address)
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            instr.executefn = op_impl::mulu;
             break;
 
         case utils::hash("divs"):
+            instr.numOperands = 2;
+            instr.instructionType = instruction_type::SignedDiv;
+
+            if (!tryImmReg(0, instr))
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            if (!parseOperand(operand_type::Register, 1, instr))
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            if (instr.operands[0].registerType == register_type::Address ||
+                instr.operands[1].registerType == register_type::Address)
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            instr.executefn = op_impl::divs;
             break;
 
-        case utils::hash("muls"):
+        case utils::hash("divu"):
+            instr.numOperands = 2;
+            instr.instructionType = instruction_type::UnsignedDiv;
+
+            if (!tryImmReg(0, instr))
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            if (!parseOperand(operand_type::Register, 1, instr))
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            if (instr.operands[0].registerType == register_type::Address ||
+                instr.operands[1].registerType == register_type::Address)
+            {
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::WrongOperandType);
+            }
+
+            instr.executefn = op_impl::divu;
             break;
 
         case utils::hash("exg"):

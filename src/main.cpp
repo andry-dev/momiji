@@ -10,14 +10,13 @@ void print_cpu(const momiji::cpu_t& cpu)
     std::cout << "add: ";
     for (const auto& reg : cpu.addressRegisters)
     {
-        std::cout << reg.value << ' ';
+        std::cout << static_cast<std::int32_t>(reg.value) << ' ';
     }
-
 
     std::cout << "\ndata: ";
     for (const auto& reg : cpu.dataRegisters)
     {
-        std::cout  << reg.value << ' ';
+        std::cout  << static_cast<std::int32_t>(reg.value) << ' ';
     }
 }
 
