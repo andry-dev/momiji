@@ -17,7 +17,7 @@ namespace momiji
     using data_register_t = register_t<std::int32_t>;
     using address_register_t = register_t<std::int32_t>;
     using program_counter_t = register_t<std::int32_t>;
-    using compare_result_t = register_t<std::int32_t>;
+    using status_register_t = register_t<std::int16_t>;
 
     struct label
     {
@@ -37,7 +37,7 @@ namespace momiji
         std::array<data_register_t, 8> dataRegisters;
         std::array<address_register_t, 8> addressRegisters;
 
-        compare_result_t comparereResult;
+        status_register_t statusRegister;
         program_counter_t programCounter;
     };
 
