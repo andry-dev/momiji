@@ -19,6 +19,16 @@ namespace momiji
 
         Move, // move.*
         MoveImmediate,  // moveq
+
+        Jmp,
+        BranchEqual,
+        BranchNotEquals,
+        BranchGreaterThan,
+        BranchLessThan,
+        BranchGreaterEquals,
+        BranchLessEquals,
+        BranchZero,
+        BranchNotZero,
     };
 
     enum class operand_type : std::int8_t

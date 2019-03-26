@@ -28,6 +28,7 @@ namespace momiji
         }
     public:
         nonstd::expected<momiji::instruction, parser_error> parse();
+        nonstd::expected<momiji::label, parser_error> parseLabel();
 
     private:
 
@@ -160,7 +161,7 @@ namespace momiji
             bool found_delimiter = false;
             for (char c : pattern)
             {
-                // Found an delimited
+                // Found a delimited
                 if (currentPos() == c)
                 {
                     found_delimiter = true;
@@ -595,7 +596,8 @@ namespace momiji
         case utils::hash("cmp"):
             break;
 
-        case utils::hash("bne"):
+        case utils::hash("jmp"):
+            instr.executefn = momiji::op_impl::jmp;
             break;
 
         default:
@@ -607,6 +609,58 @@ namespace momiji
         return instr;
     }
 
+    nonstd::expected<momiji::label, parser_error> parser::parseLabel()
+    {
+        skipWhitespace();
+
+        momiji::label label;
+
+        const auto saved_idx = m_pos;
+
+        bool colon_found = false;
+        while (hasPositions() && !colon_found)
+        {
+            switch (currentPos())
+            {
+            case ':':
+                colon_found = true;
+                break;
+
+            case ' ':
+            case '\t':
+            case '\n':
+            case '\r':
+            case '\0':
+                return make_parser_error(m_column, m_line,
+                                         parser_error::error_type::UnexpectedCharacter);
+            default:
+                incrPos();
+            }
+
+        }
+
+        if (!colon_found)
+        {
+            return make_parser_error(m_column, m_line,
+                                     parser_error::error_type::UnexpectedCharacter);
+        }
+
+        std::string str = m_str.substr(saved_idx, m_pos);
+
+        if (str.empty())
+        {
+            return make_parser_error(m_column, m_line,
+                                     parser_error::error_type::NoInstructionFound);
+        }
+
+        auto hashed_str = utils::hash(str);
+
+        label.name_hash = hashed_str;
+        label.idx = 0;
+
+        return label;
+    }
+
     nonstd::expected<instruction, parser_error> readInstruction(const std::string& str)
     {
         parser pars{str};
@@ -615,11 +669,10 @@ namespace momiji
 
     }
 
-    std::vector<instruction> readInstructions(const std::string& str)
+    nonstd::expected<momiji::label, parser_error> readLabel(const std::string& str)
     {
-        int idx = 0;
-        std::vector<instruction> instructions;
+        parser pars{str};
 
-        return instructions;
+        return pars.parseLabel();
     }
 }

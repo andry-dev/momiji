@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include <vector>
 
 namespace momiji
 {
@@ -18,6 +19,12 @@ namespace momiji
     using program_counter_t = register_t<std::int32_t>;
     using compare_result_t = register_t<std::int32_t>;
 
+    struct label
+    {
+        std::int32_t name_hash;
+        int idx = 0;
+    };
+
     struct cpu_t
     {
         cpu_t()
@@ -32,5 +39,11 @@ namespace momiji
 
         compare_result_t comparereResult;
         program_counter_t programCounter;
+    };
+
+    struct system
+    {
+        cpu_t cpu;
+        std::vector<momiji::label> labels;
     };
 }

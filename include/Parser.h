@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Types.h"
-#include "CPU.h"
 #include <array>
 #include <string>
 #include <vector>
@@ -9,12 +8,13 @@
 
 #include "expected.hpp"
 
+#include "System.h"
+
 namespace momiji
 {
-    struct operand;
     struct instruction;
 
-    using instr_fn_t = momiji::cpu_t(*)(momiji::cpu_t,
+    using instr_fn_t = momiji::system(*)(momiji::system,
                                         const instruction&);
 
     struct operand
@@ -35,6 +35,7 @@ namespace momiji
         instr_fn_t executefn;
     };
 
+
     struct parser_error
     {
         int line{0};
@@ -49,5 +50,7 @@ namespace momiji
         } errorType;
     };
 
+
+    nonstd::expected<momiji::label, parser_error> readLabel(const std::string& str);
     nonstd::expected<momiji::instruction, parser_error> readInstruction(const std::string& str);
 }
