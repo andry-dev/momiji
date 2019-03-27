@@ -1,0 +1,3 @@
+[submodule "external/tewi"]
+	path = external/tewi
+	url = https://github.com/andry-dev/tewi

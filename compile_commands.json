@@ -1,13 +1,277 @@
 [
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/bin/c++   -I../include -I../external/nonstd  -g   -std=gnu++17 -o CMakeFiles/momiji.dir/src/main.cpp.o -c /home/andry/prj/cpp/momiji/src/main.cpp",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -std=gnu++17 -o CMakeFiles/momiji.dir/src/main.cpp.o -c /home/andry/prj/cpp/momiji/src/main.cpp",
   "file": "/home/andry/prj/cpp/momiji/src/main.cpp"
 },
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/bin/c++   -I../include -I../external/nonstd  -g   -std=gnu++17 -o CMakeFiles/momiji.dir/src/Parser.cpp.o -c /home/andry/prj/cpp/momiji/src/Parser.cpp",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -std=gnu++17 -o CMakeFiles/momiji.dir/src/Parser.cpp.o -c /home/andry/prj/cpp/momiji/src/Parser.cpp",
   "file": "/home/andry/prj/cpp/momiji/src/Parser.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -std=gnu++17 -o CMakeFiles/momiji.dir/src/Emulator.cpp.o -c /home/andry/prj/cpp/momiji/src/Emulator.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Emulator.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Input/InputBuffer.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Input/InputBuffer.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Input/InputBuffer.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Physics/Collidable2D.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Physics/Collidable2D.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Physics/Collidable2D.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Utils/Clock.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Utils/Clock.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Utils/Clock.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Utils/TickTimer.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Utils/TickTimer.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Utils/TickTimer.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Video/Camera2D.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Video/Camera2D.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Video/Camera2D.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/BatchRenderer2D.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/BatchRenderer2D.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/BatchRenderer2D.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/Context.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/Context.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/Context.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/Device.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/Device.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/Device.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/IndexBuffer.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/IndexBuffer.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/IndexBuffer.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/Instance.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/Instance.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/Instance.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/Shader.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/Shader.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/Shader.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/Swapchain.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/Swapchain.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/Swapchain.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/TextureCache.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/TextureCache.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/TextureCache.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/ImGuiBindings.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/ImGuiBindings.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/ImGuiBindings.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/imgui_impl_opengl3.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/imgui_impl_opengl3.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/imgui_impl_opengl3.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/OpenGL/imgui_impl_glfw.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/imgui_impl_glfw.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/OpenGL/imgui_impl_glfw.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/NullRenderer/Shader.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/Shader.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/Shader.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/NullRenderer/BatchRenderer2D.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/BatchRenderer2D.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/BatchRenderer2D.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/NullRenderer/Context.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/Context.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/Context.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/NullRenderer/Swapchain.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/Swapchain.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/Swapchain.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/NullRenderer/Window.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/Window.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/Window.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -DGLEW_STATIC -DTEWI_STATIC_LIB=1 -I/usr/include/libdrm -I../external/tewi/include -isystem ../external/tewi/lib/universal/asl/include -isystem ../external/tewi/lib/universal/glfw/include -isystem ../external/tewi/lib/universal/glm -isystem ../external/tewi/lib/universal/stb -isystem ../external/tewi/lib/universal/imgui  -g   -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++14 -o external/tewi/CMakeFiles/tewi.dir/src/Platform/NullRenderer/Device.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/Device.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/src/Platform/NullRenderer/Device.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/context.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/context.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/context.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/init.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/init.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/init.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/input.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/input.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/input.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/monitor.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/monitor.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/monitor.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/vulkan.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/vulkan.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/vulkan.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/window.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/window.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/window.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/x11_init.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/x11_init.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/x11_init.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/x11_monitor.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/x11_monitor.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/x11_monitor.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/x11_window.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/x11_window.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/x11_window.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/xkb_unicode.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/xkb_unicode.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/xkb_unicode.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/posix_time.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/posix_time.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/posix_time.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/posix_tls.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/posix_tls.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/posix_tls.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/glx_context.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/glx_context.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/glx_context.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/egl_context.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/egl_context.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/egl_context.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/osmesa_context.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/osmesa_context.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/osmesa_context.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/cc -D_GLFW_USE_CONFIG_H -I../external/tewi/lib/universal/glfw/include -I../external/tewi/lib/universal/glfw/src -Iexternal/tewi/lib/universal/glfw/src  -g -fPIC   -Wall -o external/tewi/lib/universal/glfw/src/CMakeFiles/glfw.dir/linux_joystick.c.o   -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/linux_joystick.c",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glfw/src/linux_joystick.c"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -D_CRT_SECURE_NO_WARNINGS -I../external/tewi/lib/universal/glm -I../external/tewi/lib/universal/glm/test/external -I../external/tewi/lib/universal/glm/glm/..  -g   -pedantic -O2 -o external/tewi/lib/universal/glm/glm/CMakeFiles/glm_dummy.dir/detail/dummy.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glm/glm/detail/dummy.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glm/glm/detail/dummy.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++  -D_CRT_SECURE_NO_WARNINGS -I../external/tewi/lib/universal/glm -I../external/tewi/lib/universal/glm/test/external -I../external/tewi/lib/universal/glm/glm/..  -g   -pedantic -O2 -o external/tewi/lib/universal/glm/glm/CMakeFiles/glm_dummy.dir/detail/glm.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/glm/glm/detail/glm.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/glm/glm/detail/glm.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++   -isystem ../external/tewi/lib/universal/imgui  -g   -o external/tewi/lib/universal/CMakeFiles/ImGui.dir/imgui/imgui.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/imgui/imgui.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/imgui/imgui.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++   -isystem ../external/tewi/lib/universal/imgui  -g   -o external/tewi/lib/universal/CMakeFiles/ImGui.dir/imgui/imgui_draw.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/imgui/imgui_draw.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/imgui/imgui_draw.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/bin/c++   -isystem ../external/tewi/lib/universal/imgui  -g   -o external/tewi/lib/universal/CMakeFiles/ImGui.dir/imgui/imgui_widgets.cpp.o -c /home/andry/prj/cpp/momiji/external/tewi/lib/universal/imgui/imgui_widgets.cpp",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/lib/universal/imgui/imgui_widgets.cpp"
 }
 ]
