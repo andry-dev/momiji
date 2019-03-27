@@ -8,6 +8,8 @@
 #include <tewi/Input/InputBuffer.hpp>
 #include <tewi/Video/Shader.hpp>
 #include <tewi/Video/Sprite.h>
+#include <tewi/Video/Renderer2D.hpp>
+#include <tewi/Video/BatchRenderer2D.hpp>
 
 #include "Emulator.h"
 
