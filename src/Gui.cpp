@@ -32,9 +32,8 @@ void gui()
 
     bool showDebugInfo = false;
 
-    bool hexDump = false;
 
-    constexpr std::chrono::duration<double, std::milli> fpsmax{1000.0 / 60.0};
+    constexpr std::chrono::duration<double, std::milli> fpsmax{1000.0 / 120.0};
 
     std::string str;
 
@@ -96,10 +95,34 @@ void gui()
         {
             ImGui::Begin("Code");
 
-            ImGui::InputText("Source code", &str);
+            ImGui::InputTextMultiline("", &str);
             if (ImGui::Button("Parse"))
             {
-                emu.parse(str);
+                auto err = emu.parse(str);
+
+                if (err.has_value())
+                {
+                    momiji::parser_error& error = err.value();
+                    ImGui::Text("Error at %d:%d,", error.line, error.column);
+                    switch (error.errorType)
+                    {
+                    case momiji::parser_error::error_type::NoInstructionFound:
+                        ImGui::TextUnformatted("no instruction found.\n");
+                        break;
+
+                    case momiji::parser_error::error_type::UnexpectedCharacter:
+                        ImGui::TextUnformatted("unexpected character.\n");
+                        break;
+
+                    case momiji::parser_error::error_type::WrongInstruction:
+                        ImGui::TextUnformatted("no such instruction.\n");
+                        break;
+
+                    case momiji::parser_error::error_type::WrongOperandType:
+                        ImGui::TextUnformatted("wrong operand type.\n");
+                        break;
+                    }
+                }
             }
 
             if (ImGui::Button("Execute"))
@@ -116,40 +139,66 @@ void gui()
         }
 
         {
-            ImGui::Begin("Registers");
+            ImGui::Begin("Registers", 0, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize);
+
+            static bool hexDump = false;
+            static bool allowEditing = false;
 
             ImGui::Checkbox("Hex", &hexDump);
+            ImGui::Checkbox("Allow editing", &allowEditing);
+            ImGui::Separator();
+            ImGui::NewLine();
 
             const auto& last = emu.getStates().back();
 
-            ImGui::Text("Address registers");
+            ImGui::SameLine();
+            ImGui::Text("Registers");
 
+            ImGuiInputTextFlags flags = 0;
+            if (hexDump)
+            {
+                flags |= ImGuiInputTextFlags_CharsHexadecimal;
+            }
+
+            if (!allowEditing)
+            {
+                flags |= ImGuiInputTextFlags_ReadOnly;
+            }
+
+            ImGui::BeginGroup();
+            ImGui::Text("Address");
             for (int i = 0; i < last.cpu.addressRegisters.size(); ++i)
             {
-                if (hexDump)
-                {
-                    ImGui::Text("a%d: %x", i, last.cpu.addressRegisters[i].value);
-                }
-                else
-                {
-                    ImGui::Text("a%d: %d", i, last.cpu.addressRegisters[i].value);
-                }
+                auto& reg = last.cpu.addressRegisters[i];
+                ImGui::PushID(&reg);
+                ImGui::Text("a%d", i);
+                ImGui::SameLine();
+                ImGui::PushItemWidth(70.0f);
+                ImGui::InputInt("##", (int*)&reg.value, 0, 0, flags);
+                ImGui::PopItemWidth();
+                ImGui::PopID();
             }
+            ImGui::EndGroup();
 
-            ImGui::Separator();
+            ImGui::SameLine(ImGui::GetCursorPosX() + 100.0f);
 
-            ImGui::Text("Data registers");
+
+            ImGui::BeginGroup();
+            ImGui::Text("Data");
             for (int i = 0; i < last.cpu.dataRegisters.size(); ++i)
             {
-                if (hexDump)
-                {
-                    ImGui::Text("d%d: %x", i, last.cpu.dataRegisters[i].value);
-                }
-                else
-                {
-                    ImGui::Text("d%d: %d", i, last.cpu.dataRegisters[i].value);
-                }
+                auto& reg = last.cpu.dataRegisters[i];
+                ImGui::PushID(&reg);
+                ImGui::Text("d%d", i);
+                ImGui::SameLine();
+                ImGui::PushItemWidth(70.0f);
+                ImGui::InputInt("##", (int*)&reg.value, 0, 0, flags);
+                ImGui::PopItemWidth();
+                ImGui::PopID();
             }
+            ImGui::EndGroup();
+
+            ImGui::Separator();
 
             ImGui::End();
         }

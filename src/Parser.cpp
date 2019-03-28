@@ -105,8 +105,9 @@ namespace momiji
     {
 
         auto comment_checker = [&] () -> bool {
-            const bool is_valid = currentPos() != 0;
-            const bool is_comment = is_valid && currentPos() == ';';
+            const bool is_comment = hasPositions() && currentPos() == ';';
+
+            std::cout << "bro wtf\n";
 
             return is_comment;
         };
@@ -269,7 +270,7 @@ namespace momiji
             if (hasPositions())
             {
 
-                auto str = readWord(std::array<char, 4>{' ', '\t', '\n', '\r'});
+                auto str = readWord(std::array<char, 5>{' ', '\t', '\n', '\r', ';'});
 
                 if (!str || (*str).size() < 2)
                 {
@@ -605,6 +606,7 @@ namespace momiji
                                  parser_error::error_type::NoInstructionFound);
         }
 
+        skipWhitespace();
 
         return instr;
     }
