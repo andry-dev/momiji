@@ -37,7 +37,7 @@ void gui()
 
     std::string str;
 
-    tewi::Sprite<def_tag> background{glm::vec3{0.0f, 0.0f, 0.0f}, "res/bgimage.png"};
+    //tewi::Sprite<def_tag> background{glm::vec3{0.0f, 0.0f, 0.0f}, "res/bgimage.png"};
 
     while (!win.isClosed())
     {

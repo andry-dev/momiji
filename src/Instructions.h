@@ -512,8 +512,6 @@ namespace momiji
         {
             std::int32_t val = 0;
 
-            bool signedness = false;
-
             switch (instr.operands[0].operandType)
             {
             case operand_type::Immediate:
@@ -533,6 +531,8 @@ namespace momiji
                 }
                 break;
             }
+
+            bool signedness = val < 0;
 
             std::int32_t tmp = 0;
 
