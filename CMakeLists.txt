@@ -4,7 +4,7 @@ project(momiji)
 
 add_subdirectory(external/tewi)
 
-add_executable(momiji src/main.cpp src/Parser.cpp src/Emulator.cpp src/Gui.cpp)
+add_executable(momiji src/main.cpp src/Parser.cpp src/Emulator.cpp src/Gui.cpp src/Renderer.cpp)
 
 target_compile_features(momiji PUBLIC cxx_std_17)
 

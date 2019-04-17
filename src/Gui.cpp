@@ -10,8 +10,28 @@
 #include <tewi/Video/Sprite.h>
 #include <tewi/Video/Renderer2D.hpp>
 #include <tewi/Video/BatchRenderer2D.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <tewi/Utils/TickTimer.h>
 
 #include "Emulator.h"
+#include "Renderer.h"
+
+#include <stdio.h>
+
+static void MessageCallback( GLenum source,
+                 GLenum type,
+                 GLuint id,
+                 GLenum severity,
+                 GLsizei length,
+                 const GLchar* message,
+                 const void* userParam )
+{
+  fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+           ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+            type, severity, message );
+  TEWI_EXPECTS(0, "");
+}
 
 void gui()
 {
@@ -32,20 +52,35 @@ void gui()
 
     bool showDebugInfo = false;
 
-
     constexpr std::chrono::duration<double, std::milli> fpsmax{1000.0 / 120.0};
 
     std::string str;
 
-    //tewi::Sprite<def_tag> background{glm::vec3{0.0f, 0.0f, 0.0f}, "res/bgimage.png"};
+    tewi::Sprite<def_tag> background{glm::vec2{0.0f, 0.0f}, "res/bgimage.png"};
+
+    using BatchRenderer2D = tewi::Renderer2D<def_tag, tewi::BatchRenderer2D>;
+    momiji::renderer<def_tag> renderer{};
+
+    auto shader = renderer.createShaderProgram();
+
+    auto proj = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+    glm::mat4 MVP = proj;
+
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(MessageCallback, 0);
+
 
     while (!win.isClosed())
     {
-        win.pollEvents(inputBuffer);
+        auto begintime = std::chrono::high_resolution_clock::now();
+
+        win.clear();
+
+#if 1
         tewi::newFrameImGui(def_tag{}, win);
         ImGui::NewFrame();
+win.pollEvents(inputBuffer);
 
-        auto begintime = std::chrono::high_resolution_clock::now();
 
         if (lightTheme)
         {
@@ -208,6 +243,7 @@ void gui()
 
             ImGui::End();
         }
+#endif
 
         auto endtime = std::chrono::high_resolution_clock::now();
         auto as_millis = std::chrono::duration<double, std::milli>(endtime - begintime);
@@ -217,12 +253,33 @@ void gui()
             std::this_thread::sleep_for(fpsmax - as_millis);
         }
 
+        MVP = proj;
+
+        shader.enable();
+
+        {
+            int unif = shader.getUniformLocation("MVP");
+            shader.setUniform(unif, MVP);
+            //glUniformMatrix4fv(unif, 1, GL_FALSE, &MVP[0][0]);
+        }
+
+
+        renderer.begin();
+        renderer.add(background.getRenderable());
+        renderer.end();
+
+        renderer.draw();
+
+        shader.disable();
+
 
         ImGui::Render();
-        win.clear();
         tewi::renderImGui(def_tag{}, win, ImGui::GetDrawData());
         win.swapBuffers();
+        ImGui::EndFrame();
+
     }
+
 
     tewi::shutdownImGui(def_tag{});
 }
