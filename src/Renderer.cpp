@@ -116,8 +116,8 @@ namespace momiji
     void renderer<tewi::API::OpenGLTag>::begin()
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-        glBindVertexArray(m_VAO);
+        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+        //glBindVertexArray(m_VAO);
         m_buffer = reinterpret_cast<tewi::Vertex*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
     }
 

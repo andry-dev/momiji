@@ -93,12 +93,12 @@ namespace momiji
 
     bool parser::matchEndl()
     {
-        return hasPositions() &&
-               currentPos() != 0 &&
-               (currentPos() == '\n' ||
-                   (hasPositions(1) &&
-                    currentPos() == '\r' &&
-                    currentPos(1) == '\n'));
+        if (currentPos() == '\n' || currentPos() == '\0')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     bool parser::skipComments()
@@ -107,14 +107,12 @@ namespace momiji
         auto comment_checker = [&] () -> bool {
             const bool is_comment = hasPositions() && currentPos() == ';';
 
-            std::cout << "bro wtf\n";
-
             return is_comment;
         };
 
         bool retval = false;
 
-        while (hasPositions() && comment_checker())
+        if (hasPositions() && comment_checker())
         {
             retval = true;
             while (!matchEndl())
@@ -598,12 +596,13 @@ namespace momiji
             break;
 
         case utils::hash("jmp"):
+        case utils::hash("bra"):
             instr.executefn = momiji::op_impl::jmp;
             break;
 
         default:
             return make_parser_error(m_column, m_line,
-                                 parser_error::error_type::NoInstructionFound);
+                                     parser_error::error_type::NoInstructionFound);
         }
 
         skipWhitespace();
@@ -644,7 +643,7 @@ namespace momiji
         if (!colon_found)
         {
             return make_parser_error(m_column, m_line,
-                                     parser_error::error_type::UnexpectedCharacter);
+                                     parser_error::error_type::Comment);
         }
 
         std::string str = m_str.substr(saved_idx, m_pos);

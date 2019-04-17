@@ -69,6 +69,7 @@ void gui()
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, 0);
 
+    std::string error_string = "";
 
     while (!win.isClosed())
     {
@@ -76,10 +77,9 @@ void gui()
 
         win.clear();
 
-#if 1
         tewi::newFrameImGui(def_tag{}, win);
         ImGui::NewFrame();
-win.pollEvents(inputBuffer);
+        win.pollEvents(inputBuffer);
 
 
         if (lightTheme)
@@ -130,6 +130,7 @@ win.pollEvents(inputBuffer);
         {
             ImGui::Begin("Code");
 
+
             ImGui::InputTextMultiline("", &str);
             if (ImGui::Button("Parse"))
             {
@@ -142,23 +143,29 @@ win.pollEvents(inputBuffer);
                     switch (error.errorType)
                     {
                     case momiji::parser_error::error_type::NoInstructionFound:
-                        ImGui::TextUnformatted("no instruction found.\n");
+                        error_string = "no instruction found.";
                         break;
 
                     case momiji::parser_error::error_type::UnexpectedCharacter:
-                        ImGui::TextUnformatted("unexpected character.\n");
+                        error_string = "unexpected character.";
                         break;
 
                     case momiji::parser_error::error_type::WrongInstruction:
-                        ImGui::TextUnformatted("no such instruction.\n");
+                        error_string = "no such instruction.";
                         break;
 
                     case momiji::parser_error::error_type::WrongOperandType:
-                        ImGui::TextUnformatted("wrong operand type.\n");
+                        error_string = "wrong operand type.";
                         break;
                     }
                 }
+                else
+                {
+                    error_string = "";
+                }
             }
+
+            ImGui::TextUnformatted(error_string.c_str());
 
             if (ImGui::Button("Execute"))
             {
@@ -243,7 +250,6 @@ win.pollEvents(inputBuffer);
 
             ImGui::End();
         }
-#endif
 
         auto endtime = std::chrono::high_resolution_clock::now();
         auto as_millis = std::chrono::duration<double, std::milli>(endtime - begintime);
@@ -260,7 +266,6 @@ win.pollEvents(inputBuffer);
         {
             int unif = shader.getUniformLocation("MVP");
             shader.setUniform(unif, MVP);
-            //glUniformMatrix4fv(unif, 1, GL_FALSE, &MVP[0][0]);
         }
 
 

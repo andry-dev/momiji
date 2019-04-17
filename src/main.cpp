@@ -109,6 +109,10 @@ void cli()
             case momiji::parser_error::error_type::WrongOperandType:
                 std::cout << "wrong operand type.\n";
                 break;
+
+            case momiji::parser_error::error_type::Comment:
+                std::cout << "Comment!\n";
+                break;
             }
 
             continue;

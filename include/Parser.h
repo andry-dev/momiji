@@ -47,6 +47,7 @@ namespace momiji
             WrongInstruction,
             WrongOperandType,
             UnexpectedCharacter,
+            Comment,
         } errorType;
     };
 
