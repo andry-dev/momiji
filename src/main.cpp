@@ -128,5 +128,8 @@ void cli()
 int main()
 {
     //cli();
+
+#ifdef MOMIJI_INCLUDE_GUI
     gui();
+#endif
 }

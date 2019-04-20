@@ -654,6 +654,8 @@ namespace momiji
                                      parser_error::error_type::NoInstructionFound);
         }
 
+
+
         auto hashed_str = utils::hash(str);
 
         label.name_hash = hashed_str;
