@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string_view>
 #include <string>
+#include <type_traits>
 
 namespace momiji
 {
@@ -34,6 +35,12 @@ namespace momiji
         static constexpr std::uint32_t hash(const T& t)
         {
             return hash(t.begin(), t.end());
+        }
+
+        template <typename Enum>
+        constexpr auto to_val(Enum e)
+        {
+            return static_cast<std::underlying_type_t<Enum>>(e);
         }
     }
 }

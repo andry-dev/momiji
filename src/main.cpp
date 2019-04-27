@@ -1,3 +1,5 @@
+#include <fstream>
+#include <streambuf>
 #include <iostream>
 #include <string>
 
@@ -7,6 +9,7 @@
 #include "Emulator.h"
 
 #include "Gui.h"
+
 
 void print_sys(const momiji::system& sys)
 {
@@ -129,7 +132,15 @@ int main()
 {
     //cli();
 
+    std::ifstream file{"file.asm"};
+
+    std::string str(std::istreambuf_iterator<char>{file},
+                    std::istreambuf_iterator<char>{});
+
+    //std::getline(std::cin, str);
+    momiji::parse(str);
+
 #ifdef MOMIJI_INCLUDE_GUI
-    gui();
+    //gui();
 #endif
 }

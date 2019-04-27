@@ -51,7 +51,13 @@ namespace momiji
         } errorType;
     };
 
+    using parsing_result = nonstd::expected<std::vector<momiji::instruction>, parser_error>;
+
 
     nonstd::expected<momiji::label, parser_error> readLabel(const std::string& str);
     nonstd::expected<momiji::instruction, parser_error> readInstruction(const std::string& str);
+
+    momiji::parsing_result parse(const std::string& str);
+
+
 }

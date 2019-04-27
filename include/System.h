@@ -21,8 +21,20 @@ namespace momiji
 
     struct label
     {
-        std::int32_t name_hash;
-        int idx = 0;
+        label(std::int32_t name_hash, std::int32_t idx)
+            : name_hash(name_hash), idx(idx)
+        {
+        }
+        
+        label() = default;
+        ~label() = default;
+        label(const label&) = default;
+        label& operator=(const label&) = default;
+        label(label&&) = default;
+        label& operator=(label&&) = default;
+
+        std::int32_t name_hash = 0;
+        std::int32_t idx = 0;
     };
 
     struct cpu_t

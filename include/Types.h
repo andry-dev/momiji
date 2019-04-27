@@ -35,6 +35,7 @@ namespace momiji
     {
         Immediate,
         Register,
+        Address,
     };
 
     enum class register_type : std::int8_t
@@ -46,9 +47,9 @@ namespace momiji
 
     enum class data_type : std::int8_t
     {
-        Long, // 32
-        Word, // 16
-        Byte,  // 8
-        Address,
+        Byte = 0,  // 8
+        Word = 1, // 16
+        Long = 2, // 32
+        Address = 3,
     };
 }

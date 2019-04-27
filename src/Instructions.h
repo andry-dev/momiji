@@ -3,7 +3,7 @@
 #include "System.h"
 #include "Parser.h"
 
-#include <iostream>
+#include <array>
 
 namespace momiji
 {
@@ -727,5 +727,10 @@ namespace momiji
         {
             return sys;
         }
+
+
+        constexpr std::array<momiji::instr_fn_t, 3> move{ move8, move16, move32 };
+        constexpr std::array<momiji::instr_fn_t, 3> add{ add8, add16, add32 };
+        constexpr std::array<momiji::instr_fn_t, 3> sub{ sub8, sub16, sub32 };
     }
 }
