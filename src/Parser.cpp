@@ -13,10 +13,10 @@
 
 namespace momiji
 {
-    static auto make_parser_error(int column, int line,
-            parser_error::error_type error)
+    static auto make_ParserError(int column, int line,
+            ParserError::ErrorType error)
     {
-        return nonstd::make_unexpected<parser_error>({ line, column, error });
+        return nonstd::make_unexpected<ParserError>({ line, column, error });
     }
 
     struct parser
@@ -27,8 +27,8 @@ namespace momiji
 
         }
     public:
-        nonstd::expected<momiji::instruction, parser_error> parse();
-        nonstd::expected<momiji::label, parser_error> parseLabel();
+        nonstd::expected<momiji::Instruction, ParserError> parse();
+        nonstd::expected<momiji::Label, ParserError> parseLabel();
 
     private:
 
@@ -44,13 +44,13 @@ namespace momiji
         bool matchEndl();
         bool skipWhitespace();
         bool skipComments();
-        bool tryImmReg(int operandNum, momiji::instruction& instr);
+        bool tryImmReg(int operandNum, momiji::Instruction& instr);
 
         bool parseCharacter(char c);
-        bool parseOperand(momiji::operand_type operand, int operandNum, momiji::instruction& instr);
+        bool parseOperand(momiji::OperandType operand, int operandNum, momiji::Instruction& instr);
         bool parseKeyword(std::string_view keywordStr);
         bool parseIdentifier();
-        bool parseDataType(momiji::instruction& instr);
+        bool parseDataType(momiji::Instruction& instr);
 
         std::string m_str;
         int m_line = 1;
@@ -195,7 +195,7 @@ namespace momiji
         return hasPositions() && currentPos() == c;
     }
 
-    bool parser::parseDataType(instruction& instr)
+    bool parser::parseDataType(momiji::Instruction& instr)
     {
         if (parseCharacter('.') && hasPositions(1))
         {
@@ -205,15 +205,15 @@ namespace momiji
             switch (currentPos())
             {
             case 'l':
-                instr.dataType = data_type::Long;
+                instr.dataType = DataType::Long;
                 incrPos();
                 return true;
             case 'w':
-                instr.dataType = data_type::Word;
+                instr.dataType = DataType::Word;
                 incrPos();
                 return true;
             case 'b':
-                instr.dataType = data_type::Byte;
+                instr.dataType = DataType::Byte;
                 incrPos();
                 return true;
 
@@ -226,13 +226,13 @@ namespace momiji
         return false;
     }
 
-    bool parser::parseOperand(momiji::operand_type type, int operandNum, momiji::instruction& instr)
+    bool parser::parseOperand(momiji::OperandType type, int operandNum, momiji::Instruction& instr)
     {
         skipWhitespace();
 
         switch (type)
         {
-        case operand_type::Immediate:
+        case OperandType::Immediate:
             if (hasPositions() && currentPos() == '#')
             {
                 incrPos();
@@ -255,14 +255,14 @@ namespace momiji
 
                 std::int32_t num = std::stoi(str);
                 instr.operands[operandNum].value = num;
-                instr.operands[operandNum].operandType = operand_type::Immediate;
+                instr.operands[operandNum].operandType = OperandType::Immediate;
 
                 return true;
             }
 
             return false;
 
-        case operand_type::Register:
+        case OperandType::Register:
             skipWhitespace();
 
             if (hasPositions())
@@ -282,17 +282,17 @@ namespace momiji
                     return false;
                 }
 
-                instr.operands[operandNum].operandType = operand_type::Register;
+                instr.operands[operandNum].operandType = OperandType::Register;
                 instr.operands[operandNum].value = regNum;
 
                 switch ((*str)[0])
                 {
                 case 'a':
-                    instr.operands[operandNum].registerType = register_type::Address;
+                    instr.operands[operandNum].registerType = RegisterType::Address;
                     return true;
 
                 case 'd':
-                    instr.operands[operandNum].registerType = register_type::Data;
+                    instr.operands[operandNum].registerType = RegisterType::Data;
                     return true;
                 }
             }
@@ -302,19 +302,19 @@ namespace momiji
         return false;
     }
 
-    bool parser::tryImmReg(int operandNum, momiji::instruction& instr)
+    bool parser::tryImmReg(int operandNum, momiji::Instruction& instr)
     {
-        if (!parseOperand(operand_type::Immediate, operandNum, instr))
+        if (!parseOperand(OperandType::Immediate, operandNum, instr))
         {
-            return parseOperand(operand_type::Register, operandNum, instr);
+            return parseOperand(OperandType::Register, operandNum, instr);
         }
 
         return true;
     }
 
-    nonstd::expected<momiji::instruction, parser_error> parser::parse()
+    nonstd::expected<momiji::Instruction, ParserError> parser::parse()
     {
-        momiji::instruction instr;
+        momiji::Instruction instr;
 
         skipWhitespace();
 
@@ -322,8 +322,8 @@ namespace momiji
 
         if (!str)
         {
-            return make_parser_error(m_column, m_line,
-                                     parser_error::error_type::NoInstructionFound);
+            return make_ParserError(m_column, m_line,
+                                     ParserError::ErrorType::NoInstructionFound);
         }
 
         auto hashed_str = utils::hash(*str);
@@ -332,40 +332,40 @@ namespace momiji
         {
         case utils::hash("move"):
             instr.numOperands = 2;
-            instr.instructionType = instruction_type::Move;
+            instr.instructionType = InstructionType::Move;
 
             if (!parseDataType(instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::UnexpectedCharacter);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::UnexpectedCharacter);
             }
 
             if (!tryImmReg(0, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
-            if (!parseOperand(operand_type::Register, 1, instr))
+            if (!parseOperand(OperandType::Register, 1, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
             switch (instr.dataType)
             {
-            case data_type::Long:
+            case DataType::Long:
                 instr.executefn = op_impl::move32;
                 break;
-            case data_type::Word:
+            case DataType::Word:
                 instr.executefn = op_impl::move16;
                 break;
-            case data_type::Byte:
+            case DataType::Byte:
                 instr.executefn = op_impl::move8;
                 break;
-            case data_type::Address:
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongInstruction);
+            case DataType::Address:
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongInstruction);
             }
 
             break;
@@ -373,18 +373,18 @@ namespace momiji
         case utils::hash("moveq"):
             instr.numOperands = 2;
 
-            instr.instructionType = instruction_type::MoveImmediate;
+            instr.instructionType = InstructionType::MoveImmediate;
 
-            if (!parseOperand(operand_type::Immediate, 0, instr))
+            if (!parseOperand(OperandType::Immediate, 0, instr))
             {
-                make_parser_error(m_column, m_line,
-                                  parser_error::error_type::WrongOperandType);
+                make_ParserError(m_column, m_line,
+                                  ParserError::ErrorType::WrongOperandType);
             }
 
-            if (!parseOperand(operand_type::Register, 1, instr))
+            if (!parseOperand(OperandType::Register, 1, instr))
             {
-                make_parser_error(m_column, m_line,
-                                  parser_error::error_type::WrongOperandType);
+                make_ParserError(m_column, m_line,
+                                  ParserError::ErrorType::WrongOperandType);
             }
 
             instr.executefn = op_impl::moveq;
@@ -394,46 +394,46 @@ namespace momiji
         case utils::hash("add"):
             instr.numOperands = 2;
 
-            instr.instructionType = instruction_type::Add;
+            instr.instructionType = InstructionType::Add;
 
             if (!parseDataType(instr))
             {
-                return make_parser_error(m_column, m_line,
-                                  parser_error::error_type::UnexpectedCharacter);
+                return make_ParserError(m_column, m_line,
+                                  ParserError::ErrorType::UnexpectedCharacter);
             }
 
             if (!tryImmReg(0, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                  parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                  ParserError::ErrorType::WrongOperandType);
             }
 
-            if (!parseOperand(operand_type::Register, 1, instr))
+            if (!parseOperand(OperandType::Register, 1, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                  parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                  ParserError::ErrorType::WrongOperandType);
             }
 
-            if (instr.operands[1].registerType == register_type::Address)
+            if (instr.operands[1].registerType == RegisterType::Address)
             {
-                return make_parser_error(m_column, m_line,
-                                  parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                  ParserError::ErrorType::WrongOperandType);
             }
 
             switch (instr.dataType)
             {
-            case data_type::Byte:
+            case DataType::Byte:
                 instr.executefn = op_impl::add8;
                 break;
-            case data_type::Word:
+            case DataType::Word:
                 instr.executefn = op_impl::add16;
                 break;
-            case data_type::Long:
+            case DataType::Long:
                 instr.executefn = op_impl::add32;
                 break;
-            case data_type::Address:
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongInstruction);
+            case DataType::Address:
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongInstruction);
 
             }
 
@@ -442,64 +442,64 @@ namespace momiji
         case utils::hash("sub"):
             instr.numOperands = 2;
 
-            instr.instructionType = instruction_type::Sub;
+            instr.instructionType = InstructionType::Sub;
 
             if (!parseDataType(instr))
             {
-                return make_parser_error(m_column, m_line,
-                                  parser_error::error_type::UnexpectedCharacter);
+                return make_ParserError(m_column, m_line,
+                                  ParserError::ErrorType::UnexpectedCharacter);
             }
 
             if (!tryImmReg(0, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                  parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                  ParserError::ErrorType::WrongOperandType);
             }
 
-            if (!parseOperand(operand_type::Register, 1, instr))
+            if (!parseOperand(OperandType::Register, 1, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                  parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                  ParserError::ErrorType::WrongOperandType);
             }
 
             switch (instr.dataType)
             {
-            case data_type::Byte:
+            case DataType::Byte:
                 instr.executefn = op_impl::sub8;
                 break;
-            case data_type::Word:
+            case DataType::Word:
                 instr.executefn = op_impl::sub16;
                 break;
-            case data_type::Long:
+            case DataType::Long:
                 instr.executefn = op_impl::sub32;
                 break;
-            case data_type::Address:
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongInstruction);
+            case DataType::Address:
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongInstruction);
             }
             break;
 
         case utils::hash("muls"):
             instr.numOperands = 2;
-            instr.instructionType = instruction_type::SignedMul;
+            instr.instructionType = InstructionType::SignedMul;
 
             if (!tryImmReg(0, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
-            if (!parseOperand(operand_type::Register, 1, instr))
+            if (!parseOperand(OperandType::Register, 1, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
-            if (instr.operands[0].registerType == register_type::Address ||
-                instr.operands[1].registerType == register_type::Address)
+            if (instr.operands[0].registerType == RegisterType::Address ||
+                instr.operands[1].registerType == RegisterType::Address)
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
             instr.executefn = op_impl::muls;
@@ -507,25 +507,25 @@ namespace momiji
 
         case utils::hash("mulu"):
             instr.numOperands = 2;
-            instr.instructionType = instruction_type::UnsignedMul;
+            instr.instructionType = InstructionType::UnsignedMul;
 
             if (!tryImmReg(0, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
-            if (!parseOperand(operand_type::Register, 1, instr))
+            if (!parseOperand(OperandType::Register, 1, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
-            if (instr.operands[0].registerType == register_type::Address ||
-                instr.operands[1].registerType == register_type::Address)
+            if (instr.operands[0].registerType == RegisterType::Address ||
+                instr.operands[1].registerType == RegisterType::Address)
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
             instr.executefn = op_impl::mulu;
@@ -533,25 +533,25 @@ namespace momiji
 
         case utils::hash("divs"):
             instr.numOperands = 2;
-            instr.instructionType = instruction_type::SignedDiv;
+            instr.instructionType = InstructionType::SignedDiv;
 
             if (!tryImmReg(0, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
-            if (!parseOperand(operand_type::Register, 1, instr))
+            if (!parseOperand(OperandType::Register, 1, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
-            if (instr.operands[0].registerType == register_type::Address ||
-                instr.operands[1].registerType == register_type::Address)
+            if (instr.operands[0].registerType == RegisterType::Address ||
+                instr.operands[1].registerType == RegisterType::Address)
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
             instr.executefn = op_impl::divs;
@@ -559,25 +559,25 @@ namespace momiji
 
         case utils::hash("divu"):
             instr.numOperands = 2;
-            instr.instructionType = instruction_type::UnsignedDiv;
+            instr.instructionType = InstructionType::UnsignedDiv;
 
             if (!tryImmReg(0, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
-            if (!parseOperand(operand_type::Register, 1, instr))
+            if (!parseOperand(OperandType::Register, 1, instr))
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
-            if (instr.operands[0].registerType == register_type::Address ||
-                instr.operands[1].registerType == register_type::Address)
+            if (instr.operands[0].registerType == RegisterType::Address ||
+                instr.operands[1].registerType == RegisterType::Address)
             {
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::WrongOperandType);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::WrongOperandType);
             }
 
             instr.executefn = op_impl::divu;
@@ -601,8 +601,8 @@ namespace momiji
             break;
 
         default:
-            return make_parser_error(m_column, m_line,
-                                     parser_error::error_type::NoInstructionFound);
+            return make_ParserError(m_column, m_line,
+                                     ParserError::ErrorType::NoInstructionFound);
         }
 
         skipWhitespace();
@@ -610,11 +610,11 @@ namespace momiji
         return instr;
     }
 
-    nonstd::expected<momiji::label, parser_error> parser::parseLabel()
+    nonstd::expected<momiji::Label, ParserError> parser::parseLabel()
     {
         skipWhitespace();
 
-        momiji::label label;
+        momiji::Label label;
 
         const auto saved_idx = m_pos;
 
@@ -632,8 +632,8 @@ namespace momiji
             case '\n':
             case '\r':
             case '\0':
-                return make_parser_error(m_column, m_line,
-                                         parser_error::error_type::UnexpectedCharacter);
+                return make_ParserError(m_column, m_line,
+                                         ParserError::ErrorType::UnexpectedCharacter);
             default:
                 incrPos();
             }
@@ -642,16 +642,16 @@ namespace momiji
 
         if (!colon_found)
         {
-            return make_parser_error(m_column, m_line,
-                                     parser_error::error_type::Comment);
+            return make_ParserError(m_column, m_line,
+                                     ParserError::ErrorType::Comment);
         }
 
         std::string str = m_str.substr(saved_idx, m_pos);
 
         if (str.empty())
         {
-            return make_parser_error(m_column, m_line,
-                                     parser_error::error_type::NoInstructionFound);
+            return make_ParserError(m_column, m_line,
+                                     ParserError::ErrorType::NoInstructionFound);
         }
 
 
@@ -664,7 +664,7 @@ namespace momiji
         return label;
     }
 
-    nonstd::expected<instruction, parser_error> readInstruction(const std::string& str)
+    nonstd::expected<Instruction, ParserError> readInstruction(const std::string& str)
     {
         parser pars{str};
 
@@ -672,7 +672,7 @@ namespace momiji
 
     }
 
-    nonstd::expected<momiji::label, parser_error> readLabel(const std::string& str)
+    nonstd::expected<momiji::Label, ParserError> readLabel(const std::string& str)
     {
         parser pars{str};
 

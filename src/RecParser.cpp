@@ -3,15 +3,18 @@
 #include <iostream>
 #include "Utils.h"
 #include <string>
+#include <algorithm>
 
 #include "Instructions.h"
+#include <System.h>
+
 
 namespace momiji
 {
     static auto make_parser_error(int column, int line,
-            parser_error::error_type error)
+            ParserError::ErrorType error)
     {
-        return nonstd::make_unexpected<parser_error>({ line, column, error });
+        return nonstd::make_unexpected<ParserError>({ line, column, error });
     }
 
     struct parser_metadata
@@ -21,9 +24,9 @@ namespace momiji
         std::string_view parsed_str;
     };
 
-    struct label_info
+    struct LabelInfo
     {
-        std::vector<momiji::label> labels;
+        std::vector<momiji::Label> labels;
     };
 
 
@@ -439,7 +442,7 @@ namespace momiji
         };
     }
 
-    constexpr auto Label()
+    constexpr auto ParseLabel()
     {
         return [] (std::string_view str) -> parser_metadata
         {
@@ -447,7 +450,7 @@ namespace momiji
         };
     }
 
-    constexpr auto OperandImmediate(momiji::instruction& instr, int opNum)
+    constexpr auto OperandImmediate(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
@@ -459,7 +462,7 @@ namespace momiji
                     [&instr, opNum] (auto parsed_str) {
                         const std::int32_t val = std::stoi(std::string{parsed_str});
 
-                        instr.operands[opNum].operandType = operand_type::Immediate;
+                        instr.operands[opNum].operandType = OperandType::Immediate;
                         instr.operands[opNum].value = val;
                     });
 
@@ -469,7 +472,7 @@ namespace momiji
                     [&instr, opNum] (auto parsed_str) {
                         const std::int32_t val = std::stoi(std::string{parsed_str}, 0, 16);
 
-                        instr.operands[opNum].operandType = operand_type::Immediate;
+                        instr.operands[opNum].operandType = OperandType::Immediate;
                         instr.operands[opNum].value = val;
                     });
 
@@ -477,7 +480,7 @@ namespace momiji
         };
     }
 
-    constexpr auto AddressRegister(momiji::instruction& instr, int opNum)
+    constexpr auto AddressRegisterParser(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
@@ -486,16 +489,16 @@ namespace momiji
                 Map(inter_parser, [&] (auto parsed_str) {
                     const int reg_num = std::stoi(std::string{parsed_str});
 
-                    instr.operands[opNum].operandType = operand_type::Register;
+                    instr.operands[opNum].operandType = OperandType::Register;
                     instr.operands[opNum].value = reg_num;
-                    instr.operands[opNum].registerType = register_type::Address;
+                    instr.operands[opNum].registerType = RegisterType::Address;
                 });
 
             return register_parser(str);
         };
     }
 
-    constexpr auto DataRegister(momiji::instruction& instr, int opNum)
+    constexpr auto DataRegisterParser(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
@@ -505,27 +508,27 @@ namespace momiji
                     [&] (std::string_view parsed_str) {
                         const int reg_num = std::stoi(std::string{parsed_str});
 
-                        instr.operands[opNum].operandType = operand_type::Register;
+                        instr.operands[opNum].operandType = OperandType::Register;
                         instr.operands[opNum].value = reg_num;
-                        instr.operands[opNum].registerType = register_type::Data;
+                        instr.operands[opNum].registerType = RegisterType::Data;
                     });
 
             return register_parser(str);
         };
     }
 
-    constexpr auto AnyRegister(momiji::instruction& instr, int opNum)
+    constexpr auto AnyRegister(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
-            auto register_parser = AnyOf(DataRegister(instr, opNum),
-                                         AddressRegister(instr, opNum));
+            auto register_parser = AnyOf(DataRegisterParser(instr, opNum),
+                                         AddressRegisterParser(instr, opNum));
 
             return register_parser(str);
         };
     }
 
-    constexpr auto AnyOperand(momiji::instruction& instr, int opNum)
+    constexpr auto AnyOperand(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
@@ -536,21 +539,21 @@ namespace momiji
         };
     }
 
-    constexpr auto AsAddress(momiji::instruction& instr, int opNum)
+    constexpr auto AsAddress(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
             auto register_parser =
                 Map(Between(Char('('), AnyRegister(instr, opNum), Char(')')),
                     [&] (std::string_view parsed_str) {
-                        instr.operands[opNum].operandType = operand_type::Address;
+                        instr.operands[opNum].operandType = OperandType::Address;
                     });
 
             return register_parser(str);
         };
     }
 
-    constexpr auto DataType(momiji::instruction& instr)
+    constexpr auto DataType(momiji::Instruction& instr)
     {
         return [&instr] (std::string_view str) -> parser_metadata
         {
@@ -558,28 +561,60 @@ namespace momiji
                 Next(Char('.'),
                      AnyOf(Char('b'), Char('w'), Char('l')));
 
-            auto data_type_parser =
+            auto DataType_parser =
                 Map(inter_parser,
                     [&] (std::string_view parsed_str) {
                         switch (parsed_str[0])
                         {
                         case 'b':
-                            instr.dataType = data_type::Byte;
+                            instr.dataType = DataType::Byte;
                             break;
                         case 'w':
-                            instr.dataType = data_type::Word;
+                            instr.dataType = DataType::Word;
                             break;
                         case 'l':
-                            instr.dataType = data_type::Long;
+                            instr.dataType = DataType::Long;
                             break;
                         }
                     });
 
-            return data_type_parser(str);
+            return DataType_parser(str);
         };
     }
 
-    constexpr auto CommonInstructionParser(momiji::instruction& instr)
+    constexpr auto ResolveLabel(momiji::Instruction& instr, const LabelInfo& labels)
+    {
+        return [&instr, &labels] (std::string_view str) -> parser_metadata
+        {
+            auto res = Word()(str);
+            if (res.result)
+            {
+                const auto str_hash = utils::hash(res.parsed_str);
+
+                auto begin = std::begin(labels.labels);
+                auto end = std::end(labels.labels);
+
+                auto it = std::find_if(
+                        begin, end, [&] (const momiji::Label& x) {
+                    return x.name_hash == str_hash; 
+                });
+
+                if (it != std::end(labels.labels))
+                {
+                    instr.operands[0].value = it->idx;
+                    instr.operands[0].operandType = OperandType::Label;
+                }
+                else
+                {
+                    return { false, str, "" };
+                }
+            }
+
+            return res;
+        };
+    }
+
+    constexpr auto CommonInstructionParser(momiji::Instruction& instr)
     {
         return [&instr] (std::string_view str) -> parser_metadata
         {
@@ -596,7 +631,7 @@ namespace momiji
         };
     }
 
-    constexpr auto ImmediateInstructionParser(momiji::instruction& instr)
+    constexpr auto ImmediateInstructionParser(momiji::Instruction& instr)
     {
         return [&instr] (std::string_view str) -> parser_metadata
         {
@@ -613,59 +648,83 @@ namespace momiji
         };
     }
 
+    constexpr auto BranchInstructionParser(momiji::Instruction& instr,
+                                           const momiji::LabelInfo& labels)
+    {
+        return [&instr, &labels] (std::string_view str) -> parser_metadata
+        {
+            auto parser = SeqNext(
+                    Whitespace(),
+                    ResolveLabel(instr, labels));
+
+            return parser(str);
+        };
+    }
+
     struct LabelParser
     {
         LabelParser(std::string_view str)
-            : str(str), line_count{0}
+            : str(str), line_count{0}, label_idx{0}
         { }
 
         void run()
         {
+            auto TryInstr = Sequence(
+                    Whitespace(),
+                    Map(Word(), [&] (auto&&) { ++label_idx; }));
+
             std::string_view tmp_str = str;
             while (tmp_str.size() > 0)
             {
                 // Ignore all initial spaces
-                auto skip_whitespace = Whitespace()(tmp_str);
-                tmp_str = skip_whitespace.rest;
+                {
+                    auto skip_whitespace = Whitespace()(tmp_str);
+                    tmp_str = skip_whitespace.rest;
+                }
 
-                auto try_label = Label()(tmp_str);
+                auto try_label = ParseLabel()(tmp_str);
                 if (try_label.result)
                 {
                     // We found a label!
-                    auto label_hash = momiji::utils::hash(try_label.parsed_str);
-                    info.labels.emplace_back(label_hash, line_count);
-                    tmp_str = try_label.rest;
+                    auto label_hash = utils::hash(try_label.parsed_str);
+                    info.labels.emplace_back(label_hash, label_idx);
+                }
+                tmp_str = try_label.rest;
+
+                {
+                    auto try_instr = TryInstr(tmp_str);
+                    tmp_str = try_instr.rest;
                 }
 
                 {
                     auto skip_line = SkipLine()(tmp_str);
                     tmp_str = skip_line.rest;
                 }
-                ++line_count;
 
-                //std::cout << "\n--- LOOP END ---\n" << tmp_str << '\n';
+                ++line_count;
             }
         }
 
-        label_info info;
+        LabelInfo info;
         int line_count;
+        int label_idx;
         std::string_view str;
     };
 
     struct Parser
     {
-        Parser(std::string_view str, const label_info& lbl)
+        Parser(std::string_view str, const LabelInfo& lbl)
             : str(str)
             , labels(lbl)
         {
         }
 
-        parsing_result run()
+        ParsingResult run()
         {
             auto tmp_str = str;
             while (tmp_str.size() > 0 && !parsing_error)
             {
-                momiji::instruction instr;
+                momiji::Instruction instr;
 
                 {
                     auto skip_whitespace = Whitespace()(tmp_str);
@@ -681,14 +740,22 @@ namespace momiji
                 }
 
                 {
-                    auto skip_labels = Sequence(Label(), Whitespace())(tmp_str);
+                    auto skip_labels = Sequence(ParseLabel(), Whitespace())(tmp_str);
                     tmp_str = skip_labels.rest;
                 }
 
                 // Maybe we have an instruction?
                 auto instrword = Word()(tmp_str);
                 tmp_str = instrword.rest;
-                std::cout << instrword.parsed_str << '\n';
+
+                if (!instrword.result)
+                {
+                    auto skip_to_end = SkipLine()(tmp_str);
+                    tmp_str = skip_to_end.rest;
+                    ++line_count;
+                    continue;
+                }
+
                 auto str_hash = momiji::utils::hash(instrword.parsed_str);
 
                 parser_metadata res = { };
@@ -697,80 +764,85 @@ namespace momiji
                 case utils::hash("move"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.numOperands = 2;
-                    instr.instructionType = instruction_type::Move;
+                    instr.instructionType = InstructionType::Move;
                     instr.executefn = op_impl::move[utils::to_val(instr.dataType)];
                     break;
 
                 case utils::hash("moveq"):
                     res = ImmediateInstructionParser(instr)(tmp_str);
                     instr.numOperands = 2;
-                    instr.instructionType = instruction_type::MoveImmediate;
+                    instr.instructionType = InstructionType::MoveImmediate;
                     instr.executefn = op_impl::moveq;
                     break;
 
                 case utils::hash("add"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.numOperands = 2;
-                    instr.instructionType = instruction_type::Add;
+                    instr.instructionType = InstructionType::Add;
                     instr.executefn = op_impl::add[utils::to_val(instr.dataType)];
                     break;
 
                 case utils::hash("sub"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.numOperands = 2;
-                    instr.instructionType = instruction_type::Sub;
+                    instr.instructionType = InstructionType::Sub;
                     instr.executefn = op_impl::sub[utils::to_val(instr.dataType)];
                     break;
 
                 case utils::hash("muls"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.numOperands = 2;
-                    instr.instructionType = instruction_type::SignedMul;
+                    instr.instructionType = InstructionType::SignedMul;
                     instr.executefn = op_impl::muls;
                     break;
 
                 case utils::hash("mulu"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.numOperands = 2;
-                    instr.instructionType = instruction_type::UnsignedMul;
+                    instr.instructionType = InstructionType::UnsignedMul;
                     instr.executefn = op_impl::muls;
                     break;
 
                 case utils::hash("divs"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.numOperands = 2;
-                    instr.instructionType = instruction_type::SignedDiv;
+                    instr.instructionType = InstructionType::SignedDiv;
                     instr.executefn = op_impl::divs;
                     break;
 
                 case utils::hash("divu"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.numOperands = 2;
-                    instr.instructionType = instruction_type::UnsignedDiv;
+                    instr.instructionType = InstructionType::UnsignedDiv;
                     instr.executefn = op_impl::divu;
                     break;
 
+                case utils::hash("bra"):
+                    res = BranchInstructionParser(instr, labels)(tmp_str);
+                    if (!res.result)
+                    {
+                        return make_parser_error(0, line_count,
+                                                 ParserError::ErrorType::NoLabelFound);
+                    }
 
+                    instr.numOperands = 1;
+                    instr.executefn = op_impl::bra;
+                    break;
 
                 default:
                     return make_parser_error(0,
                                              line_count,
-                                             parser_error::error_type::NoInstructionFound);
+                                             ParserError::ErrorType::NoInstructionFound);
 
                     break;
                 }
 
-                if (!res.result)
+                if (res.result)
                 {
-                    // Ok, maybe there's a label without an instruction
-                    parsing_error = true;
-                    return make_parser_error(0,
-                                             line_count,
-                                             parser_error::error_type::UnexpectedCharacter);
+                    instructions.push_back(instr);
                 }
 
                 tmp_str = res.rest;
-                instructions.push_back(instr);
 
                 // Parsed an instruction!
                 auto skip_to_end = SkipLine()(tmp_str);
@@ -784,13 +856,13 @@ namespace momiji
     private:
         int line_count{0};
         std::string_view str;
-        std::vector<momiji::instruction> instructions;
-        const label_info& labels;
+        std::vector<momiji::Instruction> instructions;
+        const LabelInfo& labels;
         bool parsing_error{false};
-        parser_error last_error;
+        ParserError last_error;
     };
 
-    momiji::parsing_result parse(const std::string& str)
+    momiji::ParsingResult parse(const std::string& str)
     {
         LabelParser label{str};
 

@@ -7,55 +7,54 @@
 namespace momiji
 {
     template <typename IntType>
-    struct register_t
+    struct Register
     {
         IntType value;
 
-        using int_type = IntType;
+        using value_type = IntType;
     };
 
-    using data_register_t = register_t<std::int32_t>;
-    using address_register_t = register_t<std::int32_t>;
-    using program_counter_t = register_t<std::int32_t>;
-    using status_register_t = register_t<std::int16_t>;
+    using DataRegister = Register<std::int32_t>;
+    using AddressRegister = Register<std::int32_t>;
+    using ProgramCounter = Register<std::int32_t>;
+    using StatusRegister = Register<std::int16_t>;
 
-    struct label
+    struct Label
     {
-        label(std::int32_t name_hash, std::int32_t idx)
+        Label(std::int32_t name_hash, std::int32_t idx)
             : name_hash(name_hash), idx(idx)
-        {
-        }
-        
-        label() = default;
-        ~label() = default;
-        label(const label&) = default;
-        label& operator=(const label&) = default;
-        label(label&&) = default;
-        label& operator=(label&&) = default;
+        { }
+
+        Label() = default;
+        ~Label() = default;
+        Label(const Label&) = default;
+        Label& operator=(const Label&) = default;
+        Label(Label&&) = default;
+        Label& operator=(Label&&) = default;
 
         std::int32_t name_hash = 0;
         std::int32_t idx = 0;
     };
 
-    struct cpu_t
+    struct Cpu
     {
-        cpu_t()
+        Cpu()
             : dataRegisters({0})
             , addressRegisters({0})
         {
 
         }
 
-        std::array<data_register_t, 8> dataRegisters;
-        std::array<address_register_t, 8> addressRegisters;
+        std::array<DataRegister, 8> dataRegisters;
+        std::array<AddressRegister, 8> addressRegisters;
 
-        status_register_t statusRegister;
-        program_counter_t programCounter;
+        StatusRegister statusRegister;
+        ProgramCounter programCounter;
     };
 
-    struct system
+    struct System
     {
-        cpu_t cpu;
-        std::vector<momiji::label> labels;
+        Cpu cpu;
+        std::vector<momiji::Label> labels;
     };
 }

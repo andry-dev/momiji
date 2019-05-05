@@ -9,7 +9,7 @@ namespace momiji
 {
     namespace op_impl
     {
-        inline momiji::system move8(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System move8(momiji::System sys, const momiji::Instruction& instr)
         {
             union
             {
@@ -19,22 +19,22 @@ namespace momiji
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate: {
+            case OperandType::Immediate: {
                 pun.val = instr.operands[0].value & 0x000000FF;
             } break;
 
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Data:
+                case RegisterType::Data:
                     pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -44,28 +44,28 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
 
                 tmp = (tmp & 0xFFFFFF00) | (pun.arr[0] & 0x000000FF);
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
 
                 tmp = (tmp & 0xFFFFFF00) | (pun.arr[0] & 0x000000FF);
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system move16(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System move16(momiji::System sys, const momiji::Instruction& instr)
         {
             union
             {
@@ -75,21 +75,21 @@ namespace momiji
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 pun.val = instr.operands[0].value & 0x0000FFFF;
 
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Data:
+                case RegisterType::Data:
                     pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -99,19 +99,19 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
                 tmp = (tmp & 0xFFFF0000) | (pun.arr[0] & 0x0000FFFF);
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
                 tmp = (tmp & 0xFFFF0000) | (pun.arr[0] & 0x0000FFFF);
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
@@ -121,56 +121,56 @@ namespace momiji
 
         }
 
-        inline momiji::system move32(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System move32(momiji::System sys, const momiji::Instruction& instr)
         {
             std::int32_t tmp = 0;
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 tmp = instr.operands[0].value;
                 break;
 
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     tmp = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Data:
+                case RegisterType::Data:
                     tmp = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
             }
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system moveq(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System moveq(momiji::System sys, const momiji::Instruction& instr)
         {
             std::int8_t trunc = instr.operands[0].value & 0x000000FF;
             std::int32_t tmp = 0;
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
 
                 tmp = (tmp & 0xFFFFFF00) | trunc;
@@ -178,21 +178,21 @@ namespace momiji
 
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
 
                 tmp = (tmp & 0xFFFFFF00) | trunc;
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system add8(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System add8(momiji::System sys, const momiji::Instruction& instr)
         {
             union
             {
@@ -202,22 +202,22 @@ namespace momiji
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 pun.val = instr.operands[0].value & 0x0000FFFF;
                 break;
 
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Data:
+                case RegisterType::Data:
                     pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -227,26 +227,26 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
                 tmp = (tmp & 0xFFFFFF00) | ((tmp + pun.arr[0]) & 0x000000FF);
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
                 tmp = (tmp & 0xFFFFFF00) | ((tmp + pun.arr[0]) & 0x000000FF);
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system add16(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System add16(momiji::System sys, const momiji::Instruction& instr)
         {
             union
             {
@@ -256,22 +256,22 @@ namespace momiji
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 pun.val = instr.operands[0].value & 0x0000FFFF;
                 break;
 
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Data:
+                case RegisterType::Data:
                     pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -281,47 +281,47 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
                 tmp = (tmp & 0xFFFF0000) | ((tmp + pun.arr[0]) & 0x0000FFFF);
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
                 tmp = (tmp & 0xFFFF0000) | ((tmp + pun.arr[0]) & 0x0000FFFF);
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system add32(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System add32(momiji::System sys, const momiji::Instruction& instr)
         {
             std::int32_t val = 0;
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 val = instr.operands[0].value;
                 break;
 
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Data:
+                case RegisterType::Data:
                     val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -331,26 +331,26 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
                 tmp = tmp + val;
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
                 tmp = tmp + val;
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system sub8(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System sub8(momiji::System sys, const momiji::Instruction& instr)
         {
             union
             {
@@ -360,22 +360,22 @@ namespace momiji
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 pun.val = instr.operands[0].value & 0x0000FFFF;
                 break;
 
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Data:
+                case RegisterType::Data:
                     pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -385,26 +385,26 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
                 tmp = (tmp & 0xFFFFFF00) | ((tmp - pun.arr[0]) & 0x000000FF);
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
                 tmp = (tmp & 0xFFFFFF00) | ((tmp - pun.arr[0]) & 0x000000FF);
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system sub16(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System sub16(momiji::System sys, const momiji::Instruction& instr)
         {
             union
             {
@@ -414,22 +414,22 @@ namespace momiji
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 pun.val = instr.operands[0].value & 0x0000FFFF;
                 break;
 
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Data:
+                case RegisterType::Data:
                     pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -439,47 +439,47 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
                 tmp = (tmp & 0xFFFF0000) | ((tmp - pun.arr[0]) & 0x0000FFFF);
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
                 tmp = (tmp & 0xFFFF0000) | ((tmp - pun.arr[0]) & 0x0000FFFF);
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system sub32(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System sub32(momiji::System sys, const momiji::Instruction& instr)
         {
             std::int32_t val = 0;
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 val = instr.operands[0].value;
                 break;
 
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Data:
+                case RegisterType::Data:
                     val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -489,44 +489,44 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
                 tmp = tmp - val;
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
                 tmp = tmp - val;
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system muls(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System muls(momiji::System sys, const momiji::Instruction& instr)
         {
             std::int32_t val = 0;
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 val = instr.operands[0].value;
                 break;
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
-                case register_type::Data:
+                case RegisterType::Data:
                     val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -538,47 +538,47 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
                 tmp *= val;
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
                 tmp *= val;
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system mulu(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System mulu(momiji::System sys, const momiji::Instruction& instr)
         {
             std::uint32_t val = 0;
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 val = static_cast<std::uint32_t>(
                         instr.operands[0].value & 0x0000FFFF);
                 break;
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     val = static_cast<std::uint32_t>(
                             sys.cpu.addressRegisters[instr.operands[0].value].value);
                     break;
-                case register_type::Data:
+                case RegisterType::Data:
                     val = static_cast<std::uint32_t>(
                             sys.cpu.dataRegisters[instr.operands[0].value].value);
                     break;
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -588,44 +588,44 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value & 0x0000FFFF;
                 tmp = tmp * val;
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value & 0x0000FFFF;
                 tmp = tmp * val;
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system divs(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System divs(momiji::System sys, const momiji::Instruction& instr)
         {
             std::int32_t val = 0;
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 val = instr.operands[0].value;
                 break;
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
-                case register_type::Data:
+                case RegisterType::Data:
                     val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -637,7 +637,7 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
                 quotient = tmp / val;
                 reminder = tmp % val;
@@ -645,7 +645,7 @@ namespace momiji
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
                 quotient = tmp / val;
                 reminder = tmp % val;
@@ -653,32 +653,32 @@ namespace momiji
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system divu(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System divu(momiji::System sys, const momiji::Instruction& instr)
         {
             std::uint32_t val = 0;
 
             switch (instr.operands[0].operandType)
             {
-            case operand_type::Immediate:
+            case OperandType::Immediate:
                 val = instr.operands[0].value;
                 break;
-            case operand_type::Register:
+            case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {
-                case register_type::Address:
+                case RegisterType::Address:
                     val = sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
-                case register_type::Data:
+                case RegisterType::Data:
                     val = sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
-                case register_type::Special:
+                case RegisterType::Special:
                     break;
                 }
                 break;
@@ -690,7 +690,7 @@ namespace momiji
 
             switch (instr.operands[1].registerType)
             {
-            case register_type::Address:
+            case RegisterType::Address:
                 tmp = sys.cpu.addressRegisters[instr.operands[1].value].value;
                 quotient = tmp / val;
                 reminder = tmp % val;
@@ -698,7 +698,7 @@ namespace momiji
                 sys.cpu.addressRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Data:
+            case RegisterType::Data:
                 tmp = sys.cpu.dataRegisters[instr.operands[1].value].value;
                 quotient = tmp / val;
                 reminder = tmp % val;
@@ -706,24 +706,30 @@ namespace momiji
                 sys.cpu.dataRegisters[instr.operands[1].value].value = tmp;
                 break;
 
-            case register_type::Special:
+            case RegisterType::Special:
                 break;
             }
 
             return sys;
         }
 
-        inline momiji::system swap(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System swap(momiji::System sys, const momiji::Instruction& instr)
         {
             return sys;
         }
 
-        inline momiji::system exg(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System exg(momiji::System sys, const momiji::Instruction& instr)
         {
             return sys;
         }
 
-        inline momiji::system jmp(momiji::system sys, const momiji::instruction& instr)
+        inline momiji::System bra(momiji::System sys, const momiji::Instruction& instr)
+        {
+            sys.cpu.programCounter.value = instr.operands[0].value;
+            return sys;
+        }
+
+        inline momiji::System jmp(momiji::System sys, const momiji::Instruction& instr)
         {
             return sys;
         }

@@ -8,19 +8,19 @@
 
 namespace momiji
 {
-    struct emulator
+    struct Emulator
     {
     private:
-        std::vector<momiji::system> systemStates;
-        std::vector<momiji::instruction> instructions;
+        std::vector<momiji::System> systemStates;
+        std::vector<momiji::Instruction> instructions;
 
     public:
-        emulator();
+        Emulator();
 
-        const std::vector<momiji::system>& getStates() const;
-        const std::vector<momiji::instruction>& getInstructions() const;
+        const std::vector<momiji::System>& getStates() const;
+        const std::vector<momiji::Instruction>& getInstructions() const;
 
-        std::optional<momiji::parser_error> parse(const std::string& str);
+        std::optional<momiji::ParserError> parse(const std::string& str);
         bool rollback();
         bool step();
     };

@@ -4,7 +4,7 @@
 
 namespace momiji
 {
-    enum class instruction_type : std::int8_t
+    enum class InstructionType : std::int8_t
     {
         Add, // add.*
         Sub, // sub.*
@@ -31,21 +31,22 @@ namespace momiji
         BranchNotZero,
     };
 
-    enum class operand_type : std::int8_t
+    enum class OperandType : std::int8_t
     {
         Immediate,
         Register,
         Address,
+        Label,
     };
 
-    enum class register_type : std::int8_t
+    enum class RegisterType : std::int8_t
     {
         Data,
         Address,
         Special,
     };
 
-    enum class data_type : std::int8_t
+    enum class DataType : std::int8_t
     {
         Byte = 0,  // 8
         Word = 1, // 16

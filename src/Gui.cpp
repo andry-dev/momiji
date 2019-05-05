@@ -17,7 +17,7 @@
 #include "Emulator.h"
 #include "Renderer.h"
 
-#include <stdio.h>
+#include <cstdio>
 
 static void MessageCallback( GLenum source,
                  GLenum type,
@@ -27,7 +27,7 @@ static void MessageCallback( GLenum source,
                  const GLchar* message,
                  const void* userParam )
 {
-  fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+    std::fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
            ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
             type, severity, message );
   TEWI_EXPECTS(0, "");
@@ -37,7 +37,7 @@ void gui()
 {
     using def_tag = tewi::API::OpenGLTag;
 
-    momiji::emulator emu;
+    momiji::Emulator emu;
 
     tewi::Window<def_tag> win{"momiji", tewi::Width{800}, tewi::Height{600}};
 
@@ -138,23 +138,23 @@ void gui()
 
                 if (err.has_value())
                 {
-                    momiji::parser_error& error = err.value();
+                    momiji::ParserError& error = err.value();
                     ImGui::Text("Error at %d:%d,", error.line, error.column);
                     switch (error.errorType)
                     {
-                    case momiji::parser_error::error_type::NoInstructionFound:
+                    case momiji::ParserError::ErrorType::NoInstructionFound:
                         error_string = "no instruction found.";
                         break;
 
-                    case momiji::parser_error::error_type::UnexpectedCharacter:
+                    case momiji::ParserError::ErrorType::UnexpectedCharacter:
                         error_string = "unexpected character.";
                         break;
 
-                    case momiji::parser_error::error_type::WrongInstruction:
+                    case momiji::ParserError::ErrorType::WrongInstruction:
                         error_string = "no such instruction.";
                         break;
 
-                    case momiji::parser_error::error_type::WrongOperandType:
+                    case momiji::ParserError::ErrorType::WrongOperandType:
                         error_string = "wrong operand type.";
                         break;
                     }

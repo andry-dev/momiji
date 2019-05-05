@@ -4,21 +4,21 @@
 
 namespace momiji
 {
-    emulator::emulator()
+    Emulator::Emulator()
         : systemStates(1)
     { }
 
-    const std::vector<momiji::system>& emulator::getStates() const
+    const std::vector<momiji::System>& Emulator::getStates() const
     {
         return systemStates;
     }
 
-    const std::vector<momiji::instruction>& emulator::getInstructions() const
+    const std::vector<momiji::Instruction>& Emulator::getInstructions() const
     {
         return instructions;
     }
 
-    std::optional<momiji::parser_error> emulator::parse(const std::string& str)
+    std::optional<momiji::ParserError> Emulator::parse(const std::string& str)
     {
         // Parse normal instructions
         auto instr = momiji::readInstruction(str);
@@ -50,7 +50,7 @@ namespace momiji
         return std::nullopt;
     }
 
-    bool emulator::rollback()
+    bool Emulator::rollback()
     {
         if (systemStates.size() > 1)
         {
@@ -67,7 +67,7 @@ namespace momiji
         return false;
     }
 
-    bool emulator::step()
+    bool Emulator::step()
     {
         std::int32_t pc = systemStates.back().cpu.programCounter.value;
         if (pc >= instructions.size())
@@ -80,7 +80,7 @@ namespace momiji
 
         switch (instructions[pc].instructionType)
         {
-        case instruction_type::Jmp:
+        case InstructionType::Jmp:
             break;
 
         default:

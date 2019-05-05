@@ -11,7 +11,7 @@
 #include "Gui.h"
 
 
-void print_sys(const momiji::system& sys)
+void print_sys(const momiji::System& sys)
 {
 
     std::cout << "add: ";
@@ -38,7 +38,7 @@ void print_sys(const momiji::system& sys)
 
 void cli()
 {
-    momiji::emulator emu;
+    momiji::Emulator emu;
 
     bool should_loop = true;
     while (should_loop)
@@ -93,27 +93,27 @@ void cli()
 
         if (instr.has_value())
         {
-            momiji::parser_error& error = instr.value();
+            momiji::ParserError& error = instr.value();
             std::cout << "Error at " << error.line << ':' << error.column << ", ";
             switch (error.errorType)
             {
-            case momiji::parser_error::error_type::NoInstructionFound:
+            case momiji::ParserError::ErrorType::NoInstructionFound:
                 std::cout << "no instruction found.\n";
                 break;
 
-            case momiji::parser_error::error_type::UnexpectedCharacter:
+            case momiji::ParserError::ErrorType::UnexpectedCharacter:
                 std::cout << "unexpected character.\n";
                 break;
 
-            case momiji::parser_error::error_type::WrongInstruction:
+            case momiji::ParserError::ErrorType::WrongInstruction:
                 std::cout << "no such instruction.\n";
                 break;
 
-            case momiji::parser_error::error_type::WrongOperandType:
+            case momiji::ParserError::ErrorType::WrongOperandType:
                 std::cout << "wrong operand type.\n";
                 break;
 
-            case momiji::parser_error::error_type::Comment:
+            case momiji::ParserError::ErrorType::Comment:
                 std::cout << "Comment!\n";
                 break;
             }
