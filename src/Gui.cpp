@@ -179,10 +179,27 @@ void gui()
 
 
         {
-            ImGui::Begin("Code");
+            ImGui::Begin("Code view");
 
+            ImGui::SameLine();
+            if (ImGui::Button("Execute"))
+            {
+                emu.step();
+            }
 
-            ImGui::InputTextMultiline("", &str);
+            ImGui::SameLine();
+            if (ImGui::Button("Rollback"))
+            {
+                emu.rollbackSys();
+            }
+
+            ImGui::SameLine();
+            if (ImGui::Button("Reset"))
+            {
+                emu.reset();
+            }
+
+            ImGui::SameLine();
             if (ImGui::Button("Parse"))
             {
                 auto err = emu.newState(str);
@@ -223,22 +240,12 @@ void gui()
                 }
             }
 
+            ImGui::BeginChild("Source code");
+            ImGui::InputTextMultiline("", &str, ImGui::GetContentRegionAvail());
+            ImGui::EndChild();
+
             ImGui::TextUnformatted(error_string.c_str());
 
-            if (ImGui::Button("Execute"))
-            {
-                emu.step();
-            }
-
-            if (ImGui::Button("Rollback"))
-            {
-                emu.rollbackSys();
-            }
-
-            if (ImGui::Button("Reset"))
-            {
-                emu.reset();
-            }
 
             ImGui::End();
         }

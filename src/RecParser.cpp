@@ -839,6 +839,67 @@ namespace momiji
                     instr.executefn = op_impl::ble;
                     break;
 
+                case utils::hash("blt"):
+                    res = BranchInstructionParser(instr, labels)(tmp_str);
+                    if (!res.result)
+                    {
+                        return make_parser_error(0, line_count,
+                                                 ParserError::ErrorType::NoLabelFound);
+                    }
+
+                    instr.instructionType = InstructionType::BranchLessThan;
+                    instr.executefn = op_impl::blt;
+                    break;
+
+                case utils::hash("bge"):
+                    res = BranchInstructionParser(instr, labels)(tmp_str);
+                    if (!res.result)
+                    {
+                        return make_parser_error(0, line_count,
+                                                 ParserError::ErrorType::NoLabelFound);
+                    }
+
+                    instr.instructionType = InstructionType::BranchGreaterEquals;
+                    instr.executefn = op_impl::bge;
+                    break;
+
+                case utils::hash("bgt"):
+                    res = BranchInstructionParser(instr, labels)(tmp_str);
+                    if (!res.result)
+                    {
+                        return make_parser_error(0, line_count,
+                                                 ParserError::ErrorType::NoLabelFound);
+                    }
+
+                    instr.instructionType = InstructionType::BranchGreaterEquals;
+                    instr.executefn = op_impl::bgt;
+                    break;
+
+                case utils::hash("beq"):
+                    res = BranchInstructionParser(instr, labels)(tmp_str);
+                    if (!res.result)
+                    {
+                        return make_parser_error(0, line_count,
+                                                 ParserError::ErrorType::NoLabelFound);
+                    }
+
+                    instr.instructionType = InstructionType::BranchEqual;
+                    instr.executefn = op_impl::beq;
+                    break;
+
+                case utils::hash("bne"):
+                    res = BranchInstructionParser(instr, labels)(tmp_str);
+                    if (!res.result)
+                    {
+                        return make_parser_error(0, line_count,
+                                                 ParserError::ErrorType::NoLabelFound);
+                    }
+
+                    instr.instructionType = InstructionType::BranchNotEquals;
+                    instr.executefn = op_impl::bne;
+                    break;
+
+
                 default:
                     return make_parser_error(0,
                                              line_count,
