@@ -29,11 +29,16 @@ void print_sys(const momiji::System& sys)
     std::cout << "\npc: ";
     std::cout << sys.cpu.programCounter.value << ' ';
 
-    std::cout << "\nlabels: ";
-    for (const auto& label : sys.labels)
-    {
-        std::cout << label.name_hash << ' ';
-    }
+    std::cout << "N: ";
+    std::cout << std::to_string(sys.cpu.statusRegister.negative) << ' ';
+    std::cout << "Z: ";
+    std::cout << std::to_string(sys.cpu.statusRegister.zero) << ' ';
+    std::cout << "V: ";
+    std::cout << std::to_string(sys.cpu.statusRegister.overflow) << ' ';
+    std::cout << "X: ";
+    std::cout << std::to_string(sys.cpu.statusRegister.extend) << ' ';
+    std::cout << "C: ";
+    std::cout << std::to_string(sys.cpu.statusRegister.carry) << ' ';
 }
 
 void cli()
@@ -41,10 +46,20 @@ void cli()
     momiji::Emulator emu;
 
     bool should_loop = true;
+    std::string str{};
+
+
+    std::ifstream file{"file.asm"};
+
+    std::string filestr(std::istreambuf_iterator<char>{file},
+                        std::istreambuf_iterator<char>{});
+
+    auto instr = emu.newState(filestr);
+
     while (should_loop)
     {
         std::cout << ">> ";
-        std::string str;
+
         std::getline(std::cin, str);
 
         if (str.size() > 1 && str[0] == '!')
@@ -89,8 +104,6 @@ void cli()
             continue;
         }
 
-        auto instr = emu.parse(str);
-
         if (instr.has_value())
         {
             momiji::ParserError& error = instr.value();
@@ -113,8 +126,8 @@ void cli()
                 std::cout << "wrong operand type.\n";
                 break;
 
-            case momiji::ParserError::ErrorType::Comment:
-                std::cout << "Comment!\n";
+            case momiji::ParserError::ErrorType::NoLabelFound:
+                std::cout << "no label found.\n";
                 break;
             }
 
@@ -132,15 +145,7 @@ int main()
 {
     //cli();
 
-    std::ifstream file{"file.asm"};
-
-    std::string str(std::istreambuf_iterator<char>{file},
-                    std::istreambuf_iterator<char>{});
-
-    //std::getline(std::cin, str);
-    momiji::parse(str);
-
 #ifdef MOMIJI_INCLUDE_GUI
-    //gui();
+    gui();
 #endif
 }

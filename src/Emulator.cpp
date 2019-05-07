@@ -1,65 +1,51 @@
 #include "Emulator.h"
 
 #include <iterator>
+#include <iostream>
 
 namespace momiji
 {
     Emulator::Emulator()
         : systemStates(1)
-    { }
+    {
+    }
 
     const std::vector<momiji::System>& Emulator::getStates() const
     {
         return systemStates;
     }
 
-    const std::vector<momiji::Instruction>& Emulator::getInstructions() const
+    std::optional<momiji::ParserError> Emulator::newState(const std::string& str)
     {
-        return instructions;
-    }
+        auto res = momiji::parse(str);
 
-    std::optional<momiji::ParserError> Emulator::parse(const std::string& str)
-    {
-        // Parse normal instructions
-        auto instr = momiji::readInstruction(str);
-
-        if (!instr)
+        if (res)
         {
-            // Label?
-            auto label = momiji::readLabel(str);
-
-            if (!label)
-            {
-                return label.error();
-            }
-
-            auto unboxed_label = label.value();
-            unboxed_label.idx = std::distance(instructions.begin(), instructions.end());
-
-            auto lastSysState = systemStates.back();
-            lastSysState.labels.emplace_back(std::move(unboxed_label));
-            systemStates.emplace_back(std::move(lastSysState));
-
-            return std::nullopt;
+            auto lastSys = systemStates.back();
+            lastSys.instructions = std::move(*res);
+            systemStates.emplace_back(std::move(lastSys));
         }
-
-        auto unboxed_instr = instr.value();
-
-        instructions.emplace_back(unboxed_instr);
 
         return std::nullopt;
     }
 
-    bool Emulator::rollback()
+    bool Emulator::rollbackSys()
     {
         if (systemStates.size() > 1)
         {
             systemStates.pop_back();
+            return true;
+        }
 
-            if (instructions.size() > 0)
-            {
-                instructions.pop_back();
-            }
+        return false;
+    }
+
+    bool Emulator::rollback()
+    {
+        auto& lastSys = systemStates.back();
+        if (lastSys.cpu.programCounter.value > 0)
+        {
+            --lastSys.cpu.programCounter.value;
 
             return true;
         }
@@ -69,18 +55,28 @@ namespace momiji
 
     bool Emulator::step()
     {
-        std::int32_t pc = systemStates.back().cpu.programCounter.value;
-        if (pc >= instructions.size())
+        auto& lastSys = systemStates.back();
+        const std::int32_t pc = lastSys.cpu.programCounter.value;
+        if (pc < 0 || pc >= lastSys.instructions.size())
         {
             return false;
         }
 
-        auto newstate = instructions[pc].executefn(systemStates.back(), instructions[pc]);
+        const auto& instr = lastSys.instructions[pc];
 
+        auto newstate = instr.executefn(lastSys, instr);
 
-        switch (instructions[pc].instructionType)
+        switch (instr.instructionType)
         {
-        case InstructionType::Jmp:
+        case InstructionType::Jmp: [[fallthrough]];
+        case InstructionType::BranchEqual: [[fallthrough]];
+        case InstructionType::BranchGreaterEquals: [[fallthrough]];
+        case InstructionType::BranchGreaterThan: [[fallthrough]];
+        case InstructionType::BranchLessEquals: [[fallthrough]];
+        case InstructionType::BranchLessThan: [[fallthrough]];
+        case InstructionType::BranchNotEquals: [[fallthrough]];
+        case InstructionType::BranchNotZero: [[fallthrough]];
+        case InstructionType::BranchZero:
             break;
 
         default:
@@ -88,8 +84,20 @@ namespace momiji
         }
 
 
-        systemStates.emplace_back(newstate);
+        systemStates.emplace_back(std::move(newstate));
 
         return true;
+    }
+
+    bool Emulator::reset()
+    {
+        bool ret = false;
+        while (systemStates.size() > 1)
+        {
+            systemStates.pop_back();
+            ret = true;
+        }
+
+        return ret;
     }
 }

@@ -2,8 +2,10 @@
 
 #include "System.h"
 #include "Parser.h"
+#include <Utils.h>
 
 #include <array>
+#include <iostream>
 
 namespace momiji
 {
@@ -723,9 +725,197 @@ namespace momiji
             return sys;
         }
 
+        inline momiji::System cmp8(momiji::System sys, const momiji::Instruction& instr)
+        {
+            std::int32_t src = instr.operands[0].value;
+
+            switch (instr.operands[0].operandType)
+            {
+            case OperandType::Immediate:
+                break;
+
+            case OperandType::Register:
+                switch (instr.operands[0].registerType)
+                {
+                case RegisterType::Data:
+                    src = sys.cpu.dataRegisters[src].value;
+                    break;
+
+                case RegisterType::Address:
+                    src = sys.cpu.addressRegisters[src].value;
+                    break;
+
+                case RegisterType::Special:
+                    break;
+                }
+                break;
+
+            default:
+                break;
+            }
+
+            src = utils::sign_extend<std::int8_t>(src);
+
+            std::int32_t dst = instr.operands[1].value;
+
+            switch (instr.operands[1].registerType)
+            {
+            case RegisterType::Data:
+                dst = sys.cpu.dataRegisters[dst].value;
+                break;
+
+            case RegisterType::Address:
+                dst = sys.cpu.addressRegisters[dst].value;
+                break;
+
+            case RegisterType::Special:
+                break;
+            }
+
+            dst = utils::sign_extend<std::int8_t>(dst);
+
+            const std::int32_t res = dst - src;
+
+            sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
+            sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
+            sys.cpu.statusRegister.overflow = utils::sub_overflow(dst, src) ? 1 : 0;
+
+            return sys;
+        }
+
+        inline momiji::System cmp16(momiji::System sys, const momiji::Instruction& instr)
+        {
+            std::int32_t src = instr.operands[0].value;
+
+            switch (instr.operands[0].operandType)
+            {
+            case OperandType::Immediate:
+                break;
+
+            case OperandType::Register:
+                switch (instr.operands[0].registerType)
+                {
+                case RegisterType::Data:
+                    src = sys.cpu.dataRegisters[src].value;
+                    break;
+
+                case RegisterType::Address:
+                    src = sys.cpu.addressRegisters[src].value;
+                    break;
+
+                case RegisterType::Special:
+                    break;
+                }
+                break;
+
+            default:
+                break;
+            }
+
+            src = utils::sign_extend<std::int16_t>(src);
+
+            std::int32_t dst = instr.operands[1].value;
+
+            switch (instr.operands[1].registerType)
+            {
+            case RegisterType::Data:
+                dst = sys.cpu.dataRegisters[dst].value;
+                break;
+
+            case RegisterType::Address:
+                dst = sys.cpu.addressRegisters[dst].value;
+                break;
+
+            case RegisterType::Special:
+                break;
+            }
+
+            dst = utils::sign_extend<std::int16_t>(dst);
+
+            const std::int32_t res = dst - src;
+
+            sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
+            sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
+            sys.cpu.statusRegister.overflow = utils::sub_overflow(dst, src) ? 1 : 0;
+
+            return sys;
+        }
+
+        inline momiji::System cmp32(momiji::System sys, const momiji::Instruction& instr)
+        {
+            std::int32_t src = instr.operands[0].value;
+
+            switch (instr.operands[0].operandType)
+            {
+            case OperandType::Immediate:
+                break;
+
+            case OperandType::Register:
+                switch (instr.operands[0].registerType)
+                {
+                case RegisterType::Data:
+                    src = sys.cpu.dataRegisters[src].value;
+                    break;
+
+                case RegisterType::Address:
+                    src = sys.cpu.addressRegisters[src].value;
+                    break;
+
+                case RegisterType::Special:
+                    break;
+                }
+                break;
+
+            case OperandType::Address: [[fallthrough]];
+            case OperandType::Label:
+                break;
+            }
+
+            std::int32_t dst = instr.operands[1].value;
+
+            switch (instr.operands[1].registerType)
+            {
+            case RegisterType::Data:
+                dst = sys.cpu.dataRegisters[dst].value;
+                break;
+
+            case RegisterType::Address:
+                dst = sys.cpu.addressRegisters[dst].value;
+                break;
+
+            case RegisterType::Special:
+                break;
+            }
+
+            const std::int32_t res = dst - src;
+
+            sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
+            sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
+            sys.cpu.statusRegister.overflow = utils::sub_overflow(dst, src) ? 1 : 0;
+
+            return sys;
+        }
+
         inline momiji::System bra(momiji::System sys, const momiji::Instruction& instr)
         {
             sys.cpu.programCounter.value = instr.operands[0].value;
+            return sys;
+        }
+
+        inline momiji::System ble(momiji::System sys, const momiji::Instruction& instr)
+        {
+            auto& statReg = sys.cpu.statusRegister;
+            if ((statReg.negative == 0 && statReg.overflow == 1) ||
+                (statReg.negative == 1 && statReg.overflow == 0) ||
+                (statReg.zero == 0))
+            {
+                sys.cpu.programCounter.value = instr.operands[0].value;
+            }
+            else
+            {
+                ++sys.cpu.programCounter.value;
+            }
+
             return sys;
         }
 
@@ -734,9 +924,9 @@ namespace momiji
             return sys;
         }
 
-
         constexpr std::array<momiji::instr_fn_t, 3> move{ move8, move16, move32 };
         constexpr std::array<momiji::instr_fn_t, 3> add{ add8, add16, add32 };
         constexpr std::array<momiji::instr_fn_t, 3> sub{ sub8, sub16, sub32 };
+        constexpr std::array<momiji::instr_fn_t, 3> cmp{ cmp8, cmp16, cmp32 };
     }
 }

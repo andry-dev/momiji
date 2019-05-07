@@ -8,11 +8,11 @@
 
 #include "expected.hpp"
 
-#include "System.h"
-
 namespace momiji
 {
     struct Instruction;
+    struct System;
+    struct Label;
 
     using instr_fn_t = momiji::System(*)(momiji::System,
                                         const Instruction&);
@@ -30,7 +30,6 @@ namespace momiji
 
         InstructionType instructionType;
         DataType dataType;
-        std::int8_t numOperands;
 
         instr_fn_t executefn;
     };
@@ -48,15 +47,13 @@ namespace momiji
             WrongInstruction,
             WrongOperandType,
             UnexpectedCharacter,
-            Comment,
         } errorType;
     };
 
-    using ParsingResult = nonstd::expected<std::vector<momiji::Instruction>, ParserError>;
-
-
-    nonstd::expected<momiji::Label, ParserError> readLabel(const std::string& str);
-    nonstd::expected<momiji::Instruction, ParserError> readInstruction(const std::string& str);
+    using ParsingResult = nonstd::expected<
+        std::vector<momiji::Instruction>,
+        ParserError
+    >;
 
     momiji::ParsingResult parse(const std::string& str);
 

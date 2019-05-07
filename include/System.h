@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <vector>
+#include <Parser.h>
 
 namespace momiji
 {
@@ -17,7 +18,19 @@ namespace momiji
     using DataRegister = Register<std::int32_t>;
     using AddressRegister = Register<std::int32_t>;
     using ProgramCounter = Register<std::int32_t>;
-    using StatusRegister = Register<std::int16_t>;
+
+    struct StatusRegister
+    {
+        StatusRegister()
+            : extend(0), negative(0), zero(0), overflow(0), carry(0)
+        { }
+
+        std::uint8_t extend : 1;
+        std::uint8_t negative : 1;
+        std::uint8_t zero : 1;
+        std::uint8_t overflow : 1;
+        std::uint8_t carry : 1;
+    };
 
     struct Label
     {
@@ -55,6 +68,6 @@ namespace momiji
     struct System
     {
         Cpu cpu;
-        std::vector<momiji::Label> labels;
+        std::vector<momiji::Instruction> instructions;
     };
 }

@@ -763,58 +763,56 @@ namespace momiji
                 {
                 case utils::hash("move"):
                     res = CommonInstructionParser(instr)(tmp_str);
-                    instr.numOperands = 2;
                     instr.instructionType = InstructionType::Move;
                     instr.executefn = op_impl::move[utils::to_val(instr.dataType)];
                     break;
 
                 case utils::hash("moveq"):
                     res = ImmediateInstructionParser(instr)(tmp_str);
-                    instr.numOperands = 2;
                     instr.instructionType = InstructionType::MoveImmediate;
                     instr.executefn = op_impl::moveq;
                     break;
 
                 case utils::hash("add"):
                     res = CommonInstructionParser(instr)(tmp_str);
-                    instr.numOperands = 2;
                     instr.instructionType = InstructionType::Add;
                     instr.executefn = op_impl::add[utils::to_val(instr.dataType)];
                     break;
 
                 case utils::hash("sub"):
                     res = CommonInstructionParser(instr)(tmp_str);
-                    instr.numOperands = 2;
                     instr.instructionType = InstructionType::Sub;
                     instr.executefn = op_impl::sub[utils::to_val(instr.dataType)];
                     break;
 
                 case utils::hash("muls"):
                     res = CommonInstructionParser(instr)(tmp_str);
-                    instr.numOperands = 2;
                     instr.instructionType = InstructionType::SignedMul;
                     instr.executefn = op_impl::muls;
                     break;
 
                 case utils::hash("mulu"):
                     res = CommonInstructionParser(instr)(tmp_str);
-                    instr.numOperands = 2;
                     instr.instructionType = InstructionType::UnsignedMul;
                     instr.executefn = op_impl::muls;
                     break;
 
                 case utils::hash("divs"):
                     res = CommonInstructionParser(instr)(tmp_str);
-                    instr.numOperands = 2;
                     instr.instructionType = InstructionType::SignedDiv;
                     instr.executefn = op_impl::divs;
                     break;
 
                 case utils::hash("divu"):
                     res = CommonInstructionParser(instr)(tmp_str);
-                    instr.numOperands = 2;
                     instr.instructionType = InstructionType::UnsignedDiv;
                     instr.executefn = op_impl::divu;
+                    break;
+
+                case utils::hash("cmp"):
+                    res = CommonInstructionParser(instr)(tmp_str);
+                    instr.instructionType = InstructionType::Compare;
+                    instr.executefn = op_impl::cmp[utils::to_val(instr.dataType)];
                     break;
 
                 case utils::hash("bra"):
@@ -825,8 +823,20 @@ namespace momiji
                                                  ParserError::ErrorType::NoLabelFound);
                     }
 
-                    instr.numOperands = 1;
+                    instr.instructionType = InstructionType::Jmp;
                     instr.executefn = op_impl::bra;
+                    break;
+
+                case utils::hash("ble"):
+                    res = BranchInstructionParser(instr, labels)(tmp_str);
+                    if (!res.result)
+                    {
+                        return make_parser_error(0, line_count,
+                                                 ParserError::ErrorType::NoLabelFound);
+                    }
+
+                    instr.instructionType = InstructionType::BranchLessEquals;
+                    instr.executefn = op_impl::ble;
                     break;
 
                 default:
@@ -870,17 +880,6 @@ namespace momiji
 
         Parser parser{str, label.info};
 
-        auto whatever = parser.run();
-
-        if (whatever)
-        {
-            for (const auto& inst : (*whatever))
-            {
-                std::cout << "Found instruction!\n";
-                std::cout << "Val " << std::to_string(inst.operands[0].value) << '\n';
-            }
-        }
-
-        return whatever;
+        return parser.run();
     }
 }

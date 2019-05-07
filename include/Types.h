@@ -20,6 +20,8 @@ namespace momiji
         Move, // move.*
         MoveImmediate,  // moveq
 
+        Compare,
+
         Jmp,
         BranchEqual,
         BranchNotEquals,

@@ -5,7 +5,9 @@ project(momiji)
 option(MOMIJI_BUILD_GUI "Enable GUI support (requires tewi)" ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_BINARY_DIR})
-add_executable(momiji src/main.cpp src/RecParser.cpp src/Parser.cpp src/Emulator.cpp)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+add_executable(momiji src/main.cpp src/RecParser.cpp src/Emulator.cpp)
 
 target_compile_features(momiji PUBLIC cxx_std_17)
 

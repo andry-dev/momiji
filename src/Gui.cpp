@@ -16,6 +16,7 @@
 
 #include "Emulator.h"
 #include "Renderer.h"
+#include <Utils.h>
 
 #include <cstdio>
 
@@ -30,7 +31,7 @@ static void MessageCallback( GLenum source,
     std::fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
            ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
             type, severity, message );
-  TEWI_EXPECTS(0, "");
+  //TEWI_EXPECTS(0, "");
 }
 
 void gui()
@@ -93,9 +94,59 @@ void gui()
 
         if (showDebugInfo)
         {
-            ImGui::Begin("Momiji's infos");
+            ImGui::Begin("Debug menu");
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+            ImGui::Separator();
+
+            ImGui::BeginGroup();
+            {
+                {
+                    ImGui::Text("sign_extend<i8>");
+                    ImGui::SameLine();
+                    static std::int32_t ext8 = 0;
+                    ImGui::PushItemWidth(70.0f);
+                    ImGui::InputInt("##1", &ext8, 0, 0, ImGuiInputTextFlags_CharsHexadecimal);
+                    ImGui::PopItemWidth();
+                    ImGui::SameLine();
+                    ImGui::Text("%d", momiji::utils::sign_extend<std::int8_t>(ext8));
+                }
+
+                {
+                    ImGui::Text("sign_extend<i16>");
+                    ImGui::SameLine();
+                    static std::int32_t ext16 = 0;
+                    ImGui::PushItemWidth(70.0f);
+                    ImGui::InputInt("##2", &ext16, 0, 0, ImGuiInputTextFlags_CharsHexadecimal);
+                    ImGui::PopItemWidth();
+                    ImGui::SameLine();
+                    ImGui::Text("%d", momiji::utils::sign_extend<std::int16_t>(ext16));
+                }
+
+                {
+                    ImGui::Text("10 -> 16");
+                    ImGui::SameLine();
+                    static std::int32_t num10 = 0;
+                    ImGui::PushItemWidth(70.0f);
+                    ImGui::InputInt("##n10", &num10, 0, 0, ImGuiInputTextFlags_CharsDecimal);
+                    ImGui::PopItemWidth();
+                    ImGui::SameLine();
+                    ImGui::Text("%x", num10);
+                }
+
+                {
+                    ImGui::Text("16 -> 10");
+                    ImGui::SameLine();
+                    static std::int32_t num16 = 0;
+                    ImGui::PushItemWidth(70.0f);
+                    ImGui::InputInt("##n16", &num16, 0, 0, ImGuiInputTextFlags_CharsHexadecimal);
+                    ImGui::PopItemWidth();
+                    ImGui::SameLine();
+                    ImGui::Text("%d", num16);
+                }
+            }
+            ImGui::EndGroup();
             ImGui::End();
         }
 
@@ -134,7 +185,7 @@ void gui()
             ImGui::InputTextMultiline("", &str);
             if (ImGui::Button("Parse"))
             {
-                auto err = emu.parse(str);
+                auto err = emu.newState(str);
 
                 if (err.has_value())
                 {
@@ -157,6 +208,13 @@ void gui()
                     case momiji::ParserError::ErrorType::WrongOperandType:
                         error_string = "wrong operand type.";
                         break;
+                    case momiji::ParserError::ErrorType::NoLabelFound:
+                        error_string = "no label found.";
+                        break;
+
+                    default:
+                        error_string = "unknown error.";
+                        break;
                     }
                 }
                 else
@@ -174,7 +232,12 @@ void gui()
 
             if (ImGui::Button("Rollback"))
             {
-                emu.rollback();
+                emu.rollbackSys();
+            }
+
+            if (ImGui::Button("Reset"))
+            {
+                emu.reset();
             }
 
             ImGui::End();
@@ -202,8 +265,7 @@ void gui()
                 flags |= ImGuiInputTextFlags_CharsHexadecimal;
             }
 
-            if (!allowEditing)
-            {
+            if (!allowEditing) {
                 flags |= ImGuiInputTextFlags_ReadOnly;
             }
 
@@ -240,7 +302,19 @@ void gui()
             }
             ImGui::EndGroup();
 
+            ImGui::BeginGroup();
+            ImGui::Text("PC");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(70.0f);
+            ImGui::InputInt("##pc", (int*)&last.cpu.programCounter.value, 0, 0, flags);
+            ImGui::PopItemWidth();
+            ImGui::EndGroup();
+
             ImGui::Separator();
+
+            ImGui::BeginGroup();
+
+            ImGui::EndGroup();
 
             ImGui::End();
         }
