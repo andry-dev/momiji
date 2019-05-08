@@ -392,6 +392,71 @@ namespace momiji
         };
     }
 
+    constexpr auto DecNumber()
+    {
+        return [] (std::string_view str) -> parser_metadata
+        {
+            int idx = 0;
+            bool found_num = false;
+
+            auto check_sign = Map(AnyOf(Char('+'), Char('-')), [&idx] (auto) {
+                ++idx;
+            })(str);
+
+            auto check_size = [&] () { return str.size() > idx; };
+            auto check_number = [&] () { 
+                return (str[idx] >= '0' && str[idx] <= '9');
+            };
+
+            while (check_size() && check_number())
+            {
+                found_num = true;
+                ++idx;
+            }
+
+            if (found_num)
+            {
+                return { true, str.substr(idx), str.substr(0, idx) };
+            }
+
+            return { false, str, "" };
+        };
+    }
+
+    constexpr auto HexNumber()
+    {
+        return [] (std::string_view str) -> parser_metadata
+        {
+            int idx = 0;
+
+            auto check_sign = Map(AnyOf(Char('+'), Char('-')), [&idx] (auto) {
+                ++idx;
+            })(str);
+
+            auto check_size = [&] () { return str.size() > idx; };
+            auto check_number = [&] () { 
+                return (str[idx] >= '0' && str[idx] <= '9') ||
+                       (str[idx] >= 'a' && str[idx] <= 'f') ||
+                       (str[idx] >= 'A' && str[idx] <= 'F');
+            };
+
+            bool found_num = false;
+
+            while (check_size() && check_number())
+            {
+                found_num = true;
+                ++idx;
+            }
+
+            if (found_num)
+            {
+                return { true, str.substr(idx), str.substr(0, idx) };
+            }
+
+            return { false, str, "" };
+        };
+    }
+
     constexpr auto AsciiAlphabet()
     {
         return [] (std::string_view str) -> parser_metadata
@@ -407,6 +472,22 @@ namespace momiji
             }
 
             return { false, str, "" };
+        };
+    }
+
+    constexpr auto GenericDecimal()
+    {
+        return [] (std::string_view str) -> parser_metadata
+        {
+            return DecNumber()(str);
+        };
+    }
+
+    constexpr auto GenericHex()
+    {
+        return [] (std::string_view str) -> parser_metadata
+        {
+            return SeqNext(Char('$'), HexNumber())(str);
         };
     }
 
@@ -454,8 +535,7 @@ namespace momiji
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
-            constexpr auto number_parser = While(Number());
-            constexpr auto inter_dec_parser = SeqNext(Char('#'), number_parser);
+            constexpr auto inter_dec_parser = SeqNext(Char('#'), GenericDecimal());
 
             auto decimal_num =
                 Map(inter_dec_parser,
@@ -466,7 +546,7 @@ namespace momiji
                         instr.operands[opNum].value = val;
                     });
 
-            constexpr auto inter_hex_parser = SeqNext(Char('#'), Char('$'), number_parser);
+            constexpr auto inter_hex_parser = SeqNext(Char('#'), GenericHex());
             auto hex_num =
                 Map(inter_hex_parser,
                     [&instr, opNum] (auto parsed_str) {
@@ -661,6 +741,16 @@ namespace momiji
         };
     }
 
+    constexpr auto OneRegisterInstructionParser(momiji::Instruction& instr)
+    {
+        return [&instr] (std::string_view str) -> parser_metadata
+        {
+            auto parser = SeqNext(Whitespace(), AnyRegister(instr, 0));
+
+            return parser(str);
+        };
+    }
+
     struct LabelParser
     {
         LabelParser(std::string_view str)
@@ -807,6 +897,12 @@ namespace momiji
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.instructionType = InstructionType::UnsignedDiv;
                     instr.executefn = op_impl::divu;
+                    break;
+
+                case utils::hash("swap"):
+                    res = OneRegisterInstructionParser(instr)(tmp_str);
+                    instr.instructionType = InstructionType::Swap;
+                    instr.executefn = op_impl::swap;
                     break;
 
                 case utils::hash("cmp"):

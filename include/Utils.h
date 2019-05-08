@@ -80,7 +80,7 @@ namespace momiji
         constexpr std::int32_t sign_extend<std::int8_t>(std::int32_t val)
         {
             std::int32_t ret = val & 0x000000FF;
-            std::int8_t sign = (ret & 0x00000000FF);
+            std::int8_t sign = (ret & 0x000000FF);
 
             if ((sign & 0b10000000) != 0)
             {
@@ -94,7 +94,7 @@ namespace momiji
         constexpr std::int32_t sign_extend<std::int16_t>(std::int32_t val)
         {
             std::int32_t ret = val & 0x0000FFFF;
-            std::int8_t sign = (ret & 0x000000FF00) >> 8;
+            std::int8_t sign = (ret & 0x0000FF00) >> 8;
 
             if ((sign & 0b10000000) != 0)
             {

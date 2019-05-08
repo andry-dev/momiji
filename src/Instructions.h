@@ -765,6 +765,28 @@ namespace momiji
 
         inline momiji::System swap(momiji::System sys, const momiji::Instruction& instr)
         {
+            const auto val = instr.operands[0].value;
+            std::int32_t* reg = nullptr; // oof
+
+            switch (instr.operands[0].registerType)
+            {
+            case RegisterType::Data:
+                reg = &sys.cpu.dataRegisters[val].value;
+                break;
+
+            case RegisterType::Address:
+                reg = &sys.cpu.addressRegisters[val].value;
+                break;
+
+            case RegisterType::Special:
+                break;
+            }
+
+            std::int32_t low = (*reg & 0x0000FFFF) << 16;
+            std::int32_t high = (*reg & 0xFFFF0000) >> 16;
+
+            *reg = (low | high);
+
             return sys;
         }
 
@@ -955,7 +977,7 @@ namespace momiji
             auto& statReg = sys.cpu.statusRegister;
             if ((statReg.negative == 0 && statReg.overflow == 1) ||
                 (statReg.negative == 1 && statReg.overflow == 0) ||
-                (statReg.zero == 0))
+                (statReg.zero == 1))
             {
                 sys.cpu.programCounter.value = instr.operands[0].value;
             }

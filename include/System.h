@@ -25,11 +25,11 @@ namespace momiji
             : extend(0), negative(0), zero(0), overflow(0), carry(0)
         { }
 
-        std::uint8_t extend : 1;
-        std::uint8_t negative : 1;
-        std::uint8_t zero : 1;
-        std::uint8_t overflow : 1;
-        std::uint8_t carry : 1;
+        std::uint8_t extend : 1;    // E
+        std::uint8_t negative : 1;  // N
+        std::uint8_t zero : 1;      // Z
+        std::uint8_t overflow : 1;  // V
+        std::uint8_t carry : 1;     // C
     };
 
     struct Label
