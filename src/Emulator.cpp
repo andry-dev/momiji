@@ -64,7 +64,7 @@ namespace momiji
 
         const auto& instr = lastSys.instructions[pc];
 
-        auto newstate = instr.executefn(lastSys, instr);
+        System newstate = {};//instr.executefn(lastSys, instr);
 
         switch (instr.instructionType)
         {

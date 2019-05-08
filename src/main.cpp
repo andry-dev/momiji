@@ -5,10 +5,15 @@
 
 #include "Parser.h"
 #include "System.h"
+#include "Compiler.h"
+#include <Utils.h>
 
 #include "Emulator.h"
 
 #include "Gui.h"
+#include <iomanip>
+
+#include <bitset>
 
 
 void print_sys(const momiji::System& sys)
@@ -145,7 +150,68 @@ int main()
 {
     //cli();
 
+    std::string str{};
+
+
+    std::ifstream file{"file.asm"};
+
+    std::string filestr(std::istreambuf_iterator<char>{file},
+                        std::istreambuf_iterator<char>{});
+
+
+    auto res = momiji::parse(filestr);
+    if (res)
+    {
+        auto instr = *res;
+        auto binary = momiji::compile(instr);
+
+        int cnt = 0;
+        for (int i = 0; i < binary.size(); i += 2)
+        {
+            std::cout << cnt << ": ";
+            std::uint16_t val = (binary[i] << 8) | (binary[i + 1]);
+            std::bitset<16> bs{val};
+            std::cout << bs << '\n';
+
+            std::uint8_t group = (val >> 14);
+            std::uint8_t size = (val >> 12) & 0b011;
+            std::uint8_t dstr = (val >> 9) & 0b0111;
+            std::uint8_t dstm = (val >> 6) & 0b0111;
+
+            std::uint8_t srcm = (val >> 3) & 0b0111;
+            std::uint8_t srcr = (val) & 0b0111;
+            std::cout << "\tGroup " << std::to_string(group) << '\n';
+            std::cout << "\tSize " << std::to_string(size) << '\n';
+            std::cout << "\tDest Op " << std::to_string(dstr) << '\n';
+            std::cout << "\tDest Mode " << std::to_string(dstm) << '\n';
+            std::cout << "\tSrc Op " << std::to_string(srcr) << '\n';
+            std::cout << "\tSrc Mode " << std::to_string(srcm) << '\n';
+
+            if (srcr == momiji::utils::to_val(momiji::OperandType::Immediate) &&
+                srcm == momiji::utils::to_val(momiji::SpecialAddressingMode::Immediate))
+            {
+                std::array<std::uint8_t, 4> move_conv{ 0b00, 0b01, 0b100, 0b010 };
+                union
+                {
+                    std::int32_t val;
+                    std::int16_t arr16[2];
+                    std::int8_t arr8[4];
+                };
+
+                for (int j = 0; j < move_conv[size]; ++j)
+                {
+                    arr8[j] = binary[i + 2 + j];
+                }
+
+                std::cout << "Extratced size: " << std::to_string(move_conv[size]) << '\n';
+                std::cout << "Extracted val: " << val << "\n";
+                i += move_conv[size];
+            }
+
+        }
+    }
+
 #ifdef MOMIJI_INCLUDE_GUI
-    gui();
+    //gui();
 #endif
 }

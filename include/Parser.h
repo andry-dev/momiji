@@ -19,9 +19,15 @@ namespace momiji
 
     struct Operand
     {
-        std::int32_t value;
-        OperandType operandType;
-        RegisterType registerType;
+        union
+        {
+            std::int32_t value;
+            std::int16_t half[2];
+            std::int8_t single[4];
+        };
+
+        OperandType operandType : 3;
+        SpecialAddressingMode specialAddressingMode : 3;
     };
 
     struct Instruction
@@ -30,8 +36,6 @@ namespace momiji
 
         InstructionType instructionType;
         DataType dataType;
-
-        instr_fn_t executefn;
     };
 
 
