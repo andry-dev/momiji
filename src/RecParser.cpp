@@ -367,6 +367,17 @@ namespace momiji
 
                 case utils::hash("add"):
                     res = CommonInstructionParser(instr)(tmp_str);
+                    switch (instr.operands[1].operandType)
+                    {
+                    case OperandType::AddressRegister:
+                        instr.instructionType = InstructionType::AddA;
+                        break;
+
+                    default:
+                        instr.instructionType = InstructionType::Add;
+                        break;
+                    }
+
                     switch (instr.operands[0].operandType)
                     {
                     case OperandType::Immediate:
@@ -378,19 +389,42 @@ namespace momiji
                         }
                         break;
 
-                    case OperandType::AddressRegister:
-                        instr.instructionType = InstructionType::AddA;
-                        break;
-
-                    default:
-                        instr.instructionType = InstructionType::Add;
+                    case OperandType::DataRegister:
+                        //instr.instructionType = InstructionType::Add;
                         break;
                     }
+
                     break;
 
                 case utils::hash("sub"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.instructionType = InstructionType::Sub;
+                    switch (instr.operands[1].operandType)
+                    {
+                    case OperandType::AddressRegister:
+                        instr.instructionType = InstructionType::SubA;
+                        break;
+
+                    default:
+                        instr.instructionType = InstructionType::Sub;
+                        break;
+                    }
+
+                    switch (instr.operands[0].operandType)
+                    {
+                    case OperandType::Immediate:
+                        switch (instr.operands[0].specialAddressingMode)
+                        {
+                        case SpecialAddressingMode::Immediate:
+                            instr.instructionType = InstructionType::SubI;
+                            break;
+                        }
+                        break;
+
+                    case OperandType::DataRegister:
+                        //instr.instructionType = InstructionType::Add;
+                        break;
+                    }
                     break;
 
                 case utils::hash("muls"):

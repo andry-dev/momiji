@@ -16,9 +16,11 @@ namespace momiji
         // 0111 3*DST 0 8*DATA
         constexpr std::uint16_t moveq = 0b0111'000'0'00000000;
 
-        // 1101 3*DST 3*OPMODE 6*EA
-        constexpr std::uint16_t add = 0b1101'000'000'000000;
-        constexpr std::uint16_t adda = add;
+        // 1101 3*DST 1*OPMODE 2*SIZE 6*EA
+        constexpr std::uint16_t add = 0b1101'000'0'00'000000;
+
+        // 1101 3*DST 1*OPMODE 11 6*EA
+        constexpr std::uint16_t adda = 0b1101'000'0'11'000000;
 
         // 00000 110 2*SIZE 6*EA
         constexpr std::uint16_t addi = 0b00000'110'00'000000;

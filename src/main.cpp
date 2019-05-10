@@ -165,14 +165,22 @@ int main()
         auto instr = *res;
         auto binary = momiji::compile(instr);
 
+        std::cout << "Base address: " << (void*)&binary[0] << '\n';
         int cnt = 0;
         for (int i = 0; i < binary.size(); i += 2)
         {
             std::cout << cnt << ": ";
-            std::uint16_t val = (binary[i] << 8) | (binary[i + 1]);
-            std::bitset<16> bs{val};
-            std::cout << bs << '\n';
+            std::uint8_t higher = (binary[i]);
+            std::uint8_t lower = (binary[i + 1]);
+            std::bitset<8> bsh{higher};
+            std::bitset<8> bsl{lower};
+            std::cout << bsh << ' ' << bsl << ' ';
 
+            if (i % 2 == 0)
+            {
+                std::cout << '\n';
+            }
+#if 0
             std::uint8_t group = (val >> 14);
             std::uint8_t size = (val >> 12) & 0b011;
             std::uint8_t dstr = (val >> 9) & 0b0111;
@@ -207,7 +215,9 @@ int main()
                 std::cout << "Extracted val: " << val << "\n";
                 i += move_conv[size];
             }
+#endif
 
+            cnt += 2;
         }
     }
 
