@@ -163,6 +163,9 @@ namespace momiji
             "vertexColor"
         };
 
-        return tewi::ShaderProgram<tewi::API::OpenGLTag>({ shaders }, { attribs });
+        return tewi::ShaderProgram<tewi::API::OpenGLTag>(
+            { shaders.data(), shaders.size() },
+            { attribs.data(), attribs.size() }
+        );
     }
 }

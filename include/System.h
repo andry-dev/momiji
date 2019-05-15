@@ -5,6 +5,8 @@
 #include <vector>
 #include <Parser.h>
 
+#include <Utils.h>
+
 namespace momiji
 {
     template <typename IntType>
@@ -17,7 +19,6 @@ namespace momiji
 
     using DataRegister = Register<std::int32_t>;
     using AddressRegister = Register<std::int32_t>;
-    using ProgramCounter = Register<std::int32_t>;
 
     struct StatusRegister
     {
@@ -30,6 +31,11 @@ namespace momiji
         std::uint8_t zero : 1;      // Z
         std::uint8_t overflow : 1;  // V
         std::uint8_t carry : 1;     // C
+    };
+
+    struct ProgramCounter
+    {
+        std::uint16_t* address;
     };
 
     struct Label
@@ -68,6 +74,6 @@ namespace momiji
     struct System
     {
         Cpu cpu;
-        std::vector<momiji::Instruction> instructions;
+        MemoryType mem;
     };
 }

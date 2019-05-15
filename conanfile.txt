@@ -1,5 +1,6 @@
 [requires]
 tewi/0.1@andry/dev
+asl/0.1@andry/dev
 
 [generators]
 cmake_find_package

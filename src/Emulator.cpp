@@ -3,12 +3,14 @@
 #include <iterator>
 #include <iostream>
 
+#include <Compiler.h>
+#include <Decoder.h>
+
 namespace momiji
 {
     Emulator::Emulator()
         : systemStates(1)
-    {
-    }
+    { }
 
     const std::vector<momiji::System>& Emulator::getStates() const
     {
@@ -21,8 +23,10 @@ namespace momiji
 
         if (res)
         {
+            auto mem = momiji::compile(*res);
             auto lastSys = systemStates.back();
-            lastSys.instructions = std::move(*res);
+            lastSys.mem = std::move(mem);
+            lastSys.cpu.programCounter.address = lastSys.mem.data();
             systemStates.emplace_back(std::move(lastSys));
         }
 
@@ -43,9 +47,9 @@ namespace momiji
     bool Emulator::rollback()
     {
         auto& lastSys = systemStates.back();
-        if (lastSys.cpu.programCounter.value > 0)
+        if (lastSys.cpu.programCounter.address > lastSys.mem.data())
         {
-            --lastSys.cpu.programCounter.value;
+            --lastSys.cpu.programCounter.address;
 
             return true;
         }
@@ -56,16 +60,21 @@ namespace momiji
     bool Emulator::step()
     {
         auto& lastSys = systemStates.back();
-        const std::int32_t pc = lastSys.cpu.programCounter.value;
-        if (pc < 0 || pc >= lastSys.instructions.size())
+        const auto* pc = lastSys.cpu.programCounter.address;
+        if (pc < lastSys.mem.data() || pc >= (lastSys.mem.data() + lastSys.mem.size()))
         {
             return false;
         }
 
-        const auto& instr = lastSys.instructions[pc];
+        auto offset = pc - lastSys.mem.data();
 
-        System newstate = {};//instr.executefn(lastSys, instr);
+        gsl::span<std::uint16_t> span{lastSys.mem.data(), lastSys.mem.size()};
+        const auto& instr = momiji::decode(span, pc - lastSys.mem.data());
 
+        System newstate = instr.exec(lastSys, instr.data);
+        newstate.cpu.programCounter.address = newstate.mem.data() + offset;
+
+        /*
         switch (instr.instructionType)
         {
         case InstructionType::Jmp: [[fallthrough]];
@@ -80,9 +89,29 @@ namespace momiji
             break;
 
         default:
-            ++newstate.cpu.programCounter.value;
+            ++newstate.cpu.programCounter.address;
         }
+        */
 
+        if (instr.data.op1 == OperandType::Immediate &&
+            instr.data.mod1 == SpecialAddressingMode::Immediate)
+        {
+            switch (instr.data.size)
+            {
+            case 1:
+            case 2:
+                newstate.cpu.programCounter.address += 2;
+                break;
+
+            case 4:
+                newstate.cpu.programCounter.address += 3;
+                break;
+            }
+        }
+        else
+        {
+            ++newstate.cpu.programCounter.address;
+        }
 
         systemStates.emplace_back(std::move(newstate));
 

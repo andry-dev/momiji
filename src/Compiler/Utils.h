@@ -46,6 +46,4 @@ namespace momiji
         2, // Byte
         4, // Word
     };
-
-    using MemoryType = std::vector<std::uint8_t>;
 }

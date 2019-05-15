@@ -313,7 +313,7 @@ void gui()
             ImGui::Text("PC");
             ImGui::SameLine();
             ImGui::PushItemWidth(70.0f);
-            ImGui::InputInt("##pc", (int*)&last.cpu.programCounter.value, 0, 0, flags);
+            ImGui::InputInt("##pc", (int*)&last.cpu.programCounter.address, 0, 0, flags);
             ImGui::PopItemWidth();
             ImGui::EndGroup();
 

@@ -5,6 +5,6 @@
 
 namespace momiji
 {
-    std::vector<std::uint8_t>
+    std::vector<std::uint16_t>
     compile(const std::vector<momiji::Instruction>& instructions);
 }

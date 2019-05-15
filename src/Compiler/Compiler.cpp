@@ -12,10 +12,10 @@
 
 namespace momiji
 {
-    std::vector<std::uint8_t>
+    std::vector<std::uint16_t>
     compile(const std::vector<momiji::Instruction>& instructions)
     {
-        std::vector<std::uint8_t> memory;
+        std::vector<std::uint16_t> memory;
 
         for (const auto& instr : instructions)
         {
@@ -58,18 +58,36 @@ namespace momiji
                 break;
             }
 
-            memory.push_back(opcode.higher);
-            memory.push_back(opcode.lower);
+            memory.push_back(opcode.val);
 
             std::cout << "Adding bytes: "
                 << std::to_string(additional_data.cnt)
                 << " - "
                 << additional_data.val << '\n';
 
+            switch (additional_data.cnt)
+            {
+            case 1: {
+                // Adding 1 byte to align to 16-bit
+                std::uint16_t val = 0 | additional_data.arr8[0];
+                memory.push_back(val);
+                } break;
+            case 2:
+                memory.push_back(additional_data.arr16[0]);
+                break;
+
+            case 4:
+                memory.push_back(additional_data.arr16[1]);
+                memory.push_back(additional_data.arr16[0]);
+                break;
+            }
+
+            /*
             for (int i = 0; i < additional_data.cnt; ++i)
             {
                 memory.push_back(additional_data.arr8[i]);
             }
+            */
         }
 
         return memory;

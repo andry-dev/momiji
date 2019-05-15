@@ -11,6 +11,10 @@ add_executable(momiji
     src/main.cpp
     src/RecParser.cpp
     src/Compiler/Compiler.cpp
+    src/Decoder/Decoder.cpp
+    src/Decoder/add.cpp
+    src/Decoder/move.cpp
+    src/Instructions/move.cpp
     src/Emulator.cpp)
 
 target_compile_features(momiji PUBLIC cxx_std_17)

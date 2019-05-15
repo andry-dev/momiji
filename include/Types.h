@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 namespace momiji
 {
@@ -92,4 +93,6 @@ namespace momiji
         GreaterThan = 0b1110,
         LessEq      = 0b1111,
     };
+
+    using MemoryType = std::vector<std::uint16_t>;
 }

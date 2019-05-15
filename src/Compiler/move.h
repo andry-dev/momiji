@@ -35,6 +35,7 @@ namespace momiji
         {
         case OperandType::AddressRegister: [[fallthrough]];
         case OperandType::DataRegister:
+            dstval = instr.operands[1].value & 0b0111;
             dstmode = utils::to_val(instr.operands[1].operandType);
             break;
 

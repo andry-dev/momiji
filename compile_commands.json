@@ -13,8 +13,32 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -o CMakeFiles/momiji.dir/src/Parser.cpp.o -c /home/andry/prj/cpp/momiji/src/Parser.cpp",
-  "file": "/home/andry/prj/cpp/momiji/src/Parser.cpp"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -o CMakeFiles/momiji.dir/src/Compiler/Compiler.cpp.o -c /home/andry/prj/cpp/momiji/src/Compiler/Compiler.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/Compiler.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -o CMakeFiles/momiji.dir/src/Decoder/Decoder.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/Decoder.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/Decoder.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -o CMakeFiles/momiji.dir/src/Decoder/add.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/add.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/add.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -o CMakeFiles/momiji.dir/src/Decoder/move.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/move.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/move.cpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -o CMakeFiles/momiji.dir/src/Instructions/move.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/move.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/move.cpp"
 },
 
 {
@@ -205,6 +229,12 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/ParserCombinators.h",
+  "file": "/home/andry/prj/cpp/momiji/include/ParserCombinators.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
   "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Video/API/Device.hpp",
   "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Video/API/Device.hpp"
 },
@@ -223,8 +253,14 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/Vulkan/ValidationLayers.h",
-  "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/Vulkan/ValidationLayers.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/illegal.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/illegal.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -c /home/andry/prj/cpp/momiji/external/tewi/external/imgui/imgui_internal.h",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/external/imgui/imgui_internal.h"
 },
 
 {
@@ -247,8 +283,14 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/Vulkan/SwapchainDetails.h",
-  "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/Vulkan/SwapchainDetails.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Compiler.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Compiler.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -c /home/andry/prj/cpp/momiji/external/tewi/external/imgui/misc/cpp/imgui_stdlib.h",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/external/imgui/misc/cpp/imgui_stdlib.h"
 },
 
 {
@@ -277,14 +319,26 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -c /home/andry/prj/cpp/momiji/external/tewi/external/imgui/imgui.h",
-  "file": "/home/andry/prj/cpp/momiji/external/tewi/external/imgui/imgui.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Renderer.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Renderer.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/move.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/move.h"
 },
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
   "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Utils/Log.h",
   "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Utils/Log.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Utils/Clock.h",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Utils/Clock.h"
 },
 
 {
@@ -301,8 +355,14 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Renderer.h",
-  "file": "/home/andry/prj/cpp/momiji/src/Renderer.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/add.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/add.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -c /home/andry/prj/cpp/momiji/external/tewi/external/imgui/imgui.h",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/external/imgui/imgui.h"
 },
 
 {
@@ -319,20 +379,14 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions.h",
-  "file": "/home/andry/prj/cpp/momiji/src/Instructions.h"
-},
-
-{
-  "directory": "/home/andry/prj/cpp/momiji/build",
   "command": "/usr/bin/c++ -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -c /home/andry/prj/cpp/momiji/external/tewi/external/imgui/imstb_truetype.h",
   "file": "/home/andry/prj/cpp/momiji/external/tewi/external/imgui/imstb_truetype.h"
 },
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Types.h",
-  "file": "/home/andry/prj/cpp/momiji/include/Types.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/sub.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/sub.h"
 },
 
 {
@@ -343,14 +397,38 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -c /home/andry/prj/cpp/momiji/external/tewi/external/imgui/misc/cpp/imgui_stdlib.h",
-  "file": "/home/andry/prj/cpp/momiji/external/tewi/external/imgui/misc/cpp/imgui_stdlib.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Types.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Types.h"
 },
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -c /home/andry/prj/cpp/momiji/external/tewi/external/imgui/imgui_internal.h",
-  "file": "/home/andry/prj/cpp/momiji/external/tewi/external/imgui/imgui_internal.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/OpenGL/IndexBuffer.h",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/OpenGL/IndexBuffer.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/Vulkan/ValidationLayers.h",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/Vulkan/ValidationLayers.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/move.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/move.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/noop.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/noop.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/add.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/add.h"
 },
 
 {
@@ -363,6 +441,24 @@
   "directory": "/home/andry/prj/cpp/momiji/build",
   "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Video/Vertex.h",
   "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Video/Vertex.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Decoder.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Decoder.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/move.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/move.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/OpCodes.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/OpCodes.h"
 },
 
 {
@@ -397,8 +493,8 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Utils/Clock.h",
-  "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Utils/Clock.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/IO/BasicIO.h",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/IO/BasicIO.h"
 },
 
 {
@@ -409,8 +505,14 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/IO/BasicIO.h",
-  "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/IO/BasicIO.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/Representations.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/Representations.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -c /home/andry/prj/cpp/momiji/external/tewi/external/imgui/imstb_textedit.h",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/external/imgui/imstb_textedit.h"
 },
 
 {
@@ -427,8 +529,8 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/OpenGL/IndexBuffer.h",
-  "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/OpenGL/IndexBuffer.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/Vulkan/SwapchainDetails.h",
+  "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Platform/Vulkan/SwapchainDetails.h"
 },
 
 {
@@ -441,6 +543,12 @@
   "directory": "/home/andry/prj/cpp/momiji/build",
   "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Video/Camera2D.h",
   "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Video/Camera2D.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/sub.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/sub.h"
 },
 
 {
@@ -523,8 +631,8 @@
 
 {
   "directory": "/home/andry/prj/cpp/momiji/build",
-  "command": "/usr/bin/c++ -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -c /home/andry/prj/cpp/momiji/external/tewi/external/imgui/imstb_textedit.h",
-  "file": "/home/andry/prj/cpp/momiji/external/tewi/external/imgui/imstb_textedit.h"
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/add.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/add.h"
 },
 
 {
@@ -537,6 +645,12 @@
   "directory": "/home/andry/prj/cpp/momiji/build",
   "command": "/usr/bin/c++ -DGLEW_STATIC -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -Wall -Wextra -pedantic -Wpedantic -Weffc++ -Wno-unused-const-variable -pipe -fno-rtti -fno-omit-frame-pointer -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/tewi/include/tewi/Video/API/Instance.hpp",
   "file": "/home/andry/prj/cpp/momiji/external/tewi/include/tewi/Video/API/Instance.hpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DGLEW_STATIC -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -DTEWI_STATIC_LIB=1 -I../include -I../external/nonstd -I../external/tewi/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem ../external/tewi/external/imgui -isystem ../external/tewi/external/imgui/misc/cpp -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/Utils.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/Utils.h"
 },
 
 {

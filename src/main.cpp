@@ -32,7 +32,7 @@ void print_sys(const momiji::System& sys)
     }
 
     std::cout << "\npc: ";
-    std::cout << sys.cpu.programCounter.value << ' ';
+    std::cout << sys.cpu.programCounter.address << ' ';
 
     std::cout << "N: ";
     std::cout << std::to_string(sys.cpu.statusRegister.negative) << ' ';
@@ -44,6 +44,18 @@ void print_sys(const momiji::System& sys)
     std::cout << std::to_string(sys.cpu.statusRegister.extend) << ' ';
     std::cout << "C: ";
     std::cout << std::to_string(sys.cpu.statusRegister.carry) << ' ';
+
+    std::cout << "\n--- MEMORY ---\n";
+
+    const auto& binary = sys.mem;
+    for (int i = 0, cnt = 0; i < binary.size(); ++i, cnt += 2)
+    {
+        std::cout << &binary[i] << ": ";
+        std::bitset<16> bs{binary[i]};
+        std::cout << bs << " \n";
+    }
+    std::cout << '\n';
+
 }
 
 void cli()
@@ -163,62 +175,12 @@ int main()
     if (res)
     {
         auto instr = *res;
-        auto binary = momiji::compile(instr);
 
-        std::cout << "Base address: " << (void*)&binary[0] << '\n';
-        int cnt = 0;
-        for (int i = 0; i < binary.size(); i += 2)
-        {
-            std::cout << cnt << ": ";
-            std::uint8_t higher = (binary[i]);
-            std::uint8_t lower = (binary[i + 1]);
-            std::bitset<8> bsh{higher};
-            std::bitset<8> bsl{lower};
-            std::cout << bsh << ' ' << bsl << ' ';
-
-            if (i % 2 == 0)
-            {
-                std::cout << '\n';
-            }
-#if 0
-            std::uint8_t group = (val >> 14);
-            std::uint8_t size = (val >> 12) & 0b011;
-            std::uint8_t dstr = (val >> 9) & 0b0111;
-            std::uint8_t dstm = (val >> 6) & 0b0111;
-
-            std::uint8_t srcm = (val >> 3) & 0b0111;
-            std::uint8_t srcr = (val) & 0b0111;
-            std::cout << "\tGroup " << std::to_string(group) << '\n';
-            std::cout << "\tSize " << std::to_string(size) << '\n';
-            std::cout << "\tDest Op " << std::to_string(dstr) << '\n';
-            std::cout << "\tDest Mode " << std::to_string(dstm) << '\n';
-            std::cout << "\tSrc Op " << std::to_string(srcr) << '\n';
-            std::cout << "\tSrc Mode " << std::to_string(srcm) << '\n';
-
-            if (srcr == momiji::utils::to_val(momiji::OperandType::Immediate) &&
-                srcm == momiji::utils::to_val(momiji::SpecialAddressingMode::Immediate))
-            {
-                std::array<std::uint8_t, 4> move_conv{ 0b00, 0b01, 0b100, 0b010 };
-                union
-                {
-                    std::int32_t val;
-                    std::int16_t arr16[2];
-                    std::int8_t arr8[4];
-                };
-
-                for (int j = 0; j < move_conv[size]; ++j)
-                {
-                    arr8[j] = binary[i + 2 + j];
-                }
-
-                std::cout << "Extratced size: " << std::to_string(move_conv[size]) << '\n';
-                std::cout << "Extracted val: " << val << "\n";
-                i += move_conv[size];
-            }
-#endif
-
-            cnt += 2;
-        }
+        momiji::Emulator emu;
+        emu.newState(filestr);
+        emu.step();
+        const auto& lastState = emu.getStates();
+        print_sys(lastState.back());
     }
 
 #ifdef MOMIJI_INCLUDE_GUI
