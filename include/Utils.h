@@ -52,6 +52,12 @@ namespace momiji
             return static_cast<std::underlying_type_t<Enum>>(e);
         }
 
+        template <typename Enum, typename T>
+        constexpr auto to_enum(T val)
+        {
+            return static_cast<Enum>(val);
+        }
+
         template <typename T>
         constexpr bool add_overflow(T a, T b)
         {

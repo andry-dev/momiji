@@ -162,6 +162,7 @@ int main()
 {
     //cli();
 
+#if 0
     std::string str{};
 
 
@@ -182,8 +183,9 @@ int main()
         const auto& lastState = emu.getStates();
         print_sys(lastState.back());
     }
+#endif
 
 #ifdef MOMIJI_INCLUDE_GUI
-    //gui();
+    gui();
 #endif
 }
