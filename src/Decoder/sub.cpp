@@ -10,31 +10,83 @@ namespace momiji
     {
         DecodedInstruction sub(gsl::span<std::uint16_t> mem, int idx)
         {
-            return {};
+            DecodedInstruction ret;
+
+            repr::Sub bits;
+
+            const std::uint16_t val = mem[idx];
+
+            bits.datareg =   (val & 0b00001110'00000000) >> 9;
+            bits.direction = (val & 0b00000001'00000000) >> 8;
+            bits.size =      (val & 0b00000000'11000000) >> 6;
+            bits.othmode =   (val & 0b00000000'00111000) >> 3;
+            bits.oth =       (val & 0b00000000'00000111);
+
+            momiji::assignNormalSize(ret, bits.size);
+
+            // sub.* XX, Dn
+            if (bits.direction == 0)
+            {
+                ret.data.op1 = static_cast<OperandType>(bits.othmode);
+                ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.oth);
+                ret.data.op2 = OperandType::DataRegister;
+                ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
+            }
+            // sub.* Dn, XX
+            else
+            {
+                ret.data.op1 = OperandType::DataRegister;
+                ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.datareg);
+                ret.data.op2 = static_cast<OperandType>(bits.othmode);
+                ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.oth);
+            }
+
+            ret.exec = instr::sub;
+
+            return ret;
         }
 
         DecodedInstruction suba(gsl::span<std::uint16_t> mem, int idx)
         {
-            return  {};
+            DecodedInstruction ret;
+
+            repr::SubA bits;
+
+            const std::uint16_t val = mem[idx];
+
+            bits.addreg =   (val & 0b00001110'00000000) >> 9;
+            bits.size =     (val & 0b00000001'00000000) >> 8;
+            bits.srcmode =  (val & 0b00000000'00111000) >> 3;
+            bits.src =      (val & 0b00000000'00000111);
+
+            ret.data.size = (bits.size == 1) ? 2 : 4;
+            ret.data.op1 = static_cast<OperandType>(bits.srcmode);
+            ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.src);
+            ret.data.op2 = OperandType::AddressRegister;
+            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.addreg);
+
+            ret.exec = instr::suba;
+
+            return ret;
         }
 
         DecodedInstruction subi(gsl::span<std::uint16_t> mem, int idx)
         {
             DecodedInstruction ret;
 
-            repr::SubI repr;
+            repr::SubI bits;
 
-            std::uint16_t val = mem[idx];
+            const std::uint16_t val = mem[idx];
 
-            repr.size =    (val & 0b00000000'11000000) >> 6;
-            repr.dstmode = (val & 0b00000000'00111000) >> 3;
-            repr.dst =     (val & 0b00000000'00000111);
+            bits.size =    (val & 0b00000000'11000000) >> 6;
+            bits.dstmode = (val & 0b00000000'00111000) >> 3;
+            bits.dst =     (val & 0b00000000'00000111);
 
-            momiji::assignNormalSize(ret, repr.size);
+            momiji::assignNormalSize(ret, bits.size);
 
             ret.exec = instr::subi;
-            ret.data.op2 = static_cast<OperandType>(repr.dstmode);
-            ret.data.mod2 = static_cast<SpecialAddressingMode>(repr.dst);
+            ret.data.op2 = static_cast<OperandType>(bits.dstmode);
+            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.dst);
 
             return ret;
         }

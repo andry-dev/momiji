@@ -9,8 +9,8 @@
 #include "add.h"
 #include "sub.h"
 #include "cmp.h"
-#include "and.h"
-#include "or.h"
+#include "./and.h"
+#include "./or.h"
 #include "mul.h"
 #include "div.h"
 
@@ -25,9 +25,9 @@ namespace momiji
     using MemoryView = gsl::span<std::uint16_t>;
 
     DecodedInstruction decodeFirstGroup(const MemoryView& mem, int idx);
-    DecodedInstruction decodeSecondGroup(const MemoryType& mem);
-    DecodedInstruction decodeThirdGroup(const MemoryType& mem);
-    DecodedInstruction decodeFourthGroup(const MemoryType& mem);
+    DecodedInstruction decodeSecondGroup(const MemoryView& mem, int idx);
+    DecodedInstruction decodeThirdGroup(const MemoryView& mem, int idx);
+    DecodedInstruction decodeFourthGroup(const MemoryView& mem, int idx);
 
     DecodedInstruction decode(MemoryView mem, int idx)
     {
@@ -43,7 +43,7 @@ namespace momiji
         case 0b01000000'00000000:
             //return decodeSecondGroup(mem);
         case 0b10000000'00000000:
-            //return decodeThirdGroup(mem);
+            return decodeThirdGroup(mem, idx);
         case 0b11000000'00000000:
             //return decodeFourthGroup(mem);
             break;
@@ -56,7 +56,6 @@ namespace momiji
 
     DecodedInstruction decodeFirstGroup(const MemoryView& mem, int idx)
     {
-
         constexpr std::uint16_t firstmask = 0b11110000'00000000;
         constexpr std::uint16_t secondmask = 0b11111111'00000000;
 
@@ -88,6 +87,57 @@ namespace momiji
         case 0b00110000'00000000:
         case 0b00100000'00000000:
             return momiji::dec::move(mem, idx);
+        }
+
+        return {};
+    }
+
+    DecodedInstruction decodeThirdGroup(const MemoryView& mem, int idx)
+    {
+        constexpr std::uint16_t firstmask = 0b11110000'11000000;
+        constexpr std::uint16_t divmask = 0b11110001'11000000;
+
+        switch (mem[idx] & firstmask)
+        {
+        // DIVU / DIVS
+        case 0b10000000'11000000:
+            switch (mem[idx] & divmask)
+            {
+            // DIVU
+            case 0b10000000'11000000:
+                return momiji::dec::divu(mem, idx);
+
+            // DIVS
+            case 0b10000001'11000000:
+                return momiji::dec::divs(mem, idx);
+            }
+            break;
+
+        // OR
+        case 0b10000000'00000000:
+        case 0b10000000'01000000:
+        case 0b10000000'10000000:
+            return momiji::dec::or_instr(mem, idx);
+
+        // SUB
+        case 0b10010000'00000000:
+        case 0b10010000'01000000:
+        case 0b10010000'10000000:
+            return momiji::dec::sub(mem, idx);
+
+        // SUBA
+        case 0b10010000'11000000:
+            return momiji::dec::suba(mem, idx);
+
+        // CMP
+        case 0b10110000'00000000:
+        case 0b10110000'01000000:
+        case 0b10110000'10000000:
+            return momiji::dec::cmp(mem, idx);
+
+        // CMPA
+        case 0b10110000'11000000:
+            return momiji::dec::cmpa(mem, idx);
         }
 
         return {};

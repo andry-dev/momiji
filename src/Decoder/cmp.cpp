@@ -13,5 +13,10 @@ namespace momiji
         {
             return {};
         }
+
+        DecodedInstruction cmpa(gsl::span<std::uint16_t> mem, int idx)
+        {
+            return {};
+        }
     }
 }

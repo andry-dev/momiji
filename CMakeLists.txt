@@ -17,6 +17,8 @@ add_executable(momiji
     src/Decoder/sub.cpp
     src/Decoder/cmp.cpp
     src/Decoder/and.cpp
+    src/Decoder/div.cpp
+    src/Decoder/or.cpp
     src/Instructions/move.cpp
     src/Instructions/add.cpp
     src/Instructions/sub.cpp
