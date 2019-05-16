@@ -10,6 +10,10 @@
 #include "./add.h"
 #include "./sub.h"
 #include "./div.h"
+#include "./or.h"
+#include "./and.h"
+#include "./cmp.h"
+
 
 namespace momiji
 {
@@ -63,6 +67,32 @@ namespace momiji
                 momiji::divu(instr, memory, opcode, additional_data);
                 break;
 
+            case InstructionType::Or:
+                momiji::or_instr(instr, memory, opcode, additional_data);
+                break;
+
+            case InstructionType::OrI:
+                momiji::ori(instr, memory, opcode, additional_data);
+                break;
+
+            case InstructionType::And:
+                break;
+
+            case InstructionType::AndI:
+                break;
+
+            case InstructionType::Compare:
+                momiji::cmp(instr, memory, opcode, additional_data);
+                break;
+
+            case InstructionType::CompareA:
+                momiji::cmpa(instr, memory, opcode, additional_data);
+                break;
+
+            case InstructionType::CompareI:
+                momiji::cmpi(instr, memory, opcode, additional_data);
+                break;
+
             default:
                 break;
             }
@@ -73,7 +103,7 @@ namespace momiji
             {
             case 1: {
                 // Adding 1 byte to align to 16-bit
-                std::uint16_t val = 0 | additional_data.arr8[0];
+                const std::uint16_t val = 0 | additional_data.arr8[0];
                 memory.push_back(val);
                 } break;
             case 2:

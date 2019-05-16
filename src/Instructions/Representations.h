@@ -33,6 +33,10 @@ namespace momiji
         {
         };
 
+        struct MoveQ
+        {
+        };
+
         struct Add
         {
             Add()
@@ -106,6 +110,10 @@ namespace momiji
             std::uint16_t dst : 3;
         };
 
+        struct AddQ
+        {
+        };
+
         struct Sub
         {
             Sub()
@@ -156,6 +164,10 @@ namespace momiji
             std::uint16_t dst : 2;
         };
 
+        struct SubQ
+        {
+        };
+
         struct DivS
         {
             DivS()
@@ -170,7 +182,6 @@ namespace momiji
             std::uint16_t src : 3;
         };
 
-
         struct DivU
         {
             DivU()
@@ -183,6 +194,158 @@ namespace momiji
             std::uint16_t padding : 3;
             std::uint16_t srcmode : 3;
             std::uint16_t src : 3;
+        };
+
+        struct MulS
+        {
+
+        };
+
+        struct MulU
+        {
+
+        };
+
+        struct Or
+        {
+            Or()
+                : header{0b1000}
+            {}
+
+            std::uint16_t header : 4;
+            std::uint16_t datareg : 3;
+
+            // 0: or.* *, d*
+            // 1: or.* d*, *
+            std::uint16_t direction : 1;
+
+            std::uint16_t size : 2;
+            std::uint16_t othmode : 3;
+            std::uint16_t oth : 3;
+        };
+
+        struct OrI
+        {
+            OrI()
+                : header{0b00000000}
+            {}
+
+            std::uint16_t header : 8;
+            std::uint16_t size : 2;
+            std::uint16_t dstmode : 3;
+            std::uint16_t dst : 3;
+        };
+
+        struct And
+        {
+
+        };
+
+        struct AndI
+        {
+
+        };
+
+        // Also known as EOR
+        struct Xor
+        {
+
+        };
+
+        // Also known as EORI
+        struct XorI
+        {
+
+        };
+
+        struct Not
+        {
+        };
+
+        struct Swap
+        {
+        };
+
+        struct Exg
+        {
+        };
+
+        struct Cmp
+        {
+            Cmp()
+                : header{0b1011}
+                , padding{0b0}
+            {}
+
+            std::uint16_t header : 4;
+            std::uint16_t datareg : 3;
+            std::uint16_t padding : 1;
+            std::uint16_t size : 2;
+            std::uint16_t srcmode : 3;
+            std::uint16_t src : 3;
+        };
+
+        struct CmpA
+        {
+            CmpA()
+                : header{0b1011}
+                , padding{0b011}
+            {}
+
+            std::uint16_t header : 4;
+            std::uint16_t addreg : 3;
+            std::uint16_t size : 1;
+            std::uint16_t padding : 2;
+            std::uint16_t srcmode : 3;
+            std::uint16_t src : 3;
+        };
+
+        struct CmpI
+        {
+            CmpI()
+                : header{0b00001100}
+            {}
+
+            std::uint16_t header : 8;
+            std::uint16_t size : 2;
+            std::uint16_t dstmode : 3;
+            std::uint16_t dst : 3;
+        };
+
+        struct Tst
+        {
+        };
+
+        struct Bra
+        {
+        };
+
+        // Conditional branch
+        struct Bcc
+        {
+        };
+
+        struct Jmp
+        {
+        };
+
+
+        struct Illegal
+        {
+            Illegal()
+                : value{0b01001010'11111100}
+            {}
+
+            std::uint16_t value;
+        };
+
+        struct Nop
+        {
+            Nop()
+                : value{0b01001110'01110001}
+            {}
+
+            std::uint16_t value;
         };
 
         static_assert(sizeof(Move) == 2, "'move' is not 16-bit long");

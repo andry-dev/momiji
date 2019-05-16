@@ -366,6 +366,8 @@ namespace momiji
                     break;
 
                 case utils::hash("add"):
+                case utils::hash("adda"):
+                case utils::hash("addi"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     switch (instr.operands[1].operandType)
                     {
@@ -397,6 +399,8 @@ namespace momiji
                     break;
 
                 case utils::hash("sub"):
+                case utils::hash("suba"):
+                case utils::hash("subi"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.instructionType = InstructionType::Sub;
                     switch (instr.operands[1].operandType)
@@ -453,6 +457,8 @@ namespace momiji
                     break;
 
                 case utils::hash("cmp"):
+                case utils::hash("cmpi"):
+                case utils::hash("cmpa"):
                     res = CommonInstructionParser(instr)(tmp_str);
                     instr.instructionType = InstructionType::Compare;
                     break;
@@ -469,60 +475,10 @@ namespace momiji
                     break;
 
                 case utils::hash("ble"):
-                    res = BranchInstructionParser(instr, labels)(tmp_str);
-                    if (!res.result)
-                    {
-                        return make_parser_error(0, line_count,
-                                                 ParserError::ErrorType::NoLabelFound);
-                    }
-
-                    instr.instructionType = InstructionType::BranchLessEquals;
-                    break;
-
                 case utils::hash("blt"):
-                    res = BranchInstructionParser(instr, labels)(tmp_str);
-                    if (!res.result)
-                    {
-                        return make_parser_error(0, line_count,
-                                                 ParserError::ErrorType::NoLabelFound);
-                    }
-
-                    instr.instructionType = InstructionType::BranchLessThan;
-                    break;
-
                 case utils::hash("bge"):
-                    res = BranchInstructionParser(instr, labels)(tmp_str);
-                    if (!res.result)
-                    {
-                        return make_parser_error(0, line_count,
-                                                 ParserError::ErrorType::NoLabelFound);
-                    }
-
-                    instr.instructionType = InstructionType::BranchGreaterEquals;
-                    break;
-
                 case utils::hash("bgt"):
-                    res = BranchInstructionParser(instr, labels)(tmp_str);
-                    if (!res.result)
-                    {
-                        return make_parser_error(0, line_count,
-                                                 ParserError::ErrorType::NoLabelFound);
-                    }
-
-                    instr.instructionType = InstructionType::BranchGreaterEquals;
-                    break;
-
                 case utils::hash("beq"):
-                    res = BranchInstructionParser(instr, labels)(tmp_str);
-                    if (!res.result)
-                    {
-                        return make_parser_error(0, line_count,
-                                                 ParserError::ErrorType::NoLabelFound);
-                    }
-
-                    instr.instructionType = InstructionType::BranchEqual;
-                    break;
-
                 case utils::hash("bne"):
                     res = BranchInstructionParser(instr, labels)(tmp_str);
                     if (!res.result)
@@ -531,13 +487,11 @@ namespace momiji
                                                  ParserError::ErrorType::NoLabelFound);
                     }
 
-                    instr.instructionType = InstructionType::BranchNotEquals;
+                    instr.instructionType = InstructionType::BranchCondition;
                     break;
 
-
                 default:
-                    return make_parser_error(0,
-                                             line_count,
+                    return make_parser_error(0, line_count,
                                              ParserError::ErrorType::NoInstructionFound);
 
                     break;

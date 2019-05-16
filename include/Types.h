@@ -26,19 +26,26 @@ namespace momiji
         MoveQuick,      // moveq
         MoveAddress,    // movea
 
+        Or,
+        OrI,
+        And,
+        AndI,
+        Xor,
+        XorI,
+        Not,
+        Neg,
+
         Compare,
+        CompareI,
+        CompareA,
         Tst,
 
         Jmp,
         Branch,
-        BranchEqual,
-        BranchNotEquals,
-        BranchGreaterThan,
-        BranchLessThan,
-        BranchGreaterEquals,
-        BranchLessEquals,
-        BranchZero,
-        BranchNotZero,
+        BranchCondition,
+
+        Nop,
+        Illegal
     };
 
     enum class OperandType : std::uint8_t

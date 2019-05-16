@@ -23,6 +23,8 @@ add_executable(momiji
     src/Instructions/add.cpp
     src/Instructions/sub.cpp
     src/Instructions/div.cpp
+    src/Instructions/or.cpp
+    src/Instructions/cmp.cpp
     src/Emulator.cpp)
 
 target_compile_features(momiji PUBLIC cxx_std_17)

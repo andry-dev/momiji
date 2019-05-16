@@ -1,22 +1,87 @@
 #include "cmp.h"
 
-namespace momiji
+#include "../Instructions/Representations.h"
+#include "../Instructions/cmp.h"
+
+#include "Utils.h"
+
+namespace momiji::dec
 {
-    namespace dec
+    DecodedInstruction cmp(gsl::span<std::uint16_t> mem, int idx)
     {
-        DecodedInstruction cmp(gsl::span<std::uint16_t> mem, int idx)
+        DecodedInstruction ret;
+
+        repr::Cmp bits;
+
+        const std::uint16_t val = mem[idx];
+
+        bits.datareg = (val & 0b00001110'00000000) >> 9;
+        bits.size =    (val & 0b00000000'11000000) >> 6;
+        bits.srcmode = (val & 0b00000000'00111000) >> 3;
+        bits.src =     (val & 0b00000000'00000111);
+
+        momiji::assignNormalSize(ret, bits.size);
+
+        ret.data.op2 = OperandType::DataRegister;
+        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
+        ret.data.op1 = static_cast<OperandType>(bits.srcmode);
+        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.src);
+        ret.exec = instr::cmp;
+
+        return ret;
+    }
+
+    DecodedInstruction cmpa(gsl::span<std::uint16_t> mem, int idx)
+    {
+        DecodedInstruction ret;
+
+        repr::CmpA bits;
+
+        const std::uint16_t val = mem[idx];
+
+        bits.addreg =  (val & 0b00001110'00000000) >> 9;
+        bits.size =    (val & 0b00000001'00000000) >> 8;
+        bits.srcmode = (val & 0b00000000'00111000) >> 3;
+        bits.src =     (val & 0b00000000'00000111);
+
+        switch (bits.size)
         {
-            return {};
+        case 0:
+            ret.data.size = 2;
+            break;
+
+        case 1:
+            ret.data.size = 4;
+            break;
         }
 
-        DecodedInstruction cmpi(gsl::span<std::uint16_t> mem, int idx)
-        {
-            return {};
-        }
+        ret.data.op2 = OperandType::AddressRegister;
+        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.addreg);
+        ret.data.op1 = static_cast<OperandType>(bits.srcmode);
+        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.src);
+        ret.exec = instr::cmpa;
 
-        DecodedInstruction cmpa(gsl::span<std::uint16_t> mem, int idx)
-        {
-            return {};
-        }
+        return ret;
+    }
+
+    DecodedInstruction cmpi(gsl::span<std::uint16_t> mem, int idx)
+    {
+        DecodedInstruction ret;
+
+        repr::CmpI bits;
+
+        const std::uint16_t val = mem[idx];
+
+        bits.size =    (val & 0b00000000'11000000) >> 6;
+        bits.dstmode = (val & 0b00000000'00111000) >> 3;
+        bits.dst =     (val & 0b00000000'00000111);
+
+        momiji::assignNormalSize(ret, bits.size);
+
+        ret.exec = instr::cmpi;
+        ret.data.op2 = static_cast<OperandType>(bits.dstmode);
+        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.dst);
+
+        return ret;
     }
 }

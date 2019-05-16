@@ -9,50 +9,40 @@
 
 namespace momiji
 {
-    void sub(const momiji::Instruction& instr,
+    void cmp(const momiji::Instruction& instr,
              MemoryType&,
              OpcodeDescription& opcode,
-             AdditionalData&)
+             AdditionalData& additionalData)
     {
-        repr::Sub bits;
+        repr::Cmp bits;
 
-        if (instr.operands[0].operandType == OperandType::DataRegister)
-        {
-            bits.datareg = (instr.operands[0].value & 0b111);
-            bits.direction = 1;
-            bits.othmode = utils::to_val(instr.operands[1].operandType) & 0b111;
-            bits.oth = instr.operands[1].value & 0b111;
-        }
-        else
-        {
-            bits.datareg = (instr.operands[1].value & 0b111);
-            bits.direction = 0;
-            bits.othmode = utils::to_val(instr.operands[0].operandType) & 0b111;
-            bits.oth = instr.operands[0].value & 0b111;
-        }
-
-        std::uint8_t size = utils::to_val(instr.dataType);
-        bits.size = size & 0b11;
+        bits.datareg = instr.operands[1].value & 0b111;
+        bits.size = utils::to_val(instr.dataType) & 0b11;
+        bits.srcmode = utils::to_val(instr.operands[0].operandType) & 0b111;
+        bits.src = instr.operands[0].value & 0b111;
 
         opcode.val =  (bits.header << 12)
                     | (bits.datareg << 9)
-                    | (bits.direction << 8)
+                    | (bits.padding << 8)
                     | (bits.size << 6)
-                    | (bits.othmode << 3)
-                    | (bits.oth);
+                    | (bits.srcmode << 3)
+                    | (bits.src);
     }
 
-    void suba(const momiji::Instruction& instr,
+    void cmpa(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData&)
+              AdditionalData& additionalData)
     {
-        repr::SubA bits;
+        repr::CmpA bits;
 
         bits.addreg = instr.operands[1].value & 0b111;
+
         switch (instr.dataType)
         {
         case DataType::Byte:
+            opcode.val = repr::Illegal{}.value;
+            return;
             break;
 
         case DataType::Word:
@@ -75,14 +65,14 @@ namespace momiji
                     | (bits.src);
     }
 
-    void subi(const momiji::Instruction& instr,
+    void cmpi(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
               AdditionalData& additionalData)
     {
-        const std::uint8_t size = utils::to_val(instr.dataType);
+        repr::CmpI bits;
 
-        repr::SubI bits;
+        const std::uint8_t size = utils::to_val(instr.dataType);
 
         bits.size = size & 0b11;
 
