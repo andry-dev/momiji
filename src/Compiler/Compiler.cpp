@@ -9,6 +9,7 @@
 #include "./move.h"
 #include "./add.h"
 #include "./sub.h"
+#include "./div.h"
 
 namespace momiji
 {
@@ -54,16 +55,19 @@ namespace momiji
                 momiji::subi(instr, memory, opcode, additional_data);
                 break;
 
+            case InstructionType::SignedDiv:
+                momiji::divs(instr, memory, opcode, additional_data);
+                break;
+
+            case InstructionType::UnsignedDiv:
+                momiji::divu(instr, memory, opcode, additional_data);
+                break;
+
             default:
                 break;
             }
 
             memory.push_back(opcode.val);
-
-            std::cout << "Adding bytes: "
-                << std::to_string(additional_data.cnt)
-                << " - "
-                << additional_data.val << '\n';
 
             switch (additional_data.cnt)
             {
@@ -81,13 +85,6 @@ namespace momiji
                 memory.push_back(additional_data.arr16[0]);
                 break;
             }
-
-            /*
-            for (int i = 0; i < additional_data.cnt; ++i)
-            {
-                memory.push_back(additional_data.arr8[i]);
-            }
-            */
         }
 
         return memory;

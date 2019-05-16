@@ -657,6 +657,7 @@ namespace momiji
             {
             case OperandType::Immediate:
                 break;
+
             case OperandType::Register:
                 switch (instr.operands[0].registerType)
                 {

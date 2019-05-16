@@ -18,7 +18,7 @@ namespace momiji
         // Always = Always share executable memory with previous system states
         //
         // Use Never if you want to keep track of every possible state, at the
-        // cost of copying everything and losing track of the PC
+        // cost of losing track of the PC
         //
         // Use Guess if you want to copy the program memory only if there is a
         // "newState()" call
@@ -26,6 +26,9 @@ namespace momiji
         // Use Always if you want to always use the same program memory, even if
         // the source code changes. Use reset() to completely wipe out the
         // memory
+        //
+        // The copy of the system state will ALWAYS happen, changing any of
+        // these options will not affect that.
         enum class ShareCompiledMemory : std::int8_t
         {
             Never,

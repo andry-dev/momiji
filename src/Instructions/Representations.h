@@ -7,7 +7,6 @@ namespace momiji
 {
     namespace repr
     {
-
         template <typename T>
         constexpr std::uint16_t to_val(T& rapr)
         {
@@ -157,6 +156,34 @@ namespace momiji
             std::uint16_t dst : 2;
         };
 
+        struct DivS
+        {
+            DivS()
+                : header{0b1000}
+                , padding{0b111}
+            {}
+
+            std::uint16_t header : 4;
+            std::uint16_t datareg : 3;
+            std::uint16_t padding : 3;
+            std::uint16_t srcmode : 3;
+            std::uint16_t src : 3;
+        };
+
+
+        struct DivU
+        {
+            DivU()
+                : header{0b1000}
+                , padding{0b011}
+            {}
+
+            std::uint16_t header : 4;
+            std::uint16_t datareg : 3;
+            std::uint16_t padding : 3;
+            std::uint16_t srcmode : 3;
+            std::uint16_t src : 3;
+        };
 
         static_assert(sizeof(Move) == 2, "'move' is not 16-bit long");
         static_assert(sizeof(Add) == 2, "'add' is not 16-bit long");
@@ -164,6 +191,8 @@ namespace momiji
         static_assert(sizeof(AddA) == 2, "'adda' is not 16-bit long");
         static_assert(sizeof(Sub) == 2, "'sub' is not 16-bit long");
         static_assert(sizeof(SubA) == 2, "'suba' is not 16-bit long");
-        static_assert(sizeof(SubI) == 2, "'suba' is not 16-bit long");
+        static_assert(sizeof(SubI) == 2, "'subi' is not 16-bit long");
+        static_assert(sizeof(DivS) == 2, "'divs' is not 16-bit long");
+        static_assert(sizeof(DivU) == 2, "'divu' is not 16-bit long");
     }
 }

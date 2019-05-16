@@ -13,7 +13,6 @@ namespace momiji
 
         momiji::System addi(momiji::System sys, const InstructionData& data)
         {
-
             auto* pc = sys.cpu.programCounter.address;
 
             std::int32_t dstval = utils::to_val(data.mod2);
