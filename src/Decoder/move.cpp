@@ -16,11 +16,12 @@ namespace momiji
             std::uint16_t val = mem[idx];
 
             repr::Move repr;
-            repr.size =     (val & 0b00110000'00000000) >> 12;
-            repr.dst =      (val & 0b00001110'00000000) >> 9;
-            repr.dstmode =  (val & 0b00000001'11000000) >> 6;
-            repr.src =      (val & 0b00000000'00111000) >> 3;
-            repr.srcmode =  (val & 0b00000000'00000111);
+
+            repr.size =    (val & 0b00110000'00000000) >> 12;
+            repr.dstmode = (val & 0b00001110'00000000) >> 9;
+            repr.dsttype = (val & 0b00000001'11000000) >> 6;
+            repr.srctype = (val & 0b00000000'00111000) >> 3;
+            repr.srcmode = (val & 0b00000000'00000111);
 
             switch (repr.size)
             {
@@ -42,10 +43,10 @@ namespace momiji
             }
 
             ret.data.mem = mem.subspan(idx);
-            ret.data.op1 = static_cast<OperandType>(repr.srcmode);
-            ret.data.mod1 = static_cast<SpecialAddressingMode>(repr.src);
-            ret.data.op2 = static_cast<OperandType>(repr.dstmode);
-            ret.data.mod2 = static_cast<SpecialAddressingMode>(repr.dst);
+            ret.data.op1 = static_cast<OperandType>(repr.srctype);
+            ret.data.mod1 = static_cast<SpecialAddressingMode>(repr.srcmode);
+            ret.data.op2 = static_cast<OperandType>(repr.dsttype);
+            ret.data.mod2 = static_cast<SpecialAddressingMode>(repr.dstmode);
             ret.exec = momiji::instr::move;
 
             return ret;

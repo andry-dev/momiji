@@ -17,16 +17,14 @@ namespace momiji
         {
             Move()
                 : header{0b00}, size{0}
-                , dst{0}, dstmode{0}
-                , srcmode{0}, src{0}
             {}
 
             std::uint16_t header : 2;
             std::uint16_t size : 2;
-            std::uint16_t dst : 3;
             std::uint16_t dstmode : 3;
+            std::uint16_t dsttype : 3;
+            std::uint16_t srctype : 3;
             std::uint16_t srcmode : 3;
-            std::uint16_t src : 3;
         };
 
         struct MoveA
@@ -41,10 +39,6 @@ namespace momiji
         {
             Add()
                 : header{0b1101}
-                , size{0}
-                , datareg{0}
-                , direction{0}
-                , othmode{0}, oth{0}
             {}
             // 0b1101
             std::uint16_t header : 4;
@@ -60,20 +54,16 @@ namespace momiji
             std::uint16_t size : 2;
 
             // Addressing mode
-            std::uint16_t othmode : 3;
+            std::uint16_t othtype : 3;
 
             // Source operand type
-            std::uint16_t oth : 3;
+            std::uint16_t othmode : 3;
         };
 
         struct AddA
         {
             AddA()
                 : header{0b1101}
-                , addreg{0}
-                , size{0}
-                , padding{0b11}
-                , srcmode{0}, src{0}
             {}
 
             // 0b1101
@@ -87,17 +77,14 @@ namespace momiji
             // Always 0b11
             std::uint16_t padding : 2;
 
+            std::uint16_t srctype : 3;
             std::uint16_t srcmode : 3;
-            std::uint16_t src : 3;
         };
 
         struct AddI
         {
             AddI()
                 : header{0b00000110}
-                , size{0}
-                , dstmode{0}
-                , dst{0}
             {}
 
             // 0b00000110
@@ -106,8 +93,8 @@ namespace momiji
             // Byte, Word, Long
             std::uint16_t size : 2;
 
+            std::uint16_t dsttype : 3;
             std::uint16_t dstmode : 3;
-            std::uint16_t dst : 3;
         };
 
         struct AddQ
@@ -118,38 +105,29 @@ namespace momiji
         {
             Sub()
                 : header{0b1001}
-                , datareg{0}
-                , direction{0}
-                , size{0}
-                , othmode{0}
-                , oth{0}
             {}
 
             std::uint16_t header : 4;
             std::uint16_t datareg : 3;
             std::uint16_t direction : 1;
             std::uint16_t size : 2;
+            std::uint16_t othtype : 3;
             std::uint16_t othmode : 3;
-            std::uint16_t oth : 3;
         };
 
         struct SubA
         {
             SubA()
                 : header{0b1001}
-                , addreg{0}
-                , size{0}
                 , padding{0b11}
-                , srcmode{0}
-                , src{0}
             {}
 
             std::uint16_t header : 4;
             std::uint16_t addreg : 3;
             std::uint16_t size : 1;
             std::uint16_t padding : 2;
+            std::uint16_t srctype : 3;
             std::uint16_t srcmode : 3;
-            std::uint16_t src : 3;
         };
 
         struct SubI
@@ -160,8 +138,8 @@ namespace momiji
 
             std::uint16_t header : 8;
             std::uint16_t size : 2;
+            std::uint16_t dsttype : 2;
             std::uint16_t dstmode : 2;
-            std::uint16_t dst : 2;
         };
 
         struct SubQ
@@ -178,8 +156,8 @@ namespace momiji
             std::uint16_t header : 4;
             std::uint16_t datareg : 3;
             std::uint16_t padding : 3;
+            std::uint16_t srctype : 3;
             std::uint16_t srcmode : 3;
-            std::uint16_t src : 3;
         };
 
         struct DivU
@@ -192,18 +170,36 @@ namespace momiji
             std::uint16_t header : 4;
             std::uint16_t datareg : 3;
             std::uint16_t padding : 3;
+            std::uint16_t srctype : 3;
             std::uint16_t srcmode : 3;
-            std::uint16_t src : 3;
         };
 
         struct MulS
         {
+            MulS()
+                : header{0b1100}
+                , padding{0b111}
+            {}
 
+            std::uint16_t header : 4;
+            std::uint16_t datareg : 3;
+            std::uint16_t padding : 3;
+            std::uint16_t srctype : 3;
+            std::uint16_t srcmode : 3;
         };
 
         struct MulU
         {
+            MulU()
+                : header{0b1100}
+                , padding{0b011}
+            {}
 
+            std::uint16_t header : 4;
+            std::uint16_t datareg : 3;
+            std::uint16_t padding : 3;
+            std::uint16_t srctype : 3;
+            std::uint16_t srcmode : 3;
         };
 
         struct Or
@@ -220,8 +216,8 @@ namespace momiji
             std::uint16_t direction : 1;
 
             std::uint16_t size : 2;
+            std::uint16_t othtype : 3;
             std::uint16_t othmode : 3;
-            std::uint16_t oth : 3;
         };
 
         struct OrI
@@ -232,18 +228,34 @@ namespace momiji
 
             std::uint16_t header : 8;
             std::uint16_t size : 2;
+            std::uint16_t dsttype : 3;
             std::uint16_t dstmode : 3;
-            std::uint16_t dst : 3;
         };
 
         struct And
         {
+            And()
+                : header{0b1100}
+            {}
 
+            std::uint16_t header : 4;
+            std::uint16_t datareg : 3;
+            std::uint16_t direction : 1;
+            std::uint16_t size : 2;
+            std::uint16_t othtype : 3;
+            std::uint16_t othmode : 3;
         };
 
         struct AndI
         {
+            AndI()
+                : header{0b00000010}
+            {}
 
+            std::uint16_t header : 8;
+            std::uint16_t size : 2;
+            std::uint16_t dsttype : 3;
+            std::uint16_t dstmode : 3;
         };
 
         // Also known as EOR
@@ -281,8 +293,8 @@ namespace momiji
             std::uint16_t datareg : 3;
             std::uint16_t padding : 1;
             std::uint16_t size : 2;
+            std::uint16_t srctype : 3;
             std::uint16_t srcmode : 3;
-            std::uint16_t src : 3;
         };
 
         struct CmpA
@@ -296,8 +308,8 @@ namespace momiji
             std::uint16_t addreg : 3;
             std::uint16_t size : 1;
             std::uint16_t padding : 2;
+            std::uint16_t srctype : 3;
             std::uint16_t srcmode : 3;
-            std::uint16_t src : 3;
         };
 
         struct CmpI
@@ -308,8 +320,8 @@ namespace momiji
 
             std::uint16_t header : 8;
             std::uint16_t size : 2;
+            std::uint16_t dsttype : 3;
             std::uint16_t dstmode : 3;
-            std::uint16_t dst : 3;
         };
 
         struct Tst
@@ -357,5 +369,12 @@ namespace momiji
         static_assert(sizeof(SubI) == 2, "'subi' is not 16-bit long");
         static_assert(sizeof(DivS) == 2, "'divs' is not 16-bit long");
         static_assert(sizeof(DivU) == 2, "'divu' is not 16-bit long");
+        static_assert(sizeof(Or) == 2, "'divu' is not 16-bit long");
+        static_assert(sizeof(OrI) == 2, "'divu' is not 16-bit long");
+        static_assert(sizeof(Cmp) == 2, "'divu' is not 16-bit long");
+        static_assert(sizeof(CmpI) == 2, "'divu' is not 16-bit long");
+        static_assert(sizeof(CmpA) == 2, "'divu' is not 16-bit long");
+        static_assert(sizeof(Illegal) == 2, "'divu' is not 16-bit long");
+        static_assert(sizeof(Nop) == 2, "'divu' is not 16-bit long");
     }
 }

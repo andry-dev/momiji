@@ -17,15 +17,15 @@ namespace momiji::dec
 
         bits.datareg = (val & 0b00001110'00000000) >> 9;
         bits.size =    (val & 0b00000000'11000000) >> 6;
-        bits.srcmode = (val & 0b00000000'00111000) >> 3;
-        bits.src =     (val & 0b00000000'00000111);
+        bits.srctype = (val & 0b00000000'00111000) >> 3;
+        bits.srcmode = (val & 0b00000000'00000111);
 
         momiji::assignNormalSize(ret, bits.size);
 
         ret.data.op2 = OperandType::DataRegister;
         ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
-        ret.data.op1 = static_cast<OperandType>(bits.srcmode);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.src);
+        ret.data.op1 = static_cast<OperandType>(bits.srctype);
+        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
         ret.exec = instr::cmp;
 
         return ret;
@@ -41,8 +41,8 @@ namespace momiji::dec
 
         bits.addreg =  (val & 0b00001110'00000000) >> 9;
         bits.size =    (val & 0b00000001'00000000) >> 8;
-        bits.srcmode = (val & 0b00000000'00111000) >> 3;
-        bits.src =     (val & 0b00000000'00000111);
+        bits.srctype = (val & 0b00000000'00111000) >> 3;
+        bits.srcmode = (val & 0b00000000'00000111);
 
         switch (bits.size)
         {
@@ -57,8 +57,8 @@ namespace momiji::dec
 
         ret.data.op2 = OperandType::AddressRegister;
         ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.addreg);
-        ret.data.op1 = static_cast<OperandType>(bits.srcmode);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.src);
+        ret.data.op1 = static_cast<OperandType>(bits.srctype);
+        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
         ret.exec = instr::cmpa;
 
         return ret;
@@ -73,14 +73,14 @@ namespace momiji::dec
         const std::uint16_t val = mem[idx];
 
         bits.size =    (val & 0b00000000'11000000) >> 6;
-        bits.dstmode = (val & 0b00000000'00111000) >> 3;
-        bits.dst =     (val & 0b00000000'00000111);
+        bits.dsttype = (val & 0b00000000'00111000) >> 3;
+        bits.dstmode = (val & 0b00000000'00000111);
 
         momiji::assignNormalSize(ret, bits.size);
 
         ret.exec = instr::cmpi;
-        ret.data.op2 = static_cast<OperandType>(bits.dstmode);
-        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.dst);
+        ret.data.op2 = static_cast<OperandType>(bits.dsttype);
+        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.dstmode);
 
         return ret;
     }

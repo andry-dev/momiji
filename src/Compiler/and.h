@@ -14,24 +14,23 @@ namespace momiji
               OpcodeDescription& opcode,
               AdditionalData& additionalData)
     {
-        repr::Or bits;
+        repr::And bits;
 
-        // or.* *, d*
+        // and.* *, d*
         if (instr.operands[1].operandType == OperandType::DataRegister)
         {
             bits.datareg = (instr.operands[1].value) & 0b111;
             bits.direction = 0;
-            bits.othmode = utils::to_val(instr.operands[0].operandType) & 0b111;
-            bits.oth = instr.operands[0].value & 0b111;
         }
-        // or.* d*, *
+        // and.* d*, *
         else
         {
             bits.datareg = (instr.operands[0].value) & 0b111;
             bits.direction = 1;
-            bits.othmode = utils::to_val(instr.operands[1].operandType) & 0b111;
-            bits.oth = instr.operands[1].value & 0b111;
         }
+
+        bits.othtype = utils::to_val(instr.operands[bits.direction].operandType);
+        bits.othmode = getCorrectOpMode(instr, bits.direction);
 
         bits.size = utils::to_val(instr.dataType) & 0b11;
 
@@ -39,8 +38,8 @@ namespace momiji
                     | (bits.datareg << 9)
                     | (bits.direction << 8)
                     | (bits.size << 6)
-                    | (bits.othmode << 3)
-                    | (bits.oth);
+                    | (bits.othtype << 3)
+                    | (bits.othmode);
     }
 
     void andi(const momiji::Instruction& instr,
@@ -48,7 +47,7 @@ namespace momiji
               OpcodeDescription& opcode,
               AdditionalData& additionalData)
     {
-        repr::OrI bits;
+        repr::AndI bits;
 
         const std::uint8_t size = utils::to_val(instr.dataType) & 0b111;
         bits.size = size & 0b111;
@@ -56,12 +55,12 @@ namespace momiji
         additionalData.cnt = tobyte[size];
         additionalData.val = instr.operands[0].value;
 
-        bits.dstmode = utils::to_val(instr.operands[1].operandType) & 0b111;
-        bits.dst = instr.operands[1].value;
+        bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
+        bits.dstmode = getCorrectOpMode(instr, 1);
 
         opcode.val =  (bits.header << 8)
                     | (bits.size << 6)
-                    | (bits.dstmode << 3)
-                    | (bits.dst);
+                    | (bits.dsttype << 3)
+                    | (bits.dstmode);
     }
 }

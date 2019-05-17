@@ -9,12 +9,12 @@
 
 namespace momiji
 {
-    void divs(const momiji::Instruction& instr,
+    void muls(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
               AdditionalData& additionalData)
     {
-        repr::DivS bits;
+        repr::MulS bits;
 
         bits.datareg = instr.operands[1].value & 0b111;
 
@@ -44,12 +44,12 @@ namespace momiji
                     | (bits.srcmode);
     }
 
-    void divu(const momiji::Instruction& instr,
+    void mulu(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
               AdditionalData& additionalData)
     {
-        repr::DivS bits;
+        repr::MulU bits;
 
         bits.datareg = instr.operands[1].value & 0b111;
 

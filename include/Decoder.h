@@ -11,11 +11,11 @@ namespace momiji
     {
         std::uint8_t size{2};
 
-        OperandType op1 : 3;
-        SpecialAddressingMode mod1 : 3;
+        OperandType op1;
+        SpecialAddressingMode mod1;
 
-        OperandType op2 : 3;
-        SpecialAddressingMode mod2 : 3;
+        OperandType op2;
+        SpecialAddressingMode mod2;
 
         gsl::span<std::uint16_t> mem;
     };

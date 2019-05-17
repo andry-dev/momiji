@@ -28,36 +28,18 @@ namespace momiji
         bits.size = size & 0b011;
 
         // Destination
-        std::uint32_t dstval = utils::to_val(instr.operands[1].operandType);;
-        std::uint8_t dstmode = utils::to_val(instr.operands[1].specialAddressingMode);;
-
-        switch (instr.operands[1].operandType)
-        {
-        case OperandType::AddressRegister: [[fallthrough]];
-        case OperandType::DataRegister:
-            dstval = instr.operands[1].value & 0b0111;
-            dstmode = utils::to_val(instr.operands[1].operandType);
-            break;
-
-        default:
-            break;
-        }
-
-        bits.dst = dstval & 0b111;
-        bits.dstmode = dstmode & 0b111;
+        bits.dsttype = utils::to_val(instr.operands[1].operandType);;
+        bits.dstmode = getCorrectOpMode(instr, 1);
 
         // Source
         std::uint32_t srcval = utils::to_val(instr.operands[0].operandType);
         std::uint8_t srcmode = utils::to_val(instr.operands[0].specialAddressingMode);
 
+        bits.srctype = utils::to_val(instr.operands[0].operandType);
+        bits.srcmode = getCorrectOpMode(instr, 0);
+
         switch (instr.operands[0].operandType)
         {
-        case OperandType::DataRegister: [[fallthrough]];
-        case OperandType::AddressRegister:
-            srcval = instr.operands[0].value & 0b0111;
-            srcmode = utils::to_val(instr.operands[0].operandType);
-            break;
-
         case OperandType::Immediate:
             switch (instr.operands[0].specialAddressingMode)
             {
@@ -69,19 +51,13 @@ namespace momiji
             default:
                 break;
             }
-
-        default:
-            break;
         }
-
-        bits.srcmode = srcmode & 0b111;
-        bits.src = srcval & 0b111;
 
         opcode.val =   (bits.header << 14)
                      | (bits.size << 12)
-                     | (bits.dst << 9)
-                     | (bits.dstmode << 6)
-                     | (bits.srcmode << 3)
-                     | (bits.src);
+                     | (bits.dstmode << 9)
+                     | (bits.dsttype << 6)
+                     | (bits.srctype << 3)
+                     | (bits.srcmode);
     }
 }

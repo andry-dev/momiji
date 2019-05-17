@@ -13,6 +13,7 @@
 #include "./or.h"
 #include "./and.h"
 #include "./cmp.h"
+#include "./mul.h"
 
 
 namespace momiji
@@ -65,6 +66,14 @@ namespace momiji
 
             case InstructionType::UnsignedDiv:
                 momiji::divu(instr, memory, opcode, additional_data);
+                break;
+
+            case InstructionType::SignedMul:
+                momiji::muls(instr, memory, opcode, additional_data);
+                break;
+
+            case InstructionType::UnsignedMul:
+                momiji::mulu(instr, memory, opcode, additional_data);
                 break;
 
             case InstructionType::Or:

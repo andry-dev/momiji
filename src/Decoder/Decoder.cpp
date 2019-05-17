@@ -40,13 +40,15 @@ namespace momiji
         {
         case 0b00000000'00000000:
             return decodeFirstGroup(mem, idx);
+
         case 0b01000000'00000000:
             //return decodeSecondGroup(mem);
+
         case 0b10000000'00000000:
             return decodeThirdGroup(mem, idx);
+
         case 0b11000000'00000000:
-            //return decodeFourthGroup(mem);
-            break;
+            return decodeFourthGroup(mem, idx);
         }
 
         return {};
@@ -137,6 +139,58 @@ namespace momiji
         // CMPA
         case 0b10110000'11000000:
             return momiji::dec::cmpa(mem, idx);
+        }
+
+        return {};
+    }
+
+
+    DecodedInstruction decodeFourthGroup(const MemoryView& mem, int idx)
+    {
+
+        constexpr std::uint16_t firstmask = 0b11110000'11000000;
+        constexpr std::uint16_t mulmask =   0b11110001'11000000;
+
+        switch (mem[idx] & firstmask)
+        {
+        // MULU / MULS
+        case 0b11000000'11000000:
+            switch (mem[idx] & mulmask)
+            {
+            // MULU
+            case 0b11000000'11000000:
+                return momiji::dec::mulu(mem, idx);
+                break;
+
+            case 0b11000001'11000000:
+                return momiji::dec::muls(mem, idx);
+                break;
+            }
+            break;
+
+        // AND
+        case 0b11000000'00000000:
+        case 0b11000000'01000000:
+        case 0b11000000'10000000:
+            return momiji::dec::and_instr(mem, idx);
+            break;
+
+        // EXG
+        case 0b11000001'01000000:
+        case 0b11000001'10000000:
+            break;
+
+        // ADD
+        case 0b11010000'00000000:
+        case 0b11010000'01000000:
+        case 0b11010000'10000000:
+            return momiji::dec::add(mem, idx);
+            break;
+
+        // ADDA
+        case 0b11010000'11000000:
+            return momiji::dec::adda(mem, idx);
+            break;
         }
 
         return {};

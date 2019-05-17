@@ -26,8 +26,8 @@ namespace momiji
             std::int8_t single[4];
         };
 
-        OperandType operandType : 3;
-        SpecialAddressingMode specialAddressingMode : 3;
+        OperandType operandType;
+        SpecialAddressingMode specialAddressingMode;
     };
 
     struct Instruction

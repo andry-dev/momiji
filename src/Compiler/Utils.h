@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Parser.h>
+#include <Utils.h>
 #include <cstdint>
 #include <cstddef>
 #include <array>
@@ -27,6 +29,19 @@ namespace momiji
         };
         std::uint8_t cnt = 0;
     };
+
+    std::uint8_t getCorrectOpMode(const momiji::Instruction& instr, int num)
+    {
+        switch (instr.operands[num].operandType)
+        {
+        case OperandType::DataRegister: [[fallthrough]];
+        case OperandType::AddressRegister:
+            return instr.operands[num].value & 0b111;
+
+        default:
+            return utils::to_val(instr.operands[num].specialAddressingMode);
+        }
+    }
 
     constexpr std::array<std::uint8_t, 3> move_sizeconv = {
         0b01, // Byte (DataType::Byte)

@@ -3,11 +3,9 @@
 #include <System.h>
 #include <Decoder.h>
 
-namespace momiji
+namespace momiji::instr
 {
-    namespace instr
-    {
-        momiji::System add(momiji::System sys, const InstructionData& instr);
-        momiji::System addi(momiji::System sys, const InstructionData& instr);
-    }
+    momiji::System add(momiji::System sys, const InstructionData& instr);
+    momiji::System addi(momiji::System sys, const InstructionData& instr);
+    momiji::System adda(momiji::System sys, const InstructionData& instr);
 }

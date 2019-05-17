@@ -1,11 +1,11 @@
-#include "div.h"
+#include "mul.h"
 
 #include <Utils.h>
 
 namespace momiji::instr
 {
 
-    momiji::System divs(momiji::System sys, const InstructionData& data)
+    momiji::System muls(momiji::System sys, const InstructionData& data)
     {
         auto* pc = sys.cpu.programCounter.address;
 
@@ -35,16 +35,17 @@ namespace momiji::instr
 
         srcval = utils::sign_extend<std::int16_t>(srcval);
 
-        std::int32_t dstval = sys.cpu.dataRegisters[dstreg].value;
-        std::int32_t quot = (dstval / srcval) & 0x0000'FFFF;
-        std::int32_t rem = (dstval % srcval) & 0x0000'FFFF;
+        const std::int32_t dstval =
+            utils::sign_extend<std::int16_t>(sys.cpu.dataRegisters[dstreg].value);
 
-        sys.cpu.dataRegisters[dstreg].value = (rem << 16) | (quot);
+        const std::int32_t res = (dstval * srcval);
+
+        sys.cpu.dataRegisters[dstreg].value = res;
 
         return sys;
     }
 
-    momiji::System divu(momiji::System sys, const InstructionData& data)
+    momiji::System mulu(momiji::System sys, const InstructionData& data)
     {
         auto* pc = sys.cpu.programCounter.address;
 
@@ -73,10 +74,7 @@ namespace momiji::instr
         }
 
         std::int32_t dstval = sys.cpu.dataRegisters[dstreg].value;
-        std::int32_t quot = (dstval / srcval) & 0x0000'FFFF;
-        std::int32_t rem = (dstval % srcval) & 0x0000'FFFF;
-
-        sys.cpu.dataRegisters[dstreg].value = (rem << 16) | (quot);
+        sys.cpu.dataRegisters[dstreg].value = dstval * srcval;
 
         return sys;
     }
