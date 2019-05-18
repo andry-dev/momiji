@@ -85,9 +85,11 @@ namespace momiji
                 break;
 
             case InstructionType::And:
+                momiji::and_instr(instr, memory, opcode, additional_data);
                 break;
 
             case InstructionType::AndI:
+                momiji::andi(instr, memory, opcode, additional_data);
                 break;
 
             case InstructionType::Compare:

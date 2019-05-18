@@ -59,7 +59,7 @@ namespace momiji
             bits.srctype =  (val & 0b00000000'00111000) >> 3;
             bits.srcmode =  (val & 0b00000000'00000111);
 
-            ret.data.size = (bits.size == 1) ? 2 : 4;
+            ret.data.size = (bits.size == 0) ? 2 : 4;
             ret.data.op1 = static_cast<OperandType>(bits.srctype);
             ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
             ret.data.op2 = OperandType::AddressRegister;
@@ -85,6 +85,8 @@ namespace momiji
             momiji::assignNormalSize(ret, bits.size);
 
             ret.exec = instr::subi;
+            ret.data.op1 = OperandType::Immediate;
+            ret.data.mod1 = SpecialAddressingMode::Immediate;
             ret.data.op2 = static_cast<OperandType>(bits.dsttype);
             ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.dstmode);
 

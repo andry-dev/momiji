@@ -390,10 +390,6 @@ namespace momiji
                             break;
                         }
                         break;
-
-                    case OperandType::DataRegister:
-                        //instr.instructionType = InstructionType::Add;
-                        break;
                     }
 
                     break;
@@ -424,10 +420,6 @@ namespace momiji
                             break;
                         }
                         break;
-
-                    case OperandType::DataRegister:
-                        //instr.instructionType = InstructionType::Add;
-                        break;
                     }
                     break;
 
@@ -456,11 +448,71 @@ namespace momiji
                     instr.instructionType = InstructionType::Swap;
                     break;
 
+                case utils::hash("or"):
+                case utils::hash("ori"):
+                    res = CommonInstructionParser(instr)(tmp_str);
+                    switch (instr.operands[0].operandType)
+                    {
+                    case OperandType::Immediate:
+                        switch (instr.operands[0].specialAddressingMode)
+                        {
+                        case SpecialAddressingMode::Immediate:
+                            instr.instructionType = InstructionType::OrI;
+                            break;
+                        }
+                        break;
+
+                    default:
+                        instr.instructionType = InstructionType::Or;
+                    }
+                    break;
+
+                case utils::hash("and"):
+                case utils::hash("andi"):
+                    res = CommonInstructionParser(instr)(tmp_str);
+                    switch (instr.operands[0].operandType)
+                    {
+                    case OperandType::Immediate:
+                        switch (instr.operands[0].specialAddressingMode)
+                        {
+                        case SpecialAddressingMode::Immediate:
+                            instr.instructionType = InstructionType::AndI;
+                            break;
+                        }
+                        break;
+
+                    default:
+                        instr.instructionType = InstructionType::And;
+                    }
+                    break;
+
                 case utils::hash("cmp"):
                 case utils::hash("cmpi"):
                 case utils::hash("cmpa"):
                     res = CommonInstructionParser(instr)(tmp_str);
-                    instr.instructionType = InstructionType::Compare;
+
+                    switch (instr.operands[1].operandType)
+                    {
+                    case OperandType::AddressRegister:
+                        instr.instructionType = InstructionType::CompareA;
+                        break;
+
+                    default:
+                        instr.instructionType = InstructionType::Compare;
+                    }
+
+                    switch (instr.operands[0].operandType)
+                    {
+                    case OperandType::Immediate:
+                        switch (instr.operands[0].specialAddressingMode)
+                        {
+                        case SpecialAddressingMode::Immediate:
+                            instr.instructionType = InstructionType::CompareI;
+                            break;
+                        }
+                        break;
+                    }
+
                     break;
 
                 case utils::hash("bra"):

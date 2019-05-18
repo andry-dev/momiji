@@ -1,13 +1,10 @@
-#include "sub.h"
+#include "and.h"
 
 #include <Utils.h>
 
 namespace momiji::instr
 {
-
-    // This functions will still check for an address register as a
-    // destination
-    momiji::System sub(momiji::System sys, const InstructionData& data)
+    momiji::System and_instr(momiji::System sys, const InstructionData& data)
     {
         std::int32_t* srcreg = nullptr;
 
@@ -24,8 +21,8 @@ namespace momiji::instr
             break;
         }
 
-
         std::int32_t* dstreg = nullptr;
+
         const std::uint8_t dstnum = utils::to_val(data.mod2);
 
         switch (data.op2)
@@ -45,65 +42,30 @@ namespace momiji::instr
         {
         case 1:
             tmp = (*srcreg) & 0x000000FF;
-            *dstreg = (*dstreg & 0xFFFFFF00) | ((*dstreg - tmp) & 0x000000FF);
+            *dstreg = (*dstreg & 0xFFFFFF00) |
+                      ((*dstreg & tmp) & 0x000000FF);
             break;
 
         case 2:
             tmp = (*srcreg) & 0x0000FFFF;
-            *dstreg = (*dstreg & 0xFFFF0000) | ((*dstreg - tmp) & 0x0000FFFF);
+            *dstreg = (*dstreg & 0xFFFF0000) |
+                      ((*dstreg & tmp) & 0x0000FFFF);
             break;
 
         case 4:
-            *dstreg = *dstreg - tmp;
+            *dstreg = *dstreg & *srcreg;
             break;
         }
 
         return sys;
     }
 
-    momiji::System suba(momiji::System sys, const InstructionData& data)
-    {
-        std::int32_t* srcreg = nullptr;
-
-        const std::uint8_t srcnum = utils::to_val(data.mod1);
-
-        switch (data.op1)
-        {
-        case OperandType::DataRegister:
-            srcreg = &sys.cpu.dataRegisters[srcnum].value;
-            break;
-
-        case OperandType::AddressRegister:
-            srcreg = &sys.cpu.addressRegisters[srcnum].value;
-            break;
-        }
-
-
-        const std::uint8_t dstnum = utils::to_val(data.mod2);
-        std::int32_t* dstreg = &sys.cpu.addressRegisters[dstnum].value;
-
-        std::int32_t tmp = 0;
-
-        switch (data.size)
-        {
-        case 2:
-            tmp = utils::sign_extend<std::int16_t>(*srcreg);
-            *dstreg = *dstreg - tmp;
-            break;
-
-        case 4:
-            *dstreg = *dstreg - tmp;
-            break;
-        }
-
-        return sys;
-    }
-
-    momiji::System subi(momiji::System sys, const InstructionData& data)
+    momiji::System andi(momiji::System sys, const InstructionData& data)
     {
         auto* pc = sys.cpu.programCounter.address;
 
         std::int32_t dstval = utils::to_val(data.mod2);
+
         std::int32_t* reg = nullptr;
 
         switch (data.op2)
@@ -123,17 +85,19 @@ namespace momiji::instr
         {
         case 1:
             srcval = *(pc + 1) & 0x000000FF;
-            *reg = (*reg & 0xFFFF'FF00) | ((*reg - srcval) & 0x0000'00FF);
+            *reg = (*reg & 0xFFFF'FF00) |
+                   ((*reg & srcval) & 0x0000'00FF);
             break;
 
         case 2:
-            srcval = *(pc + 1);
-            *reg = (*reg & 0xFFFF'0000) | ((*reg - srcval) & 0x0000'FFFF);
+            srcval = *(pc + 1) & 0x0000FFFF;
+            *reg = (*reg & 0xFFFF'0000) |
+                   ((*reg & srcval) & 0x0000'FFFF);
             break;
 
         case 4:
             srcval = (*(pc + 1) << 16) | *(pc + 2);
-            *reg = *reg - srcval;
+            *reg = *reg & srcval;
             break;
         }
 

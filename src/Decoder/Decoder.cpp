@@ -9,10 +9,11 @@
 #include "add.h"
 #include "sub.h"
 #include "cmp.h"
-#include "./and.h"
-#include "./or.h"
+#include "and.h"
+#include "or.h"
 #include "mul.h"
 #include "div.h"
+#include "exg.h"
 
 namespace momiji
 {
@@ -43,6 +44,7 @@ namespace momiji
 
         case 0b01000000'00000000:
             //return decodeSecondGroup(mem);
+            break;
 
         case 0b10000000'00000000:
             return decodeThirdGroup(mem, idx);
@@ -160,11 +162,9 @@ namespace momiji
             // MULU
             case 0b11000000'11000000:
                 return momiji::dec::mulu(mem, idx);
-                break;
 
             case 0b11000001'11000000:
                 return momiji::dec::muls(mem, idx);
-                break;
             }
             break;
 
@@ -173,24 +173,21 @@ namespace momiji
         case 0b11000000'01000000:
         case 0b11000000'10000000:
             return momiji::dec::and_instr(mem, idx);
-            break;
 
         // EXG
         case 0b11000001'01000000:
         case 0b11000001'10000000:
-            break;
+            return momiji::dec::exg(mem, idx);
 
         // ADD
         case 0b11010000'00000000:
         case 0b11010000'01000000:
         case 0b11010000'10000000:
             return momiji::dec::add(mem, idx);
-            break;
 
         // ADDA
         case 0b11010000'11000000:
             return momiji::dec::adda(mem, idx);
-            break;
         }
 
         return {};

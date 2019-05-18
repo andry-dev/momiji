@@ -1,7 +1,7 @@
 #include "mul.h"
 
 #include "../Instructions/Representations.h"
-#include "../Instructions/div.h"
+#include "../Instructions/mul.h"
 
 namespace momiji::dec
 {
@@ -23,7 +23,7 @@ namespace momiji::dec
         ret.data.op2 = OperandType::DataRegister;
         ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
 
-        ret.exec = instr::divs;
+        ret.exec = instr::muls;
 
         return ret;
     }
@@ -45,7 +45,7 @@ namespace momiji::dec
         ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
         ret.data.op2 = OperandType::DataRegister;
         ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
-        ret.exec = instr::divu;
+        ret.exec = instr::mulu;
 
         return ret;
     }

@@ -4,39 +4,89 @@
 #include "../Instructions/add.h"
 #include "Utils.h"
 
-namespace momiji
+namespace momiji::dec
 {
-    namespace dec
+    DecodedInstruction add(gsl::span<std::uint16_t> mem, int idx)
     {
-        DecodedInstruction add(gsl::span<std::uint16_t> mem, int idx)
+        DecodedInstruction ret;
+
+        repr::Add bits;
+
+        const std::uint16_t val = mem[idx];
+
+        bits.datareg =   (val & 0b00001110'00000000) >> 9;
+        bits.direction = (val & 0b00000001'00000000) >> 8;
+        bits.size =      (val & 0b00000000'11000000) >> 6;
+        bits.othtype =   (val & 0b00000000'00111000) >> 3;
+        bits.othmode =   (val & 0b00000000'00000111);
+
+        assignNormalSize(ret, bits.size);
+
+        if (bits.direction == 0)
         {
-            return {};
+            ret.data.op1 = static_cast<OperandType>(bits.othtype);
+            ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.othmode);
+            ret.data.op2 = OperandType::DataRegister;
+            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
+        }
+        else
+        {
+            ret.data.op1 = OperandType::DataRegister;
+            ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.datareg);
+            ret.data.op2 = static_cast<OperandType>(bits.othtype);
+            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.othmode);
         }
 
-        DecodedInstruction adda(gsl::span<std::uint16_t> mem, int idx)
-        {
-            return  {};
-        }
+        ret.exec = instr::add;
 
-        DecodedInstruction addi(gsl::span<std::uint16_t> mem, int idx)
-        {
-            DecodedInstruction ret;
+        return ret;
+    }
 
-            repr::AddI repr;
+    DecodedInstruction adda(gsl::span<std::uint16_t> mem, int idx)
+    {
+        DecodedInstruction ret;
 
-            std::uint16_t val = mem[idx];
+        repr::AddA bits;
 
-            repr.size =     (val & 0b00000000'11000000) >> 6;
-            repr.dsttype =  (val & 0b0000000'00111000) >> 3;
-            repr.dstmode =      (val & 0b0000000'00000111);
+        const std::uint16_t val = mem[idx];
 
-            momiji::assignNormalSize(ret, repr.size);
+        bits.addreg =    (val & 0b00001110'00000000) >> 9;
+        bits.size =      (val & 0b00000001'00000000) >> 8;
+        bits.srctype =   (val & 0b00000000'00111000) >> 3;
+        bits.srcmode =   (val & 0b00000000'00000111);
 
-            ret.exec = instr::addi;
-            ret.data.op2 = static_cast<OperandType>(repr.dsttype);
-            ret.data.mod2 = static_cast<SpecialAddressingMode>(repr.dstmode);
+        ret.data.size = (bits.size == 0) ? 2 : 4;
 
-            return ret;
-        }
+        ret.data.op1 = static_cast<OperandType>(bits.srctype);
+        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
+        ret.data.op2 = OperandType::AddressRegister;
+        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.addreg);
+
+        ret.exec = instr::adda;
+
+        return ret;
+    }
+
+    DecodedInstruction addi(gsl::span<std::uint16_t> mem, int idx)
+    {
+        DecodedInstruction ret;
+
+        repr::AddI repr;
+
+        std::uint16_t val = mem[idx];
+
+        repr.size =     (val & 0b00000000'11000000) >> 6;
+        repr.dsttype =  (val & 0b0000000'00111000) >> 3;
+        repr.dstmode =  (val & 0b0000000'00000111);
+
+        momiji::assignNormalSize(ret, repr.size);
+
+        ret.exec = instr::addi;
+        ret.data.op1 = OperandType::Immediate;
+        ret.data.mod1 = SpecialAddressingMode::Immediate;
+        ret.data.op2 = static_cast<OperandType>(repr.dsttype);
+        ret.data.mod2 = static_cast<SpecialAddressingMode>(repr.dstmode);
+
+        return ret;
     }
 }

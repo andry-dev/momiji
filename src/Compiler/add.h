@@ -23,7 +23,7 @@ namespace momiji
             bits.direction = 1;
         }
         // add.* *, d*
-        else if (instr.operands[0].operandType != OperandType::DataRegister)
+        else
         {
             bits.datareg = (instr.operands[1].value & 0b111);
             bits.direction = 0;
@@ -37,7 +37,7 @@ namespace momiji
 
 
         opcode.val =  (bits.header << 12)
-                    | (bits.size << 9)
+                    | (bits.datareg << 9)
                     | (bits.direction << 8)
                     | (bits.size << 6)
                     | (bits.othtype << 3)

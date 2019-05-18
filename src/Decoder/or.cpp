@@ -60,6 +60,8 @@ namespace momiji::dec
         momiji::assignNormalSize(ret, bits.size);
 
         ret.exec = instr::ori;
+        ret.data.op1 = OperandType::Immediate;
+        ret.data.mod1 = SpecialAddressingMode::Immediate;
         ret.data.op2 = static_cast<OperandType>(bits.dsttype);
         ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.dstmode);
 
