@@ -253,6 +253,16 @@ namespace momiji::repr
 
     struct Exg
     {
+        Exg()
+            : header{0b1100}
+            , padding{0b1}
+        {}
+
+        std::uint16_t header : 4;
+        std::uint16_t datareg : 3;
+        std::uint16_t padding : 1;
+        std::uint16_t mode : 5;
+        std::uint16_t addreg : 3;
     };
 
     struct Cmp
@@ -303,15 +313,35 @@ namespace momiji::repr
 
     struct Bra
     {
+        Bra()
+            : header{0b0110'0000}
+        {}
+
+        std::uint16_t header : 8;
+        std::uint16_t displacement : 8;
     };
 
     // Conditional branch
     struct Bcc
     {
+        Bcc()
+            : header{0b0110}
+        {}
+
+        std::uint16_t header : 4;
+        std::uint16_t condition : 4;
+        std::uint16_t displacement : 8;
     };
 
     struct Jmp
     {
+        Jmp()
+            : header{0b01001110'11}
+        {}
+
+        std::uint16_t header : 10;
+        std::uint16_t regtype : 3;
+        std::uint16_t regmode : 3;
     };
 
 
@@ -342,11 +372,11 @@ namespace momiji::repr
     static_assert(sizeof(SubI) == 2, "'subi' is not 16-bit long");
     static_assert(sizeof(DivS) == 2, "'divs' is not 16-bit long");
     static_assert(sizeof(DivU) == 2, "'divu' is not 16-bit long");
-    static_assert(sizeof(Or) == 2, "'divu' is not 16-bit long");
-    static_assert(sizeof(OrI) == 2, "'divu' is not 16-bit long");
-    static_assert(sizeof(Cmp) == 2, "'divu' is not 16-bit long");
-    static_assert(sizeof(CmpI) == 2, "'divu' is not 16-bit long");
-    static_assert(sizeof(CmpA) == 2, "'divu' is not 16-bit long");
-    static_assert(sizeof(Illegal) == 2, "'divu' is not 16-bit long");
-    static_assert(sizeof(Nop) == 2, "'divu' is not 16-bit long");
+    static_assert(sizeof(Or) == 2, "'or' is not 16-bit long");
+    static_assert(sizeof(OrI) == 2, "'ori' is not 16-bit long");
+    static_assert(sizeof(Cmp) == 2, "'cmp' is not 16-bit long");
+    static_assert(sizeof(CmpI) == 2, "'cmpo' is not 16-bit long");
+    static_assert(sizeof(CmpA) == 2, "'cmpa' is not 16-bit long");
+    static_assert(sizeof(Illegal) == 2, "'illegal' is not 16-bit long");
+    static_assert(sizeof(Nop) == 2, "'nop' is not 16-bit long");
 }

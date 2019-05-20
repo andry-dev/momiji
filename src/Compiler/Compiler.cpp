@@ -6,14 +6,17 @@
 #include <Utils.h>
 #include <iostream>
 
-#include "./move.h"
-#include "./add.h"
-#include "./sub.h"
-#include "./div.h"
-#include "./or.h"
-#include "./and.h"
-#include "./cmp.h"
-#include "./mul.h"
+#include "move.h"
+#include "add.h"
+#include "sub.h"
+#include "div.h"
+#include "or.h"
+#include "and.h"
+#include "cmp.h"
+#include "mul.h"
+#include "exg.h"
+#include "bra.h"
+#include "bcc.h"
 
 
 namespace momiji
@@ -92,6 +95,15 @@ namespace momiji
                 momiji::andi(instr, memory, opcode, additional_data);
                 break;
 
+            case InstructionType::Xor:
+                break;
+
+            case InstructionType::XorI:
+                break;
+
+            case InstructionType::Not:
+                break;
+
             case InstructionType::Compare:
                 momiji::cmp(instr, memory, opcode, additional_data);
                 break;
@@ -104,7 +116,25 @@ namespace momiji
                 momiji::cmpi(instr, memory, opcode, additional_data);
                 break;
 
-            default:
+            case InstructionType::Branch:
+                momiji::bra(instr, memory, opcode, additional_data);
+                break;
+
+            case InstructionType::BranchCondition:
+                momiji::bcc(instr, memory, opcode, additional_data);
+                break;
+
+            case InstructionType::Exchange:
+                momiji::exg(instr, memory, opcode, additional_data);
+                break;
+
+            case InstructionType::Swap:
+                break;
+
+            case InstructionType::Jmp:
+                break;
+
+            case InstructionType::Tst:
                 break;
             }
 

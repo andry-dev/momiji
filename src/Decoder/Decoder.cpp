@@ -153,6 +153,9 @@ namespace momiji
         constexpr std::uint16_t firstmask = 0b11110000'11000000;
         constexpr std::uint16_t mulmask =   0b11110001'11000000;
 
+        // Used to discriminate between AND or EXG
+        constexpr std::uint16_t exgmask =   0b11110001'11001000;
+
         switch (mem[idx] & firstmask)
         {
         // MULU / MULS
@@ -168,11 +171,23 @@ namespace momiji
             }
             break;
 
-        // AND
+        // AND / EXG
         case 0b11000000'00000000:
         case 0b11000000'01000000:
         case 0b11000000'10000000:
-            return momiji::dec::and_instr(mem, idx);
+            switch (mem[idx] & exgmask)
+            {
+            // Probably an EXG
+            case 0b11000001'01000000:
+            case 0b11000001'01001000:
+            case 0b11000001'10001000:
+                return momiji::dec::exg(mem, idx);
+
+            // Hoping for an AND
+            default:
+                return momiji::dec::and_instr(mem, idx);
+            }
+            break;
 
         // EXG
         case 0b11000001'01000000:

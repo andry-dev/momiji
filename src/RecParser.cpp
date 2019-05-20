@@ -448,6 +448,11 @@ namespace momiji
                     instr.instructionType = InstructionType::Swap;
                     break;
 
+                case utils::hash("exg"):
+                    res = CommonInstructionParser(instr)(tmp_str);
+                    instr.instructionType = InstructionType::Exchange;
+                    break;
+
                 case utils::hash("or"):
                 case utils::hash("ori"):
                     res = CommonInstructionParser(instr)(tmp_str);
@@ -515,7 +520,7 @@ namespace momiji
 
                     break;
 
-                case utils::hash("bra"):
+                case utils::hash("jmp"):
                     res = BranchInstructionParser(instr, labels)(tmp_str);
                     if (!res.result)
                     {
@@ -524,6 +529,17 @@ namespace momiji
                     }
 
                     instr.instructionType = InstructionType::Jmp;
+                    break;
+
+                case utils::hash("bra"):
+                    res = BranchInstructionParser(instr, labels)(tmp_str);
+                    if (!res.result)
+                    {
+                        return make_parser_error(0, line_count,
+                                                 ParserError::ErrorType::NoLabelFound);
+                    }
+
+                    instr.instructionType = InstructionType::Branch;
                     break;
 
                 case utils::hash("ble"):
@@ -537,6 +553,34 @@ namespace momiji
                     {
                         return make_parser_error(0, line_count,
                                                  ParserError::ErrorType::NoLabelFound);
+                    }
+
+                    // Mama, Papa, I feel so sorry for this.
+                    switch (str_hash)
+                    {
+                    case utils::hash("ble"):
+                        instr.branchCondition = BranchConditions::LessEq;
+                        break;
+
+                    case utils::hash("blt"):
+                        instr.branchCondition = BranchConditions::LessThan;
+                        break;
+
+                    case utils::hash("bge"):
+                        instr.branchCondition = BranchConditions::GreaterEq;
+                        break;
+
+                    case utils::hash("bgt"):
+                        instr.branchCondition = BranchConditions::GreaterThan;
+                        break;
+
+                    case utils::hash("beq"):
+                        instr.branchCondition = BranchConditions::Equal;
+                        break;
+
+                    case utils::hash("bne"):
+                        instr.branchCondition = BranchConditions::NotEqual;
+                        break;
                     }
 
                     instr.instructionType = InstructionType::BranchCondition;

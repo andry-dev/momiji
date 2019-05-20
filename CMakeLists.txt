@@ -37,6 +37,7 @@ target_sources(libmomiji
     src/Instructions/cmp.cpp
     src/Instructions/or.cpp
     src/Instructions/and.cpp
+    src/Instructions/exg.cpp
 
     src/Emulator.cpp)
 

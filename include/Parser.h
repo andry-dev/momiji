@@ -35,6 +35,7 @@ namespace momiji
         std::array<Operand, 3> operands;
 
         InstructionType instructionType;
+        BranchConditions branchCondition;
         DataType dataType;
     };
 
