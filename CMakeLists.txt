@@ -16,7 +16,8 @@ target_include_directories(libmomiji PUBLIC SYSTEM
 target_sources(libmomiji
     PRIVATE
 
-    src/RecParser.cpp
+    src/Parser/Parser.cpp
+    src/Parser/Instructions.cpp
     src/Compiler/Compiler.cpp
     src/Decoder/Decoder.cpp
     src/Decoder/move.cpp
@@ -28,6 +29,8 @@ target_sources(libmomiji
     src/Decoder/or.cpp
     src/Decoder/and.cpp
     src/Decoder/exg.cpp
+    src/Decoder/bra.cpp
+    src/Decoder/bcc.cpp
 
     src/Instructions/move.cpp
     src/Instructions/add.cpp
@@ -38,6 +41,8 @@ target_sources(libmomiji
     src/Instructions/or.cpp
     src/Instructions/and.cpp
     src/Instructions/exg.cpp
+    src/Instructions/bra.cpp
+    src/Instructions/bcc.cpp
 
     src/Emulator.cpp)
 

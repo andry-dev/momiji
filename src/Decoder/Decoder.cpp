@@ -14,6 +14,8 @@
 #include "mul.h"
 #include "div.h"
 #include "exg.h"
+#include "bcc.h"
+#include "bra.h"
 
 namespace momiji
 {
@@ -43,8 +45,7 @@ namespace momiji
             return decodeFirstGroup(mem, idx);
 
         case 0b01000000'00000000:
-            //return decodeSecondGroup(mem);
-            break;
+            return decodeSecondGroup(mem, idx);
 
         case 0b10000000'00000000:
             return decodeThirdGroup(mem, idx);
@@ -90,6 +91,70 @@ namespace momiji
         case 0b00110000'00000000:
         case 0b00100000'00000000:
             return momiji::dec::move(mem, idx);
+        }
+
+        return {};
+    }
+
+    DecodedInstruction decodeSecondGroup(const MemoryView& mem, int idx)
+    {
+        constexpr std::uint16_t firstmask = 0b11110000'00000000;
+        constexpr std::uint16_t bramask =   0b11111111'00000000;
+        constexpr std::uint16_t secondmask =   0b11111111'11000000;
+
+        switch (mem[idx] & firstmask)
+        {
+        // JMP / MOVEM
+        case 0b01000000'00000000:
+            switch (mem[idx] & secondmask)
+            {
+            // TST
+            case 0b01001010'00000000:
+            case 0b01001010'01000000:
+            case 0b01001010'10000000:
+                break;
+
+            // NOT
+            case 0b01000110'00000000:
+            case 0b01000110'01000000:
+            case 0b01000110'10000000:
+                break;
+
+            // SWAP / PEA
+            case 0b01001000'01000000:
+                break;
+
+            // JMP
+            case 0b01001110'11000000:
+                break;
+            }
+            break;
+
+        // ADDQ / SUBQ / Scc / DBcc
+        case 0b01010000'00000000:
+            break;
+
+        // BRA / BSR / Bcc
+        case 0b01100000'00000000:
+            switch (mem[idx] & bramask)
+            {
+            // BRA
+            case 0b01100000'00000000:
+                return momiji::dec::bra(mem,idx);
+
+            // BSR
+            case 0b01100001'00000000:
+                break;
+
+            // Bcc, probably
+            default:
+                return momiji::dec::bcc(mem, idx);
+            }
+            break;
+
+        // MOVEQ
+        case 0b011100000'00000000:
+            break;
         }
 
         return {};
@@ -188,11 +253,6 @@ namespace momiji
                 return momiji::dec::and_instr(mem, idx);
             }
             break;
-
-        // EXG
-        case 0b11000001'01000000:
-        case 0b11000001'10000000:
-            return momiji::dec::exg(mem, idx);
 
         // ADD
         case 0b11010000'00000000:

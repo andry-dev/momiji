@@ -162,7 +162,7 @@ int main()
 {
     //cli();
 
-#if 1
+#if 0
     std::string str{};
 
 
@@ -187,6 +187,6 @@ int main()
 #endif
 
 #ifdef MOMIJI_INCLUDE_GUI
-    //gui();
+    gui();
 #endif
 }
