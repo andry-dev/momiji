@@ -12,7 +12,7 @@ namespace momiji
     void and_instr(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         repr::And bits;
 
@@ -45,15 +45,15 @@ namespace momiji
     void andi(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         repr::AndI bits;
 
         const std::uint8_t size = utils::to_val(instr.dataType) & 0b111;
         bits.size = size & 0b111;
 
-        additionalData.cnt = tobyte[size];
-        additionalData.val = instr.operands[0].value;
+        additionalData[0].cnt = tobyte[size];
+        additionalData[0].val = instr.operands[0].value;
 
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1);

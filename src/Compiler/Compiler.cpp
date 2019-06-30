@@ -29,8 +29,10 @@ namespace momiji
         for (const auto& instr : instructions)
         {
             OpcodeDescription opcode;
-            AdditionalData additional_data;
-            additional_data.val = 0;
+            std::array<AdditionalData, 2> additional_data = {{
+                { 0, 0 },
+                { 0, 0 }
+            }};
 
             switch (instr.instructionType)
             {
@@ -140,21 +142,24 @@ namespace momiji
 
             memory.push_back(opcode.val);
 
-            switch (additional_data.cnt)
+            for (int i = 0; i < additional_data.size(); ++i)
             {
-            case 1: {
-                // Adding 1 byte to align to 16-bit
-                const std::uint16_t val = 0 | additional_data.arr8[0];
-                memory.push_back(val);
-                } break;
-            case 2:
-                memory.push_back(additional_data.arr16[0]);
-                break;
+                switch (additional_data[i].cnt)
+                {
+                case 1: {
+                    // Adding 1 byte to align to 16-bit
+                    const std::uint16_t val = 0 | additional_data[i].arr8[0];
+                    memory.push_back(val);
+                    } break;
+                case 2:
+                    memory.push_back(additional_data[i].arr16[0]);
+                    break;
 
-            case 4:
-                memory.push_back(additional_data.arr16[1]);
-                memory.push_back(additional_data.arr16[0]);
-                break;
+                case 4:
+                    memory.push_back(additional_data[i].arr16[1]);
+                    memory.push_back(additional_data[i].arr16[0]);
+                    break;
+                }
             }
         }
 

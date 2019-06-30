@@ -11,6 +11,21 @@
 
 namespace momiji
 {
+    namespace alg
+    {
+        inline auto find_label(const LabelInfo& labels, std::uint32_t hash)
+        {
+            auto begin = std::begin(labels.labels);
+            auto end = std::end(labels.labels);
+
+            auto it = std::find_if(
+                    begin, end, [&] (const momiji::Label& x) {
+                return x.name_hash == hash; 
+            });
+
+            return it;
+        }
+    }
 
     template <typename Parser>
     auto unbox(std::string_view str, Parser&& parser)
@@ -540,7 +555,19 @@ namespace momiji
                         instr.operands[opNum].value = val;
                     });
 
-            return AnyOf(decimal_num, hex_num)(str);
+            // Example: move.w #arr, a0
+            //          ^ moves the "address" of "arr" in a0
+            constexpr auto inter_imm_label_parser = SeqNext(Char('#'), Word());
+            auto imm_label =
+                Map(inter_imm_label_parser,
+                    [&instr, opNum] (auto parsed_str) {
+                        instr.operands[opNum].operandType = OperandType::Immediate;
+                        instr.operands[opNum].specialAddressingMode = SpecialAddressingMode::Immediate;
+                        instr.operands[opNum].value = utils::hash(parsed_str);
+                        instr.operands[opNum].labelResolved = false;
+                    });
+
+            return AnyOf(decimal_num, hex_num, imm_label)(str);
         };
     }
 
@@ -579,6 +606,91 @@ namespace momiji
         };
     }
 
+    constexpr auto MemoryAddress(momiji::Instruction& instr, int opNum)
+    {
+        return [&instr, opNum] (std::string_view str) -> parser_metadata
+        {
+            constexpr auto inter_dec_parser = GenericDecimal();
+
+            auto dec_mem =
+                Map(inter_dec_parser,
+                    [&instr, opNum] (auto parsed_str) {
+                        const std::int32_t val = std::stoi(std::string{parsed_str});
+
+                        SpecialAddressingMode res_add_mode{};
+
+                        switch (instr.dataType)
+                        {
+                        case DataType::Byte:
+                        case DataType::Word:
+                            res_add_mode = SpecialAddressingMode::AbsoluteShort;
+                            break;
+                        case DataType::Long:
+                            res_add_mode = SpecialAddressingMode::AbsoluteLong;
+                            break;
+                        
+                        }
+
+                        instr.operands[opNum].operandType = OperandType::AbsoluteLong;
+                        instr.operands[opNum].specialAddressingMode = res_add_mode;
+                        instr.operands[opNum].value = val;
+                    });
+
+            constexpr auto inter_hex_parser = GenericHex();
+            auto hex_mem =
+                Map(inter_hex_parser,
+                    [&instr, opNum] (auto parsed_str) {
+                        const std::int32_t val = std::stoi(std::string{parsed_str}, 0, 16);
+
+                        SpecialAddressingMode res_add_mode{};
+
+                        switch (instr.dataType)
+                        {
+                        case DataType::Byte:
+                        case DataType::Word:
+                            res_add_mode = SpecialAddressingMode::AbsoluteShort;
+                            break;
+                        case DataType::Long:
+                            res_add_mode = SpecialAddressingMode::AbsoluteLong;
+                            break;
+                        
+                        }
+
+                        instr.operands[opNum].operandType = OperandType::AbsoluteLong;
+                        instr.operands[opNum].specialAddressingMode = res_add_mode;
+                        instr.operands[opNum].value = val;
+                    });
+
+            // Example: move.w arr, a0
+            //          ^ moves the value at address "arr" in a0
+            constexpr auto inter_mem_label_parser = Word();
+            auto label_mem =
+                Map(inter_mem_label_parser,
+                    [&instr, opNum] (auto parsed_str) {
+                        SpecialAddressingMode res_add_mode{};
+
+                        switch (instr.dataType)
+                        {
+                        case DataType::Byte:
+                        case DataType::Word:
+                            res_add_mode = SpecialAddressingMode::AbsoluteShort;
+                            break;
+                        case DataType::Long:
+                            res_add_mode = SpecialAddressingMode::AbsoluteLong;
+                            break;
+                        
+                        }
+
+                        instr.operands[opNum].operandType = OperandType::AbsoluteLong;
+                        instr.operands[opNum].specialAddressingMode = res_add_mode;
+                        instr.operands[opNum].value = utils::hash(parsed_str);
+                        instr.operands[opNum].labelResolved = false;
+                    });
+
+            return AnyOf(dec_mem, hex_mem, label_mem)(str);
+        };
+    }
+
     constexpr auto AnyRegister(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
@@ -594,10 +706,11 @@ namespace momiji
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
-            auto register_parser = AnyOf(OperandImmediate(instr, opNum),
-                                         AnyRegister(instr, opNum));
+            auto op_parser = AnyOf(OperandImmediate(instr, opNum),
+                                   AnyRegister(instr, opNum),
+                                   MemoryAddress(instr, opNum));
 
-            return register_parser(str);
+            return op_parser(str);
         };
     }
 
@@ -653,21 +766,18 @@ namespace momiji
             {
                 const auto str_hash = utils::hash(res.parsed_str);
 
-                auto begin = std::begin(labels.labels);
-                auto end = std::end(labels.labels);
-
-                auto it = std::find_if(
-                        begin, end, [&] (const momiji::Label& x) {
-                    return x.name_hash == str_hash; 
-                });
+                auto it = alg::find_label(labels, str_hash);
 
                 if (it != std::end(labels.labels))
                 {
                     instr.operands[0].value = it->idx;
                     instr.operands[0].operandType = OperandType::AbsoluteLong;
+                    instr.operands[0].labelResolved = true;
                 }
                 else
                 {
+                    instr.operands[0].value = str_hash;
+                    instr.operands[0].labelResolved = false;
                     return { false, str, "" };
                 }
             }

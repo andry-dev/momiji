@@ -12,7 +12,7 @@ namespace momiji
     void sub(const momiji::Instruction& instr,
              MemoryType&,
              OpcodeDescription& opcode,
-             AdditionalData&)
+             std::array<AdditionalData, 2>&)
     {
         repr::Sub bits;
 
@@ -44,7 +44,7 @@ namespace momiji
     void suba(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData&)
+              std::array<AdditionalData, 2>&)
     {
         repr::SubA bits;
 
@@ -77,7 +77,7 @@ namespace momiji
     void subi(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         const std::uint8_t size = utils::to_val(instr.dataType);
 
@@ -85,8 +85,8 @@ namespace momiji
 
         bits.size = size & 0b11;
 
-        additionalData.cnt = tobyte[size];
-        additionalData.val = instr.operands[0].value;
+        additionalData[0].cnt = tobyte[size];
+        additionalData[0].val = instr.operands[0].value;
 
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1);

@@ -16,7 +16,7 @@ namespace momiji
     void move(const momiji::Instruction& instr,
               MemoryType& memory,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Move bits;
         bits.header = 0b00;
@@ -38,18 +38,23 @@ namespace momiji
         bits.srctype = utils::to_val(instr.operands[0].operandType);
         bits.srcmode = getCorrectOpMode(instr, 0);
 
-        switch (instr.operands[0].operandType)
+        for (int i = 0; i < instr.operands.size(); ++i)
         {
-        case OperandType::Immediate:
-            switch (instr.operands[0].specialAddressingMode)
+            switch (instr.operands[i].operandType)
             {
-            case SpecialAddressingMode::Immediate:
-                additionalData.val = instr.operands[0].value;
-                additionalData.cnt = move_tobyte[size];
-                break;
+            case OperandType::Immediate:
+                switch (instr.operands[i].specialAddressingMode)
+                {
+                case SpecialAddressingMode::Immediate:
+                case SpecialAddressingMode::AbsoluteLong:
+                case SpecialAddressingMode::AbsoluteShort:
+                    additionalData[i].val = instr.operands[i].value;
+                    additionalData[i].cnt = move_tobyte[size];
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+                }
             }
         }
 

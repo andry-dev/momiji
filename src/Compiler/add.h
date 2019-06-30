@@ -12,7 +12,7 @@ namespace momiji
     void add(const momiji::Instruction& instr,
              MemoryType& memory,
              OpcodeDescription& opcode,
-             AdditionalData&)
+             std::array<AdditionalData, 2>&)
     {
         repr::Add bits;
 
@@ -47,7 +47,7 @@ namespace momiji
     void adda(const momiji::Instruction& instr,
               MemoryType& memory,
               OpcodeDescription& opcode,
-              AdditionalData&)
+              std::array<AdditionalData, 2>&)
     {
 
         repr::AddA bits;
@@ -81,15 +81,15 @@ namespace momiji
     void addi(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         const std::uint8_t size = utils::to_val(instr.dataType) & 0b111;
 
         repr::AddI bits;
         bits.size = size & 0b11;
 
-        additionalData.cnt = tobyte[size];
-        additionalData.val = instr.operands[0].value;
+        additionalData[0].cnt = tobyte[size];
+        additionalData[0].val = instr.operands[0].value;
 
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1) & 0b111;

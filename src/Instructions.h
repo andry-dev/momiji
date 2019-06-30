@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System.h"
 #include "Parser.h"
+#include "System.h"
 #include <Utils.h>
 
 #include <array>
@@ -11,7 +11,8 @@ namespace momiji
 {
     namespace op_impl
     {
-        inline momiji::System move8(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System move8(momiji::System sys,
+                                    const momiji::Instruction& instr)
         {
             union
             {
@@ -29,11 +30,13 @@ namespace momiji
                 switch (instr.operands[0].registerType)
                 {
                 case RegisterType::Address:
-                    pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Data:
-                    pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Special:
@@ -41,7 +44,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -71,7 +75,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System move16(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System move16(momiji::System sys,
+                                     const momiji::Instruction& instr)
         {
             union
             {
@@ -88,11 +93,13 @@ namespace momiji
                 switch (instr.operands[0].registerType)
                 {
                 case RegisterType::Address:
-                    pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Data:
-                    pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Special:
@@ -100,7 +107,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -126,10 +134,10 @@ namespace momiji
             }
 
             return sys;
-
         }
 
-        inline momiji::System move32(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System move32(momiji::System sys,
+                                     const momiji::Instruction& instr)
         {
             std::int32_t tmp = 0;
             switch (instr.operands[0].operandType)
@@ -142,7 +150,8 @@ namespace momiji
                 switch (instr.operands[0].registerType)
                 {
                 case RegisterType::Address:
-                    tmp = sys.cpu.addressRegisters[instr.operands[0].value].value;
+                    tmp =
+                        sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Data:
@@ -153,7 +162,8 @@ namespace momiji
                     break;
                 }
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -175,7 +185,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System moveq(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System moveq(momiji::System sys,
+                                    const momiji::Instruction& instr)
         {
             std::int8_t trunc = instr.operands[0].value & 0x000000FF;
             std::int32_t tmp = instr.operands[1].value;
@@ -204,7 +215,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System add8(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System add8(momiji::System sys,
+                                   const momiji::Instruction& instr)
         {
             union
             {
@@ -222,11 +234,13 @@ namespace momiji
                 switch (instr.operands[0].registerType)
                 {
                 case RegisterType::Address:
-                    pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Data:
-                    pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Special:
@@ -234,7 +248,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -262,7 +277,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System add16(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System add16(momiji::System sys,
+                                    const momiji::Instruction& instr)
         {
             union
             {
@@ -280,11 +296,13 @@ namespace momiji
                 switch (instr.operands[0].registerType)
                 {
                 case RegisterType::Address:
-                    pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Data:
-                    pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Special:
@@ -292,7 +310,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -320,7 +339,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System add32(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System add32(momiji::System sys,
+                                    const momiji::Instruction& instr)
         {
             std::int32_t val = 0;
 
@@ -334,7 +354,8 @@ namespace momiji
                 switch (instr.operands[0].registerType)
                 {
                 case RegisterType::Address:
-                    val = sys.cpu.addressRegisters[instr.operands[0].value].value;
+                    val =
+                        sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Data:
@@ -346,7 +367,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -374,7 +396,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System sub8(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System sub8(momiji::System sys,
+                                   const momiji::Instruction& instr)
         {
             union
             {
@@ -392,11 +415,13 @@ namespace momiji
                 switch (instr.operands[0].registerType)
                 {
                 case RegisterType::Address:
-                    pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Data:
-                    pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Special:
@@ -404,7 +429,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -432,7 +458,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System sub16(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System sub16(momiji::System sys,
+                                    const momiji::Instruction& instr)
         {
             union
             {
@@ -450,11 +477,13 @@ namespace momiji
                 switch (instr.operands[0].registerType)
                 {
                 case RegisterType::Address:
-                    pun.val = sys.cpu.addressRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.addressRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Data:
-                    pun.val = sys.cpu.dataRegisters[instr.operands[0].value].value;
+                    pun.val =
+                        sys.cpu.dataRegisters[instr.operands[0].value].value;
                     break;
 
                 case RegisterType::Special:
@@ -462,7 +491,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -490,7 +520,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System sub32(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System sub32(momiji::System sys,
+                                    const momiji::Instruction& instr)
         {
             std::int32_t val = instr.operands[0].value;
 
@@ -515,7 +546,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -543,7 +575,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System muls(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System muls(momiji::System sys,
+                                   const momiji::Instruction& instr)
         {
             std::int32_t val = instr.operands[0].value;
 
@@ -565,7 +598,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -597,7 +631,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System mulu(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System mulu(momiji::System sys,
+                                   const momiji::Instruction& instr)
         {
             std::uint32_t val = instr.operands[0].value;
 
@@ -619,7 +654,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -649,7 +685,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System divs(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System divs(momiji::System sys,
+                                   const momiji::Instruction& instr)
         {
             std::int32_t val = instr.operands[0].value;
 
@@ -672,7 +709,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Label: [[fallthrough]];
+            case OperandType::Label:
+                [[fallthrough]];
             case OperandType::Address:
                 break;
             }
@@ -710,7 +748,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System divu(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System divu(momiji::System sys,
+                                   const momiji::Instruction& instr)
         {
             std::uint32_t val = instr.operands[0].value;
 
@@ -764,7 +803,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System swap(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System swap(momiji::System sys,
+                                   const momiji::Instruction& instr)
         {
             const auto val = instr.operands[0].value;
             std::int32_t* reg = nullptr; // oof
@@ -791,12 +831,14 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System exg(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System exg(momiji::System sys,
+                                  const momiji::Instruction& instr)
         {
             return sys;
         }
 
-        inline momiji::System cmp8(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System cmp8(momiji::System sys,
+                                   const momiji::Instruction& instr)
         {
             std::int32_t src = instr.operands[0].value;
 
@@ -849,12 +891,14 @@ namespace momiji
 
             sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
             sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
-            sys.cpu.statusRegister.overflow = utils::sub_overflow(dst, src) ? 1 : 0;
+            sys.cpu.statusRegister.overflow =
+                utils::sub_overflow(dst, src) ? 1 : 0;
 
             return sys;
         }
 
-        inline momiji::System cmp16(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System cmp16(momiji::System sys,
+                                    const momiji::Instruction& instr)
         {
             std::int32_t src = instr.operands[0].value;
 
@@ -907,12 +951,14 @@ namespace momiji
 
             sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
             sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
-            sys.cpu.statusRegister.overflow = utils::sub_overflow(dst, src) ? 1 : 0;
+            sys.cpu.statusRegister.overflow =
+                utils::sub_overflow(dst, src) ? 1 : 0;
 
             return sys;
         }
 
-        inline momiji::System cmp32(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System cmp32(momiji::System sys,
+                                    const momiji::Instruction& instr)
         {
             std::int32_t src = instr.operands[0].value;
 
@@ -937,7 +983,8 @@ namespace momiji
                 }
                 break;
 
-            case OperandType::Address: [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
             case OperandType::Label:
                 break;
             }
@@ -962,18 +1009,21 @@ namespace momiji
 
             sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
             sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
-            sys.cpu.statusRegister.overflow = utils::sub_overflow(dst, src) ? 1 : 0;
+            sys.cpu.statusRegister.overflow =
+                utils::sub_overflow(dst, src) ? 1 : 0;
 
             return sys;
         }
 
-        inline momiji::System bra(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System bra(momiji::System sys,
+                                  const momiji::Instruction& instr)
         {
             sys.cpu.programCounter.value = instr.operands[0].value;
             return sys;
         }
 
-        inline momiji::System ble(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System ble(momiji::System sys,
+                                  const momiji::Instruction& instr)
         {
             auto& statReg = sys.cpu.statusRegister;
             if ((statReg.negative == 0 && statReg.overflow == 1) ||
@@ -990,7 +1040,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System blt(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System blt(momiji::System sys,
+                                  const momiji::Instruction& instr)
         {
             auto& statReg = sys.cpu.statusRegister;
 
@@ -1007,7 +1058,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System bge(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System bge(momiji::System sys,
+                                  const momiji::Instruction& instr)
         {
             auto& statReg = sys.cpu.statusRegister;
 
@@ -1024,16 +1076,15 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System bgt(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System bgt(momiji::System sys,
+                                  const momiji::Instruction& instr)
         {
             auto& statReg = sys.cpu.statusRegister;
 
-            bool first_check = statReg.zero == 0 &&
-                               statReg.negative == 0 &&
+            bool first_check = statReg.zero == 0 && statReg.negative == 0 &&
                                statReg.overflow == 0;
 
-            bool second_check = statReg.zero == 0 &&
-                                statReg.negative == 1 &&
+            bool second_check = statReg.zero == 0 && statReg.negative == 1 &&
                                 statReg.overflow == 1;
 
             if (first_check || second_check)
@@ -1048,7 +1099,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System beq(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System beq(momiji::System sys,
+                                  const momiji::Instruction& instr)
         {
             auto& statReg = sys.cpu.statusRegister;
 
@@ -1064,7 +1116,8 @@ namespace momiji
             return sys;
         }
 
-        inline momiji::System bne(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System bne(momiji::System sys,
+                                  const momiji::Instruction& instr)
         {
             auto& statReg = sys.cpu.statusRegister;
 
@@ -1080,15 +1133,16 @@ namespace momiji
             return sys;
         }
 
-
-        inline momiji::System jmp(momiji::System sys, const momiji::Instruction& instr)
+        inline momiji::System jmp(momiji::System sys,
+                                  const momiji::Instruction& instr)
         {
             return sys;
         }
 
-        constexpr std::array<momiji::instr_fn_t, 3> move{ move8, move16, move32 };
-        constexpr std::array<momiji::instr_fn_t, 3> add{ add8, add16, add32 };
-        constexpr std::array<momiji::instr_fn_t, 3> sub{ sub8, sub16, sub32 };
-        constexpr std::array<momiji::instr_fn_t, 3> cmp{ cmp8, cmp16, cmp32 };
-    }
-}
+        constexpr std::array<momiji::instr_fn_t, 3> move { move8, move16,
+                                                           move32 };
+        constexpr std::array<momiji::instr_fn_t, 3> add { add8, add16, add32 };
+        constexpr std::array<momiji::instr_fn_t, 3> sub { sub8, sub16, sub32 };
+        constexpr std::array<momiji::instr_fn_t, 3> cmp { cmp8, cmp16, cmp32 };
+    } // namespace op_impl
+} // namespace momiji

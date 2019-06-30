@@ -11,6 +11,8 @@
 //#include "Instructions.h"
 #include <System.h>
 
+#include <asl/types>
+
 
 namespace momiji
 {
@@ -20,6 +22,11 @@ namespace momiji
         return nonstd::make_unexpected<ParserError>({ line, column, error });
     }
 
+    static bool is_immediate(const Operand& op)
+    {
+        return op.operandType == OperandType::Immediate &&
+               op.specialAddressingMode == SpecialAddressingMode::Immediate;
+    }
 
     struct LabelParser
     {
@@ -73,9 +80,8 @@ namespace momiji
 
     struct Parser
     {
-        Parser(std::string_view str, const LabelInfo& lbl)
+        Parser(std::string_view str)
             : str(str)
-            , labels(lbl)
         {
         }
 
@@ -99,9 +105,13 @@ namespace momiji
                     continue;
                 }
 
+                auto try_label = ParseLabel()(tmp_str);
+                if (try_label.result)
                 {
-                    auto skip_labels = Sequence(ParseLabel(), Whitespace())(tmp_str);
-                    tmp_str = skip_labels.rest;
+                    // We found a label!
+                    auto label_hash = utils::hash(try_label.parsed_str);
+                    labels.labels.emplace_back(label_hash, program_counter);
+                    tmp_str = try_label.rest;
                 }
 
                 // Maybe we have an instruction?
@@ -118,172 +128,49 @@ namespace momiji
 
                 auto str_hash = momiji::utils::hash(instrword.parsed_str);
 
-                parser_metadata res = { };
-                switch (str_hash)
+                // Check for a matching instruction
+                auto found_instr = std::find_if(
+                    std::begin(momiji::mappings), std::end(momiji::mappings),
+                    [str_hash](MappingType hash) {
+                        return hash.mapping == str_hash;
+                    });
+
+                if (found_instr == std::end(momiji::mappings))
                 {
-                case utils::hash("divs"):
-                    res = CommonInstructionParser(instr)(tmp_str);
-                    instr.instructionType = InstructionType::SignedDiv;
-                    break;
-
-                case utils::hash("divu"):
-                    res = CommonInstructionParser(instr)(tmp_str);
-                    instr.instructionType = InstructionType::UnsignedDiv;
-                    break;
-
-                case utils::hash("swap"):
-                    res = OneRegisterInstructionParser(instr)(tmp_str);
-                    instr.instructionType = InstructionType::Swap;
-                    break;
-
-                case utils::hash("exg"):
-                    res = CommonInstructionParser(instr)(tmp_str);
-                    instr.instructionType = InstructionType::Exchange;
-                    break;
-
-                case utils::hash("or"):
-                case utils::hash("ori"):
-                    res = CommonInstructionParser(instr)(tmp_str);
-                    switch (instr.operands[0].operandType)
-                    {
-                    case OperandType::Immediate:
-                        switch (instr.operands[0].specialAddressingMode)
-                        {
-                        case SpecialAddressingMode::Immediate:
-                            instr.instructionType = InstructionType::OrI;
-                            break;
-                        }
-                        break;
-
-                    default:
-                        instr.instructionType = InstructionType::Or;
-                    }
-                    break;
-
-                case utils::hash("and"):
-                case utils::hash("andi"):
-                    res = CommonInstructionParser(instr)(tmp_str);
-                    switch (instr.operands[0].operandType)
-                    {
-                    case OperandType::Immediate:
-                        switch (instr.operands[0].specialAddressingMode)
-                        {
-                        case SpecialAddressingMode::Immediate:
-                            instr.instructionType = InstructionType::AndI;
-                            break;
-                        }
-                        break;
-
-                    default:
-                        instr.instructionType = InstructionType::And;
-                    }
-                    break;
-
-                case utils::hash("cmp"):
-                case utils::hash("cmpi"):
-                case utils::hash("cmpa"):
-                    res = CommonInstructionParser(instr)(tmp_str);
-
-                    switch (instr.operands[1].operandType)
-                    {
-                    case OperandType::AddressRegister:
-                        instr.instructionType = InstructionType::CompareA;
-                        break;
-
-                    default:
-                        instr.instructionType = InstructionType::Compare;
-                    }
-
-                    switch (instr.operands[0].operandType)
-                    {
-                    case OperandType::Immediate:
-                        switch (instr.operands[0].specialAddressingMode)
-                        {
-                        case SpecialAddressingMode::Immediate:
-                            instr.instructionType = InstructionType::CompareI;
-                            break;
-                        }
-                        break;
-                    }
-
-                    break;
-
-                case utils::hash("jmp"):
-                    res = BranchInstructionParser(instr, labels)(tmp_str);
-                    if (!res.result)
-                    {
-                        return make_parser_error(0, line_count,
-                                                 ParserError::ErrorType::NoLabelFound);
-                    }
-
-                    instr.instructionType = InstructionType::Jmp;
-                    break;
-
-                case utils::hash("bra"):
-                    res = BranchInstructionParser(instr, labels)(tmp_str);
-                    if (!res.result)
-                    {
-                        return make_parser_error(0, line_count,
-                                                 ParserError::ErrorType::NoLabelFound);
-                    }
-
-                    instr.instructionType = InstructionType::Branch;
-                    break;
-
-                case utils::hash("ble"):
-                case utils::hash("blt"):
-                case utils::hash("bge"):
-                case utils::hash("bgt"):
-                case utils::hash("beq"):
-                case utils::hash("bne"):
-                    res = BranchInstructionParser(instr, labels)(tmp_str);
-                    if (!res.result)
-                    {
-                        return make_parser_error(0, line_count,
-                                                 ParserError::ErrorType::NoLabelFound);
-                    }
-
-                    // Mama, Papa, I feel so sorry for this.
-                    switch (str_hash)
-                    {
-                    case utils::hash("ble"):
-                        instr.branchCondition = BranchConditions::LessEq;
-                        break;
-
-                    case utils::hash("blt"):
-                        instr.branchCondition = BranchConditions::LessThan;
-                        break;
-
-                    case utils::hash("bge"):
-                        instr.branchCondition = BranchConditions::GreaterEq;
-                        break;
-
-                    case utils::hash("bgt"):
-                        instr.branchCondition = BranchConditions::GreaterThan;
-                        break;
-
-                    case utils::hash("beq"):
-                        instr.branchCondition = BranchConditions::Equal;
-                        break;
-
-                    case utils::hash("bne"):
-                        instr.branchCondition = BranchConditions::NotEqual;
-                        break;
-                    }
-
-                    instr.instructionType = InstructionType::BranchCondition;
-                    break;
-
-                default:
-                    return make_parser_error(0, line_count,
-                                             ParserError::ErrorType::NoInstructionFound);
-
-                    break;
+                    return make_parser_error(
+                        0, line_count,
+                        ParserError::ErrorType::NoInstructionFound);
                 }
+
+                instr.program_counter = program_counter;
+                auto res = found_instr->execfn(tmp_str, instr, labels);
 
                 if (res.result)
                 {
                     instructions.push_back(instr);
+
+                    // Every increment of one to program_counter is 2 bytes
+                    // Because memory is 16bit-aligned
+
+                    // First 2 bytes for the instruction
+                    ++program_counter;
+
+                    if (is_immediate(instr.operands[0]))
+                    {
+                        switch (instr.dataType)
+                        {
+                        case DataType::Byte:
+                        case DataType::Word:
+                            // 2 bytes of immediate data
+                            ++program_counter;
+                            break;
+
+                        case DataType::Long:
+                            // 4 bytes of immediate data
+                            program_counter += 2;
+                            break;
+                        }
+                    }
                 }
 
                 tmp_str = res.rest;
@@ -292,6 +179,29 @@ namespace momiji
                 auto skip_to_end = SkipLine()(tmp_str);
                 tmp_str = skip_to_end.rest;
                 ++line_count;
+
+            }
+
+            // All the instructions are parsed now, we should resolve all
+            // label resolution issues
+            for (auto& x : instructions)
+            {
+                for (int i = 0; i < x.operands.size(); ++i)
+                {
+                    auto& op = x.operands[i];
+                    if (!op.labelResolved)
+                    {
+                        auto found = alg::find_label(labels, x.operands[0].value);
+
+                        if (found == std::end(labels.labels))
+                        {
+                            return make_parser_error(0, line_count, ParserError::ErrorType::NoLabelFound);
+                        }
+
+                        op.value = found->idx;
+                        op.labelResolved = true;
+                    }
+                }
             }
 
             return instructions;
@@ -299,20 +209,17 @@ namespace momiji
 
     private:
         int line_count{0};
+        asl::i64 program_counter{0};
         std::string_view str;
         std::vector<momiji::Instruction> instructions;
-        const LabelInfo& labels;
+        LabelInfo labels;
         bool parsing_error{false};
         ParserError last_error;
     };
 
     momiji::ParsingResult parse(const std::string& str)
     {
-        LabelParser label{str};
-
-        label.run();
-
-        Parser parser{str, label.info};
+        Parser parser{str};
 
         return parser.run();
     }

@@ -9,7 +9,7 @@ namespace momiji
 {
     struct InstructionData
     {
-        std::uint8_t size{2};
+        std::uint8_t size { 2 };
 
         OperandType op1;
         SpecialAddressingMode mod1;
@@ -20,8 +20,8 @@ namespace momiji
         gsl::span<std::uint16_t> mem;
     };
 
-    using DecodedInstructionFn = momiji::System(*)(momiji::System,
-                                                   const InstructionData& data);
+    using DecodedInstructionFn =
+        momiji::System (*)(momiji::System, const InstructionData& data);
 
     struct DecodedInstruction
     {
@@ -32,4 +32,4 @@ namespace momiji
     };
 
     DecodedInstruction decode(gsl::span<std::uint16_t> mem, int idx);
-}
+} // namespace momiji

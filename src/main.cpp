@@ -1,11 +1,11 @@
 #include <fstream>
-#include <streambuf>
 #include <iostream>
+#include <streambuf>
 #include <string>
 
+#include "Compiler.h"
 #include "Parser.h"
 #include "System.h"
-#include "Compiler.h"
 #include <Utils.h>
 
 #include "Emulator.h"
@@ -14,7 +14,6 @@
 #include <iomanip>
 
 #include <bitset>
-
 
 void print_sys(const momiji::System& sys)
 {
@@ -28,7 +27,7 @@ void print_sys(const momiji::System& sys)
     std::cout << "\ndata: ";
     for (const auto& reg : sys.cpu.dataRegisters)
     {
-        std::cout  << static_cast<std::int32_t>(reg.value) << ' ';
+        std::cout << static_cast<std::int32_t>(reg.value) << ' ';
     }
 
     std::cout << "\npc: ";
@@ -51,11 +50,10 @@ void print_sys(const momiji::System& sys)
     for (int i = 0, cnt = 0; i < binary.size(); ++i, cnt += 2)
     {
         std::cout << &binary[i] << ": ";
-        std::bitset<16> bs{binary[i]};
+        std::bitset<16> bs { binary[i] };
         std::cout << bs << " \n";
     }
     std::cout << '\n';
-
 }
 
 void cli()
@@ -63,13 +61,12 @@ void cli()
     momiji::Emulator emu;
 
     bool should_loop = true;
-    std::string str{};
+    std::string str {};
 
+    std::ifstream file { "file.asm" };
 
-    std::ifstream file{"file.asm"};
-
-    std::string filestr(std::istreambuf_iterator<char>{file},
-                        std::istreambuf_iterator<char>{});
+    std::string filestr(std::istreambuf_iterator<char> { file },
+                        std::istreambuf_iterator<char> {});
 
     auto instr = emu.newState(filestr);
 
@@ -124,7 +121,8 @@ void cli()
         if (instr.has_value())
         {
             momiji::ParserError& error = instr.value();
-            std::cout << "Error at " << error.line << ':' << error.column << ", ";
+            std::cout << "Error at " << error.line << ':' << error.column
+                      << ", ";
             switch (error.errorType)
             {
             case momiji::ParserError::ErrorType::NoInstructionFound:
@@ -157,10 +155,9 @@ void cli()
     }
 }
 
-
 int main()
 {
-    //cli();
+    // cli();
 
 #if 0
     std::string str{};

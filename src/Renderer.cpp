@@ -4,7 +4,6 @@
 #include <tewi/Video/Renderable2D.hpp>
 #include <tewi/Video/Vertex.h>
 
-
 namespace momiji
 {
     constexpr auto g_maxSprites = 10;
@@ -59,7 +58,9 @@ namespace momiji
     )";
 
     renderer<tewi::API::OpenGLTag>::renderer()
-        : m_IBO(0), m_VAO(0), m_VBO(0)
+        : m_IBO(0)
+        , m_VAO(0)
+        , m_VBO(0)
     {
         glGenVertexArrays(1, &m_VAO);
         glGenBuffers(1, &m_VBO);
@@ -74,23 +75,29 @@ namespace momiji
         glEnableVertexAttribArray(3);
 
         // Pos
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex), (const void*)(0));
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
+                              (const void*)(0));
 
         // UV
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex), (const void*)(offsetof(tewi::Vertex, uv)));
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
+                              (const void*)(offsetof(tewi::Vertex, uv)));
 
         // TID
-        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex), (const void*)(offsetof(tewi::Vertex, textureID)));
+        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
+                              (const void*)(offsetof(tewi::Vertex, textureID)));
 
         // Color
-        glVertexAttribPointer(3, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(tewi::Vertex), (const void*)(offsetof(tewi::Vertex, color)));
+        glVertexAttribPointer(3, 4, GL_UNSIGNED_BYTE, GL_TRUE,
+                              sizeof(tewi::Vertex),
+                              (const void*)(offsetof(tewi::Vertex, color)));
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         std::vector<GLuint> indices(g_indicesBufferSize);
-        for (asl::u32 i = 0, offset = 0; i < indices.size(); i += 6, offset += 4)
+        for (asl::u32 i = 0, offset = 0; i < indices.size();
+             i += 6, offset += 4)
         {
-            indices[  i  ] = offset + 0;
+            indices[i] = offset + 0;
             indices[i + 1] = offset + 1;
             indices[i + 2] = offset + 2;
 
@@ -101,7 +108,8 @@ namespace momiji
 
         glGenBuffers(1, &m_IBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
+                     indices.data(), GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
         glBindVertexArray(0);
@@ -116,9 +124,10 @@ namespace momiji
     void renderer<tewi::API::OpenGLTag>::begin()
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-        //glBindVertexArray(m_VAO);
-        m_buffer = reinterpret_cast<tewi::Vertex*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+        // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+        // glBindVertexArray(m_VAO);
+        m_buffer = reinterpret_cast<tewi::Vertex*>(
+            glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
     }
 
     void renderer<tewi::API::OpenGLTag>::end()
@@ -149,23 +158,17 @@ namespace momiji
     tewi::ShaderProgram<tewi::API::OpenGLTag>
     renderer<tewi::API::OpenGLTag>::createShaderProgram()
     {
-        constexpr std::array<tewi::ShaderDescription, 2> shaders
-        {
-            tewi::ShaderDescription{ vertshader, tewi::ShaderType::Vertex },
-            tewi::ShaderDescription{ fragshader, tewi::ShaderType::Fragment },
+        constexpr std::array<tewi::ShaderDescription, 2> shaders {
+            tewi::ShaderDescription { vertshader, tewi::ShaderType::Vertex },
+            tewi::ShaderDescription { fragshader, tewi::ShaderType::Fragment },
         };
 
-        constexpr std::array<asl::string_view, 4> attribs
-        {
-            "vertexPosition",
-            "vertexUV",
-            "vertexTID",
-            "vertexColor"
+        constexpr std::array<asl::string_view, 4> attribs {
+            "vertexPosition", "vertexUV", "vertexTID", "vertexColor"
         };
 
         return tewi::ShaderProgram<tewi::API::OpenGLTag>(
             { shaders.data(), shaders.size() },
-            { attribs.data(), attribs.size() }
-        );
+            { attribs.data(), attribs.size() });
     }
-}
+} // namespace momiji

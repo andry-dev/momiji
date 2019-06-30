@@ -12,7 +12,7 @@ namespace momiji
     void exg(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Exg bits;
 

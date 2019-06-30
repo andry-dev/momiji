@@ -12,7 +12,7 @@ namespace momiji
     void bra(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Bra bits;
 
@@ -21,8 +21,8 @@ namespace momiji
         {
             bits.displacement = 0;
 
-            additionalData.val = instr.operands[0].value;
-            additionalData.cnt = 2;
+            additionalData[0].val = instr.operands[0].value;
+            additionalData[0].cnt = 2;
         }
         else
         {

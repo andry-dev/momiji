@@ -1,10 +1,10 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <System.h>
 #include <Parser.h>
+#include <System.h>
 #include <optional>
+#include <string>
+#include <vector>
 
 namespace momiji
 {
@@ -39,10 +39,10 @@ namespace momiji
 
     struct Emulator
     {
-    private:
+      private:
         std::vector<momiji::System> systemStates;
 
-    public:
+      public:
         Emulator();
         Emulator(EmulatorSettings);
 
@@ -54,4 +54,4 @@ namespace momiji
         bool step();
         bool reset();
     };
-}
+} // namespace momiji

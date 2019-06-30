@@ -4,8 +4,8 @@
 
 #include <array>
 
-#include <tewi/Video/Vertex.h>
 #include <tewi/Video/Shader.hpp>
+#include <tewi/Video/Vertex.h>
 
 namespace tewi
 {
@@ -15,13 +15,14 @@ namespace tewi
     }
 
     struct Vertex;
-}
+} // namespace tewi
 
 namespace momiji
 {
     template <typename APIType>
     struct renderer
-    { };
+    {
+    };
 
     template <>
     struct renderer<tewi::API::OpenGLTag>
@@ -38,15 +39,15 @@ namespace momiji
 
         static tewi::ShaderProgram<tewi::API::OpenGLTag> createShaderProgram();
 
-    private:
-        GLuint m_IBO{0};
-        GLuint m_VAO{0};
-        GLuint m_VBO{0};
+      private:
+        GLuint m_IBO { 0 };
+        GLuint m_VAO { 0 };
+        GLuint m_VBO { 0 };
 
-        int m_count{0};
+        int m_count { 0 };
 
-        tewi::Vertex* m_buffer{nullptr};
-        std::array<int, 2> m_textures{ 0, 0 };
+        tewi::Vertex* m_buffer { nullptr };
+        std::array<int, 2> m_textures { 0, 0 };
     };
 
     template <typename Renderable>
@@ -75,7 +76,8 @@ namespace momiji
         m_buffer->textureID = tid;
         m_buffer++;
 
-        m_buffer->position = glm::vec2(rend.pos.x + size.x * scale, rend.pos.y + size.y * scale);
+        m_buffer->position =
+            glm::vec2(rend.pos.x + size.x * scale, rend.pos.y + size.y * scale);
         m_buffer->color = rend.color;
         m_buffer->uv = glm::vec2(1.0f, 1.0f);
         m_buffer->textureID = tid;
@@ -95,4 +97,4 @@ namespace momiji
 
         m_count += 6;
     }
-}
+} // namespace momiji

@@ -1,47 +1,43 @@
 #pragma once
 
+#include <Parser.h>
+
 #include "Combinators.h"
 #include <expected.hpp>
 #include <string_view>
 
-namespace momiji
+namespace momiji::details
 {
-    namespace details
-    {
-        using ResultType = nonstd::expected<
-            parser_metadata,
-            ParserError
-        >;
-        using parserfn_t = ResultType(*)(std::string_view str, momiji::Instruction&, LabelInfo&);
-    }
+    using parserfn_t = parser_metadata (*)(std::string_view str,
+                                           momiji::Instruction&, LabelInfo&);
 
-    details::ResultType parseMove(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseMove(std::string_view str, Instruction& instr, LabelInfo&);
 
-    details::ResultType parseMoveQ(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseMoveQ(std::string_view str, Instruction& instr, LabelInfo&);
 
-    details::ResultType parseAdd(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseSub(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseAdd(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseSub(std::string_view str, Instruction& instr, LabelInfo&);
 
-    details::ResultType parseMuls(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseMulu(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseDivs(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseDivu(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseMuls(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseMulu(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseDivs(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseDivu(std::string_view str, Instruction& instr, LabelInfo&);
 
-    details::ResultType parseSwap(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseExg(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseSwap(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseExg(std::string_view str, Instruction& instr, LabelInfo&);
 
-    details::ResultType parseOr(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseAnd(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseOr(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseAnd(std::string_view str, Instruction& instr, LabelInfo&);
 
-    details::ResultType parseCmp(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseCmp(std::string_view str, Instruction& instr, LabelInfo&);
 
-    details::ResultType parseJmp(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseBra(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseJmp(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseBra(std::string_view str, Instruction& instr, LabelInfo&);
 
-    details::ResultType parseBlt(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseBle(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseBgt(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseBge(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseBeq(std::string_view str, Instruction& instr, LabelInfo&);
-    details::ResultType parseBne(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseBlt(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseBle(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseBgt(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseBge(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseBeq(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseBne(std::string_view str, Instruction& instr, LabelInfo&);
 }

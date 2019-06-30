@@ -1,9 +1,9 @@
 #pragma once
 
+#include <Parser.h>
 #include <array>
 #include <cstdint>
 #include <vector>
-#include <Parser.h>
 
 #include <Utils.h>
 
@@ -23,14 +23,19 @@ namespace momiji
     struct StatusRegister
     {
         StatusRegister()
-            : extend(0), negative(0), zero(0), overflow(0), carry(0)
-        { }
+            : extend(0)
+            , negative(0)
+            , zero(0)
+            , overflow(0)
+            , carry(0)
+        {
+        }
 
-        std::uint8_t extend : 1;    // E
-        std::uint8_t negative : 1;  // N
-        std::uint8_t zero : 1;      // Z
-        std::uint8_t overflow : 1;  // V
-        std::uint8_t carry : 1;     // C
+        std::uint8_t extend : 1;   // E
+        std::uint8_t negative : 1; // N
+        std::uint8_t zero : 1;     // Z
+        std::uint8_t overflow : 1; // V
+        std::uint8_t carry : 1;    // C
     };
 
     struct ProgramCounter
@@ -41,8 +46,10 @@ namespace momiji
     struct Label
     {
         Label(std::int32_t name_hash, std::int32_t idx)
-            : name_hash(name_hash), idx(idx)
-        { }
+            : name_hash(name_hash)
+            , idx(idx)
+        {
+        }
 
         Label() = default;
         ~Label() = default;
@@ -58,10 +65,9 @@ namespace momiji
     struct Cpu
     {
         Cpu()
-            : dataRegisters({0})
-            , addressRegisters({0})
+            : dataRegisters({ 0 })
+            , addressRegisters({ 0 })
         {
-
         }
 
         std::array<DataRegister, 8> dataRegisters;
@@ -76,4 +82,4 @@ namespace momiji
         Cpu cpu;
         MemoryType mem;
     };
-}
+} // namespace momiji

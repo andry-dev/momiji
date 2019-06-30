@@ -1,12 +1,12 @@
 #pragma once
 
-#include <cstdint>
-#include <string_view>
-#include <string>
-#include <type_traits>
-#include <limits>
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
+#include <limits>
+#include <string>
+#include <string_view>
+#include <type_traits>
 
 namespace momiji::utils
 {
@@ -14,8 +14,9 @@ namespace momiji::utils
     {
         template <typename T>
         struct deleted_type : std::false_type
-        { };
-    }
+        {
+        };
+    } // namespace details
     // From Chaiscript
     // https://github.com/ChaiScript/ChaiScript/blob/develop/include/chaiscript/utility/hash.hpp
     template <typename Itr>
@@ -107,4 +108,4 @@ namespace momiji::utils
 
         return ret;
     }
-}
+} // namespace momiji::utils

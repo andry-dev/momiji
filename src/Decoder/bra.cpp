@@ -19,7 +19,6 @@ namespace momiji::dec
 
         ret.exec = instr::bra;
 
-
         return ret;
     }
 }

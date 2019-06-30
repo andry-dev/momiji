@@ -12,7 +12,7 @@ namespace momiji
     void cmp(const momiji::Instruction& instr,
              MemoryType&,
              OpcodeDescription& opcode,
-             AdditionalData& additionalData)
+             std::array<AdditionalData, 2>& additionalData)
     {
         repr::Cmp bits;
 
@@ -32,7 +32,7 @@ namespace momiji
     void cmpa(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         repr::CmpA bits;
 
@@ -68,7 +68,7 @@ namespace momiji
     void cmpi(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         repr::CmpI bits;
 
@@ -76,8 +76,8 @@ namespace momiji
 
         bits.size = size & 0b11;
 
-        additionalData.cnt = tobyte[size];
-        additionalData.val = instr.operands[0].value;
+        additionalData[0].cnt = tobyte[size];
+        additionalData[0].val = instr.operands[0].value;
 
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1);

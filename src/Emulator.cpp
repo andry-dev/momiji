@@ -1,23 +1,44 @@
 #include "Emulator.h"
 
-#include <iterator>
 #include <iostream>
+#include <iterator>
 
 #include <Compiler.h>
 #include <Decoder.h>
 
 namespace momiji
 {
+
+    static std::uint16_t* immediateIncrPC(const momiji::DecodedInstruction& instr,
+                                std::uint16_t* pc)
+    {
+        switch (instr.data.size)
+        {
+        case 1:
+        case 2:
+            pc += 2;
+            break;
+
+        case 4:
+            pc += 3;
+            break;
+        }
+
+        return pc;
+    }
+
     Emulator::Emulator()
         : systemStates(1)
-    { }
+    {
+    }
 
     const std::vector<momiji::System>& Emulator::getStates() const
     {
         return systemStates;
     }
 
-    std::optional<momiji::ParserError> Emulator::newState(const std::string& str)
+    std::optional<momiji::ParserError>
+    Emulator::newState(const std::string& str)
     {
         auto res = momiji::parse(str);
 
@@ -61,14 +82,16 @@ namespace momiji
     {
         auto& lastSys = systemStates.back();
         const auto* pc = lastSys.cpu.programCounter.address;
-        if (pc < lastSys.mem.data() || pc >= (lastSys.mem.data() + lastSys.mem.size()))
+        if (pc < lastSys.mem.data() ||
+            pc >= (lastSys.mem.data() + lastSys.mem.size()))
         {
             return false;
         }
 
         auto offset = pc - lastSys.mem.data();
 
-        gsl::span<std::uint16_t> span{lastSys.mem.data(), lastSys.mem.size()};
+        gsl::span<std::uint16_t> span { lastSys.mem.data(),
+                                        lastSys.mem.size() };
         const auto& instr = momiji::decode(span, pc - lastSys.mem.data());
 
         System newstate = instr.exec(lastSys, instr.data);
@@ -93,22 +116,25 @@ namespace momiji
         }
         */
 
-        if (instr.data.op1 == OperandType::Immediate &&
-            instr.data.mod1 == SpecialAddressingMode::Immediate)
-        {
-            switch (instr.data.size)
-            {
-            case 1:
-            case 2:
-                newstate.cpu.programCounter.address += 2;
-                break;
+        bool pc_incremented = false;
 
-            case 4:
-                newstate.cpu.programCounter.address += 3;
-                break;
-            }
+        if (instr.data.op1 == OperandType::Immediate)
+        {
+            newstate.cpu.programCounter.address =
+                immediateIncrPC(instr, newstate.cpu.programCounter.address);
+
+            pc_incremented = true;
         }
-        else
+
+        if (instr.data.op2 == OperandType::Immediate)
+        {
+            newstate.cpu.programCounter.address =
+                immediateIncrPC(instr, newstate.cpu.programCounter.address);
+
+            pc_incremented = true;
+        }
+
+        if (!pc_incremented)
         {
             ++newstate.cpu.programCounter.address;
         }
@@ -129,4 +155,4 @@ namespace momiji
 
         return ret;
     }
-}
+} // namespace momiji

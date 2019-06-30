@@ -3,10 +3,10 @@
 #include <memory>
 
 #include <asl/types>
-#include <tewi/Video/Renderable2D.hpp>
 #include <tewi/Video/API/API.h>
-#include <tewi/Video/Shader.h>
 #include <tewi/Video/IndexBuffer.h>
+#include <tewi/Video/Renderable2D.hpp>
+#include <tewi/Video/Shader.h>
 
 #include <tewi/Platform/OpenGL/Glew.h>
 
@@ -43,7 +43,7 @@ namespace momiji
 
         tewi::ShaderProgram<tewi::API::OpenGLTag> createShaderProgram();
 
-    private:
+      private:
         GLuint m_VAO;
         GLuint m_VBO;
         std::unique_ptr<tewi::IndexBuffer<tewi::API::OpenGLTag>> m_IBO;
@@ -63,27 +63,32 @@ namespace momiji
         glBufferData(GL_ARRAY_BUFFER, m_bufferSize, 0, GL_STATIC_DRAW);
 
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex), (const void*)(0));
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
+                              (const void*)(0));
 
         // UV
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex), (const void*)(offsetof(Vertex, uv)));
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
+                              (const void*)(offsetof(Vertex, uv)));
 
         // TID
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex), (const void*)(offsetof(Vertex, textureID)));
+        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
+                              (const void*)(offsetof(Vertex, textureID)));
 
         // Color
         glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(tewi::Vertex), (const void*)(offsetof(Vertex, color)));
-
+        glVertexAttribPointer(3, 4, GL_UNSIGNED_BYTE, GL_TRUE,
+                              sizeof(tewi::Vertex),
+                              (const void*)(offsetof(Vertex, color)));
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         std::vector<GLuint> indices(m_indicesSize);
-        for (asl::sizei i = 0, offset = 0; i < indices.size(); i += 6, offset += 4)
+        for (asl::sizei i = 0, offset = 0; i < indices.size();
+             i += 6, offset += 4)
         {
-            indices[  i  ] = offset + 0;
+            indices[i] = offset + 0;
             indices[i + 1] = offset + 1;
             indices[i + 2] = offset + 2;
 
@@ -102,28 +107,23 @@ namespace momiji
     {
         int textureUni = glGetUniformLocation("texture");
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        
     }
 
     template <asl::i16 MaxTextures>
     template <typename T>
     void basic_renderer<tewi::API::OpenGLTag, MaxTextures>::add(
-            const tewi::Renderable2D<T>& rend)
+        const tewi::Renderable2D<T>& rend)
     {
-
     }
 
     template <asl::i16 MaxTextures>
     void basic_renderer<tewi::API::OpenGLTag, MaxTextures>::unmap()
     {
-
     }
-
 
     template <asl::i16 MaxTextures>
     void basic_renderer<tewi::API::OpenGLTag, MaxTextures>::draw()
     {
-
     }
 
-}
+} // namespace momiji

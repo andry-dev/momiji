@@ -12,7 +12,7 @@ namespace momiji
     void divs(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         repr::DivS bits;
 
@@ -27,8 +27,8 @@ namespace momiji
             switch (instr.operands[0].specialAddressingMode)
             {
             case SpecialAddressingMode::Immediate:
-                additionalData.val = instr.operands[0].value;
-                additionalData.cnt = 2;
+                additionalData[0].val = instr.operands[0].value;
+                additionalData[0].cnt = 2;
                 break;
             }
             break;
@@ -47,7 +47,7 @@ namespace momiji
     void divu(const momiji::Instruction& instr,
               MemoryType&,
               OpcodeDescription& opcode,
-              AdditionalData& additionalData)
+              std::array<AdditionalData, 2>& additionalData)
     {
         repr::DivS bits;
 
@@ -62,8 +62,8 @@ namespace momiji
             switch (instr.operands[0].specialAddressingMode)
             {
             case SpecialAddressingMode::Immediate:
-                additionalData.val = instr.operands[0].value;
-                additionalData.cnt = 2;
+                additionalData[0].val = instr.operands[0].value;
+                additionalData[0].cnt = 2;
                 break;
             }
             break;

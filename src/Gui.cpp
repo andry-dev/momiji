@@ -1,18 +1,18 @@
 #include "Gui.h"
 
-#include <thread>
 #include <chrono>
+#include <thread>
 
-#include <tewi/Video/Window.hpp>
-#include <tewi/Utils/ImGuiBindings.h>
-#include <tewi/Input/InputBuffer.hpp>
-#include <tewi/Video/Shader.hpp>
-#include <tewi/Video/Sprite.h>
-#include <tewi/Video/Renderer2D.hpp>
-#include <tewi/Video/BatchRenderer2D.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <tewi/Input/InputBuffer.hpp>
+#include <tewi/Utils/ImGuiBindings.h>
 #include <tewi/Utils/TickTimer.h>
+#include <tewi/Video/BatchRenderer2D.hpp>
+#include <tewi/Video/Renderer2D.hpp>
+#include <tewi/Video/Shader.hpp>
+#include <tewi/Video/Sprite.h>
+#include <tewi/Video/Window.hpp>
 
 #include "Emulator.h"
 #include "Renderer.h"
@@ -20,18 +20,15 @@
 
 #include <cstdio>
 
-static void MessageCallback( GLenum source,
-                 GLenum type,
-                 GLuint id,
-                 GLenum severity,
-                 GLsizei length,
-                 const GLchar* message,
-                 const void* userParam )
+static void MessageCallback(GLenum source, GLenum type, GLuint id,
+                            GLenum severity, GLsizei length,
+                            const GLchar* message, const void* userParam)
 {
-    std::fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-           ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
-            type, severity, message );
-  //TEWI_EXPECTS(0, "");
+    std::fprintf(stderr,
+                 "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+                 (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type,
+                 severity, message);
+    // TEWI_EXPECTS(0, "");
 }
 
 void gui()
@@ -40,7 +37,8 @@ void gui()
 
     momiji::Emulator emu;
 
-    tewi::Window<def_tag> win{"momiji", tewi::Width{800}, tewi::Height{600}};
+    tewi::Window<def_tag> win { "momiji", tewi::Width { 800 },
+                                tewi::Height { 600 } };
 
     tewi::InputBuffer inputBuffer;
     win.bindTo(inputBuffer);
@@ -49,18 +47,20 @@ void gui()
 
     ImGui::CreateContext();
     ImGui::StyleColorsLight();
-    tewi::initImGui(def_tag{}, win);
+    tewi::initImGui(def_tag {}, win);
 
     bool showDebugInfo = false;
 
-    constexpr std::chrono::duration<double, std::milli> fpsmax{1000.0 / 120.0};
+    constexpr std::chrono::duration<double, std::milli> fpsmax { 1000.0 /
+                                                                 120.0 };
 
     std::string str;
 
-    tewi::Sprite<def_tag> background{glm::vec2{0.0f, 0.0f}, "res/bgimage.png"};
+    tewi::Sprite<def_tag> background { glm::vec2 { 0.0f, 0.0f },
+                                       "res/bgimage.png" };
 
     using BatchRenderer2D = tewi::Renderer2D<def_tag, tewi::BatchRenderer2D>;
-    momiji::renderer<def_tag> renderer{};
+    momiji::renderer<def_tag> renderer {};
 
     auto shader = renderer.createShaderProgram();
 
@@ -78,10 +78,9 @@ void gui()
 
         win.clear();
 
-        tewi::newFrameImGui(def_tag{}, win);
+        tewi::newFrameImGui(def_tag {}, win);
         ImGui::NewFrame();
         win.pollEvents(inputBuffer);
-
 
         if (lightTheme)
         {
@@ -96,7 +95,9 @@ void gui()
         {
             ImGui::Begin("Debug menu");
 
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
+                        1000.0f / ImGui::GetIO().Framerate,
+                        ImGui::GetIO().Framerate);
 
             ImGui::Separator();
 
@@ -107,10 +108,12 @@ void gui()
                     ImGui::SameLine();
                     static std::int32_t ext8 = 0;
                     ImGui::PushItemWidth(70.0f);
-                    ImGui::InputInt("##1", &ext8, 0, 0, ImGuiInputTextFlags_CharsHexadecimal);
+                    ImGui::InputInt("##1", &ext8, 0, 0,
+                                    ImGuiInputTextFlags_CharsHexadecimal);
                     ImGui::PopItemWidth();
                     ImGui::SameLine();
-                    ImGui::Text("%d", momiji::utils::sign_extend<std::int8_t>(ext8));
+                    ImGui::Text("%d",
+                                momiji::utils::sign_extend<std::int8_t>(ext8));
                 }
 
                 {
@@ -118,10 +121,12 @@ void gui()
                     ImGui::SameLine();
                     static std::int32_t ext16 = 0;
                     ImGui::PushItemWidth(70.0f);
-                    ImGui::InputInt("##2", &ext16, 0, 0, ImGuiInputTextFlags_CharsHexadecimal);
+                    ImGui::InputInt("##2", &ext16, 0, 0,
+                                    ImGuiInputTextFlags_CharsHexadecimal);
                     ImGui::PopItemWidth();
                     ImGui::SameLine();
-                    ImGui::Text("%d", momiji::utils::sign_extend<std::int16_t>(ext16));
+                    ImGui::Text(
+                        "%d", momiji::utils::sign_extend<std::int16_t>(ext16));
                 }
 
                 {
@@ -129,7 +134,8 @@ void gui()
                     ImGui::SameLine();
                     static std::int32_t num10 = 0;
                     ImGui::PushItemWidth(70.0f);
-                    ImGui::InputInt("##n10", &num10, 0, 0, ImGuiInputTextFlags_CharsDecimal);
+                    ImGui::InputInt("##n10", &num10, 0, 0,
+                                    ImGuiInputTextFlags_CharsDecimal);
                     ImGui::PopItemWidth();
                     ImGui::SameLine();
                     ImGui::Text("%x", num10);
@@ -140,7 +146,8 @@ void gui()
                     ImGui::SameLine();
                     static std::int32_t num16 = 0;
                     ImGui::PushItemWidth(70.0f);
-                    ImGui::InputInt("##n16", &num16, 0, 0, ImGuiInputTextFlags_CharsHexadecimal);
+                    ImGui::InputInt("##n16", &num16, 0, 0,
+                                    ImGuiInputTextFlags_CharsHexadecimal);
                     ImGui::PopItemWidth();
                     ImGui::SameLine();
                     ImGui::Text("%d", num16);
@@ -177,6 +184,34 @@ void gui()
             ImGui::End();
         }
 
+        {
+            ImGui::Begin("Memory dump");
+
+            const auto& states = emu.getStates();
+
+            if (states.size() > 1)
+            {
+                const auto& lastMem = states.back().mem;
+                const auto& pc = states.back().cpu.programCounter.address;
+                for (int i = 0; i < lastMem.size(); ++i)
+                {
+                    std::uint8_t lower = lastMem[i] & 0x00FF;
+                    std::uint8_t higher = (lastMem[i] & 0xFF00) >> 8;
+
+                    ImGui::TextUnformatted(pc == &lastMem[i] ? "=>" : "  ");
+                    ImGui::SameLine();
+                    ImGui::Text("%x: %x %x", &lastMem[i], higher, lower);
+                    //ImGui::NewLine();
+                }
+            }
+            else
+            {
+                ImGui::Text("No memory output available!\n");
+            }
+
+
+            ImGui::End();
+        }
 
         {
             ImGui::Begin("Code view");
@@ -246,12 +281,13 @@ void gui()
 
             ImGui::TextUnformatted(error_string.c_str());
 
-
             ImGui::End();
         }
 
         {
-            ImGui::Begin("Registers", 0, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize);
+            ImGui::Begin("Registers", 0,
+                         ImGuiWindowFlags_AlwaysAutoResize |
+                             ImGuiWindowFlags_NoResize);
 
             static bool hexDump = false;
             static bool allowEditing = false;
@@ -272,7 +308,8 @@ void gui()
                 flags |= ImGuiInputTextFlags_CharsHexadecimal;
             }
 
-            if (!allowEditing) {
+            if (!allowEditing)
+            {
                 flags |= ImGuiInputTextFlags_ReadOnly;
             }
 
@@ -293,7 +330,6 @@ void gui()
 
             ImGui::SameLine(ImGui::GetCursorPosX() + 100.0f);
 
-
             ImGui::BeginGroup();
             ImGui::Text("Data");
             for (int i = 0; i < last.cpu.dataRegisters.size(); ++i)
@@ -313,7 +349,8 @@ void gui()
             ImGui::Text("PC");
             ImGui::SameLine();
             ImGui::PushItemWidth(70.0f);
-            ImGui::InputInt("##pc", (int*)&last.cpu.programCounter.address, 0, 0, flags);
+            ImGui::InputInt("##pc", (int*)&last.cpu.programCounter.address, 0,
+                            0, flags);
             ImGui::PopItemWidth();
             ImGui::EndGroup();
 
@@ -333,7 +370,8 @@ void gui()
         }
 
         auto endtime = std::chrono::high_resolution_clock::now();
-        auto as_millis = std::chrono::duration<double, std::milli>(endtime - begintime);
+        auto as_millis =
+            std::chrono::duration<double, std::milli>(endtime - begintime);
 
         if (as_millis <= fpsmax)
         {
@@ -349,7 +387,6 @@ void gui()
             shader.setUniform(unif, MVP);
         }
 
-
         renderer.begin();
         renderer.add(background.getRenderable());
         renderer.end();
@@ -358,14 +395,11 @@ void gui()
 
         shader.disable();
 
-
         ImGui::Render();
-        tewi::renderImGui(def_tag{}, win, ImGui::GetDrawData());
+        tewi::renderImGui(def_tag {}, win, ImGui::GetDrawData());
         win.swapBuffers();
         ImGui::EndFrame();
-
     }
 
-
-    tewi::shutdownImGui(def_tag{});
+    tewi::shutdownImGui(def_tag {});
 }

@@ -1,11 +1,12 @@
 #include "move.h"
 
-#include <Utils.h>
+#include "Utils.h"
 
 namespace momiji
 {
     namespace instr
     {
+
         momiji::System move(momiji::System sys, const InstructionData& data)
         {
             // For data and address registers the value is already stored
@@ -18,17 +19,13 @@ namespace momiji
                 switch (data.mod1)
                 {
                 case SpecialAddressingMode::Immediate:
-                    switch (data.size)
-                    {
-                    case 1:
-                    case 2:
-                        srcval = *(pc + 1);
-                        break;
+                    srcval = utils::readImmediateFromPC(pc, data.size);                   
+                    break;
 
-                    case 4:
-                        srcval = (*(pc + 1) << 16) | (*(pc + 2));
-                        break;
-                    }
+                case SpecialAddressingMode::AbsoluteLong:
+                case SpecialAddressingMode::AbsoluteShort:
+                    const std::uint32_t memoff = utils::readImmediateFromPC(pc, data.size);
+                    srcval = utils::readFromMemory(sys.mem.data(), memoff, data.size);
                     break;
                 }
                 break;
@@ -56,6 +53,15 @@ namespace momiji
                 break;
 
             default:
+            case OperandType::Immediate:
+                switch (data.mod2)
+                {
+                case SpecialAddressingMode::AbsoluteShort:
+                case SpecialAddressingMode::AbsoluteLong:
+                    const std::uint32_t memoff = utils::readImmediateFromPC(pc, data.size);
+                    tmp = reinterpret_cast<std::int32_t*>(sys.mem.data() + memoff);
+                    break;
+                }
                 break;
             }
 

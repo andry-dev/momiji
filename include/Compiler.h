@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <Parser.h>
+#include <vector>
 
 namespace momiji
 {
@@ -12,4 +12,4 @@ namespace momiji
 
     std::vector<std::uint16_t>
     compile(const std::vector<momiji::Instruction>& instructions);
-}
+} // namespace momiji

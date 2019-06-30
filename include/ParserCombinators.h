@@ -2,10 +2,10 @@
 
 #include <Parser.h>
 
-#include <string_view>
-#include <string>
 #include <System.h>
 #include <algorithm>
+#include <string>
+#include <string_view>
 
 namespace momiji
 {
@@ -26,8 +26,7 @@ namespace momiji
     template <typename First, typename Second>
     constexpr auto Next(First&& first, Second&& second)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res1 = first(str);
             if (res1.result)
             {
@@ -41,22 +40,23 @@ namespace momiji
     template <typename... Ts>
     constexpr auto SeqNext(Ts&&... parsers)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             bool notdone = true;
 
             parser_metadata res = { false, str, "" };
 
-            ([&] () constexpr {
-                if (!notdone)
-                {
-                    return;
-                }
+            (
+                [&]() constexpr {
+                    if (!notdone)
+                    {
+                        return;
+                    }
 
-                res = parsers(str);
-                notdone = res.result;
-                str = res.rest;
-             }(), ...);
+                    res = parsers(str);
+                    notdone = res.result;
+                    str = res.rest;
+                }(),
+                ...);
 
             return res;
         };
@@ -65,31 +65,30 @@ namespace momiji
     template <typename... Ts>
     constexpr auto AnyOf(Ts&&... parsers)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             bool done = false;
             parser_metadata res = { false, str, "" };
 
-            ([&] () constexpr -> void {
-                if (done)
-                {
-                    return;
-                }
+            (
+                [&]() constexpr->void {
+                    if (done)
+                    {
+                        return;
+                    }
 
-                res = parsers(str);
-                done = res.result;
-             }(), ...);
+                    res = parsers(str);
+                    done = res.result;
+                }(),
+                ...);
 
             return res;
         };
     }
 
-
     template <typename Parser>
     constexpr auto AllOf(Parser&& parser)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             return parser(str);
         };
     }
@@ -97,8 +96,7 @@ namespace momiji
     template <typename Parser, typename... Ts>
     constexpr auto AllOf(Parser&& parser, Ts&&... rest)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res = parser(str);
             if (res.result)
             {
@@ -112,14 +110,15 @@ namespace momiji
     template <typename... Ts>
     constexpr auto Sequence(Ts&&... parsers)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             parser_metadata res = { false, str, "" };
 
-            ([&] () constexpr {
-                res = parsers(str);
-                str = res.rest;
-             }(), ...);
+            (
+                [&]() constexpr {
+                    res = parsers(str);
+                    str = res.rest;
+                }(),
+                ...);
 
             return res;
         };
@@ -128,8 +127,7 @@ namespace momiji
     template <typename Parser>
     constexpr auto While(Parser&& parser)
     {
-        return  [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             parser_metadata ret = { false, str, "" };
 
             auto backup = str;
@@ -176,8 +174,7 @@ namespace momiji
     template <typename Parser, typename Fun>
     constexpr auto Map(Parser&& parser, Fun&& f)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res = parser(str);
 
             if (res.result)
@@ -191,8 +188,7 @@ namespace momiji
 
     constexpr auto Str(std::string_view cmpstr)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             if (str.size() > cmpstr.size())
             {
                 auto trim_str = str.substr(0, cmpstr.size());
@@ -208,8 +204,7 @@ namespace momiji
 
     constexpr auto NotStr(std::string_view cmpstr)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             if (str.size() > cmpstr.size())
             {
                 auto trim_str = str.substr(0, cmpstr.size());
@@ -225,8 +220,7 @@ namespace momiji
 
     constexpr auto Char(char c)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             if (str.size() > 0 && str[0] == c)
             {
                 return { true, str.substr(1), str.substr(0, 1) };
@@ -238,8 +232,7 @@ namespace momiji
 
     constexpr auto NotChar(char c)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             if (str.size() > 0 && str[0] != c)
             {
                 return { true, str.substr(1), str.substr(0, 1) };
@@ -252,8 +245,7 @@ namespace momiji
     template <typename First, typename Second>
     constexpr auto Then(First&& first, Second&& second)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res1 = first(str);
 
             if (res1.result)
@@ -265,15 +257,14 @@ namespace momiji
                 }
             }
 
-            return { false, str,  "" };
+            return { false, str, "" };
         };
     }
 
     template <typename First, typename Second>
     constexpr auto Optional(First&& first, Second&& second)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res1 = first(str);
 
             if (res1.result)
@@ -294,8 +285,7 @@ namespace momiji
     template <typename Delim1, typename Delim2, typename Body>
     constexpr auto Between(Delim1&& head, Body&& body, Delim2&& tail)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto head_res = head(str);
             if (head_res.result)
             {
@@ -309,8 +299,7 @@ namespace momiji
     template <typename Parser>
     constexpr auto AlwaysTrue(Parser&& parser)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res = parser(str);
             return { true, res.rest, res.parsed_str };
         };
@@ -318,8 +307,7 @@ namespace momiji
 
     constexpr auto Endl()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             const bool check_size = str.size() == 0;
 
             if (check_size)
@@ -333,8 +321,7 @@ namespace momiji
 
     constexpr auto NotEndl()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             const bool check_size = str.size() == 0;
 
             if (check_size)
@@ -342,23 +329,20 @@ namespace momiji
                 return { false, str, "" };
             }
 
-
             return AllOf(NotChar('\n'), NotChar('\0'), NotChar('\r'))(str);
         };
     }
 
     constexpr auto Whitespace()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return While(AnyOf(Char(' '), Char('\t')))(str);
         };
     }
 
     constexpr auto Number()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             switch (str[0])
             {
             case '1':
@@ -381,17 +365,15 @@ namespace momiji
 
     constexpr auto DecNumber()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             int idx = 0;
             bool found_num = false;
 
-            auto check_sign = Map(AnyOf(Char('+'), Char('-')), [&idx] (auto) {
-                ++idx;
-            })(str);
+            auto check_sign =
+                Map(AnyOf(Char('+'), Char('-')), [&idx](auto) { ++idx; })(str);
 
-            auto check_size = [&] () { return str.size() > idx; };
-            auto check_number = [&] () { 
+            auto check_size = [&]() { return str.size() > idx; };
+            auto check_number = [&]() {
                 return (str[idx] >= '0' && str[idx] <= '9');
             };
 
@@ -412,16 +394,14 @@ namespace momiji
 
     constexpr auto HexNumber()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             int idx = 0;
 
-            auto check_sign = Map(AnyOf(Char('+'), Char('-')), [&idx] (auto) {
-                ++idx;
-            })(str);
+            auto check_sign =
+                Map(AnyOf(Char('+'), Char('-')), [&idx](auto) { ++idx; })(str);
 
-            auto check_size = [&] () { return str.size() > idx; };
-            auto check_number = [&] () { 
+            auto check_size = [&]() { return str.size() > idx; };
+            auto check_number = [&]() {
                 return (str[idx] >= '0' && str[idx] <= '9') ||
                        (str[idx] >= 'a' && str[idx] <= 'f') ||
                        (str[idx] >= 'A' && str[idx] <= 'F');
@@ -446,8 +426,7 @@ namespace momiji
 
     constexpr auto AsciiAlphabet()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             if (str.size() > 0)
             {
                 if ((str[0] >= 'a' && str[0] <= 'z') ||
@@ -464,57 +443,50 @@ namespace momiji
 
     constexpr auto GenericDecimal()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return DecNumber()(str);
         };
     }
 
     constexpr auto GenericHex()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return SeqNext(Char('$'), HexNumber())(str);
         };
     }
 
     constexpr auto Word()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return While(AsciiAlphabet())(str);
         };
     }
 
     constexpr auto SkipLine()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return Sequence(While(NotEndl()), Endl())(str);
         };
     }
 
     constexpr auto Comment()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return Next(Char(';'), SkipLine())(str);
         };
     }
 
     constexpr auto SkipSeparator(char c)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             return Sequence(Whitespace(), Char(c), Whitespace())(str);
         };
     }
 
     constexpr auto ParseLabel()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return Then(Word(), Char(':'))(str);
         };
     }
-}
+} // namespace momiji
