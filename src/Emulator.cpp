@@ -6,6 +6,9 @@
 #include <Compiler.h>
 #include <Decoder.h>
 
+#include "Instructions/bra.h"
+#include "Instructions/bcc.h"
+
 namespace momiji
 {
 
@@ -25,6 +28,17 @@ namespace momiji
         }
 
         return pc;
+    }
+    
+    static bool isJumpInstr(const momiji::DecodedInstruction& instr)
+    {
+        if (instr.exec == instr::bra ||
+            instr.exec == instr::bcc)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     Emulator::Emulator()
@@ -92,51 +106,37 @@ namespace momiji
 
         gsl::span<std::uint16_t> span { lastSys.mem.data(),
                                         lastSys.mem.size() };
-        const auto& instr = momiji::decode(span, pc - lastSys.mem.data());
+        const auto& instr = momiji::decode(span, offset);
 
         System newstate = instr.exec(lastSys, instr.data);
+        const auto* newpc = newstate.cpu.programCounter.address;
+        offset = newpc - lastSys.mem.data();
         newstate.cpu.programCounter.address = newstate.mem.data() + offset;
 
-        /*
-        switch (instr.instructionType)
+        if (!isJumpInstr(instr))
         {
-        case InstructionType::Jmp: [[fallthrough]];
-        case InstructionType::BranchEqual: [[fallthrough]];
-        case InstructionType::BranchGreaterEquals: [[fallthrough]];
-        case InstructionType::BranchGreaterThan: [[fallthrough]];
-        case InstructionType::BranchLessEquals: [[fallthrough]];
-        case InstructionType::BranchLessThan: [[fallthrough]];
-        case InstructionType::BranchNotEquals: [[fallthrough]];
-        case InstructionType::BranchNotZero: [[fallthrough]];
-        case InstructionType::BranchZero:
-            break;
+            bool pc_incremented = false;
 
-        default:
-            ++newstate.cpu.programCounter.address;
-        }
-        */
+            if (instr.data.op1 == OperandType::Immediate)
+            {
+                newstate.cpu.programCounter.address =
+                    immediateIncrPC(instr, newstate.cpu.programCounter.address);
 
-        bool pc_incremented = false;
+                pc_incremented = true;
+            }
 
-        if (instr.data.op1 == OperandType::Immediate)
-        {
-            newstate.cpu.programCounter.address =
-                immediateIncrPC(instr, newstate.cpu.programCounter.address);
+            if (instr.data.op2 == OperandType::Immediate)
+            {
+                newstate.cpu.programCounter.address =
+                    immediateIncrPC(instr, newstate.cpu.programCounter.address);
 
-            pc_incremented = true;
-        }
+                pc_incremented = true;
+            }
 
-        if (instr.data.op2 == OperandType::Immediate)
-        {
-            newstate.cpu.programCounter.address =
-                immediateIncrPC(instr, newstate.cpu.programCounter.address);
-
-            pc_incremented = true;
-        }
-
-        if (!pc_incremented)
-        {
-            ++newstate.cpu.programCounter.address;
+            if (!pc_incremented)
+            {
+                ++newstate.cpu.programCounter.address;
+            }
         }
 
         systemStates.emplace_back(std::move(newstate));

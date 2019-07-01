@@ -204,6 +204,17 @@ namespace momiji
                 }
             }
 
+            for (auto& x : instructions)
+            {
+                // Fix displacements for branch instructions
+                if (x.instructionType == InstructionType::BranchCondition ||
+                    x.instructionType == InstructionType::Branch)
+                {
+                    auto& op = x.operands[0];
+                    op.value = op.value - x.program_counter;
+                }
+            }
+
             return instructions;
         }
 

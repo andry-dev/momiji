@@ -778,7 +778,6 @@ namespace momiji
                 {
                     instr.operands[0].value = str_hash;
                     instr.operands[0].labelResolved = false;
-                    return { false, str, "" };
                 }
             }
 
@@ -827,7 +826,7 @@ namespace momiji
         {
             auto parser = SeqNext(
                     Whitespace(),
-                    ResolveLabel(instr, labels));
+                    MemoryAddress(instr, 0));
 
             return parser(str);
         };
