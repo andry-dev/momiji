@@ -225,9 +225,11 @@ namespace momiji::details
     }
 
     parser_metadata parseJmp(std::string_view str, Instruction& instr,
-                                 LabelInfo& labels)
+                             LabelInfo& labels)
     {
-        auto res = BranchInstructionParser(instr, labels)(str);
+        auto res = SeqNext(
+                Whitespace(),
+                AnyOf(MemoryAddress(instr, 0), AsAddress(instr, 0)))(str);
 
         instr.instructionType = InstructionType::Jmp;
 
@@ -235,7 +237,7 @@ namespace momiji::details
     }
 
     parser_metadata parseBra(std::string_view str, Instruction& instr,
-                                 LabelInfo& labels)
+                             LabelInfo& labels)
     {
         auto res = BranchInstructionParser(instr, labels)(str);
 

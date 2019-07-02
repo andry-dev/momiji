@@ -2,6 +2,8 @@
 
 #include "./Utils.h"
 
+#include <iostream>
+
 namespace momiji::instr
 {
     momiji::System jmp(momiji::System& sys, const InstructionData& data)
@@ -18,8 +20,10 @@ namespace momiji::instr
         else if (data.op1 == OperandType::Address)
         {
             // jmp (a0)
-            const auto reg = utils::to_val(data.mod1);
+            const std::int32_t reg = utils::to_val(data.mod1);
             jmpadd = sys.cpu.addressRegisters[reg].value;
+            std::cout << "reg: " << reg << '\n'
+                      << "jmp: " << jmpadd << '\n';
         }
 
         sys.cpu.programCounter.address = jmpadd;

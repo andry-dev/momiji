@@ -719,7 +719,7 @@ namespace momiji
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
             auto register_parser =
-                Map(Between(Char('('), AnyRegister(instr, opNum), Char(')')),
+                Map(Between(Char('('), AddressRegisterParser(instr, opNum), Char(')')),
                     [&] (std::string_view parsed_str) {
                         instr.operands[opNum].operandType = OperandType::Address;
                     });
