@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <Utils.h>
+#include <gsl/span>
 
 namespace momiji
 {
@@ -40,7 +41,7 @@ namespace momiji
 
     struct ProgramCounter
     {
-        std::uint16_t* address;
+        std::uint32_t address;
     };
 
     struct Label
@@ -82,4 +83,15 @@ namespace momiji
         Cpu cpu;
         MemoryType mem;
     };
+
+    inline gsl::span<const std::uint16_t> make_memory_view(const System& sys)
+    {
+        return { sys.mem.data(), sys.mem.size() };
+    }
+
+    inline gsl::span<std::uint16_t> make_memory_view(System& sys)
+    {
+        return { sys.mem.data(), sys.mem.size() };
+    }
+
 } // namespace momiji

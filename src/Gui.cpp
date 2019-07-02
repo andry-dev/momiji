@@ -20,22 +20,16 @@
 
 #include <cstdio>
 
-static void MessageCallback(GLenum source, GLenum type, GLuint id,
-                            GLenum severity, GLsizei length,
-                            const GLchar* message, const void* userParam)
-{
-    std::fprintf(stderr,
-                 "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-                 (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type,
-                 severity, message);
-    // TEWI_EXPECTS(0, "");
-}
-
 void gui()
 {
     using def_tag = tewi::API::OpenGLTag;
 
-    momiji::Emulator emu;
+    momiji::EmulatorSettings emuSettings;
+    emuSettings.programStart = 0;
+    emuSettings.dataSectionOffset = 0;
+    emuSettings.retainStates = momiji::EmulatorSettings::RetainStates::Always;
+
+    momiji::Emulator emu{emuSettings};
 
     tewi::Window<def_tag> win { "momiji", tewi::Width { 800 },
                                 tewi::Height { 600 } };
@@ -66,11 +60,6 @@ void gui()
 
     auto proj = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
     glm::mat4 MVP = proj;
-
-    glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(MessageCallback, 0);
-
-    std::string error_string = "";
 
     while (!win.isClosed())
     {
@@ -185,23 +174,60 @@ void gui()
         }
 
         {
+            ImGui::Begin("Emulator Settings");
+
+            static std::array<std::string_view, 3> possibleSettingsStr {{
+                "Always",
+                "Never",
+            }};
+
+            ImGui::TextUnformatted("Retain states");
+
+            if (ImGui::BeginCombo("", emuSettings.toString().data()))
+            {
+                if (ImGui::Selectable(possibleSettingsStr[0].data()))
+                {
+                    emuSettings.retainStates =
+                        momiji::EmulatorSettings::RetainStates::Always;
+                    emu.loadNewSettings(emuSettings);
+                }
+
+                if (ImGui::Selectable(possibleSettingsStr[1].data()))
+                {
+                    emuSettings.retainStates =
+                        momiji::EmulatorSettings::RetainStates::Never;
+                    emu.loadNewSettings(emuSettings);
+                }
+
+                ImGui::EndCombo();
+            }
+
+            ImGui::End();
+        }
+
+        {
             ImGui::Begin("Memory dump");
 
             const auto& states = emu.getStates();
 
             if (states.size() > 1)
             {
-                const auto& lastMem = states.back().mem;
-                const auto& pc = states.back().cpu.programCounter.address;
-                for (int i = 0; i < lastMem.size(); ++i)
-                {
-                    std::uint8_t lower = lastMem[i] & 0x00FF;
-                    std::uint8_t higher = (lastMem[i] & 0xFF00) >> 8;
+                const auto& lastSys = states.back();
 
-                    ImGui::TextUnformatted(pc == &lastMem[i] ? "=>" : "  ");
+                auto memview = momiji::make_memory_view(lastSys);
+                const auto pc = lastSys.cpu.programCounter.address;
+
+                for (int i = 0; i < memview.size(); ++i)
+                {
+                    std::uint8_t lower = memview[i] & 0x00FF;
+                    std::uint8_t higher = (memview[i] & 0xFF00) >> 8;
+
+                    auto pcadd = memview.begin() + pc;
+                    auto curradd = memview.begin() + i;
+
+                    ImGui::TextUnformatted(pcadd == curradd ? "=>" : "  ");
                     ImGui::SameLine();
-                    ImGui::Text("%x: %x %x", &lastMem[i], higher, lower);
-                    //ImGui::NewLine();
+                    ImGui::Text("%x: %x %x", &memview[i], higher, lower);
                 }
             }
             else
@@ -234,52 +260,55 @@ void gui()
                 emu.reset();
             }
 
+            static std::string error_string = "";
+            static std::optional<momiji::ParserError> err;
+
             ImGui::SameLine();
+
             if (ImGui::Button("Parse"))
             {
-                auto err = emu.newState(str);
+                err = emu.newState(str);
+            }
 
-                if (err.has_value())
+            if (err.has_value())
+            {
+                momiji::ParserError& error = err.value();
+                switch (error.errorType)
                 {
-                    momiji::ParserError& error = err.value();
-                    ImGui::Text("Error at %d:%d,", error.line, error.column);
-                    switch (error.errorType)
-                    {
-                    case momiji::ParserError::ErrorType::NoInstructionFound:
-                        error_string = "no instruction found.";
-                        break;
+                case momiji::ParserError::ErrorType::NoInstructionFound:
+                    error_string = "no instruction found.";
+                    break;
 
-                    case momiji::ParserError::ErrorType::UnexpectedCharacter:
-                        error_string = "unexpected character.";
-                        break;
+                case momiji::ParserError::ErrorType::UnexpectedCharacter:
+                    error_string = "unexpected character.";
+                    break;
 
-                    case momiji::ParserError::ErrorType::WrongInstruction:
-                        error_string = "no such instruction.";
-                        break;
+                case momiji::ParserError::ErrorType::WrongInstruction:
+                    error_string = "no such instruction.";
+                    break;
 
-                    case momiji::ParserError::ErrorType::WrongOperandType:
-                        error_string = "wrong operand type.";
-                        break;
-                    case momiji::ParserError::ErrorType::NoLabelFound:
-                        error_string = "no label found.";
-                        break;
+                case momiji::ParserError::ErrorType::WrongOperandType:
+                    error_string = "wrong operand type.";
+                    break;
 
-                    default:
-                        error_string = "unknown error.";
-                        break;
-                    }
+                case momiji::ParserError::ErrorType::NoLabelFound:
+                    error_string = "no label found.";
+                    break;
+
+                default:
+                    error_string = "unknown error.";
+                    break;
                 }
-                else
-                {
-                    error_string = "";
-                }
+                ImGui::Text("Error at line %d, %s", error.line, error_string.data());
+            }
+            else
+            {
+                //ImGui::Text("No errors!");
             }
 
             ImGui::BeginChild("Source code");
             ImGui::InputTextMultiline("", &str, ImGui::GetContentRegionAvail());
             ImGui::EndChild();
-
-            ImGui::TextUnformatted(error_string.c_str());
 
             ImGui::End();
         }
@@ -351,6 +380,15 @@ void gui()
             ImGui::PushItemWidth(70.0f);
             ImGui::InputInt("##pc", (int*)&last.cpu.programCounter.address, 0,
                             0, flags);
+            if (!last.mem.empty())
+            {
+                const auto memview = momiji::make_memory_view(last);
+                const auto pc = last.cpu.programCounter.address;
+                const auto addr = reinterpret_cast<std::uint64_t>(memview.begin() + pc);
+                ImGui::SameLine();
+                ImGui::Text("%x", addr);
+            }
+
             ImGui::PopItemWidth();
             ImGui::EndGroup();
 

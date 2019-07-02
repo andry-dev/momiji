@@ -21,7 +21,7 @@ namespace momiji
     };
 
     using DecodedInstructionFn =
-        momiji::System (*)(momiji::System, const InstructionData& data);
+        momiji::System (*)(momiji::System&, const InstructionData& data);
 
     struct DecodedInstruction
     {

@@ -249,6 +249,12 @@ namespace momiji::repr
 
     struct Swap
     {
+        Swap()
+            : header{0b01001000'01000}
+        {}
+
+        std::uint16_t header : 13;
+        std::uint16_t datareg : 3;
     };
 
     struct Exg

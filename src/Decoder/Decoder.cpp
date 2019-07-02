@@ -16,6 +16,7 @@
 #include "exg.h"
 #include "bcc.h"
 #include "bra.h"
+#include "jmp.h"
 
 namespace momiji
 {
@@ -98,9 +99,9 @@ namespace momiji
 
     DecodedInstruction decodeSecondGroup(const MemoryView& mem, int idx)
     {
-        constexpr std::uint16_t firstmask = 0b11110000'00000000;
-        constexpr std::uint16_t bramask =   0b11111111'00000000;
-        constexpr std::uint16_t secondmask =   0b11111111'11000000;
+        constexpr std::uint16_t firstmask =  0b11110000'00000000;
+        constexpr std::uint16_t bramask =    0b11111111'00000000;
+        constexpr std::uint16_t secondmask = 0b11111111'11000000;
 
         switch (mem[idx] & firstmask)
         {
@@ -126,7 +127,7 @@ namespace momiji
 
             // JMP
             case 0b01001110'11000000:
-                break;
+                return momiji::dec::jmp(mem, idx);
             }
             break;
 
@@ -140,7 +141,7 @@ namespace momiji
             {
             // BRA
             case 0b01100000'00000000:
-                return momiji::dec::bra(mem,idx);
+                return momiji::dec::bra(mem, idx);
 
             // BSR
             case 0b01100001'00000000:

@@ -31,10 +31,6 @@ namespace momiji
         bits.dsttype = utils::to_val(instr.operands[1].operandType);;
         bits.dstmode = getCorrectOpMode(instr, 1);
 
-        // Source
-        std::uint32_t srcval = utils::to_val(instr.operands[0].operandType);
-        std::uint8_t srcmode = utils::to_val(instr.operands[0].specialAddressingMode);
-
         bits.srctype = utils::to_val(instr.operands[0].operandType);
         bits.srcmode = getCorrectOpMode(instr, 0);
 

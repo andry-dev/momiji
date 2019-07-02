@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include <Decoder.h>
+
 namespace momiji
 {
     struct EmulatorSettings
@@ -13,36 +15,52 @@ namespace momiji
         std::int32_t programStart = 0;
         std::int32_t dataSectionOffset = -1;
 
-        // Never = Never share executable memory with previous system states
-        // Guess = Copy the program memory only if the source code changes
-        // Always = Always share executable memory with previous system states
+        // Use Always to tell the emulator to always create new copies of the
+        // system state for each instruction execution.
         //
-        // Use Never if you want to keep track of every possible state, at the
-        // cost of losing track of the PC
-        //
-        // Use Guess if you want to copy the program memory only if there is a
-        // "newState()" call
-        //
-        // Use Always if you want to always use the same program memory, even if
-        // the source code changes. Use reset() to completely wipe out the
-        // memory
-        //
-        // The copy of the system state will ALWAYS happen, changing any of
-        // these options will not affect that.
-        enum class ShareCompiledMemory : std::int8_t
+        // Use Never to tell the emulator that every instruction should modify
+        // the same system state.
+        // Parsing the source code again _will_ create a new system state
+        // anyway.
+        enum class RetainStates : std::int8_t
         {
-            Never,
-            Guess,
             Always,
-        } shareMemory = ShareCompiledMemory::Never;
+            Never,
+        } retainStates = RetainStates::Always;
+
+        std::string toString()
+        {
+            switch (retainStates)
+            {
+            case RetainStates::Never:
+                return "Never";
+
+            case RetainStates::Always:
+                return "Always";
+            }
+
+            return "";
+        }
+
+        int count()
+        {
+            return 3;
+        }
     };
 
     struct Emulator
     {
-      private:
-        std::vector<momiji::System> systemStates;
+    private:
+        std::vector<momiji::System> m_systemStates;
+        EmulatorSettings m_settings;
 
-      public:
+        struct always_retain_states_tag {};
+        struct never_retain_states_tag {};
+
+        bool stepHandleMem(always_retain_states_tag, DecodedInstruction& instr);
+        bool stepHandleMem(never_retain_states_tag, DecodedInstruction& instr);
+
+    public:
         Emulator();
         Emulator(EmulatorSettings);
 
@@ -53,5 +71,7 @@ namespace momiji
         bool rollback();
         bool step();
         bool reset();
+
+        void loadNewSettings(EmulatorSettings);
     };
 } // namespace momiji

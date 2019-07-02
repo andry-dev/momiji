@@ -15,7 +15,7 @@ namespace momiji
         details::parserfn_t execfn;
     };
 
-    constexpr std::array<MappingType, 29> mappings = { {
+    constexpr std::array<MappingType, 30> mappings = { {
         { utils::hash("move"), details::parseMove },
         { utils::hash("moveq"), details::parseMoveQ },
 
@@ -53,5 +53,7 @@ namespace momiji
         { utils::hash("bgt"), details::parseBgt },
         { utils::hash("beq"), details::parseBeq },
         { utils::hash("bne"), details::parseBne },
+
+        { utils::hash("jmp"), details::parseJmp },
     } };
 } // namespace momiji

@@ -2,12 +2,16 @@
 
 #include <Utils.h>
 
+#include "./Utils.h"
+
 namespace momiji::instr
 {
 
-    momiji::System muls(momiji::System sys, const InstructionData& data)
+    momiji::System muls(momiji::System& sys, const InstructionData& data)
     {
-        auto* pc = sys.cpu.programCounter.address;
+        auto pc = sys.cpu.programCounter.address;
+
+        const auto memview = momiji::make_memory_view(sys);
 
         // Always a data register
         const std::int32_t dstreg = utils::to_val(data.mod2);
@@ -27,7 +31,7 @@ namespace momiji::instr
             switch (data.mod1)
             {
             case SpecialAddressingMode::Immediate:
-                srcval = *(pc + 1);
+                srcval = memview[pc + 1];
                 break;
             }
             break;
@@ -45,9 +49,11 @@ namespace momiji::instr
         return sys;
     }
 
-    momiji::System mulu(momiji::System sys, const InstructionData& data)
+    momiji::System mulu(momiji::System& sys, const InstructionData& data)
     {
-        auto* pc = sys.cpu.programCounter.address;
+        auto pc = sys.cpu.programCounter.address;
+
+        const auto memview = momiji::make_memory_view(sys);
 
         // Always a data register
         const std::int32_t dstreg = utils::to_val(data.mod2);
@@ -67,7 +73,7 @@ namespace momiji::instr
             switch (data.mod1)
             {
             case SpecialAddressingMode::Immediate:
-                srcval = *(pc + 1);
+                srcval = memview[pc + 1];
                 break;
             }
             break;

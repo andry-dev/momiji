@@ -17,7 +17,8 @@
 #include "exg.h"
 #include "bra.h"
 #include "bcc.h"
-
+#include "jmp.h"
+#include "swap.h"
 
 namespace momiji
 {
@@ -131,12 +132,20 @@ namespace momiji
                 break;
 
             case InstructionType::Swap:
+                momiji::swap(instr, memory, opcode, additional_data);
                 break;
 
             case InstructionType::Jmp:
+                momiji::jmp(instr, memory, opcode, additional_data);
                 break;
 
             case InstructionType::Tst:
+                break;
+
+            case InstructionType::ArithmeticShiftLeft:
+            case InstructionType::ArithmeticShiftRight:
+            case InstructionType::LogicalShiftLeft:
+            case InstructionType::LogicalShiftRight:
                 break;
             }
 

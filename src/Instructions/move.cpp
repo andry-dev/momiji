@@ -6,12 +6,13 @@ namespace momiji
 {
     namespace instr
     {
-
-        momiji::System move(momiji::System sys, const InstructionData& data)
+        momiji::System move(momiji::System& sys, const InstructionData& data)
         {
             // For data and address registers the value is already stored
             std::uint32_t srcval = utils::to_val(data.mod1);
-            auto* pc = sys.cpu.programCounter.address;
+            auto pc = sys.cpu.programCounter.address;
+
+            auto memview = momiji::make_memory_view(sys);
 
             switch (data.op1)
             {
@@ -19,13 +20,13 @@ namespace momiji
                 switch (data.mod1)
                 {
                 case SpecialAddressingMode::Immediate:
-                    srcval = utils::readImmediateFromPC(pc, data.size);                   
+                    srcval = utils::readImmediateFromPC(memview, pc, data.size);                   
                     break;
 
                 case SpecialAddressingMode::AbsoluteLong:
                 case SpecialAddressingMode::AbsoluteShort:
-                    const std::uint32_t memoff = utils::readImmediateFromPC(pc, data.size);
-                    srcval = utils::readFromMemory(sys.mem.data(), memoff, data.size);
+                    const std::uint32_t memoff = utils::readImmediateFromPC(memview, pc, data.size);
+                    srcval = utils::readFromMemory(memview, memoff, data.size);
                     break;
                 }
                 break;
@@ -58,8 +59,8 @@ namespace momiji
                 {
                 case SpecialAddressingMode::AbsoluteShort:
                 case SpecialAddressingMode::AbsoluteLong:
-                    const std::uint32_t memoff = utils::readImmediateFromPC(pc, data.size);
-                    tmp = reinterpret_cast<std::int32_t*>(sys.mem.data() + memoff);
+                    const std::uint32_t memoff = utils::readImmediateFromPC(memview, pc, data.size);
+                    tmp = reinterpret_cast<std::int32_t*>(&memview[memoff]);
                     break;
                 }
                 break;

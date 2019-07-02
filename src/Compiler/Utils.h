@@ -34,8 +34,13 @@ namespace momiji
     {
         switch (instr.operands[num].operandType)
         {
-        case OperandType::DataRegister: [[fallthrough]];
-        case OperandType::AddressRegister:
+        case OperandType::DataRegister:    [[fallthrough]];
+        case OperandType::AddressRegister: [[fallthrough]];
+        case OperandType::Address:         [[fallthrough]];
+        case OperandType::AddressPost:     [[fallthrough]];
+        case OperandType::AddressPre:      [[fallthrough]];
+        case OperandType::AddressIndex:    [[fallthrough]];
+        case OperandType::AddressOffset:
             return instr.operands[num].value & 0b111;
 
         default:

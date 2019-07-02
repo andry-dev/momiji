@@ -12,8 +12,7 @@ namespace momiji
     void add(const momiji::Instruction& instr,
              MemoryType& memory,
              OpcodeDescription& opcode,
-             std::array<AdditionalData, 2>&)
-    {
+             std::array<AdditionalData, 2>&) {
         repr::Add bits;
 
         // add.* d*, *

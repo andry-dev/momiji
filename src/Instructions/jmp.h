@@ -5,5 +5,5 @@
 
 namespace momiji::instr
 {
-    momiji::System bcc(momiji::System& sys, const InstructionData& data);
+    momiji::System jmp(momiji::System& sys, const InstructionData& data);
 }

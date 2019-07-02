@@ -1,9 +1,11 @@
 #include <System.h>
 #include <Decoder.h>
 
+#include "./Utils.h"
+
 namespace momiji::instr
 {
-    momiji::System or_instr(momiji::System sys, const InstructionData& data)
+    momiji::System or_instr(momiji::System& sys, const InstructionData& data)
     {
         std::int32_t* srcreg = nullptr;
 
@@ -59,9 +61,10 @@ namespace momiji::instr
         return sys;
     }
 
-    momiji::System ori(momiji::System sys, const InstructionData& data)
+    momiji::System ori(momiji::System& sys, const InstructionData& data)
     {
-        auto* pc = sys.cpu.programCounter.address;
+        auto pc = sys.cpu.programCounter.address;
+        const auto memview = momiji::make_memory_view(sys);
 
         std::int32_t dstval = utils::to_val(data.mod2);
 
@@ -83,19 +86,19 @@ namespace momiji::instr
         switch (data.size)
         {
         case 1:
-            srcval = *(pc + 1) & 0x000000FF;
+            srcval = memview[pc + 1] & 0x000000FF;
             *reg = (*reg & 0xFFFF'FF00) |
                    ((*reg | srcval) & 0x0000'00FF);
             break;
 
         case 2:
-            srcval = *(pc + 1) & 0x0000FFFF;
+            srcval = memview[pc + 1] & 0x0000FFFF;
             *reg = (*reg & 0xFFFF'0000) |
                    ((*reg | srcval) & 0x0000'FFFF);
             break;
 
         case 4:
-            srcval = (*(pc + 1) << 16) | *(pc + 2);
+            srcval = (memview[pc + 1] << 16) | memview[pc + 2];
             *reg = *reg | srcval;
             break;
         }

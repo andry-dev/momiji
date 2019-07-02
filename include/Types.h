@@ -44,6 +44,12 @@ namespace momiji
         Branch,
         BranchCondition,
 
+        ArithmeticShiftLeft,
+        ArithmeticShiftRight,
+
+        LogicalShiftLeft,
+        LogicalShiftRight,
+
         Nop,
         Illegal
     };

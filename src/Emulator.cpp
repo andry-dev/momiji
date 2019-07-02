@@ -8,12 +8,12 @@
 
 #include "Instructions/bra.h"
 #include "Instructions/bcc.h"
+#include "Instructions/jmp.h"
 
 namespace momiji
 {
-
-    static std::uint16_t* immediateIncrPC(const momiji::DecodedInstruction& instr,
-                                std::uint16_t* pc)
+    static std::uint32_t immediateIncrPC(const momiji::DecodedInstruction& instr,
+                                          std::uint32_t pc)
     {
         switch (instr.data.size)
         {
@@ -33,7 +33,8 @@ namespace momiji
     static bool isJumpInstr(const momiji::DecodedInstruction& instr)
     {
         if (instr.exec == instr::bra ||
-            instr.exec == instr::bcc)
+            instr.exec == instr::bcc ||
+            instr.exec == instr::jmp)
         {
             return true;
         }
@@ -41,78 +42,8 @@ namespace momiji
         return false;
     }
 
-    Emulator::Emulator()
-        : systemStates(1)
+    static void handlePC(System& newstate, const DecodedInstruction& instr)
     {
-    }
-
-    const std::vector<momiji::System>& Emulator::getStates() const
-    {
-        return systemStates;
-    }
-
-    std::optional<momiji::ParserError>
-    Emulator::newState(const std::string& str)
-    {
-        auto res = momiji::parse(str);
-
-        if (res)
-        {
-            auto mem = momiji::compile(*res);
-            auto lastSys = systemStates.back();
-            lastSys.mem = std::move(mem);
-            lastSys.cpu.programCounter.address = lastSys.mem.data();
-            systemStates.emplace_back(std::move(lastSys));
-        }
-
-        return std::nullopt;
-    }
-
-    bool Emulator::rollbackSys()
-    {
-        if (systemStates.size() > 1)
-        {
-            systemStates.pop_back();
-            return true;
-        }
-
-        return false;
-    }
-
-    bool Emulator::rollback()
-    {
-        auto& lastSys = systemStates.back();
-        if (lastSys.cpu.programCounter.address > lastSys.mem.data())
-        {
-            --lastSys.cpu.programCounter.address;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    bool Emulator::step()
-    {
-        auto& lastSys = systemStates.back();
-        const auto* pc = lastSys.cpu.programCounter.address;
-        if (pc < lastSys.mem.data() ||
-            pc >= (lastSys.mem.data() + lastSys.mem.size()))
-        {
-            return false;
-        }
-
-        auto offset = pc - lastSys.mem.data();
-
-        gsl::span<std::uint16_t> span { lastSys.mem.data(),
-                                        lastSys.mem.size() };
-        const auto& instr = momiji::decode(span, offset);
-
-        System newstate = instr.exec(lastSys, instr.data);
-        const auto* newpc = newstate.cpu.programCounter.address;
-        offset = newpc - lastSys.mem.data();
-        newstate.cpu.programCounter.address = newstate.mem.data() + offset;
-
         if (!isJumpInstr(instr))
         {
             bool pc_incremented = false;
@@ -138,21 +69,155 @@ namespace momiji
                 ++newstate.cpu.programCounter.address;
             }
         }
+    }
 
-        systemStates.emplace_back(std::move(newstate));
+    Emulator::Emulator()
+        : m_systemStates(1)
+        , m_settings({ 0, -1, EmulatorSettings::RetainStates::Always})
+    {
+    }
+
+    Emulator::Emulator(EmulatorSettings settings)
+        : m_systemStates(1)
+        , m_settings(std::move(settings))
+    {
+    }
+
+    const std::vector<momiji::System>& Emulator::getStates() const
+    {
+        return m_systemStates;
+    }
+
+    std::optional<momiji::ParserError>
+    Emulator::newState(const std::string& str)
+    {
+        if (str.empty())
+        {
+            return std::nullopt;
+        }
+
+        auto res = momiji::parse(str);
+
+        if (res)
+        {
+            auto mem = momiji::compile(*res);
+            auto lastSys = m_systemStates.back();
+            lastSys.mem = std::move(mem);
+            m_systemStates.emplace_back(std::move(lastSys));
+
+            return std::nullopt;
+        }
+
+        return res.error();
+    }
+
+    bool Emulator::rollbackSys()
+    {
+        if (m_systemStates.size() > 1)
+        {
+            m_systemStates.pop_back();
+            return true;
+        }
+
+        return false;
+    }
+
+    bool Emulator::rollback()
+    {
+        auto& lastSys = m_systemStates.back();
+        const gsl::span<std::uint16_t> memview { lastSys.mem.data(), lastSys.mem.size() };
+        const auto pc = lastSys.cpu.programCounter.address;
+
+        auto pcadd = memview.begin() + pc;
+
+        if (pcadd > memview.begin())
+        {
+            --lastSys.cpu.programCounter.address;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    bool Emulator::step()
+    {
+        auto& lastSys = m_systemStates.back();
+
+        if (lastSys.mem.empty())
+        {
+            return false;
+        }
+
+        const auto pc = lastSys.cpu.programCounter.address;
+        auto memview = momiji::make_memory_view(lastSys);
+
+        auto pcadd = memview.begin() + pc;
+
+        if (pcadd < memview.begin() ||
+            pcadd >= memview.end())
+        {
+            return false;
+        }
+
+        auto instr = momiji::decode(memview, pc);
+
+        switch (m_settings.retainStates)
+        {
+        case EmulatorSettings::RetainStates::Never:
+            return stepHandleMem(never_retain_states_tag{}, instr);
+
+        case EmulatorSettings::RetainStates::Always:
+            return stepHandleMem(always_retain_states_tag{}, instr);
+        }
+
+        return false;
+    }
+
+    bool Emulator::stepHandleMem(never_retain_states_tag, DecodedInstruction& instr)
+    {
+        auto& lastSys = m_systemStates.back();
+
+        instr.exec(lastSys, instr.data);
+
+        handlePC(lastSys, instr);
 
         return true;
     }
 
+    bool Emulator::stepHandleMem(always_retain_states_tag, DecodedInstruction& instr)
+    {
+        auto& lastSys = m_systemStates.back();
+        
+        // Copy the new state
+        auto newstate = lastSys;
+
+        instr.exec(newstate, instr.data);
+
+        handlePC(newstate, instr);
+
+        m_systemStates.emplace_back(std::move(newstate));
+
+        return true;
+    }
+
+
     bool Emulator::reset()
     {
         bool ret = false;
-        while (systemStates.size() > 1)
+        while (m_systemStates.size() > 1)
         {
-            systemStates.pop_back();
+            m_systemStates.pop_back();
             ret = true;
         }
 
         return ret;
+    }
+
+    void Emulator::loadNewSettings(EmulatorSettings settings)
+    {
+        reset();
+
+        m_settings = settings;
     }
 } // namespace momiji

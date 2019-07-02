@@ -1,8 +1,10 @@
 #include "cmp.h"
 
+#include "./Utils.h"
+
 namespace momiji::instr
 {
-    momiji::System cmp(momiji::System sys, const InstructionData& instr)
+    momiji::System cmp(momiji::System& sys, const InstructionData& instr)
     {
         std::int32_t srcreg = 0;
 
@@ -47,7 +49,7 @@ namespace momiji::instr
         return sys;
     }
 
-    momiji::System cmpa(momiji::System sys, const InstructionData& instr)
+    momiji::System cmpa(momiji::System& sys, const InstructionData& instr)
     {
         std::int32_t srcreg = 0;
 
@@ -92,9 +94,11 @@ namespace momiji::instr
         return sys;
     }
 
-    momiji::System cmpi(momiji::System sys, const InstructionData& instr)
+    momiji::System cmpi(momiji::System& sys, const InstructionData& instr)
     {
-        auto* pc = sys.cpu.programCounter.address;
+        auto pc = sys.cpu.programCounter.address;
+
+        auto memview = momiji::make_memory_view(sys);
 
         const std::int8_t dstval = utils::to_val(instr.mod2);
         std::int32_t dstreg = sys.cpu.addressRegisters[dstval].value;
@@ -115,19 +119,19 @@ namespace momiji::instr
         switch (instr.size)
         {
         case 1:
-            srcval = *(pc + 1) & 0x000000FF;
+            srcval = memview[pc + 1] & 0x000000FF;
             srcval = utils::sign_extend<std::int8_t>(srcval);
             dstreg = utils::sign_extend<std::int8_t>(dstreg);
             break;
 
         case 2:
-            srcval = *(pc + 1);
+            srcval = memview[pc + 1];
             srcval = utils::sign_extend<std::int16_t>(srcval);
             dstreg = utils::sign_extend<std::int16_t>(dstreg);
             break;
 
         case 4:
-            srcval = (*(pc + 1) << 16) | *(pc + 2);
+            srcval = (memview[pc + 1] << 16) | memview[pc + 2];
             break;
         }
 

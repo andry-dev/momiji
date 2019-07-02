@@ -8,7 +8,7 @@ namespace momiji
 {
     namespace instr
     {
-        momiji::System noop(momiji::System sys, const InstructionData& data)
+        momiji::System noop(momiji::System& sys, const InstructionData& data)
         {
             std::cout << "NOOP\n";
             return sys;

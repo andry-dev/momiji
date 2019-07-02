@@ -2,12 +2,15 @@
 
 #include <Utils.h>
 
+#include <gsl/span>
+#include <System.h>
 
 namespace momiji
 {
     namespace utils
     {
-        inline std::uint32_t readImmediateFromPC(std::uint16_t* pc,
+        inline std::uint32_t readImmediateFromPC(gsl::span<std::uint16_t> base,
+                                                 std::uint32_t pc,
                                                  std::int16_t size)
         {
             std::uint32_t val = 0;
@@ -16,20 +19,20 @@ namespace momiji
             {
             case 1:
             case 2:
-                val = *(pc + 1);
+                val = base[pc + 1];
                 break;
 
             case 4:
-                val = (*(pc + 1) << 16) | (*(pc + 2));
+                val = (base[pc + 1] << 16) | (base[pc + 2]);
                 break;
             }
 
             return val;
         }
 
-        inline std::uint32_t readFromMemory(std::uint16_t* base,
+        inline std::uint32_t readFromMemory(gsl::span<std::uint16_t> base,
                                             std::uint32_t offset,
-                                             std::int16_t size)
+                                            std::int16_t size)
         {
             std::uint32_t val = 0;
 
@@ -47,7 +50,7 @@ namespace momiji
                 break;
             }
 
-            val = (*(base + correct_offset + 1) << 16) | (*(base + correct_offset));
+            val = (base[correct_offset + 1] << 16) | (base[correct_offset]);
 
             return val;
         }
