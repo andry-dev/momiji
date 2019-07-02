@@ -22,8 +22,6 @@ namespace momiji::instr
             // jmp (a0)
             const std::int32_t reg = utils::to_val(data.mod1);
             jmpadd = sys.cpu.addressRegisters[reg].value;
-            std::cout << "reg: " << reg << '\n'
-                      << "jmp: " << jmpadd << '\n';
         }
 
         sys.cpu.programCounter.address = jmpadd;
