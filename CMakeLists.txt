@@ -32,6 +32,7 @@ target_sources(libmomiji
     src/Decoder/bra.cpp
     src/Decoder/bcc.cpp
     src/Decoder/jmp.cpp
+    src/Decoder/internal.cpp
 
     src/Instructions/move.cpp
     src/Instructions/add.cpp
@@ -45,6 +46,7 @@ target_sources(libmomiji
     src/Instructions/bra.cpp
     src/Instructions/bcc.cpp
     src/Instructions/jmp.cpp
+    src/Instructions/internal.cpp
 
     src/Emulator.cpp)
 

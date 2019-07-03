@@ -73,13 +73,13 @@ namespace momiji
 
     Emulator::Emulator()
         : m_systemStates(1)
-        , m_settings({ 0, -1, EmulatorSettings::RetainStates::Always})
+        , m_settings({ 0, -1, EmulatorSettings::RetainStates::Always })
     {
     }
 
     Emulator::Emulator(EmulatorSettings settings)
         : m_systemStates(1)
-        , m_settings(std::move(settings))
+        , m_settings(settings)
     {
     }
 
@@ -96,7 +96,7 @@ namespace momiji
             return std::nullopt;
         }
 
-        auto res = momiji::parse(str);
+        auto res = momiji::parse(str, m_settings.parserSettings);
 
         if (res)
         {

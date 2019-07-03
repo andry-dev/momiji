@@ -28,6 +28,7 @@ void gui()
     emuSettings.programStart = 0;
     emuSettings.dataSectionOffset = 0;
     emuSettings.retainStates = momiji::EmulatorSettings::RetainStates::Always;
+    //emuSettings.parserSettings.breakpoints = gsl::null_span{};
 
     momiji::Emulator emu{emuSettings};
 
@@ -293,6 +294,10 @@ void gui()
 
                 case momiji::ParserError::ErrorType::NoLabelFound:
                     error_string = "no label found.";
+                    break;
+
+                case momiji::ParserError::ErrorType::WrongRegisterNumber:
+                    error_string = "wrong register number.";
                     break;
 
                 default:

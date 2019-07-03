@@ -11,6 +11,7 @@ namespace momiji
         bool result;
         std::string_view rest;
         std::string_view parsed_str;
+        ParserError error;
     };
 
     struct LabelInfo

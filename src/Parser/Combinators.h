@@ -44,7 +44,7 @@ namespace momiji
                 return second(res1.rest);
             }
 
-            return { false, str, "" };
+            return { false, str, "", { } };
         };
     }
 
@@ -55,7 +55,7 @@ namespace momiji
         {
             bool notdone = true;
 
-            parser_metadata res = { false, str, "" };
+            parser_metadata res = { false, str, "", { } };
 
             ([&] () constexpr {
                 if (!notdone)
@@ -78,7 +78,7 @@ namespace momiji
         return [=] (std::string_view str) -> parser_metadata
         {
             bool done = false;
-            parser_metadata res = { false, str, "" };
+            parser_metadata res = { false, str, "", { } };
 
             ([&] () constexpr -> void {
                 if (done)
@@ -124,7 +124,7 @@ namespace momiji
     {
         return [=] (std::string_view str) -> parser_metadata
         {
-            parser_metadata res = { false, str, "" };
+            parser_metadata res = { false, str, "", { } };
 
             ([&] () constexpr {
                 res = parsers(str);
@@ -140,7 +140,7 @@ namespace momiji
     {
         return  [=] (std::string_view str) -> parser_metadata
         {
-            parser_metadata ret = { false, str, "" };
+            parser_metadata ret = { false, str, "", { } };
 
             auto backup = str;
 
@@ -208,11 +208,11 @@ namespace momiji
                 auto trim_str = str.substr(0, cmpstr.size());
                 if (trim_str == cmpstr)
                 {
-                    return { true, str.substr(cmpstr.size()), trim_str };
+                    return { true, str.substr(cmpstr.size()), trim_str, { } };
                 }
             }
 
-            return { false, str, "" };
+            return { false, str, "", { } };
         };
     }
 
@@ -229,7 +229,7 @@ namespace momiji
                 }
             }
 
-            return { false, str, "" };
+            return { false, str, "", { } };
         };
     }
 
@@ -239,10 +239,10 @@ namespace momiji
         {
             if (str.size() > 0 && str[0] == c)
             {
-                return { true, str.substr(1), str.substr(0, 1) };
+                return { true, str.substr(1), str.substr(0, 1), { } };
             }
 
-            return { false, str, "" };
+            return { false, str, "", { } };
         };
     }
 
@@ -255,7 +255,7 @@ namespace momiji
                 return { true, str.substr(1), str.substr(0, 1) };
             }
 
-            return { false, str, "" };
+            return { false, str, "", { } };
         };
     }
 
@@ -275,7 +275,7 @@ namespace momiji
                 }
             }
 
-            return { false, str,  "" };
+            return { false, str,  "", { } };
         };
     }
 
@@ -297,7 +297,7 @@ namespace momiji
                 return res1;
             }
 
-            return { false, str, "" };
+            return { false, str, "", { } };
         };
     }
 
@@ -312,7 +312,7 @@ namespace momiji
                 return Then(body, tail)(head_res.rest);
             }
 
-            return { false, str, "" };
+            return { false, str, "", { } };
         };
     }
 
@@ -334,7 +334,7 @@ namespace momiji
 
             if (check_size)
             {
-                return { true, str, "" };
+                return { true, str, "", { } };
             }
 
             return AnyOf(Char('\n'), Char('\0'), Char('\r'))(str);
@@ -349,9 +349,8 @@ namespace momiji
 
             if (check_size)
             {
-                return { false, str, "" };
+                return { false, str, "", { } };
             }
-
 
             return AllOf(NotChar('\n'), NotChar('\0'), NotChar('\r'))(str);
         };
@@ -381,10 +380,10 @@ namespace momiji
             case '8':
             case '9':
             case '0':
-                return { true, str.substr(1), str.substr(0, 1) };
+                return { true, str.substr(1), str.substr(0, 1), { } };
 
             default:
-                return { false, str, "" };
+                return { false, str, "", { } };
             };
         };
     }
@@ -413,10 +412,10 @@ namespace momiji
 
             if (found_num)
             {
-                return { true, str.substr(idx), str.substr(0, idx) };
+                return { true, str.substr(idx), str.substr(0, idx), { } };
             }
 
-            return { false, str, "" };
+            return { false, str, "", { } };
         };
     }
 
@@ -447,10 +446,10 @@ namespace momiji
 
             if (found_num)
             {
-                return { true, str.substr(idx), str.substr(0, idx) };
+                return { true, str.substr(idx), str.substr(0, idx), { } };
             }
 
-            return { false, str, "" };
+            return { false, str, "", { } };
         };
     }
 
@@ -464,11 +463,11 @@ namespace momiji
                     (str[0] >= 'A' && str[0] <= 'Z') ||
                     (str[0] >= '0' && str[0] <= '9'))
                 {
-                    return { true, str.substr(1), str.substr(0, 1) };
+                    return { true, str.substr(1), str.substr(0, 1), { } };
                 }
             }
 
-            return { false, str, "" };
+            return { false, str, "", { } };
         };
     }
 
@@ -575,7 +574,7 @@ namespace momiji
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
-            constexpr auto inter_parser = SeqNext(Char('a'), Number());
+            constexpr auto inter_parser = SeqNext(Char('a'), DecNumber());
             auto register_parser =
                 Map(inter_parser, [&] (auto parsed_str) {
                     const int reg_num = std::stoi(std::string{parsed_str});
@@ -592,7 +591,7 @@ namespace momiji
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
         {
-            constexpr auto inter_parser = SeqNext(Char('d'), Number());
+            constexpr auto inter_parser = SeqNext(Char('d'), DecNumber());
             auto register_parser =
                 Map(inter_parser,
                     [&] (std::string_view parsed_str) {
@@ -796,7 +795,7 @@ namespace momiji
                     AlwaysTrue(Whitespace()),
                     Char(','),
                     AlwaysTrue(Whitespace()),
-                    AnyRegister(instr, 1));
+                    AnyOperand(instr, 1));
 
             return parser(str);
         };
@@ -813,7 +812,7 @@ namespace momiji
                     AlwaysTrue(Whitespace()),
                     Char(','),
                     AlwaysTrue(Whitespace()),
-                    AnyRegister(instr, 1));
+                    AnyOperand(instr, 1));
 
             return parser(str);
         };
@@ -826,7 +825,8 @@ namespace momiji
         {
             auto parser = SeqNext(
                     Whitespace(),
-                    MemoryAddress(instr, 0));
+                    AnyOf(OperandImmediate(instr, 0),
+                          MemoryAddress(instr, 0)));
 
             return parser(str);
         };

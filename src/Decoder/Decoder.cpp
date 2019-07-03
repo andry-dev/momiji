@@ -17,6 +17,7 @@
 #include "bcc.h"
 #include "bra.h"
 #include "jmp.h"
+#include "internal.h"
 
 namespace momiji
 {
@@ -215,6 +216,11 @@ namespace momiji
 
     DecodedInstruction decodeFourthGroup(const MemoryView& mem, int idx)
     {
+        // Momiji specific control code!
+        if (mem[idx] == 0xFFFF)
+        {
+            return momiji::dec::momijiInternal(mem, idx);
+        }
 
         constexpr std::uint16_t firstmask = 0b11110000'11000000;
         constexpr std::uint16_t mulmask =   0b11110001'11000000;

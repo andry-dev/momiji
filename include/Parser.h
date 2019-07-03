@@ -6,6 +6,8 @@
 #include <string_view>
 #include <vector>
 
+#include <gsl/span>
+
 #include "expected.hpp"
 
 namespace momiji
@@ -15,6 +17,16 @@ namespace momiji
     struct Label;
 
     using instr_fn_t = momiji::System (*)(momiji::System, const Instruction&);
+    
+    struct Breakpoint
+    {
+        std::int64_t source_line{0};
+    };
+
+    struct ParserSettings
+    {
+        gsl::span<Breakpoint> breakpoints;
+    };
 
     struct Operand
     {
@@ -37,7 +49,7 @@ namespace momiji
         InstructionType instructionType;
         BranchConditions branchCondition;
         DataType dataType;
-        std::int64_t program_counter{0};
+        std::int64_t programCounter{0};
     };
 
     struct ParserError
@@ -51,6 +63,7 @@ namespace momiji
             NoLabelFound,
             WrongInstruction,
             WrongOperandType,
+            WrongRegisterNumber,
             UnexpectedCharacter,
         } errorType;
     };
@@ -59,5 +72,6 @@ namespace momiji
         nonstd::expected<std::vector<momiji::Instruction>, ParserError>;
 
     momiji::ParsingResult parse(const std::string& str);
+    momiji::ParsingResult parse(const std::string& str, ParserSettings settings);
 
 } // namespace momiji

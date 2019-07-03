@@ -51,7 +51,10 @@ namespace momiji
         LogicalShiftRight,
 
         Nop,
-        Illegal
+        Illegal,
+
+        // Specific to momiji
+        Breakpoint,
     };
 
     enum class OperandType : std::uint8_t

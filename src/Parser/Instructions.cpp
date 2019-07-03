@@ -2,20 +2,63 @@
 
 namespace momiji::details
 {
+    static bool isImmediate(const Operand& op)
+    {
+        return op.operandType == OperandType::Immediate &&
+               op.specialAddressingMode == SpecialAddressingMode::Immediate;
+    }
+
+    static bool sanitizeRegisters(const Operand& op, parser_metadata& metadata)
+    {
+        if ((op.operandType != OperandType::Immediate) &&
+            (op.value < 0 || op.value > 7))
+        {
+            metadata.result = false;
+            metadata.error.errorType = ParserError::ErrorType::WrongRegisterNumber;
+
+            return false;
+        }
+
+        return true;
+    }
+
+    static bool sanitizeImmediate(const Operand& op, parser_metadata& metadata)
+    {
+        if (isImmediate(op))
+        {
+            metadata.result = false;
+            metadata.error.errorType = ParserError::ErrorType::WrongOperandType;
+
+            return false;
+        }
+
+        return true;
+    }
+
+    template <typename T, typename... U>
+    static bool not_eq_all(T& x, U&&... y)
+    {
+        return ((x != y) && ...);
+    }
+
     parser_metadata parseMove(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
-        switch (instr.operands[0].operandType)
+        for (const auto& op : instr.operands)
         {
-        case OperandType::AddressRegister:
-            instr.instructionType = InstructionType::MoveAddress;
-            break;
-
-        default:
-            instr.instructionType = InstructionType::Move;
-            break;
+            switch (op.operandType)
+            {
+            case OperandType::AddressRegister:
+            case OperandType::DataRegister:
+                sanitizeRegisters(op, res);
+                break;
+            }
         }
+
+        sanitizeImmediate(instr.operands[1], res);
+
+        instr.instructionType = InstructionType::Move;
 
         return res;
     }
@@ -24,7 +67,10 @@ namespace momiji::details
     {
         auto res = ImmediateInstructionParser(instr)(str);
 
+        sanitizeRegisters(instr.operands[1], res);
+
         instr.instructionType = InstructionType::MoveQuick;
+
 
         return res;
     }
@@ -36,6 +82,10 @@ namespace momiji::details
         {
         case OperandType::AddressRegister:
             instr.instructionType = InstructionType::AddA;
+            break;
+
+        case OperandType::Immediate:
+            sanitizeImmediate(instr.operands[1], res);
             break;
 
         default:
@@ -69,6 +119,10 @@ namespace momiji::details
             instr.instructionType = InstructionType::SubA;
             break;
 
+        case OperandType::Immediate:
+            sanitizeImmediate(instr.operands[1], res);
+            break;
+
         default:
             instr.instructionType = InstructionType::Sub;
             break;
@@ -86,6 +140,11 @@ namespace momiji::details
             break;
         }
 
+        for (const auto& op : instr.operands)
+        {
+            sanitizeRegisters(op, res);
+        }
+
         return res;
     }
 
@@ -93,6 +152,13 @@ namespace momiji::details
                               LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
+
+        for (const auto& op : instr.operands)
+        {
+            sanitizeRegisters(op, res);
+        }
+
+        sanitizeImmediate(instr.operands[1], res);
 
         instr.dataType = DataType::Word;
         instr.instructionType = InstructionType::SignedMul;
@@ -169,6 +235,13 @@ namespace momiji::details
             instr.instructionType = InstructionType::Or;
         }
 
+        for (const auto& op : instr.operands)
+        {
+            sanitizeRegisters(op, res);
+        }
+
+        sanitizeImmediate(instr.operands[1], res);
+
         return res;
     }
 
@@ -190,6 +263,13 @@ namespace momiji::details
         default:
             instr.instructionType = InstructionType::And;
         }
+
+        for (const auto& op : instr.operands)
+        {
+            sanitizeRegisters(op, res);
+        }
+
+        sanitizeImmediate(instr.operands[1], res);
 
         return res;
     }
@@ -221,17 +301,48 @@ namespace momiji::details
             break;
         }
 
+        for (const auto& op : instr.operands)
+        {
+            sanitizeRegisters(op, res);
+        }
+
+        sanitizeImmediate(instr.operands[1], res);
+
         return res;
     }
 
     parser_metadata parseJmp(std::string_view str, Instruction& instr,
                              LabelInfo& labels)
     {
-        auto res = SeqNext(
-                Whitespace(),
-                AnyOf(MemoryAddress(instr, 0), AsAddress(instr, 0)))(str);
+        auto res = SeqNext(Whitespace(),
+                           AnyOf(MemoryAddress(instr, 0),
+                                 AsAddress(instr, 0)))(str);
 
         instr.instructionType = InstructionType::Jmp;
+
+        switch (instr.operands[0].operandType)
+        {
+        case OperandType::Address:
+            sanitizeRegisters(instr.operands[0], res);
+            break;
+
+        case OperandType::AbsoluteLong:
+            switch (instr.operands[0].specialAddressingMode)
+            {
+            case SpecialAddressingMode::AbsoluteLong:
+            case SpecialAddressingMode::AbsoluteShort:
+                break;
+
+            default:
+                res.result = false;
+                res.error.errorType = ParserError::ErrorType::WrongOperandType;
+            }
+            break;
+
+        default:
+            res.result = false;
+            res.error.errorType = ParserError::ErrorType::WrongOperandType;
+        }
 
         return res;
     }

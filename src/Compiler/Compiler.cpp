@@ -19,6 +19,7 @@
 #include "bcc.h"
 #include "jmp.h"
 #include "swap.h"
+#include "internal.h"
 
 namespace momiji
 {
@@ -147,6 +148,9 @@ namespace momiji
             case InstructionType::LogicalShiftLeft:
             case InstructionType::LogicalShiftRight:
                 break;
+
+            case InstructionType::Breakpoint:
+                momiji::breakpoint(instr, memory, opcode, additional_data);
             }
 
             memory.push_back(opcode.val);

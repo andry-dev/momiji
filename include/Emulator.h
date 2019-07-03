@@ -42,10 +42,7 @@ namespace momiji
             return "";
         }
 
-        int count()
-        {
-            return 3;
-        }
+        ParserSettings parserSettings;
     };
 
     struct Emulator
