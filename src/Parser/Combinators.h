@@ -11,6 +11,8 @@
 
 namespace momiji
 {
+    constexpr auto AsAddress(momiji::Instruction& instr, int opNum);
+
     namespace alg
     {
         inline auto find_label(const LabelInfo& labels, std::uint32_t hash)
@@ -624,6 +626,7 @@ namespace momiji
                         case DataType::Word:
                             res_add_mode = SpecialAddressingMode::AbsoluteShort;
                             break;
+
                         case DataType::Long:
                             res_add_mode = SpecialAddressingMode::AbsoluteLong;
                             break;
@@ -701,18 +704,6 @@ namespace momiji
         };
     }
 
-    constexpr auto AnyOperand(momiji::Instruction& instr, int opNum)
-    {
-        return [&instr, opNum] (std::string_view str) -> parser_metadata
-        {
-            auto op_parser = AnyOf(OperandImmediate(instr, opNum),
-                                   AnyRegister(instr, opNum),
-                                   MemoryAddress(instr, opNum));
-
-            return op_parser(str);
-        };
-    }
-
     constexpr auto AsAddress(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum] (std::string_view str) -> parser_metadata
@@ -724,6 +715,19 @@ namespace momiji
                     });
 
             return register_parser(str);
+        };
+    }
+
+    constexpr auto AnyOperand(momiji::Instruction& instr, int opNum)
+    {
+        return [&instr, opNum] (std::string_view str) -> parser_metadata
+        {
+            auto op_parser = AnyOf(OperandImmediate(instr, opNum),
+                                   AnyRegister(instr, opNum),
+                                   AsAddress(instr, opNum),
+                                   MemoryAddress(instr, opNum));
+
+            return op_parser(str);
         };
     }
 

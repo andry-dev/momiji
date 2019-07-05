@@ -9,43 +9,11 @@ namespace momiji::instr
     momiji::System move(momiji::System& sys, const InstructionData& data)
     {
         // For data and address registers the value is already stored
-        std::uint32_t srcval = utils::to_val(data.mod1);
+        std::uint32_t srcval = utils::readOperand1(sys, data);
         auto pc = sys.cpu.programCounter.address;
 
         auto memview = momiji::make_memory_view(sys);
 
-        switch (data.op1)
-        {
-        case OperandType::Immediate:
-            switch (data.mod1)
-            {
-            case SpecialAddressingMode::Immediate:
-                srcval = utils::readImmediateFromPC(memview, pc, data.size);                   
-                break;
-
-            case SpecialAddressingMode::AbsoluteShort:
-            {
-                const std::uint32_t memoff = utils::readImmediateFromPC(memview, pc, 2);
-                srcval = utils::readFromMemory(memview, memoff, data.size);
-            } break;
-
-            case SpecialAddressingMode::AbsoluteLong:
-            {
-                const std::uint32_t memoff = utils::readImmediateFromPC(memview, pc, 4);
-                srcval = utils::readFromMemory(memview, memoff, data.size);
-            } break;
-
-            }
-            break;
-
-        case OperandType::DataRegister:
-            srcval = sys.cpu.dataRegisters[srcval].value;
-            break;
-
-        case OperandType::AddressRegister:
-            srcval = sys.cpu.addressRegisters[srcval].value;
-            break;
-        }
 
         std::int32_t dstval = utils::to_val(data.mod2);
         std::int32_t* tmp = nullptr;

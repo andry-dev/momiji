@@ -35,7 +35,7 @@ namespace momiji
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
-        repr::AndI bits;
+        repr::XorI bits;
 
         const std::uint8_t size = utils::to_val(instr.dataType) & 0b111;
         bits.size = size & 0b111;

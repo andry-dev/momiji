@@ -73,6 +73,11 @@ namespace momiji
             return m_data.empty();
         }
 
+        auto data()
+        {
+            return m_data.data();
+        }
+
     protected:
         Container m_data;
     };
