@@ -125,17 +125,17 @@ namespace momiji::instr
         switch (data.size)
         {
         case 1:
-            srcval = memview[pc + 1] & 0x000000FF;
+            srcval = memview.read8(pc + 2);
             *reg = (*reg & 0xFFFF'FF00) | ((*reg - srcval) & 0x0000'00FF);
             break;
 
         case 2:
-            srcval = memview[pc + 1];
+            srcval = memview.read16(pc + 2);
             *reg = (*reg & 0xFFFF'0000) | ((*reg - srcval) & 0x0000'FFFF);
             break;
 
         case 4:
-            srcval = (memview[pc + 1] << 16) | memview[pc + 2];
+            srcval = memview.read32(pc + 2);
             *reg = *reg - srcval;
             break;
         }

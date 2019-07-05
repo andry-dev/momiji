@@ -5,17 +5,17 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction exg(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction exg(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::Exg bits;
 
-        const std::uint16_t val = mem[idx];
+        const std::uint16_t val = mem.read16(idx);
 
-        bits.mode = (mem[idx] & 0b00000000'11111000) >> 3;
-        bits.datareg = (mem[idx] & 0b00001110'00000000) >> 9;
-        bits.addreg = (mem[idx] & 0b00000000'00000111);
+        bits.mode =    (val & 0b00000000'11111000) >> 3;
+        bits.datareg = (val & 0b00001110'00000000) >> 9;
+        bits.addreg =  (val & 0b00000000'00000111);
 
         switch (bits.mode)
         {

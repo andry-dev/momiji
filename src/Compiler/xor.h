@@ -9,39 +9,29 @@
 
 namespace momiji
 {
-    void and_instr(const momiji::Instruction& instr,
+    void xor_instr(const momiji::Instruction& instr,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
-        repr::And bits;
+        repr::Xor bits;
 
-        // and.* *, d*
-        if (instr.operands[1].operandType == OperandType::DataRegister)
-        {
-            bits.datareg = (instr.operands[1].value) & 0b111;
-            bits.direction = 0;
-        }
-        // and.* d*, *
-        else
-        {
-            bits.datareg = (instr.operands[0].value) & 0b111;
-            bits.direction = 1;
-        }
+        // eor.* d*, *
+        bits.datareg = (instr.operands[0].value) & 0b111;
 
-        bits.othtype = utils::to_val(instr.operands[bits.direction].operandType);
-        bits.othmode = getCorrectOpMode(instr, bits.direction);
+        bits.othtype = utils::to_val(instr.operands[1].operandType);
+        bits.othmode = getCorrectOpMode(instr, 1);
 
         bits.size = utils::to_val(instr.dataType) & 0b11;
 
         opcode.val =  (bits.header << 12)
                     | (bits.datareg << 9)
-                    | (bits.direction << 8)
+                    | (bits.padding << 8)
                     | (bits.size << 6)
                     | (bits.othtype << 3)
                     | (bits.othmode);
     }
 
-    void andi(const momiji::Instruction& instr,
+    void xori(const momiji::Instruction& instr,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {

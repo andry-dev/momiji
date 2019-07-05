@@ -5,13 +5,13 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction bra(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction bra(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::Bra bits;
 
-        const std::uint16_t val = mem[idx];
+        const std::uint16_t val = mem.read16(idx);
 
         bits.displacement = (val & 0b00000000'11111111);
 

@@ -26,6 +26,7 @@ target_sources(libmomiji
     src/Decoder/div.cpp
     src/Decoder/mul.cpp
     src/Decoder/cmp.cpp
+    src/Decoder/tst.cpp
     src/Decoder/or.cpp
     src/Decoder/and.cpp
     src/Decoder/exg.cpp
@@ -40,6 +41,7 @@ target_sources(libmomiji
     src/Instructions/div.cpp
     src/Instructions/mul.cpp
     src/Instructions/cmp.cpp
+    src/Instructions/tst.cpp
     src/Instructions/or.cpp
     src/Instructions/and.cpp
     src/Instructions/exg.cpp

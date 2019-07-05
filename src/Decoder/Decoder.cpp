@@ -9,6 +9,7 @@
 #include "add.h"
 #include "sub.h"
 #include "cmp.h"
+#include "tst.h"
 #include "and.h"
 #include "or.h"
 #include "mul.h"
@@ -27,19 +28,17 @@ namespace momiji
 
     }
 
-    using MemoryView = gsl::span<std::uint16_t>;
+    DecodedInstruction decodeFirstGroup(ExecutableMemoryView, std::uint64_t);
+    DecodedInstruction decodeSecondGroup(ExecutableMemoryView, std::uint64_t);
+    DecodedInstruction decodeThirdGroup(ExecutableMemoryView, std::uint64_t);
+    DecodedInstruction decodeFourthGroup(ExecutableMemoryView, std::uint64_t);
 
-    DecodedInstruction decodeFirstGroup(const MemoryView& mem, int idx);
-    DecodedInstruction decodeSecondGroup(const MemoryView& mem, int idx);
-    DecodedInstruction decodeThirdGroup(const MemoryView& mem, int idx);
-    DecodedInstruction decodeFourthGroup(const MemoryView& mem, int idx);
-
-    DecodedInstruction decode(MemoryView mem, int idx)
+    DecodedInstruction decode(ExecutableMemoryView mem, std::uint64_t idx)
     {
         // Find by groups
         std::uint16_t mask = 0b11000000'00000000;
 
-        std::uint16_t val = mem[idx] & mask;
+        std::uint16_t val = mem.read16(idx) & mask;
 
         switch (val)
         {
@@ -60,15 +59,15 @@ namespace momiji
     }
 
 
-    DecodedInstruction decodeFirstGroup(const MemoryView& mem, int idx)
+    DecodedInstruction decodeFirstGroup(ExecutableMemoryView mem, std::uint64_t idx)
     {
         constexpr std::uint16_t firstmask = 0b11110000'00000000;
         constexpr std::uint16_t secondmask = 0b11111111'00000000;
 
-        switch (mem[idx] & firstmask)
+        switch (mem.read16(idx) & firstmask)
         {
         case 0b00000000'00000000:
-            switch (mem[idx] & secondmask)
+            switch (mem.read16(idx) & secondmask)
             {
             // ANDI
             case 0b00000010'00000000:
@@ -98,23 +97,23 @@ namespace momiji
         return {};
     }
 
-    DecodedInstruction decodeSecondGroup(const MemoryView& mem, int idx)
+    DecodedInstruction decodeSecondGroup(ExecutableMemoryView mem, std::uint64_t idx)
     {
         constexpr std::uint16_t firstmask =  0b11110000'00000000;
         constexpr std::uint16_t bramask =    0b11111111'00000000;
         constexpr std::uint16_t secondmask = 0b11111111'11000000;
 
-        switch (mem[idx] & firstmask)
+        switch (mem.read16(idx) & firstmask)
         {
         // JMP / MOVEM
         case 0b01000000'00000000:
-            switch (mem[idx] & secondmask)
+            switch (mem.read16(idx) & secondmask)
             {
             // TST
             case 0b01001010'00000000:
             case 0b01001010'01000000:
             case 0b01001010'10000000:
-                break;
+                return momiji::dec::tst(mem, idx);
 
             // NOT
             case 0b01000110'00000000:
@@ -138,7 +137,7 @@ namespace momiji
 
         // BRA / BSR / Bcc
         case 0b01100000'00000000:
-            switch (mem[idx] & bramask)
+            switch (mem.read16(idx) & bramask)
             {
             // BRA
             case 0b01100000'00000000:
@@ -162,16 +161,16 @@ namespace momiji
         return {};
     }
 
-    DecodedInstruction decodeThirdGroup(const MemoryView& mem, int idx)
+    DecodedInstruction decodeThirdGroup(ExecutableMemoryView mem, std::uint64_t idx)
     {
         constexpr std::uint16_t firstmask = 0b11110000'11000000;
         constexpr std::uint16_t divmask = 0b11110001'11000000;
 
-        switch (mem[idx] & firstmask)
+        switch (mem.read16(idx) & firstmask)
         {
         // DIVU / DIVS
         case 0b10000000'11000000:
-            switch (mem[idx] & divmask)
+            switch (mem.read16(idx) & divmask)
             {
             // DIVU
             case 0b10000000'11000000:
@@ -214,10 +213,10 @@ namespace momiji
     }
 
 
-    DecodedInstruction decodeFourthGroup(const MemoryView& mem, int idx)
+    DecodedInstruction decodeFourthGroup(ExecutableMemoryView mem, std::uint64_t idx)
     {
         // Momiji specific control code!
-        if (mem[idx] == 0xFFFF)
+        if (mem.read16(idx) == 0xFFFF)
         {
             return momiji::dec::momijiInternal(mem, idx);
         }
@@ -228,11 +227,11 @@ namespace momiji
         // Used to discriminate between AND or EXG
         constexpr std::uint16_t exgmask =   0b11110001'11001000;
 
-        switch (mem[idx] & firstmask)
+        switch (mem.read16(idx) & firstmask)
         {
         // MULU / MULS
         case 0b11000000'11000000:
-            switch (mem[idx] & mulmask)
+            switch (mem.read16(idx) & mulmask)
             {
             // MULU
             case 0b11000000'11000000:
@@ -247,7 +246,7 @@ namespace momiji
         case 0b11000000'00000000:
         case 0b11000000'01000000:
         case 0b11000000'10000000:
-            switch (mem[idx] & exgmask)
+            switch (mem.read16(idx) & exgmask)
             {
             // Probably an EXG
             case 0b11000001'01000000:

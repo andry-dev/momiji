@@ -8,8 +8,8 @@ namespace momiji
 {
     namespace dec
     {
-        DecodedInstruction and_instr(gsl::span<std::uint16_t> mem, int idx);
-        DecodedInstruction andi(gsl::span<std::uint16_t> mem, int idx);
+        DecodedInstruction and_instr(ExecutableMemoryView mem, std::uint64_t idx);
+        DecodedInstruction andi(ExecutableMemoryView mem, std::uint64_t idx);
     }
 }
 

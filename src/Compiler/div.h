@@ -10,7 +10,6 @@
 namespace momiji
 {
     void divs(const momiji::Instruction& instr,
-              MemoryType&,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
@@ -45,7 +44,6 @@ namespace momiji
     }
 
     void divu(const momiji::Instruction& instr,
-              MemoryType&,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {

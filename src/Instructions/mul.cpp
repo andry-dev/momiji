@@ -31,7 +31,7 @@ namespace momiji::instr
             switch (data.mod1)
             {
             case SpecialAddressingMode::Immediate:
-                srcval = memview[pc + 1];
+                srcval = memview.read16(pc + 2);
                 break;
             }
             break;
@@ -73,7 +73,7 @@ namespace momiji::instr
             switch (data.mod1)
             {
             case SpecialAddressingMode::Immediate:
-                srcval = memview[pc + 1];
+                srcval = memview.read16(pc + 2);
                 break;
             }
             break;

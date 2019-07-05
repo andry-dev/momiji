@@ -6,6 +6,6 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction divs(gsl::span<std::uint16_t> mem, int idx);
-    DecodedInstruction divu(gsl::span<std::uint16_t> mem, int idx);
+    DecodedInstruction divs(ExecutableMemoryView mem, std::uint64_t idx);
+    DecodedInstruction divu(ExecutableMemoryView mem, std::uint64_t idx);
 }

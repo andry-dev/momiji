@@ -3,14 +3,9 @@
 #include <System.h>
 #include <Decoder.h>
 
-namespace momiji
+namespace momiji::dec
 {
-    namespace dec
-    {
-        DecodedInstruction sub(gsl::span<std::uint16_t> mem, int idx);
-
-        DecodedInstruction suba(gsl::span<std::uint16_t> mem, int idx);
-
-        DecodedInstruction subi(gsl::span<std::uint16_t> mem, int idx);
-    }
+    DecodedInstruction sub(ExecutableMemoryView mem, std::uint64_t idx);
+    DecodedInstruction suba(ExecutableMemoryView mem, std::uint64_t idx);
+    DecodedInstruction subi(ExecutableMemoryView mem, std::uint64_t idx);
 }

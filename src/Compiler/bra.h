@@ -10,7 +10,6 @@
 namespace momiji
 {
     void bra(const momiji::Instruction& instr,
-              MemoryType&,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {

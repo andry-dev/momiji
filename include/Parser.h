@@ -44,7 +44,11 @@ namespace momiji
 
     struct Instruction
     {
-        std::array<Operand, 2> operands;
+        Instruction()
+            : operands(2)
+        {}
+
+        std::vector<Operand> operands;
 
         InstructionType instructionType;
         BranchConditions branchCondition;

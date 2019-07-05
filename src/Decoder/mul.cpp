@@ -5,13 +5,14 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction muls(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction muls(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::MulS bits;
 
-        const std::uint16_t val = mem[idx];
+        const std::uint16_t val = mem.read16(idx);
+
         bits.datareg = (val & 0b00001110'00000000) >> 9;
         bits.srctype = (val & 0b00000000'00111000) >> 3;
         bits.srcmode = (val & 0b00000000'00000111);
@@ -28,13 +29,14 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction mulu(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction mulu(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::MulU bits;
 
-        const std::uint16_t val = mem[idx];
+        const std::uint16_t val = mem.read16(idx);
+
         bits.datareg = (val & 0b00001110'00000000) >> 9;
         bits.srctype = (val & 0b00000000'00111000) >> 3;
         bits.srcmode = (val & 0b00000000'00000111);

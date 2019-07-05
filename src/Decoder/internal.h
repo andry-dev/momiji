@@ -5,5 +5,5 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction momijiInternal(gsl::span<std::uint16_t> mem, int idx);
+    DecodedInstruction momijiInternal(ExecutableMemoryView mem, std::uint64_t idx);
 }

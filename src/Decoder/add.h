@@ -5,7 +5,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction add(gsl::span<std::uint16_t> mem, int idx);
-    DecodedInstruction adda(gsl::span<std::uint16_t> mem, int idx);
-    DecodedInstruction addi(gsl::span<std::uint16_t> mem, int idx);
+    DecodedInstruction add(ExecutableMemoryView mem, std::uint64_t idx);
+    DecodedInstruction adda(ExecutableMemoryView mem, std::uint64_t idx);
+    DecodedInstruction addi(ExecutableMemoryView mem, std::uint64_t idx);
 }

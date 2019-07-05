@@ -24,7 +24,7 @@ namespace momiji
 
         Move,        // move.*
         MoveQuick,   // moveq
-        MoveAddress, // movea
+        MoveAddress,
 
         Or,
         OrI,
@@ -41,12 +41,14 @@ namespace momiji
         Tst,
 
         Jmp,
+        JmpSubroutine,
         Branch,
+        BranchSubroutine,
         BranchCondition,
+        ReturnSubroutine,
 
         ArithmeticShiftLeft,
         ArithmeticShiftRight,
-
         LogicalShiftLeft,
         LogicalShiftRight,
 
@@ -54,7 +56,9 @@ namespace momiji
         Illegal,
 
         // Specific to momiji
+        HaltCatchFire,
         Breakpoint,
+        Declare, // dc.*
     };
 
     enum class OperandType : std::uint8_t

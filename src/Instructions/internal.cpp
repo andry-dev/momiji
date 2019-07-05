@@ -9,4 +9,11 @@ namespace momiji::instr
         std::cout << "we\n";
         return sys;
     }
+
+    momiji::System hcf(momiji::System& sys, const InstructionData& instr)
+    {
+        sys.cpu.programCounter.address = 0xFFFFFFFB;
+
+        return sys;
+    }
 }

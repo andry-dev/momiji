@@ -10,7 +10,6 @@
 namespace momiji
 {
     void cmp(const momiji::Instruction& instr,
-             MemoryType&,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
@@ -30,7 +29,6 @@ namespace momiji
     }
 
     void cmpa(const momiji::Instruction& instr,
-              MemoryType&,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
@@ -66,7 +64,6 @@ namespace momiji
     }
 
     void cmpi(const momiji::Instruction& instr,
-              MemoryType&,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {

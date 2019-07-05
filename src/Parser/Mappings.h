@@ -15,7 +15,7 @@ namespace momiji
         details::parserfn_t execfn;
     };
 
-    constexpr std::array<MappingType, 30> mappings = { {
+    constexpr std::array<MappingType, 42> mappings = { {
         { utils::hash("move"), details::parseMove },
         { utils::hash("moveq"), details::parseMoveQ },
 
@@ -40,12 +40,20 @@ namespace momiji
         { utils::hash("ori"), details::parseOr },
         { utils::hash("and"), details::parseAnd },
         { utils::hash("andi"), details::parseAnd },
+        { utils::hash("eor"), details::parseXor },
+        { utils::hash("eori"), details::parseXor },
+        { utils::hash("not"), details::parseNot },
+
         { utils::hash("cmp"), details::parseCmp },
         { utils::hash("cmpi"), details::parseCmp },
         { utils::hash("cmpa"), details::parseCmp },
+        { utils::hash("tst"), details::parseTst },
 
         { utils::hash("jmp"), details::parseJmp },
+        { utils::hash("jsr"), details::parseJsr },
         { utils::hash("bra"), details::parseBra },
+        { utils::hash("bsr"), details::parseBsr },
+        { utils::hash("rts"), details::parseRts },
 
         { utils::hash("blt"), details::parseBlt },
         { utils::hash("ble"), details::parseBle },
@@ -54,6 +62,13 @@ namespace momiji
         { utils::hash("beq"), details::parseBeq },
         { utils::hash("bne"), details::parseBne },
 
-        { utils::hash("jmp"), details::parseJmp },
+        { utils::hash("asl"), details::parseAsl },
+        { utils::hash("asr"), details::parseAsr },
+        { utils::hash("lsl"), details::parseLsl },
+        { utils::hash("lsr"), details::parseLsr },
+
+        // Extensions
+        { utils::hash("dc"), details::parseDeclare },
+        { utils::hash("hcf"), details::parseHcf }
     } };
 } // namespace momiji

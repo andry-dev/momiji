@@ -7,6 +7,8 @@
 #include "Common.h"
 #include "Combinators.h"
 
+#include <Memory.h>
+
 //#include "Instructions.h"
 #include <System.h>
 
@@ -24,7 +26,9 @@ namespace momiji
     static bool isImmediate(const Operand& op)
     {
         return op.operandType == OperandType::Immediate &&
-               op.specialAddressingMode == SpecialAddressingMode::Immediate;
+               (op.specialAddressingMode == SpecialAddressingMode::Immediate ||
+                op.specialAddressingMode == SpecialAddressingMode::AbsoluteShort ||
+                op.specialAddressingMode == SpecialAddressingMode::AbsoluteLong);
     }
 
     struct Parser
@@ -74,6 +78,7 @@ namespace momiji
                 auto instrword = Word()(tmp_str);
                 tmp_str = instrword.rest;
 
+                // If we don't find an instruction, we just skip the line
                 if (!instrword.result)
                 {
                     auto skip_to_end = SkipLine()(tmp_str);
@@ -100,19 +105,7 @@ namespace momiji
 
                 if (!settings.breakpoints.empty())
                 {
-                    // Check if we should insert a breakpoint
-                    auto found_breakpoint = std::find_if(
-                        std::begin(settings.breakpoints), std::end(settings.breakpoints),
-                        [this] (momiji::Breakpoint x) {
-                            return x.source_line == line_count;
-                        });
-
-                    if (found_breakpoint != std::end(settings.breakpoints))
-                    {
-                        momiji::Instruction breakpoint;
-                        breakpoint.instructionType = InstructionType::Breakpoint;
-                        instructions.emplace_back(breakpoint);
-                    }
+                    handleBreakpoints();
                 }
 
                 instr.programCounter = program_counter;
@@ -122,28 +115,7 @@ namespace momiji
                 {
                     instructions.emplace_back(instr);
 
-                    // Every increment of one to program_counter is 2 bytes
-                    // Because memory is 16bit-aligned
-
-                    // First 2 bytes for the instruction
-                    ++program_counter;
-
-                    if (isImmediate(instr.operands[0]))
-                    {
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                            // 2 bytes of immediate data
-                            ++program_counter;
-                            break;
-
-                        case DataType::Long:
-                            // 4 bytes of immediate data
-                            program_counter += 2;
-                            break;
-                        }
-                    }
+                    handlePCIncrement(instr);
                 }
                 else
                 {
@@ -152,7 +124,6 @@ namespace momiji
 
                 tmp_str = res.rest;
 
-                // Parsed an instruction!
                 auto skip_to_end = SkipLine()(tmp_str);
                 tmp_str = skip_to_end.rest;
                 ++line_count;
@@ -195,6 +166,70 @@ namespace momiji
         }
 
     private:
+
+        void handleBreakpoints()
+        {
+            // Check if we should insert a breakpoint
+            auto found_breakpoint = std::find_if(
+                std::begin(settings.breakpoints), std::end(settings.breakpoints),
+                [this] (momiji::Breakpoint x) {
+                    return x.source_line == line_count;
+                });
+
+            if (found_breakpoint != std::end(settings.breakpoints))
+            {
+                momiji::Instruction breakpoint;
+                breakpoint.instructionType = InstructionType::Breakpoint;
+                instructions.emplace_back(breakpoint);
+
+                program_counter += 4;
+            }
+        }
+
+        void handlePCIncrement(momiji::Instruction& instr)
+        {
+            program_counter += 2;
+
+            if (instr.instructionType == InstructionType::Declare)
+            {
+                switch (instr.dataType)
+                {
+                case DataType::Byte:
+                    program_counter += instr.operands.size();
+                    break;
+
+                case DataType::Word:
+                    program_counter += instr.operands.size() * 2;
+                    break;
+
+                case DataType::Long:
+                    program_counter += instr.operands.size() * 4;
+                    break;
+                }
+            }
+            else
+            {
+                for (const auto& op : instr.operands)
+                {
+                    if (isImmediate(op))
+                    {
+                        switch (instr.dataType)
+                        {
+                        case DataType::Byte:
+                        case DataType::Word:
+                            // 2 bytes of immediate data
+                            program_counter += 2;
+                            break;
+
+                        case DataType::Long:
+                            // 4 bytes of immediate data
+                            program_counter += 4;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         std::int64_t line_count{0};
         std::int64_t program_counter{0};

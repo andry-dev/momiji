@@ -25,6 +25,7 @@ void gui()
     using def_tag = tewi::API::OpenGLTag;
 
     momiji::EmulatorSettings emuSettings;
+
     emuSettings.programStart = 0;
     emuSettings.dataSectionOffset = 0;
     emuSettings.retainStates = momiji::EmulatorSettings::RetainStates::Always;
@@ -215,20 +216,25 @@ void gui()
             {
                 const auto& lastSys = states.back();
 
-                auto memview = momiji::make_memory_view(lastSys);
+                const momiji::ConstExecutableMemoryView memview = lastSys.mem;
                 const auto pc = lastSys.cpu.programCounter.address;
 
-                for (int i = 0; i < memview.size(); ++i)
+                for (int i = 0; i < memview.size(); i += 2)
                 {
-                    std::uint8_t lower = memview[i] & 0x00FF;
-                    std::uint8_t higher = (memview[i] & 0xFF00) >> 8;
+                    std::uint8_t higher = memview.read8(i);
+                    std::uint8_t lower = 0;
+
+                    if ((i + 1) < memview.size())
+                    {
+                        lower = memview.read8(i + 1);
+                    }
 
                     auto pcadd = memview.begin() + pc;
                     auto curradd = memview.begin() + i;
 
                     ImGui::TextUnformatted(pcadd == curradd ? "=>" : "  ");
                     ImGui::SameLine();
-                    ImGui::Text("%x: %x %x", &memview[i], higher, lower);
+                    ImGui::Text("%p: %x %x", memview.begin() + i, higher, lower);
                 }
             }
             else

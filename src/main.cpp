@@ -45,15 +45,6 @@ void print_sys(const momiji::System& sys)
     std::cout << std::to_string(sys.cpu.statusRegister.carry) << ' ';
 
     std::cout << "\n--- MEMORY ---\n";
-
-    const auto& binary = sys.mem;
-    for (int i = 0, cnt = 0; i < binary.size(); ++i, cnt += 2)
-    {
-        std::cout << &binary[i] << ": ";
-        std::bitset<16> bs { binary[i] };
-        std::cout << bs << " \n";
-    }
-    std::cout << '\n';
 }
 
 void cli()

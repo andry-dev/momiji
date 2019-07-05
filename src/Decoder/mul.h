@@ -6,6 +6,6 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction muls(gsl::span<std::uint16_t> mem, int idx);
-    DecodedInstruction mulu(gsl::span<std::uint16_t> mem, int idx);
+    DecodedInstruction muls(ExecutableMemoryView mem, std::uint64_t idx);
+    DecodedInstruction mulu(ExecutableMemoryView mem, std::uint64_t idx);
 }

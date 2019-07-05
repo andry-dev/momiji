@@ -19,11 +19,11 @@ namespace momiji
         {
         case 1:
         case 2:
-            pc += 2;
+            pc += 4;
             break;
 
         case 4:
-            pc += 3;
+            pc += 6;
             break;
         }
 
@@ -66,7 +66,7 @@ namespace momiji
 
             if (!pc_incremented)
             {
-                ++newstate.cpu.programCounter.address;
+                newstate.cpu.programCounter.address += 2;
             }
         }
     }
@@ -125,7 +125,7 @@ namespace momiji
     bool Emulator::rollback()
     {
         auto& lastSys = m_systemStates.back();
-        const gsl::span<std::uint16_t> memview { lastSys.mem.data(), lastSys.mem.size() };
+        ExecutableMemoryView memview = lastSys.mem;
         const auto pc = lastSys.cpu.programCounter.address;
 
         auto pcadd = memview.begin() + pc;

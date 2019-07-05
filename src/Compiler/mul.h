@@ -10,7 +10,6 @@
 namespace momiji
 {
     void muls(const momiji::Instruction& instr,
-              MemoryType&,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
@@ -45,7 +44,6 @@ namespace momiji
     }
 
     void mulu(const momiji::Instruction& instr,
-              MemoryType&,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {

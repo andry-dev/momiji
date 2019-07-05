@@ -6,7 +6,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction or_instr(gsl::span<std::uint16_t> mem, int idx);
-    DecodedInstruction ori(gsl::span<std::uint16_t> mem, int idx);
-    DecodedInstruction ora(gsl::span<std::uint16_t> mem, int idx);
+    DecodedInstruction or_instr(ExecutableMemoryView mem, std::uint64_t idx);
+    DecodedInstruction ori(ExecutableMemoryView mem, std::uint64_t idx);
+    DecodedInstruction ora(ExecutableMemoryView mem, std::uint64_t idx);
 }

@@ -6,7 +6,7 @@
 #include <vector>
 
 #include <Utils.h>
-#include <gsl/span>
+#include <Memory.h>
 
 namespace momiji
 {
@@ -81,17 +81,18 @@ namespace momiji
     struct System
     {
         Cpu cpu;
-        MemoryType mem;
+        ExecutableMemory mem;
+        StackMemory stack;
     };
 
-    inline gsl::span<const std::uint16_t> make_memory_view(const System& sys)
+    inline ExecutableMemoryView make_memory_view(System& sys)
     {
-        return { sys.mem.data(), sys.mem.size() };
+        return sys.mem;
     }
 
-    inline gsl::span<std::uint16_t> make_memory_view(System& sys)
+    inline ConstExecutableMemoryView make_memory_view(const System& sys)
     {
-        return { sys.mem.data(), sys.mem.size() };
+        return sys.mem;
     }
 
 } // namespace momiji

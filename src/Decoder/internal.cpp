@@ -4,14 +4,17 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction momijiInternal(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction momijiInternal(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
-        std::int16_t controlcode = mem[idx + 1];
+        const std::uint16_t controlcode = mem.read16(idx + 2);
 
         switch (controlcode)
         {
+        case 0:
+            ret.exec = instr::hcf;
+            break;
         case 1:
             ret.exec = instr::handleBreakpoint;
             break;

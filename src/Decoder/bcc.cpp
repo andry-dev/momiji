@@ -5,13 +5,13 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction bcc(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction bcc(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::Bcc bits;
 
-        const std::uint16_t val = mem[idx];
+        const std::uint16_t val = mem.read16(idx);
 
         bits.condition =    (val & 0b00001111'00000000) >> 8;
         bits.displacement = (val & 0b00000000'11111111);

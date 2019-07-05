@@ -12,7 +12,9 @@
 #include "div.h"
 #include "or.h"
 #include "and.h"
+#include "xor.h"
 #include "cmp.h"
+#include "tst.h"
 #include "mul.h"
 #include "exg.h"
 #include "bra.h"
@@ -23,10 +25,10 @@
 
 namespace momiji
 {
-    std::vector<std::uint16_t>
+    ExecutableMemory
     compile(const std::vector<momiji::Instruction>& instructions)
     {
-        std::vector<std::uint16_t> memory;
+        ExecutableMemory memory;
 
         for (const auto& instr : instructions)
         {
@@ -40,107 +42,119 @@ namespace momiji
             {
             case InstructionType::Move:
             case InstructionType::MoveAddress:
-                momiji::move(instr, memory, opcode, additional_data);
+                momiji::move(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Add:
-                momiji::add(instr, memory, opcode, additional_data);
+                momiji::add(instr, opcode, additional_data);
                 break;
 
             case InstructionType::AddA:
-                momiji::adda(instr, memory, opcode, additional_data);
+                momiji::adda(instr, opcode, additional_data);
                 break;
 
             case InstructionType::AddI:
-                momiji::addi(instr, memory, opcode, additional_data);
+                momiji::addi(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Sub:
-                momiji::sub(instr, memory, opcode, additional_data);
+                momiji::sub(instr, opcode, additional_data);
                 break;
 
             case InstructionType::SubA:
-                momiji::suba(instr, memory, opcode, additional_data);
+                momiji::suba(instr, opcode, additional_data);
                 break;
 
             case InstructionType::SubI:
-                momiji::subi(instr, memory, opcode, additional_data);
+                momiji::subi(instr, opcode, additional_data);
                 break;
 
             case InstructionType::SignedDiv:
-                momiji::divs(instr, memory, opcode, additional_data);
+                momiji::divs(instr, opcode, additional_data);
                 break;
 
             case InstructionType::UnsignedDiv:
-                momiji::divu(instr, memory, opcode, additional_data);
+                momiji::divu(instr, opcode, additional_data);
                 break;
 
             case InstructionType::SignedMul:
-                momiji::muls(instr, memory, opcode, additional_data);
+                momiji::muls(instr, opcode, additional_data);
                 break;
 
             case InstructionType::UnsignedMul:
-                momiji::mulu(instr, memory, opcode, additional_data);
+                momiji::mulu(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Or:
-                momiji::or_instr(instr, memory, opcode, additional_data);
+                momiji::or_instr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::OrI:
-                momiji::ori(instr, memory, opcode, additional_data);
+                momiji::ori(instr, opcode, additional_data);
                 break;
 
             case InstructionType::And:
-                momiji::and_instr(instr, memory, opcode, additional_data);
+                momiji::and_instr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::AndI:
-                momiji::andi(instr, memory, opcode, additional_data);
+                momiji::andi(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Xor:
+                momiji::xor_instr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::XorI:
+                momiji::xori(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Not:
                 break;
 
             case InstructionType::Compare:
-                momiji::cmp(instr, memory, opcode, additional_data);
+                momiji::cmp(instr, opcode, additional_data);
                 break;
 
             case InstructionType::CompareA:
-                momiji::cmpa(instr, memory, opcode, additional_data);
+                momiji::cmpa(instr, opcode, additional_data);
                 break;
 
             case InstructionType::CompareI:
-                momiji::cmpi(instr, memory, opcode, additional_data);
-                break;
-
-            case InstructionType::Branch:
-                momiji::bra(instr, memory, opcode, additional_data);
-                break;
-
-            case InstructionType::BranchCondition:
-                momiji::bcc(instr, memory, opcode, additional_data);
-                break;
-
-            case InstructionType::Exchange:
-                momiji::exg(instr, memory, opcode, additional_data);
-                break;
-
-            case InstructionType::Swap:
-                momiji::swap(instr, memory, opcode, additional_data);
-                break;
-
-            case InstructionType::Jmp:
-                momiji::jmp(instr, memory, opcode, additional_data);
+                momiji::cmpi(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Tst:
+                momiji::tst(instr, opcode, additional_data);
+                break;
+
+            case InstructionType::Jmp:
+                momiji::jmp(instr, opcode, additional_data);
+                break;
+
+            case InstructionType::JmpSubroutine:
+                break;
+
+            case InstructionType::Branch:
+                momiji::bra(instr, opcode, additional_data);
+                break;
+
+            case InstructionType::BranchCondition:
+                momiji::bcc(instr, opcode, additional_data);
+                break;
+
+            case InstructionType::BranchSubroutine:
+                break;
+
+            case InstructionType::ReturnSubroutine:
+                break;
+
+            case InstructionType::Swap:
+                momiji::swap(instr, opcode, additional_data);
+                break;
+
+            case InstructionType::Exchange:
+                momiji::exg(instr, opcode, additional_data);
                 break;
 
             case InstructionType::ArithmeticShiftLeft:
@@ -149,11 +163,50 @@ namespace momiji
             case InstructionType::LogicalShiftRight:
                 break;
 
+            case InstructionType::HaltCatchFire:
+                momiji::hcf(instr, opcode, additional_data);
+                break;
+
             case InstructionType::Breakpoint:
-                momiji::breakpoint(instr, memory, opcode, additional_data);
+                momiji::breakpoint(instr, opcode, additional_data);
+                break;
+
+            case InstructionType::Declare:
+                switch (instr.dataType)
+                {
+                case DataType::Byte:
+                    for (const auto& x : instr.operands)
+                    {
+                        const std::uint8_t val = x.value & 0x0000'00FF;
+                        memory.push8(val);
+                    }
+                    break;
+
+                case DataType::Word:
+                    for (const auto& x : instr.operands)
+                    {
+                        const std::uint16_t val = x.value & 0x0000'FFFF;
+                        memory.push16(val);
+                    }
+                    break;
+
+                case DataType::Long:
+                    for (const auto& x : instr.operands)
+                    {
+                        const std::uint32_t val = x.value;
+                        memory.push32(val);
+                    }
+                    break;
+                }
+                continue;
+                break;
+
+            default:
+                std::cerr << utils::to_val(instr.instructionType)
+                          << ": Instruction not implemented yet\n";
             }
 
-            memory.push_back(opcode.val);
+            memory.push16(opcode.val);
 
             for (int i = 0; i < additional_data.size(); ++i)
             {
@@ -162,15 +215,15 @@ namespace momiji
                 case 1: {
                     // Adding 1 byte to align to 16-bit
                     const std::uint16_t val = 0 | additional_data[i].arr8[0];
-                    memory.push_back(val);
+                    memory.push16(val);
                     } break;
+
                 case 2:
-                    memory.push_back(additional_data[i].arr16[0]);
+                    memory.push16(additional_data[i].arr16[0]);
                     break;
 
                 case 4:
-                    memory.push_back(additional_data[i].arr16[1]);
-                    memory.push_back(additional_data[i].arr16[0]);
+                    memory.push32(additional_data[i].val);
                     break;
                 }
             }

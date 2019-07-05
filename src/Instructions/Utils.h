@@ -2,14 +2,14 @@
 
 #include <Utils.h>
 
-#include <gsl/span>
+#include <Memory.h>
 #include <System.h>
 
 namespace momiji
 {
     namespace utils
     {
-        inline std::uint32_t readImmediateFromPC(gsl::span<std::uint16_t> base,
+        inline std::uint32_t readImmediateFromPC(ExecutableMemoryView base,
                                                  std::uint32_t pc,
                                                  std::int16_t size)
         {
@@ -18,39 +18,44 @@ namespace momiji
             switch (size)
             {
             case 1:
+                return base.read8(pc + 3);
+
             case 2:
-                val = base[pc + 1];
-                break;
+                return base.read16(pc + 2);
 
             case 4:
-                val = (base[pc + 1] << 16) | (base[pc + 2]);
-                break;
+                return base.read32(pc + 2);
             }
 
             return val;
         }
 
-        inline std::uint32_t readFromMemory(gsl::span<std::uint16_t> base,
+        inline std::uint32_t readFromMemory(ExecutableMemoryView base,
                                             std::uint32_t offset,
                                             std::int16_t size)
         {
             std::uint32_t val = 0;
 
-            std::uint32_t correct_offset = 0;
-
             switch (size)
             {
+            
             case 1:
+            {
+                const std::uint32_t correct_offset = utils::sign_extend<std::int8_t>(offset);
+                return base.read8(correct_offset);
+            } break;
+
             case 2:
-                correct_offset = utils::sign_extend<std::int16_t>(offset);
-                break;
+            {
+                const std::uint32_t correct_offset = utils::sign_extend<std::int16_t>(offset);
+                return base.read16(correct_offset);
+            } break;
 
             case 4:
-                correct_offset = offset;
+                return base.read32(offset);
                 break;
             }
 
-            val = (base[correct_offset + 1] << 16) | (base[correct_offset]);
 
             return val;
         }

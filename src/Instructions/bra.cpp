@@ -15,7 +15,7 @@ namespace momiji::instr
 
         if (offset == 0)
         {
-            offset = memview[pc + 1];
+            offset = memview.read16(pc + 2);
         }
 
         sys.cpu.programCounter.address += offset;

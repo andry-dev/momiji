@@ -10,7 +10,6 @@
 namespace momiji
 {
     void or_instr(const momiji::Instruction& instr,
-                  MemoryType&,
                   OpcodeDescription& opcode,
                   std::array<AdditionalData, 2>& additionalData)
     {
@@ -43,7 +42,6 @@ namespace momiji
     }
 
     void ori(const momiji::Instruction& instr,
-             MemoryType&,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {

@@ -234,13 +234,30 @@ namespace momiji::repr
     // Also known as EOR
     struct Xor
     {
+        Xor()
+            : header{0b1011}
+            , padding{0b1}
+        {}
 
+        std::uint16_t header : 4;
+        std::uint16_t datareg : 3;
+        std::uint16_t padding : 1;
+        std::uint16_t size : 2;
+        std::uint16_t othtype : 3;
+        std::uint16_t othmode : 3;
     };
 
     // Also known as EORI
     struct XorI
     {
+        XorI()
+            : header{0b00001010}
+        {}
 
+        std::uint16_t header : 8;
+        std::uint16_t size : 2;
+        std::uint16_t dsttype : 3;
+        std::uint16_t dstmode : 3;
     };
 
     struct Not
@@ -315,6 +332,14 @@ namespace momiji::repr
 
     struct Tst
     {
+        Tst()
+            : header{0b01001010}
+        {}
+
+        std::uint16_t header : 8;
+        std::uint16_t size : 2;
+        std::uint16_t regmode : 3;
+        std::uint16_t regtype : 3;
     };
 
     struct Bra

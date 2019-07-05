@@ -10,7 +10,6 @@
 namespace momiji
 {
     void sub(const momiji::Instruction& instr,
-             MemoryType&,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>&)
     {
@@ -42,7 +41,6 @@ namespace momiji
     }
 
     void suba(const momiji::Instruction& instr,
-              MemoryType&,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>&)
     {
@@ -75,7 +73,6 @@ namespace momiji
     }
 
     void subi(const momiji::Instruction& instr,
-              MemoryType&,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {

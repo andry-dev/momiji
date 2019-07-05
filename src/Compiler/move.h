@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <cstddef>
 
+#include <Memory.h>
 #include "./Utils.h"
 #include "../Instructions/OpCodes.h"
 #include <Parser.h>
@@ -14,7 +15,6 @@
 namespace momiji
 {
     void move(const momiji::Instruction& instr,
-              MemoryType& memory,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Parser.h>
-#include <vector>
+#include <Memory.h>
 
 namespace momiji
 {
@@ -10,6 +10,6 @@ namespace momiji
         std::int32_t programStart = 0;
     };
 
-    std::vector<std::uint16_t>
+    ExecutableMemory
     compile(const std::vector<momiji::Instruction>& instructions);
 } // namespace momiji

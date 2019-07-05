@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <cstddef>
 #include <array>
-#include <vector>
+#include <Memory.h>
 
 namespace momiji
 {

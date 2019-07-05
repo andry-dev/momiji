@@ -7,13 +7,13 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction cmp(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction cmp(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::Cmp bits;
 
-        const std::uint16_t val = mem[idx];
+        const std::uint16_t val = mem.read16(idx);
 
         bits.datareg = (val & 0b00001110'00000000) >> 9;
         bits.size =    (val & 0b00000000'11000000) >> 6;
@@ -31,13 +31,13 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction cmpa(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction cmpa(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::CmpA bits;
 
-        const std::uint16_t val = mem[idx];
+        const std::uint16_t val = mem.read16(idx);
 
         bits.addreg =  (val & 0b00001110'00000000) >> 9;
         bits.size =    (val & 0b00000001'00000000) >> 8;
@@ -64,13 +64,13 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction cmpi(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction cmpi(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::CmpI bits;
 
-        const std::uint16_t val = mem[idx];
+        const std::uint16_t val = mem.read16(idx);
 
         bits.size =    (val & 0b00000000'11000000) >> 6;
         bits.dsttype = (val & 0b00000000'00111000) >> 3;

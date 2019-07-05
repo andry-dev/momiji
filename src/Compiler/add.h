@@ -10,7 +10,6 @@
 namespace momiji
 {
     void add(const momiji::Instruction& instr,
-             MemoryType& memory,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>&) {
         repr::Add bits;
@@ -44,7 +43,6 @@ namespace momiji
     }
 
     void adda(const momiji::Instruction& instr,
-              MemoryType& memory,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>&)
     {
@@ -78,7 +76,6 @@ namespace momiji
     }
 
     void addi(const momiji::Instruction& instr,
-              MemoryType&,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {

@@ -28,11 +28,17 @@ namespace momiji::details
 
     parser_metadata parseOr(std::string_view str, Instruction& instr, LabelInfo&);
     parser_metadata parseAnd(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseXor(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseNot(std::string_view str, Instruction& instr, LabelInfo&);
 
     parser_metadata parseCmp(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseTst(std::string_view str, Instruction& instr, LabelInfo&);
 
     parser_metadata parseJmp(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseJsr(std::string_view str, Instruction& instr, LabelInfo&);
     parser_metadata parseBra(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseBsr(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseRts(std::string_view str, Instruction& instr, LabelInfo&);
 
     parser_metadata parseBlt(std::string_view str, Instruction& instr, LabelInfo&);
     parser_metadata parseBle(std::string_view str, Instruction& instr, LabelInfo&);
@@ -40,4 +46,13 @@ namespace momiji::details
     parser_metadata parseBge(std::string_view str, Instruction& instr, LabelInfo&);
     parser_metadata parseBeq(std::string_view str, Instruction& instr, LabelInfo&);
     parser_metadata parseBne(std::string_view str, Instruction& instr, LabelInfo&);
+
+    parser_metadata parseAsl(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseAsr(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseLsl(std::string_view str, Instruction& instr, LabelInfo&);
+    parser_metadata parseLsr(std::string_view str, Instruction& instr, LabelInfo&);
+
+
+    parser_metadata parseDeclare(std::string_view str, Instruction& instr, LabelInfo& labels);
+    parser_metadata parseHcf(std::string_view str, Instruction& instr, LabelInfo& labels);
 }

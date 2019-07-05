@@ -6,13 +6,13 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction add(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction add(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::Add bits;
 
-        const std::uint16_t val = mem[idx];
+        const std::uint16_t val = mem.read16(idx);
 
         bits.datareg =   (val & 0b00001110'00000000) >> 9;
         bits.direction = (val & 0b00000001'00000000) >> 8;
@@ -42,13 +42,13 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction adda(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction adda(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::AddA bits;
 
-        const std::uint16_t val = mem[idx];
+        const std::uint16_t val = mem.read16(idx);
 
         bits.addreg =    (val & 0b00001110'00000000) >> 9;
         bits.size =      (val & 0b00000001'00000000) >> 8;
@@ -67,13 +67,13 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction addi(gsl::span<std::uint16_t> mem, int idx)
+    DecodedInstruction addi(ExecutableMemoryView mem, std::uint64_t idx)
     {
         DecodedInstruction ret;
 
         repr::AddI repr;
 
-        std::uint16_t val = mem[idx];
+        std::uint16_t val = mem.read16(idx);
 
         repr.size =     (val & 0b00000000'11000000) >> 6;
         repr.dsttype =  (val & 0b0000000'00111000) >> 3;

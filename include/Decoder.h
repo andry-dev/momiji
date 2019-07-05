@@ -3,7 +3,7 @@
 #include <System.h>
 #include <Types.h>
 
-#include <gsl/span>
+#include <Memory.h>
 
 namespace momiji
 {
@@ -31,5 +31,5 @@ namespace momiji
         DecodedInstructionFn exec;
     };
 
-    DecodedInstruction decode(gsl::span<std::uint16_t> mem, int idx);
+    DecodedInstruction decode(ExecutableMemoryView mem, std::uint64_t idx);
 } // namespace momiji

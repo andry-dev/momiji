@@ -8,8 +8,8 @@ namespace momiji
 {
     namespace dec
     {
-        DecodedInstruction cmp(gsl::span<std::uint16_t> mem, int idx);
-        DecodedInstruction cmpi(gsl::span<std::uint16_t> mem, int idx);
-        DecodedInstruction cmpa(gsl::span<std::uint16_t> mem, int idx);
+        DecodedInstruction cmp(ExecutableMemoryView mem, std::uint64_t idx);
+        DecodedInstruction cmpi(ExecutableMemoryView mem, std::uint64_t idx);
+        DecodedInstruction cmpa(ExecutableMemoryView mem, std::uint64_t idx);
     }
 }
