@@ -57,7 +57,7 @@ namespace momiji
         {
             return m_data.end();
         }
-        
+
         auto end()
         {
             return m_data.end();
@@ -151,6 +151,11 @@ namespace momiji
     template <typename Container>
     std::uint32_t BasicMemory<Container>::read32(std::uint64_t offset) const
     {
+        if (offset >= m_data.size())
+        {
+            return 0;
+        }
+
         return   (m_data[offset] << 24)
                | (m_data[offset + 1] << 16)
                | (m_data[offset + 2] << 8)
@@ -160,6 +165,11 @@ namespace momiji
     template <typename Container>
     std::uint16_t BasicMemory<Container>::read16(std::uint64_t offset) const
     {
+        if (offset >= m_data.size())
+        {
+            return 0;
+        }
+
         return   (m_data[offset] << 8)
                | (m_data[offset + 1]);
     }
@@ -167,12 +177,22 @@ namespace momiji
     template <typename Container>
     std::uint8_t BasicMemory<Container>::read8(std::uint64_t offset) const
     {
+        if (offset >= m_data.size())
+        {
+            return 0;
+        }
+
         return m_data[offset];
     }
 
     template <typename Container>
     void BasicMemory<Container>::write32(std::uint32_t val, std::uint64_t offset)
     {
+        if (offset >= m_data.size())
+        {
+            return;
+        }
+
         const std::uint8_t first =  (val & 0xFF000000) >> 24;
         const std::uint8_t second = (val & 0x00FF0000) >> 16;
         const std::uint8_t third =  (val & 0x0000FF00) >> 8;
@@ -187,6 +207,11 @@ namespace momiji
     template <typename Container>
     void BasicMemory<Container>::write16(std::uint16_t val, std::uint64_t offset)
     {
+        if (offset >= m_data.size())
+        {
+            return;
+        }
+
         const std::uint8_t first =  (val & 0xFF00) >> 8;
         const std::uint8_t second = (val & 0x00FF);
 
@@ -197,6 +222,11 @@ namespace momiji
     template <typename Container>
     void BasicMemory<Container>::write8(std::uint8_t val, std::uint64_t offset)
     {
+        if (offset >= m_data.size())
+        {
+            return;
+        }
+
         m_data[offset] = val;
     }
 
@@ -205,6 +235,13 @@ namespace momiji
     template <typename Tag>
     void ModifiableMemory<Tag>::push32(std::uint32_t val)
     {
+        // Possibly align for odd addresses
+        if (m_data.size() & 1)
+        {
+            m_data.push_back(0);
+        }
+
+
         const std::uint8_t first  = (val & 0xFF00'0000) >> 24;
         const std::uint8_t second = (val & 0x00FF'0000) >> 16;
         const std::uint8_t third  = (val & 0x0000'FF00) >> 8;
@@ -219,6 +256,13 @@ namespace momiji
     template <typename Tag>
     void ModifiableMemory<Tag>::push16(std::uint16_t val)
     {
+
+        // Possibly align for odd addresses
+        if (m_data.size() & 1)
+        {
+            m_data.push_back(0);
+        }
+
         const std::uint8_t first =  (val & 0xFF00) >> 8;
         const std::uint8_t second = (val & 0x00FF);
 

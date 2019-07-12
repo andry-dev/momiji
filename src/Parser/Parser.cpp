@@ -108,11 +108,11 @@ namespace momiji
                     handleBreakpoints();
                 }
 
-                instr.programCounter = program_counter;
                 auto res = found_instr->execfn(tmp_str, instr, labels);
 
                 if (res.result)
                 {
+                    instr.programCounter = program_counter;
                     instructions.emplace_back(instr);
 
                     handlePCIncrement(instr);
@@ -138,7 +138,7 @@ namespace momiji
                     auto& op = x.operands[i];
                     if (!op.labelResolved)
                     {
-                        auto found = alg::find_label(labels, x.operands[0].value);
+                        auto found = alg::find_label(labels, x.operands[i].value);
 
                         if (found == std::end(labels.labels))
                         {
@@ -196,6 +196,16 @@ namespace momiji
                 {
                 case DataType::Byte:
                     program_counter += instr.operands.size();
+
+                    // Fix the PC alignment
+                    if (program_counter & 1)
+                    {
+                        --program_counter;
+                    }
+                    else
+                    {
+                        program_counter -= 2;
+                    }
                     break;
 
                 case DataType::Word:

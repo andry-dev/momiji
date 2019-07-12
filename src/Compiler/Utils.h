@@ -48,6 +48,31 @@ namespace momiji
         }
     }
 
+    void handleAdditionalData(const momiji::Instruction& instr, AdditionalData& additionalData)
+    {
+        Expects(instr.operands.size() <= 2, "How even could you get more than 2 operands here?");
+
+        for (int i = 0; i < instr.operands.size(); ++i)
+        {
+            switch (instr.operands[i].operandType)
+            {
+            // offset(a*)
+            case OperandType::AddressOffset:
+            {
+                
+            } break;
+
+            // (offset, a*, X*)
+            case OperandType::AddressIndex:
+                break;
+
+
+            case OperandType::Immediate:
+                break;
+            }
+        }
+    }
+
     constexpr std::array<std::uint8_t, 3> move_sizeconv = {
         0b01, // Byte (DataType::Byte)
         0b11, // Word (DataType::Word)

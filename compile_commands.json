@@ -1,499 +1,613 @@
 [
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Parser/Parser.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Parser/Parser.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Parser/Parser.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Parser/Parser.cpp.o -c /home/andry/prj/cpp/momiji/src/Parser/Parser.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Parser/Parser.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Parser/Instructions.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Parser/Instructions.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Parser/Instructions.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Parser/Instructions.cpp.o -c /home/andry/prj/cpp/momiji/src/Parser/Instructions.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Parser/Instructions.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Compiler/Compiler.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Compiler/Compiler.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/Compiler.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Compiler/Compiler.cpp.o -c /home/andry/prj/cpp/momiji/src/Compiler/Compiler.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/Compiler.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/Decoder.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/Decoder.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/Decoder.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/Decoder.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/Decoder.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/Decoder.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/move.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/move.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/move.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/move.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/move.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/move.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/add.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/add.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/add.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/add.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/add.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/add.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/sub.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/sub.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/sub.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/sub.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/sub.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/sub.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/div.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/div.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/div.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/div.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/div.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/div.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/mul.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/mul.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/mul.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/mul.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/mul.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/mul.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/cmp.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/cmp.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/cmp.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/cmp.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/cmp.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/cmp.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/or.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/or.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/or.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/tst.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/tst.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/tst.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/and.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/and.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/and.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/or.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/or.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/or.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/exg.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/exg.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/exg.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/and.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/and.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/and.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/bra.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/bra.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/bra.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/exg.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/exg.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/exg.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/bcc.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Decoder/bcc.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/bcc.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/bra.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/bra.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/bra.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/move.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/move.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/move.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/bcc.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/bcc.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/bcc.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/add.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/add.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/add.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/jmp.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/jmp.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/jmp.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/sub.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/sub.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/sub.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Decoder/internal.cpp.o -c /home/andry/prj/cpp/momiji/src/Decoder/internal.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/internal.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/div.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/div.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/div.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/move.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/move.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/move.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/mul.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/mul.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/mul.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/add.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/add.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/add.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/cmp.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/cmp.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/cmp.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/sub.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/sub.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/sub.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/or.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/or.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/or.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/div.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/div.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/div.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/and.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/and.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/and.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/mul.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/mul.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/mul.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/exg.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/exg.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/exg.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/cmp.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/cmp.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/cmp.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/bra.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/bra.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/bra.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/tst.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/tst.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/tst.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/bcc.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Instructions/bcc.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/bcc.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/or.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/or.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/or.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Emulator.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Emulator.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Emulator.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/and.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/and.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/and.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/tewi/0.1/andry/dev/package/8fdba3f5025c68c42b0986c00d4fb7e71a445fee/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/glew/2.1.0/bincrafters/stable/package/ec336a8e46e06995be9ad34dc1a7477dff42a7df/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/momiji.dir/src/main.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/main.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/main.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/exg.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/exg.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/exg.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/tewi/0.1/andry/dev/package/8fdba3f5025c68c42b0986c00d4fb7e71a445fee/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/glew/2.1.0/bincrafters/stable/package/ec336a8e46e06995be9ad34dc1a7477dff42a7df/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/momiji.dir/src/Gui.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Gui.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Gui.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/bra.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/bra.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/bra.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/tewi/0.1/andry/dev/package/8fdba3f5025c68c42b0986c00d4fb7e71a445fee/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/glew/2.1.0/bincrafters/stable/package/ec336a8e46e06995be9ad34dc1a7477dff42a7df/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -o CMakeFiles/momiji.dir/src/Renderer.cpp.o -c /mnt/prj/Programming/CPP/momiji/src/Renderer.cpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Renderer.cpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/bcc.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/bcc.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/bcc.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/or.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/or.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/jmp.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/jmp.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/jmp.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/mul.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/mul.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Instructions/internal.cpp.o -c /home/andry/prj/cpp/momiji/src/Instructions/internal.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/internal.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/div.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/div.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/libmomiji.dir/src/Emulator.cpp.o -c /home/andry/prj/cpp/momiji/src/Emulator.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Emulator.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/include/Emulator.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/include/Emulator.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/tewi/0.1/andry/dev/package/8fdba3f5025c68c42b0986c00d4fb7e71a445fee/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/glew/2.1.0/bincrafters/stable/package/ec336a8e46e06995be9ad34dc1a7477dff42a7df/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/momiji.dir/src/main.cpp.o -c /home/andry/prj/cpp/momiji/src/main.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/main.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/sub.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/sub.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/tewi/0.1/andry/dev/package/8fdba3f5025c68c42b0986c00d4fb7e71a445fee/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/glew/2.1.0/bincrafters/stable/package/ec336a8e46e06995be9ad34dc1a7477dff42a7df/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/momiji.dir/src/Gui.cpp.o -c /home/andry/prj/cpp/momiji/src/Gui.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Gui.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/include/Compiler.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/include/Compiler.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/tewi/0.1/andry/dev/package/8fdba3f5025c68c42b0986c00d4fb7e71a445fee/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/glew/2.1.0/bincrafters/stable/package/ec336a8e46e06995be9ad34dc1a7477dff42a7df/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -o CMakeFiles/momiji.dir/src/Renderer.cpp.o -c /home/andry/prj/cpp/momiji/src/Renderer.cpp",
+  "file": "/home/andry/prj/cpp/momiji/src/Renderer.cpp"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/bra.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/bra.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/sub.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/sub.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/sub.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/sub.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/internal.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/internal.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/add.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/add.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/exg.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/exg.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/move.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/move.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/move.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/move.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/external/nonstd/expected.hpp",
-  "file": "/mnt/prj/Programming/CPP/momiji/external/nonstd/expected.hpp"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/div.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/div.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/and.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/and.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/bcc.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/bcc.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/Utils.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/Utils.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Compiler.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Compiler.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/exg.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/exg.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/internal.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/internal.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/bcc.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/bcc.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/or.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/or.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/OpCodes.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/OpCodes.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/tewi/0.1/andry/dev/package/8fdba3f5025c68c42b0986c00d4fb7e71a445fee/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/glew/2.1.0/bincrafters/stable/package/ec336a8e46e06995be9ad34dc1a7477dff42a7df/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Renderer.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Renderer.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/cmp.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/cmp.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/move.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/move.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/illegal.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/illegal.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/tst.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/tst.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/include/System.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/include/System.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Parser/Instructions.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Parser/Instructions.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/or.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/or.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/add.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/add.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/mul.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/mul.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/exg.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/exg.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/add.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/add.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/mul.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/mul.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/exg.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/exg.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/cmp.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/cmp.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/include/Utils.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/include/Utils.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Memory.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Memory.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/include/Types.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/include/Types.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Parser/Mappings.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Parser/Mappings.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/Utils.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/Utils.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Types.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Types.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/include/Decoder.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/include/Decoder.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/jmp.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/jmp.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/and.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/and.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/mul.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/mul.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Parser/Mappings.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Parser/Mappings.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/bra.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/bra.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/noop.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/noop.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/move.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/move.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Parser/Common.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Parser/Common.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/noop.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/noop.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/bra.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/bra.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/cmp.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/cmp.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/sub.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/sub.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/add.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/add.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/tewi/0.1/andry/dev/package/8fdba3f5025c68c42b0986c00d4fb7e71a445fee/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/glew/2.1.0/bincrafters/stable/package/ec336a8e46e06995be9ad34dc1a7477dff42a7df/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/include/Gui.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/include/Gui.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Decoder.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Decoder.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/add.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/add.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/mul.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/mul.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/move.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/move.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/tst.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/tst.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/bra.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/bra.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/OpCodes.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/OpCodes.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/bcc.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/bcc.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/internal.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/internal.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/div.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/div.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/bra.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/bra.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/move.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/move.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/bcc.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/bcc.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/exg.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/exg.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/swap.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/swap.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Instructions/Representations.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Instructions/Representations.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/System.h",
+  "file": "/home/andry/prj/cpp/momiji/include/System.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/cmp.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/cmp.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/bcc.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/bcc.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/div.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/div.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/jmp.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/jmp.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/include/Parser.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/include/Parser.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/and.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/and.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Parser/Combinators.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Parser/Combinators.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/div.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/div.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/and.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/and.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/Representations.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/Representations.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/cmp.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/cmp.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/Utils.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/Utils.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/mul.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/mul.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/exg.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/exg.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Parser/Instructions.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Parser/Instructions.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/sub.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/sub.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/tewi/0.1/andry/dev/package/8fdba3f5025c68c42b0986c00d4fb7e71a445fee/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/glew/2.1.0/bincrafters/stable/package/ec336a8e46e06995be9ad34dc1a7477dff42a7df/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Renderer.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Renderer.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/tst.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/tst.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Compiler/bcc.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Compiler/bcc.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/illegal.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/illegal.h"
 },
 
 {
-  "directory": "/mnt/prj/Programming/CPP/momiji/build",
-  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -std=gnu++17 -c /mnt/prj/Programming/CPP/momiji/src/Decoder/or.h",
-  "file": "/mnt/prj/Programming/CPP/momiji/src/Decoder/or.h"
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/Utils.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/Utils.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Parser.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Parser.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Parser/Combinators.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Parser/Combinators.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/or.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/or.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/div.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/div.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/sub.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/sub.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Parser/Common.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Parser/Common.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/and.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/and.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Instructions/and.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Instructions/and.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/jmp.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/jmp.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -DMOMIJI_INCLUDE_GUI=1 -DSTB_TEXTEDIT_KEYTYPE=unsigned -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/tewi/0.1/andry/dev/package/8fdba3f5025c68c42b0986c00d4fb7e71a445fee/include -isystem /home/andry/.conan/data/glfw/3.2.1/bincrafters/stable/package/1d877a3df840030e6a8abb74c5ffb9088d08b47a/include -isystem /home/andry/.conan/data/glew/2.1.0/bincrafters/stable/package/ec336a8e46e06995be9ad34dc1a7477dff42a7df/include -isystem /home/andry/.conan/data/glm/0.9.9.4/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -isystem /home/andry/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Gui.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Gui.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/bra.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/bra.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/external/nonstd/expected.hpp",
+  "file": "/home/andry/prj/cpp/momiji/external/nonstd/expected.hpp"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/add.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/add.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/xor.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/xor.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Decoder/cmp.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Decoder/cmp.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/Utils.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/Utils.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Utils.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Utils.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/include/Emulator.h",
+  "file": "/home/andry/prj/cpp/momiji/include/Emulator.h"
+},
+
+{
+  "directory": "/home/andry/prj/cpp/momiji/build",
+  "command": "/usr/bin/c++ -I../SYSTEM -I../include -I../external/nonstd -isystem /home/andry/.conan/data/asl/0.1/andry/dev/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include -g -std=gnu++17 -c /home/andry/prj/cpp/momiji/src/Compiler/or.h",
+  "file": "/home/andry/prj/cpp/momiji/src/Compiler/or.h"
 }
 ]

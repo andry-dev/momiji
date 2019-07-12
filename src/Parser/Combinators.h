@@ -431,7 +431,7 @@ namespace momiji
                 ++idx;
             })(str);
 
-            auto check_size = [&] () { return str.size() > idx; };
+            auto check_size = [&] () { return idx < str.size(); };
             auto check_number = [&] () { 
                 return (str[idx] >= '0' && str[idx] <= '9') ||
                        (str[idx] >= 'a' && str[idx] <= 'f') ||
@@ -538,7 +538,7 @@ namespace momiji
             auto decimal_num =
                 Map(inter_dec_parser,
                     [&instr, opNum] (auto parsed_str) {
-                        const std::int32_t val = std::stoi(std::string{parsed_str});
+                        const std::int32_t val = std::stoll(std::string{parsed_str});
 
                         instr.operands[opNum].operandType = OperandType::Immediate;
                         instr.operands[opNum].specialAddressingMode = SpecialAddressingMode::Immediate;
@@ -548,8 +548,9 @@ namespace momiji
             constexpr auto inter_hex_parser = SeqNext(Char('#'), GenericHex());
             auto hex_num =
                 Map(inter_hex_parser,
-                    [&instr, opNum] (auto parsed_str) {
-                        const std::int32_t val = std::stoi(std::string{parsed_str}, 0, 16);
+                    [&instr, opNum] (std::string_view parsed_str) {
+
+                        const std::int32_t val = std::stoll(std::string{parsed_str}, 0, 16);
 
                         instr.operands[opNum].operandType = OperandType::Immediate;
                         instr.operands[opNum].specialAddressingMode = SpecialAddressingMode::Immediate;
@@ -616,7 +617,7 @@ namespace momiji
             auto dec_mem =
                 Map(inter_dec_parser,
                     [&instr, opNum] (auto parsed_str) {
-                        const std::int32_t val = std::stoi(std::string{parsed_str});
+                        const std::int32_t val = std::stoll(std::string{parsed_str});
 
                         SpecialAddressingMode res_add_mode{};
 
@@ -642,7 +643,7 @@ namespace momiji
             auto hex_mem =
                 Map(inter_hex_parser,
                     [&instr, opNum] (auto parsed_str) {
-                        const std::int32_t val = std::stoi(std::string{parsed_str}, 0, 16);
+                        const std::int32_t val = std::stoll(std::string{parsed_str}, 0, 16);
 
                         SpecialAddressingMode res_add_mode{};
 
@@ -677,10 +678,10 @@ namespace momiji
                         case DataType::Word:
                             res_add_mode = SpecialAddressingMode::AbsoluteShort;
                             break;
+
                         case DataType::Long:
                             res_add_mode = SpecialAddressingMode::AbsoluteLong;
                             break;
-                        
                         }
 
                         instr.operands[opNum].operandType = OperandType::AbsoluteLong;
