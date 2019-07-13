@@ -21,4 +21,4 @@ namespace momiji
             break;
         }
     }
-}
+} // namespace momiji

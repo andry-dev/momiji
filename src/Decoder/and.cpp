@@ -14,11 +14,11 @@ namespace momiji::dec
 
         const std::uint16_t val = mem.read16(idx);
 
-        bits.datareg =   (val & 0b00001110'00000000) >> 9;
+        bits.datareg = (val & 0b00001110'00000000) >> 9;
         bits.direction = (val & 0b00000001'00000000) >> 8;
-        bits.size =      (val & 0b00000000'11000000) >> 6;
-        bits.othtype =   (val & 0b00000000'00111000) >> 3;
-        bits.othmode =   (val & 0b00000000'00000111);
+        bits.size = (val & 0b00000000'11000000) >> 6;
+        bits.othtype = (val & 0b00000000'00111000) >> 3;
+        bits.othmode = (val & 0b00000000'00000111);
 
         if (bits.direction == 1)
         {
@@ -52,7 +52,7 @@ namespace momiji::dec
 
         const std::uint16_t val = mem.read16(idx);
 
-        bits.size =    (val & 0b00000000'11000000) >> 6;
+        bits.size = (val & 0b00000000'11000000) >> 6;
         bits.dsttype = (val & 0b00000000'00111000) >> 3;
 
         ret.data.op1 = OperandType::Immediate;
@@ -60,4 +60,4 @@ namespace momiji::dec
 
         return ret;
     }
-}
+} // namespace momiji::dec

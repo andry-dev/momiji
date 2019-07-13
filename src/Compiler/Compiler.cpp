@@ -6,22 +6,22 @@
 #include <Utils.h>
 #include <iostream>
 
-#include "move.h"
 #include "add.h"
-#include "sub.h"
-#include "div.h"
-#include "or.h"
 #include "and.h"
-#include "xor.h"
-#include "cmp.h"
-#include "tst.h"
-#include "mul.h"
-#include "exg.h"
-#include "bra.h"
 #include "bcc.h"
-#include "jmp.h"
-#include "swap.h"
+#include "bra.h"
+#include "cmp.h"
+#include "div.h"
+#include "exg.h"
 #include "internal.h"
+#include "jmp.h"
+#include "move.h"
+#include "mul.h"
+#include "or.h"
+#include "sub.h"
+#include "swap.h"
+#include "tst.h"
+#include "xor.h"
 
 namespace momiji
 {
@@ -33,10 +33,8 @@ namespace momiji
         for (const auto& instr : instructions)
         {
             OpcodeDescription opcode;
-            std::array<AdditionalData, 2> additional_data = {{
-                { 0, 0 },
-                { 0, 0 }
-            }};
+            std::array<AdditionalData, 2> additional_data = { { { 0, 0 },
+                                                                { 0, 0 } } };
 
             switch (instr.instructionType)
             {
@@ -212,11 +210,13 @@ namespace momiji
             {
                 switch (additional_data[i].cnt)
                 {
-                case 1: {
+                case 1:
+                {
                     // Adding 1 byte to align to 16-bit
                     const std::uint16_t val = 0 | additional_data[i].arr8[0];
                     memory.push16(val);
-                    } break;
+                }
+                break;
 
                 case 2:
                     memory.push16(additional_data[i].arr16[0]);
@@ -231,4 +231,4 @@ namespace momiji
 
         return memory;
     }
-}
+} // namespace momiji

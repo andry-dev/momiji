@@ -15,7 +15,7 @@ namespace momiji::dec
 
         const std::uint16_t val = mem.read16(idx);
 
-        bits.size =    (val & 0b00000000'11000000) >> 6;
+        bits.size = (val & 0b00000000'11000000) >> 6;
         bits.regmode = (val & 0b00000000'00111000) >> 3;
         bits.regtype = (val & 0b00000000'00000111);
 
@@ -28,4 +28,4 @@ namespace momiji::dec
 
         return ret;
     }
-}
+} // namespace momiji::dec

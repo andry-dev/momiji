@@ -1,17 +1,16 @@
 #pragma once
 
-#include "./Utils.h"
 #include "../Instructions/OpCodes.h"
 #include "../Instructions/Representations.h"
+#include "./Utils.h"
 
 #include <Parser.h>
 #include <Utils.h>
 
 namespace momiji
 {
-    void exg(const momiji::Instruction& instr,
-              OpcodeDescription& opcode,
-              std::array<AdditionalData, 2>& additionalData)
+    void exg(const momiji::Instruction& instr, OpcodeDescription& opcode,
+             std::array<AdditionalData, 2>& additionalData)
     {
         repr::Exg bits;
 
@@ -23,7 +22,8 @@ namespace momiji
         {
             bits.mode = 0b01000;
         }
-        else if (instr.operands[0].operandType == OperandType::AddressRegister &&
+        else if (instr.operands[0].operandType ==
+                     OperandType::AddressRegister &&
                  instr.operands[1].operandType == OperandType::AddressRegister)
         {
             bits.mode = 0b01001;
@@ -33,7 +33,8 @@ namespace momiji
         {
             bits.mode = 0b10001;
         }
-        else if (instr.operands[0].operandType == OperandType::AddressRegister &&
+        else if (instr.operands[0].operandType ==
+                     OperandType::AddressRegister &&
                  instr.operands[1].operandType == OperandType::DataRegister)
         {
             bits.addreg = instr.operands[0].value & 0b111;
@@ -41,10 +42,7 @@ namespace momiji
             bits.mode = 0b10001;
         }
 
-        opcode.val =  (bits.header << 12)
-                    | (bits.datareg << 9)
-                    | (bits.padding << 8)
-                    | (bits.mode << 3)
-                    | (bits.addreg);
+        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
+                     (bits.padding << 8) | (bits.mode << 3) | (bits.addreg);
     }
-}
+} // namespace momiji

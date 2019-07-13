@@ -39,8 +39,8 @@ namespace momiji::instr
 
         srcval = utils::sign_extend<std::int16_t>(srcval);
 
-        const std::int32_t dstval =
-            utils::sign_extend<std::int16_t>(sys.cpu.dataRegisters[dstreg].value);
+        const std::int32_t dstval = utils::sign_extend<std::int16_t>(
+            sys.cpu.dataRegisters[dstreg].value);
 
         const std::int32_t res = (dstval * srcval);
 
@@ -84,4 +84,4 @@ namespace momiji::instr
 
         return sys;
     }
-}
+} // namespace momiji::instr

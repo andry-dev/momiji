@@ -22,8 +22,8 @@ namespace momiji
         Swap,     // swap
         Exchange, // exg
 
-        Move,        // move.*
-        MoveQuick,   // moveq
+        Move,      // move.*
+        MoveQuick, // moveq
         MoveAddress,
 
         Or,

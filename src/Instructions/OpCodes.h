@@ -74,5 +74,5 @@ namespace momiji
 
         // 0100111011 6*EA
         constexpr std::uint16_t jmp = 0b0100111011'000000;
-    }
-}
+    } // namespace codes
+} // namespace momiji

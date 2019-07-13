@@ -17,10 +17,10 @@ namespace momiji
     struct Label;
 
     using instr_fn_t = momiji::System (*)(momiji::System, const Instruction&);
-    
+
     struct Breakpoint
     {
-        std::int64_t source_line{0};
+        std::int64_t source_line { 0 };
     };
 
     struct ParserSettings
@@ -39,21 +39,22 @@ namespace momiji
 
         OperandType operandType;
         SpecialAddressingMode specialAddressingMode;
-        bool labelResolved{true};
+        bool labelResolved { true };
     };
 
     struct Instruction
     {
         Instruction()
             : operands(2)
-        {}
+        {
+        }
 
         std::vector<Operand> operands;
 
         InstructionType instructionType;
         BranchConditions branchCondition;
         DataType dataType;
-        std::int64_t programCounter{0};
+        std::int64_t programCounter { 0 };
     };
 
     struct ParserError
@@ -76,6 +77,7 @@ namespace momiji
         nonstd::expected<std::vector<momiji::Instruction>, ParserError>;
 
     momiji::ParsingResult parse(const std::string& str);
-    momiji::ParsingResult parse(const std::string& str, ParserSettings settings);
+    momiji::ParsingResult parse(const std::string& str,
+                                ParserSettings settings);
 
 } // namespace momiji

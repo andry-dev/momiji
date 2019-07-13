@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string_view>
 #include <Parser.h>
+#include <string_view>
 #include <vector>
 
 namespace momiji
@@ -18,4 +18,4 @@ namespace momiji
     {
         std::vector<momiji::Label> labels;
     };
-}
+} // namespace momiji

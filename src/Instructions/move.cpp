@@ -18,21 +18,24 @@ namespace momiji::instr
         {
             std::int8_t* dst = utils::readDestOp8(sys, data);
             *dst = (srcval & 0x0000'00FF);
-        } break;
+        }
+        break;
 
         case 2:
         {
             std::int16_t* dst = utils::readDestOp16(sys, data);
             *dst = (srcval & 0x0000'FFFF);
-        } break;
+        }
+        break;
 
         case 4:
         {
             std::int32_t* dst = utils::readDestOp32(sys, data);
             *dst = srcval;
-        } break;
+        }
+        break;
         }
 
         return sys;
     }
-}
+} // namespace momiji::instr

@@ -23,4 +23,4 @@ namespace momiji::dec
 
         return ret;
     }
-}
+} // namespace momiji::dec

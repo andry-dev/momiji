@@ -1,7 +1,7 @@
 #include "move.h"
 
-#include "../Instructions/move.h"
 #include "../Instructions/illegal.h"
+#include "../Instructions/move.h"
 
 #include "../Instructions/Representations.h"
 
@@ -15,7 +15,7 @@ namespace momiji::dec
 
         repr::Move repr;
 
-        repr.size =    (val & 0b00110000'00000000) >> 12;
+        repr.size = (val & 0b00110000'00000000) >> 12;
         repr.dstmode = (val & 0b00001110'00000000) >> 9;
         repr.dsttype = (val & 0b00000001'11000000) >> 6;
         repr.srctype = (val & 0b00000000'00111000) >> 3;
@@ -49,4 +49,4 @@ namespace momiji::dec
         return ret;
     }
 
-}
+} // namespace momiji::dec

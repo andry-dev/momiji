@@ -1,12 +1,12 @@
 #pragma once
 
-#include <vector>
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
+#include <vector>
 
-#include <Memory.h>
-#include "./Utils.h"
 #include "../Instructions/OpCodes.h"
+#include "./Utils.h"
+#include <Memory.h>
 #include <Parser.h>
 #include <Utils.h>
 
@@ -14,8 +14,7 @@
 
 namespace momiji
 {
-    void move(const momiji::Instruction& instr,
-              OpcodeDescription& opcode,
+    void move(const momiji::Instruction& instr, OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::Move bits;
@@ -28,7 +27,8 @@ namespace momiji
         bits.size = size & 0b011;
 
         // Destination
-        bits.dsttype = utils::to_val(instr.operands[1].operandType);;
+        bits.dsttype = utils::to_val(instr.operands[1].operandType);
+        ;
         bits.dstmode = getCorrectOpMode(instr, 1);
 
         bits.srctype = utils::to_val(instr.operands[0].operandType);
@@ -54,11 +54,8 @@ namespace momiji
             }
         }
 
-        opcode.val =   (bits.header << 14)
-                     | (bits.size << 12)
-                     | (bits.dstmode << 9)
-                     | (bits.dsttype << 6)
-                     | (bits.srctype << 3)
-                     | (bits.srcmode);
+        opcode.val = (bits.header << 14) | (bits.size << 12) |
+                     (bits.dstmode << 9) | (bits.dsttype << 6) |
+                     (bits.srctype << 3) | (bits.srcmode);
     }
-}
+} // namespace momiji

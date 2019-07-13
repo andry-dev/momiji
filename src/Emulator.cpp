@@ -6,14 +6,14 @@
 #include <Compiler.h>
 #include <Decoder.h>
 
-#include "Instructions/bra.h"
 #include "Instructions/bcc.h"
+#include "Instructions/bra.h"
 #include "Instructions/jmp.h"
 
 namespace momiji
 {
-    static std::uint32_t immediateIncrPC(const momiji::DecodedInstruction& instr,
-                                          std::uint32_t pc)
+    static std::uint32_t
+    immediateIncrPC(const momiji::DecodedInstruction& instr, std::uint32_t pc)
     {
         switch (instr.data.size)
         {
@@ -29,11 +29,10 @@ namespace momiji
 
         return pc;
     }
-    
+
     static bool isJumpInstr(const momiji::DecodedInstruction& instr)
     {
-        if (instr.exec == instr::bra ||
-            instr.exec == instr::bcc ||
+        if (instr.exec == instr::bra || instr.exec == instr::bcc ||
             instr.exec == instr::jmp)
         {
             return true;
@@ -154,8 +153,7 @@ namespace momiji
 
         auto pcadd = memview.begin() + pc;
 
-        if (pcadd < memview.begin() ||
-            pcadd >= memview.end())
+        if (pcadd < memview.begin() || pcadd >= memview.end())
         {
             return false;
         }
@@ -165,16 +163,17 @@ namespace momiji
         switch (m_settings.retainStates)
         {
         case EmulatorSettings::RetainStates::Never:
-            return stepHandleMem(never_retain_states_tag{}, instr);
+            return stepHandleMem(never_retain_states_tag {}, instr);
 
         case EmulatorSettings::RetainStates::Always:
-            return stepHandleMem(always_retain_states_tag{}, instr);
+            return stepHandleMem(always_retain_states_tag {}, instr);
         }
 
         return false;
     }
 
-    bool Emulator::stepHandleMem(never_retain_states_tag, DecodedInstruction& instr)
+    bool Emulator::stepHandleMem(never_retain_states_tag,
+                                 DecodedInstruction& instr)
     {
         auto& lastSys = m_systemStates.back();
 
@@ -185,10 +184,11 @@ namespace momiji
         return true;
     }
 
-    bool Emulator::stepHandleMem(always_retain_states_tag, DecodedInstruction& instr)
+    bool Emulator::stepHandleMem(always_retain_states_tag,
+                                 DecodedInstruction& instr)
     {
         auto& lastSys = m_systemStates.back();
-        
+
         // Copy the new state
         auto newstate = lastSys;
 
@@ -200,7 +200,6 @@ namespace momiji
 
         return true;
     }
-
 
     bool Emulator::reset()
     {

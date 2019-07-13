@@ -2,7 +2,6 @@
 
 #include "./Utils.h"
 
-
 namespace momiji::instr
 {
     momiji::System bra(momiji::System& sys, const InstructionData& data)
@@ -22,4 +21,4 @@ namespace momiji::instr
 
         return sys;
     }
-}
+} // namespace momiji::instr

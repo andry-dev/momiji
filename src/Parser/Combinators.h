@@ -2,10 +2,10 @@
 
 #include <Parser.h>
 
-#include <string_view>
-#include <string>
 #include <System.h>
 #include <algorithm>
+#include <string>
+#include <string_view>
 
 #include "Common.h"
 
@@ -20,14 +20,13 @@ namespace momiji
             auto begin = std::begin(labels.labels);
             auto end = std::end(labels.labels);
 
-            auto it = std::find_if(
-                    begin, end, [&] (const momiji::Label& x) {
-                return x.name_hash == hash; 
+            auto it = std::find_if(begin, end, [&](const momiji::Label& x) {
+                return x.name_hash == hash;
             });
 
             return it;
         }
-    }
+    } // namespace alg
 
     template <typename Parser>
     auto unbox(std::string_view str, Parser&& parser)
@@ -38,37 +37,37 @@ namespace momiji
     template <typename First, typename Second>
     constexpr auto Next(First&& first, Second&& second)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res1 = first(str);
             if (res1.result)
             {
                 return second(res1.rest);
             }
 
-            return { false, str, "", { } };
+            return { false, str, "", {} };
         };
     }
 
     template <typename... Ts>
     constexpr auto SeqNext(Ts&&... parsers)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             bool notdone = true;
 
-            parser_metadata res = { false, str, "", { } };
+            parser_metadata res = { false, str, "", {} };
 
-            ([&] () constexpr {
-                if (!notdone)
-                {
-                    return;
-                }
+            (
+                [&]() constexpr {
+                    if (!notdone)
+                    {
+                        return;
+                    }
 
-                res = parsers(str);
-                notdone = res.result;
-                str = res.rest;
-             }(), ...);
+                    res = parsers(str);
+                    notdone = res.result;
+                    str = res.rest;
+                }(),
+                ...);
 
             return res;
         };
@@ -77,31 +76,30 @@ namespace momiji
     template <typename... Ts>
     constexpr auto AnyOf(Ts&&... parsers)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             bool done = false;
-            parser_metadata res = { false, str, "", { } };
+            parser_metadata res = { false, str, "", {} };
 
-            ([&] () constexpr -> void {
-                if (done)
-                {
-                    return;
-                }
+            (
+                [&]() constexpr->void {
+                    if (done)
+                    {
+                        return;
+                    }
 
-                res = parsers(str);
-                done = res.result;
-             }(), ...);
+                    res = parsers(str);
+                    done = res.result;
+                }(),
+                ...);
 
             return res;
         };
     }
 
-
     template <typename Parser>
     constexpr auto AllOf(Parser&& parser)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             return parser(str);
         };
     }
@@ -109,8 +107,7 @@ namespace momiji
     template <typename Parser, typename... Ts>
     constexpr auto AllOf(Parser&& parser, Ts&&... rest)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res = parser(str);
             if (res.result)
             {
@@ -124,14 +121,15 @@ namespace momiji
     template <typename... Ts>
     constexpr auto Sequence(Ts&&... parsers)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
-            parser_metadata res = { false, str, "", { } };
+        return [=](std::string_view str) -> parser_metadata {
+            parser_metadata res = { false, str, "", {} };
 
-            ([&] () constexpr {
-                res = parsers(str);
-                str = res.rest;
-             }(), ...);
+            (
+                [&]() constexpr {
+                    res = parsers(str);
+                    str = res.rest;
+                }(),
+                ...);
 
             return res;
         };
@@ -140,9 +138,8 @@ namespace momiji
     template <typename Parser>
     constexpr auto While(Parser&& parser)
     {
-        return  [=] (std::string_view str) -> parser_metadata
-        {
-            parser_metadata ret = { false, str, "", { } };
+        return [=](std::string_view str) -> parser_metadata {
+            parser_metadata ret = { false, str, "", {} };
 
             auto backup = str;
 
@@ -188,8 +185,7 @@ namespace momiji
     template <typename Parser, typename Fun>
     constexpr auto Map(Parser&& parser, Fun&& f)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res = parser(str);
 
             if (res.result)
@@ -203,25 +199,23 @@ namespace momiji
 
     constexpr auto Str(std::string_view cmpstr)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             if (str.size() > cmpstr.size())
             {
                 auto trim_str = str.substr(0, cmpstr.size());
                 if (trim_str == cmpstr)
                 {
-                    return { true, str.substr(cmpstr.size()), trim_str, { } };
+                    return { true, str.substr(cmpstr.size()), trim_str, {} };
                 }
             }
 
-            return { false, str, "", { } };
+            return { false, str, "", {} };
         };
     }
 
     constexpr auto NotStr(std::string_view cmpstr)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             if (str.size() > cmpstr.size())
             {
                 auto trim_str = str.substr(0, cmpstr.size());
@@ -231,41 +225,38 @@ namespace momiji
                 }
             }
 
-            return { false, str, "", { } };
+            return { false, str, "", {} };
         };
     }
 
     constexpr auto Char(char c)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             if (str.size() > 0 && str[0] == c)
             {
-                return { true, str.substr(1), str.substr(0, 1), { } };
+                return { true, str.substr(1), str.substr(0, 1), {} };
             }
 
-            return { false, str, "", { } };
+            return { false, str, "", {} };
         };
     }
 
     constexpr auto NotChar(char c)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             if (str.size() > 0 && str[0] != c)
             {
                 return { true, str.substr(1), str.substr(0, 1) };
             }
 
-            return { false, str, "", { } };
+            return { false, str, "", {} };
         };
     }
 
     template <typename First, typename Second>
     constexpr auto Then(First&& first, Second&& second)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res1 = first(str);
 
             if (res1.result)
@@ -277,15 +268,14 @@ namespace momiji
                 }
             }
 
-            return { false, str,  "", { } };
+            return { false, str, "", {} };
         };
     }
 
     template <typename First, typename Second>
     constexpr auto Optional(First&& first, Second&& second)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res1 = first(str);
 
             if (res1.result)
@@ -299,30 +289,28 @@ namespace momiji
                 return res1;
             }
 
-            return { false, str, "", { } };
+            return { false, str, "", {} };
         };
     }
 
     template <typename Delim1, typename Delim2, typename Body>
     constexpr auto Between(Delim1&& head, Body&& body, Delim2&& tail)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto head_res = head(str);
             if (head_res.result)
             {
                 return Then(body, tail)(head_res.rest);
             }
 
-            return { false, str, "", { } };
+            return { false, str, "", {} };
         };
     }
 
     template <typename Parser>
     constexpr auto AlwaysTrue(Parser&& parser)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             auto res = parser(str);
             return { true, res.rest, res.parsed_str };
         };
@@ -330,13 +318,12 @@ namespace momiji
 
     constexpr auto Endl()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             const bool check_size = str.size() == 0;
 
             if (check_size)
             {
-                return { true, str, "", { } };
+                return { true, str, "", {} };
             }
 
             return AnyOf(Char('\n'), Char('\0'), Char('\r'))(str);
@@ -345,13 +332,12 @@ namespace momiji
 
     constexpr auto NotEndl()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             const bool check_size = str.size() == 0;
 
             if (check_size)
             {
-                return { false, str, "", { } };
+                return { false, str, "", {} };
             }
 
             return AllOf(NotChar('\n'), NotChar('\0'), NotChar('\r'))(str);
@@ -360,16 +346,14 @@ namespace momiji
 
     constexpr auto Whitespace()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return While(AnyOf(Char(' '), Char('\t')))(str);
         };
     }
 
     constexpr auto Number()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             switch (str[0])
             {
             case '1':
@@ -382,27 +366,25 @@ namespace momiji
             case '8':
             case '9':
             case '0':
-                return { true, str.substr(1), str.substr(0, 1), { } };
+                return { true, str.substr(1), str.substr(0, 1), {} };
 
             default:
-                return { false, str, "", { } };
+                return { false, str, "", {} };
             };
         };
     }
 
     constexpr auto DecNumber()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             int idx = 0;
             bool found_num = false;
 
-            auto check_sign = Map(AnyOf(Char('+'), Char('-')), [&idx] (auto) {
-                ++idx;
-            })(str);
+            auto check_sign =
+                Map(AnyOf(Char('+'), Char('-')), [&idx](auto) { ++idx; })(str);
 
-            auto check_size = [&] () { return str.size() > idx; };
-            auto check_number = [&] () { 
+            auto check_size = [&]() { return str.size() > idx; };
+            auto check_number = [&]() {
                 return (str[idx] >= '0' && str[idx] <= '9');
             };
 
@@ -414,25 +396,23 @@ namespace momiji
 
             if (found_num)
             {
-                return { true, str.substr(idx), str.substr(0, idx), { } };
+                return { true, str.substr(idx), str.substr(0, idx), {} };
             }
 
-            return { false, str, "", { } };
+            return { false, str, "", {} };
         };
     }
 
     constexpr auto HexNumber()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             int idx = 0;
 
-            auto check_sign = Map(AnyOf(Char('+'), Char('-')), [&idx] (auto) {
-                ++idx;
-            })(str);
+            auto check_sign =
+                Map(AnyOf(Char('+'), Char('-')), [&idx](auto) { ++idx; })(str);
 
-            auto check_size = [&] () { return idx < str.size(); };
-            auto check_number = [&] () { 
+            auto check_size = [&]() { return idx < str.size(); };
+            auto check_number = [&]() {
                 return (str[idx] >= '0' && str[idx] <= '9') ||
                        (str[idx] >= 'a' && str[idx] <= 'f') ||
                        (str[idx] >= 'A' && str[idx] <= 'F');
@@ -448,126 +428,119 @@ namespace momiji
 
             if (found_num)
             {
-                return { true, str.substr(idx), str.substr(0, idx), { } };
+                return { true, str.substr(idx), str.substr(0, idx), {} };
             }
 
-            return { false, str, "", { } };
+            return { false, str, "", {} };
         };
     }
 
     constexpr auto AsciiAlphabet()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             if (str.size() > 0)
             {
                 if ((str[0] >= 'a' && str[0] <= 'z') ||
                     (str[0] >= 'A' && str[0] <= 'Z') ||
                     (str[0] >= '0' && str[0] <= '9'))
                 {
-                    return { true, str.substr(1), str.substr(0, 1), { } };
+                    return { true, str.substr(1), str.substr(0, 1), {} };
                 }
             }
 
-            return { false, str, "", { } };
+            return { false, str, "", {} };
         };
     }
 
     constexpr auto GenericDecimal()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return DecNumber()(str);
         };
     }
 
     constexpr auto GenericHex()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return SeqNext(Char('$'), HexNumber())(str);
         };
     }
 
     constexpr auto Word()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return While(AsciiAlphabet())(str);
         };
     }
 
     constexpr auto SkipLine()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return Sequence(While(NotEndl()), Endl())(str);
         };
     }
 
     constexpr auto Comment()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return Next(Char(';'), SkipLine())(str);
         };
     }
 
     constexpr auto SkipSeparator(char c)
     {
-        return [=] (std::string_view str) -> parser_metadata
-        {
+        return [=](std::string_view str) -> parser_metadata {
             return Sequence(Whitespace(), Char(c), Whitespace())(str);
         };
     }
 
     constexpr auto ParseLabel()
     {
-        return [] (std::string_view str) -> parser_metadata
-        {
+        return [](std::string_view str) -> parser_metadata {
             return Then(Word(), Char(':'))(str);
         };
     }
 
     constexpr auto OperandImmediate(momiji::Instruction& instr, int opNum)
     {
-        return [&instr, opNum] (std::string_view str) -> parser_metadata
-        {
-            constexpr auto inter_dec_parser = SeqNext(Char('#'), GenericDecimal());
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
+            constexpr auto inter_dec_parser =
+                SeqNext(Char('#'), GenericDecimal());
 
             auto decimal_num =
-                Map(inter_dec_parser,
-                    [&instr, opNum] (auto parsed_str) {
-                        const std::int32_t val = std::stoll(std::string{parsed_str});
+                Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
+                    const std::int32_t val =
+                        std::stoll(std::string { parsed_str });
 
-                        instr.operands[opNum].operandType = OperandType::Immediate;
-                        instr.operands[opNum].specialAddressingMode = SpecialAddressingMode::Immediate;
-                        instr.operands[opNum].value = val;
-                    });
+                    instr.operands[opNum].operandType = OperandType::Immediate;
+                    instr.operands[opNum].specialAddressingMode =
+                        SpecialAddressingMode::Immediate;
+                    instr.operands[opNum].value = val;
+                });
 
             constexpr auto inter_hex_parser = SeqNext(Char('#'), GenericHex());
-            auto hex_num =
-                Map(inter_hex_parser,
-                    [&instr, opNum] (std::string_view parsed_str) {
+            auto hex_num = Map(
+                inter_hex_parser, [&instr, opNum](std::string_view parsed_str) {
+                    const std::int32_t val =
+                        std::stoll(std::string { parsed_str }, 0, 16);
 
-                        const std::int32_t val = std::stoll(std::string{parsed_str}, 0, 16);
-
-                        instr.operands[opNum].operandType = OperandType::Immediate;
-                        instr.operands[opNum].specialAddressingMode = SpecialAddressingMode::Immediate;
-                        instr.operands[opNum].value = val;
-                    });
+                    instr.operands[opNum].operandType = OperandType::Immediate;
+                    instr.operands[opNum].specialAddressingMode =
+                        SpecialAddressingMode::Immediate;
+                    instr.operands[opNum].value = val;
+                });
 
             // Example: move.w #arr, a0
             //          ^ moves the "address" of "arr" in a0
             constexpr auto inter_imm_label_parser = SeqNext(Char('#'), Word());
             auto imm_label =
-                Map(inter_imm_label_parser,
-                    [&instr, opNum] (auto parsed_str) {
-                        instr.operands[opNum].operandType = OperandType::Immediate;
-                        instr.operands[opNum].specialAddressingMode = SpecialAddressingMode::Immediate;
-                        instr.operands[opNum].value = utils::hash(parsed_str);
-                        instr.operands[opNum].labelResolved = false;
-                    });
+                Map(inter_imm_label_parser, [&instr, opNum](auto parsed_str) {
+                    instr.operands[opNum].operandType = OperandType::Immediate;
+                    instr.operands[opNum].specialAddressingMode =
+                        SpecialAddressingMode::Immediate;
+                    instr.operands[opNum].value = utils::hash(parsed_str);
+                    instr.operands[opNum].labelResolved = false;
+                });
 
             return AnyOf(decimal_num, hex_num, imm_label)(str);
         };
@@ -575,16 +548,15 @@ namespace momiji
 
     constexpr auto AddressRegisterParser(momiji::Instruction& instr, int opNum)
     {
-        return [&instr, opNum] (std::string_view str) -> parser_metadata
-        {
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
             constexpr auto inter_parser = SeqNext(Char('a'), DecNumber());
-            auto register_parser =
-                Map(inter_parser, [&] (auto parsed_str) {
-                    const int reg_num = std::stoi(std::string{parsed_str});
+            auto register_parser = Map(inter_parser, [&](auto parsed_str) {
+                const int reg_num = std::stoi(std::string { parsed_str });
 
-                    instr.operands[opNum].operandType = OperandType::AddressRegister;
-                    instr.operands[opNum].value = reg_num;
-                });
+                instr.operands[opNum].operandType =
+                    OperandType::AddressRegister;
+                instr.operands[opNum].value = reg_num;
+            });
 
             return register_parser(str);
         };
@@ -592,17 +564,16 @@ namespace momiji
 
     constexpr auto DataRegisterParser(momiji::Instruction& instr, int opNum)
     {
-        return [&instr, opNum] (std::string_view str) -> parser_metadata
-        {
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
             constexpr auto inter_parser = SeqNext(Char('d'), DecNumber());
             auto register_parser =
-                Map(inter_parser,
-                    [&] (std::string_view parsed_str) {
-                        const int reg_num = std::stoi(std::string{parsed_str});
+                Map(inter_parser, [&](std::string_view parsed_str) {
+                    const int reg_num = std::stoi(std::string { parsed_str });
 
-                        instr.operands[opNum].operandType = OperandType::DataRegister;
-                        instr.operands[opNum].value = reg_num;
-                    });
+                    instr.operands[opNum].operandType =
+                        OperandType::DataRegister;
+                    instr.operands[opNum].value = reg_num;
+                });
 
             return register_parser(str);
         };
@@ -610,85 +581,82 @@ namespace momiji
 
     constexpr auto MemoryAddress(momiji::Instruction& instr, int opNum)
     {
-        return [&instr, opNum] (std::string_view str) -> parser_metadata
-        {
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
             constexpr auto inter_dec_parser = GenericDecimal();
 
-            auto dec_mem =
-                Map(inter_dec_parser,
-                    [&instr, opNum] (auto parsed_str) {
-                        const std::int32_t val = std::stoll(std::string{parsed_str});
+            auto dec_mem = Map(inter_dec_parser, [&instr,
+                                                  opNum](auto parsed_str) {
+                const std::int32_t val = std::stoll(std::string { parsed_str });
 
-                        SpecialAddressingMode res_add_mode{};
+                SpecialAddressingMode res_add_mode {};
 
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                            res_add_mode = SpecialAddressingMode::AbsoluteShort;
-                            break;
+                switch (instr.dataType)
+                {
+                case DataType::Byte:
+                case DataType::Word:
+                    res_add_mode = SpecialAddressingMode::AbsoluteShort;
+                    break;
 
-                        case DataType::Long:
-                            res_add_mode = SpecialAddressingMode::AbsoluteLong;
-                            break;
-                        
-                        }
+                case DataType::Long:
+                    res_add_mode = SpecialAddressingMode::AbsoluteLong;
+                    break;
+                }
 
-                        instr.operands[opNum].operandType = OperandType::AbsoluteLong;
-                        instr.operands[opNum].specialAddressingMode = res_add_mode;
-                        instr.operands[opNum].value = val;
-                    });
+                instr.operands[opNum].operandType = OperandType::AbsoluteLong;
+                instr.operands[opNum].specialAddressingMode = res_add_mode;
+                instr.operands[opNum].value = val;
+            });
 
             constexpr auto inter_hex_parser = GenericHex();
             auto hex_mem =
-                Map(inter_hex_parser,
-                    [&instr, opNum] (auto parsed_str) {
-                        const std::int32_t val = std::stoll(std::string{parsed_str}, 0, 16);
+                Map(inter_hex_parser, [&instr, opNum](auto parsed_str) {
+                    const std::int32_t val =
+                        std::stoll(std::string { parsed_str }, 0, 16);
 
-                        SpecialAddressingMode res_add_mode{};
+                    SpecialAddressingMode res_add_mode {};
 
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                            res_add_mode = SpecialAddressingMode::AbsoluteShort;
-                            break;
-                        case DataType::Long:
-                            res_add_mode = SpecialAddressingMode::AbsoluteLong;
-                            break;
-                        
-                        }
+                    switch (instr.dataType)
+                    {
+                    case DataType::Byte:
+                    case DataType::Word:
+                        res_add_mode = SpecialAddressingMode::AbsoluteShort;
+                        break;
+                    case DataType::Long:
+                        res_add_mode = SpecialAddressingMode::AbsoluteLong;
+                        break;
+                    }
 
-                        instr.operands[opNum].operandType = OperandType::AbsoluteLong;
-                        instr.operands[opNum].specialAddressingMode = res_add_mode;
-                        instr.operands[opNum].value = val;
-                    });
+                    instr.operands[opNum].operandType =
+                        OperandType::AbsoluteLong;
+                    instr.operands[opNum].specialAddressingMode = res_add_mode;
+                    instr.operands[opNum].value = val;
+                });
 
             // Example: move.w arr, a0
             //          ^ moves the value at address "arr" in a0
             constexpr auto inter_mem_label_parser = Word();
             auto label_mem =
-                Map(inter_mem_label_parser,
-                    [&instr, opNum] (auto parsed_str) {
-                        SpecialAddressingMode res_add_mode{};
+                Map(inter_mem_label_parser, [&instr, opNum](auto parsed_str) {
+                    SpecialAddressingMode res_add_mode {};
 
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                            res_add_mode = SpecialAddressingMode::AbsoluteShort;
-                            break;
+                    switch (instr.dataType)
+                    {
+                    case DataType::Byte:
+                    case DataType::Word:
+                        res_add_mode = SpecialAddressingMode::AbsoluteShort;
+                        break;
 
-                        case DataType::Long:
-                            res_add_mode = SpecialAddressingMode::AbsoluteLong;
-                            break;
-                        }
+                    case DataType::Long:
+                        res_add_mode = SpecialAddressingMode::AbsoluteLong;
+                        break;
+                    }
 
-                        instr.operands[opNum].operandType = OperandType::AbsoluteLong;
-                        instr.operands[opNum].specialAddressingMode = res_add_mode;
-                        instr.operands[opNum].value = utils::hash(parsed_str);
-                        instr.operands[opNum].labelResolved = false;
-                    });
+                    instr.operands[opNum].operandType =
+                        OperandType::AbsoluteLong;
+                    instr.operands[opNum].specialAddressingMode = res_add_mode;
+                    instr.operands[opNum].value = utils::hash(parsed_str);
+                    instr.operands[opNum].labelResolved = false;
+                });
 
             return AnyOf(dec_mem, hex_mem, label_mem)(str);
         };
@@ -696,8 +664,7 @@ namespace momiji
 
     constexpr auto AnyRegister(momiji::Instruction& instr, int opNum)
     {
-        return [&instr, opNum] (std::string_view str) -> parser_metadata
-        {
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
             auto register_parser = AnyOf(DataRegisterParser(instr, opNum),
                                          AddressRegisterParser(instr, opNum));
 
@@ -707,12 +674,13 @@ namespace momiji
 
     constexpr auto AsAddress(momiji::Instruction& instr, int opNum)
     {
-        return [&instr, opNum] (std::string_view str) -> parser_metadata
-        {
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
             auto register_parser =
-                Map(Between(Char('('), AddressRegisterParser(instr, opNum), Char(')')),
-                    [&] (std::string_view parsed_str) {
-                        instr.operands[opNum].operandType = OperandType::Address;
+                Map(Between(Char('('), AddressRegisterParser(instr, opNum),
+                            Char(')')),
+                    [&](std::string_view parsed_str) {
+                        instr.operands[opNum].operandType =
+                            OperandType::Address;
                     });
 
             return register_parser(str);
@@ -721,12 +689,10 @@ namespace momiji
 
     constexpr auto AnyOperand(momiji::Instruction& instr, int opNum)
     {
-        return [&instr, opNum] (std::string_view str) -> parser_metadata
-        {
-            auto op_parser = AnyOf(OperandImmediate(instr, opNum),
-                                   AnyRegister(instr, opNum),
-                                   AsAddress(instr, opNum),
-                                   MemoryAddress(instr, opNum));
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
+            auto op_parser =
+                AnyOf(OperandImmediate(instr, opNum), AnyRegister(instr, opNum),
+                      AsAddress(instr, opNum), MemoryAddress(instr, opNum));
 
             return op_parser(str);
         };
@@ -734,37 +700,34 @@ namespace momiji
 
     constexpr auto DataType(momiji::Instruction& instr)
     {
-        return [&instr] (std::string_view str) -> parser_metadata
-        {
+        return [&instr](std::string_view str) -> parser_metadata {
             constexpr auto inter_parser =
-                Next(Char('.'),
-                     AnyOf(Char('b'), Char('w'), Char('l')));
+                Next(Char('.'), AnyOf(Char('b'), Char('w'), Char('l')));
 
             auto DataType_parser =
-                Map(inter_parser,
-                    [&] (std::string_view parsed_str) {
-                        switch (parsed_str[0])
-                        {
-                        case 'b':
-                            instr.dataType = DataType::Byte;
-                            break;
-                        case 'w':
-                            instr.dataType = DataType::Word;
-                            break;
-                        case 'l':
-                            instr.dataType = DataType::Long;
-                            break;
-                        }
-                    });
+                Map(inter_parser, [&](std::string_view parsed_str) {
+                    switch (parsed_str[0])
+                    {
+                    case 'b':
+                        instr.dataType = DataType::Byte;
+                        break;
+                    case 'w':
+                        instr.dataType = DataType::Word;
+                        break;
+                    case 'l':
+                        instr.dataType = DataType::Long;
+                        break;
+                    }
+                });
 
             return DataType_parser(str);
         };
     }
 
-    constexpr auto ResolveLabel(momiji::Instruction& instr, const LabelInfo& labels)
+    constexpr auto ResolveLabel(momiji::Instruction& instr,
+                                const LabelInfo& labels)
     {
-        return [&instr, &labels] (std::string_view str) -> parser_metadata
-        {
+        return [&instr, &labels](std::string_view str) -> parser_metadata {
             auto res = Word()(str);
             if (res.result)
             {
@@ -791,16 +754,11 @@ namespace momiji
 
     constexpr auto CommonInstructionParser(momiji::Instruction& instr)
     {
-        return [&instr] (std::string_view str) -> parser_metadata
-        {
+        return [&instr](std::string_view str) -> parser_metadata {
             auto parser = SeqNext(
-                    AlwaysTrue(DataType(instr)), // data type is optional
-                    Whitespace(),
-                    AnyOperand(instr, 0),
-                    AlwaysTrue(Whitespace()),
-                    Char(','),
-                    AlwaysTrue(Whitespace()),
-                    AnyOperand(instr, 1));
+                AlwaysTrue(DataType(instr)), // data type is optional
+                Whitespace(), AnyOperand(instr, 0), AlwaysTrue(Whitespace()),
+                Char(','), AlwaysTrue(Whitespace()), AnyOperand(instr, 1));
 
             return parser(str);
         };
@@ -808,16 +766,11 @@ namespace momiji
 
     constexpr auto ImmediateInstructionParser(momiji::Instruction& instr)
     {
-        return [&instr] (std::string_view str) -> parser_metadata
-        {
+        return [&instr](std::string_view str) -> parser_metadata {
             auto parser = SeqNext(
-                    AlwaysTrue(DataType(instr)),
-                    Whitespace(),
-                    OperandImmediate(instr, 0),
-                    AlwaysTrue(Whitespace()),
-                    Char(','),
-                    AlwaysTrue(Whitespace()),
-                    AnyOperand(instr, 1));
+                AlwaysTrue(DataType(instr)), Whitespace(),
+                OperandImmediate(instr, 0), AlwaysTrue(Whitespace()), Char(','),
+                AlwaysTrue(Whitespace()), AnyOperand(instr, 1));
 
             return parser(str);
         };
@@ -826,12 +779,10 @@ namespace momiji
     constexpr auto BranchInstructionParser(momiji::Instruction& instr,
                                            const momiji::LabelInfo& labels)
     {
-        return [&instr, &labels] (std::string_view str) -> parser_metadata
-        {
-            auto parser = SeqNext(
-                    Whitespace(),
-                    AnyOf(OperandImmediate(instr, 0),
-                          MemoryAddress(instr, 0)));
+        return [&instr, &labels](std::string_view str) -> parser_metadata {
+            auto parser =
+                SeqNext(Whitespace(), AnyOf(OperandImmediate(instr, 0),
+                                            MemoryAddress(instr, 0)));
 
             return parser(str);
         };
@@ -839,11 +790,10 @@ namespace momiji
 
     constexpr auto OneRegisterInstructionParser(momiji::Instruction& instr)
     {
-        return [&instr] (std::string_view str) -> parser_metadata
-        {
+        return [&instr](std::string_view str) -> parser_metadata {
             auto parser = SeqNext(Whitespace(), AnyRegister(instr, 0));
 
             return parser(str);
         };
     }
-}
+} // namespace momiji

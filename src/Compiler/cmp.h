@@ -1,16 +1,15 @@
 #pragma once
 
-#include "./Utils.h"
 #include "../Instructions/OpCodes.h"
 #include "../Instructions/Representations.h"
+#include "./Utils.h"
 
 #include <Parser.h>
 #include <Utils.h>
 
 namespace momiji
 {
-    void cmp(const momiji::Instruction& instr,
-             OpcodeDescription& opcode,
+    void cmp(const momiji::Instruction& instr, OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Cmp bits;
@@ -20,16 +19,12 @@ namespace momiji
         bits.srctype = utils::to_val(instr.operands[0].operandType) & 0b111;
         bits.srcmode = getCorrectOpMode(instr, 0);
 
-        opcode.val =  (bits.header << 12)
-                    | (bits.datareg << 9)
-                    | (bits.padding << 8)
-                    | (bits.size << 6)
-                    | (bits.srctype << 3)
-                    | (bits.srcmode);
+        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
+                     (bits.padding << 8) | (bits.size << 6) |
+                     (bits.srctype << 3) | (bits.srcmode);
     }
 
-    void cmpa(const momiji::Instruction& instr,
-              OpcodeDescription& opcode,
+    void cmpa(const momiji::Instruction& instr, OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::CmpA bits;
@@ -39,7 +34,7 @@ namespace momiji
         switch (instr.dataType)
         {
         case DataType::Byte:
-            opcode.val = repr::Illegal{}.value;
+            opcode.val = repr::Illegal {}.value;
             return;
             break;
 
@@ -55,16 +50,12 @@ namespace momiji
         bits.srctype = utils::to_val(instr.operands[0].operandType) & 0b111;
         bits.srcmode = getCorrectOpMode(instr, 0);
 
-        opcode.val =  (bits.header << 12)
-                    | (bits.addreg << 9)
-                    | (bits.size << 8)
-                    | (bits.padding << 6)
-                    | (bits.srctype << 3)
-                    | (bits.srcmode);
+        opcode.val = (bits.header << 12) | (bits.addreg << 9) |
+                     (bits.size << 8) | (bits.padding << 6) |
+                     (bits.srctype << 3) | (bits.srcmode);
     }
 
-    void cmpi(const momiji::Instruction& instr,
-              OpcodeDescription& opcode,
+    void cmpi(const momiji::Instruction& instr, OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::CmpI bits;
@@ -79,9 +70,7 @@ namespace momiji
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1);
 
-        opcode.val =  (bits.header << 8)
-                    | (bits.size << 6)
-                    | (bits.dsttype << 3)
-                    | (bits.dstmode);
+        opcode.val = (bits.header << 8) | (bits.size << 6) |
+                     (bits.dsttype << 3) | (bits.dstmode);
     }
-}
+} // namespace momiji

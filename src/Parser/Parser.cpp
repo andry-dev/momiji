@@ -1,11 +1,11 @@
 #include <Parser.h>
 
-#include "Utils.h"
-#include <string>
-#include <algorithm>
-#include "Mappings.h"
-#include "Common.h"
 #include "Combinators.h"
+#include "Common.h"
+#include "Mappings.h"
+#include "Utils.h"
+#include <algorithm>
+#include <string>
 
 #include <Memory.h>
 
@@ -14,11 +14,10 @@
 
 #include <asl/types>
 
-
 namespace momiji
 {
     static auto make_parser_error(int column, int line,
-            ParserError::ErrorType error)
+                                  ParserError::ErrorType error)
     {
         return nonstd::make_unexpected<ParserError>({ line, column, error });
     }
@@ -27,21 +26,25 @@ namespace momiji
     {
         return op.operandType == OperandType::Immediate &&
                (op.specialAddressingMode == SpecialAddressingMode::Immediate ||
-                op.specialAddressingMode == SpecialAddressingMode::AbsoluteShort ||
-                op.specialAddressingMode == SpecialAddressingMode::AbsoluteLong);
+                op.specialAddressingMode ==
+                    SpecialAddressingMode::AbsoluteShort ||
+                op.specialAddressingMode ==
+                    SpecialAddressingMode::AbsoluteLong);
     }
 
     struct Parser
     {
         Parser(std::string_view str)
             : str(str)
-            , settings{ParserSettings{}}
-        { }
+            , settings { ParserSettings {} }
+        {
+        }
 
         Parser(std::string_view str, ParserSettings settings)
             : str(str)
             , settings(settings)
-        { }
+        {
+        }
 
         ParsingResult run()
         {
@@ -119,7 +122,8 @@ namespace momiji
                 }
                 else
                 {
-                    return make_parser_error(0, line_count, res.error.errorType);
+                    return make_parser_error(0, line_count,
+                                             res.error.errorType);
                 }
 
                 tmp_str = res.rest;
@@ -138,11 +142,14 @@ namespace momiji
                     auto& op = x.operands[i];
                     if (!op.labelResolved)
                     {
-                        auto found = alg::find_label(labels, x.operands[i].value);
+                        auto found =
+                            alg::find_label(labels, x.operands[i].value);
 
                         if (found == std::end(labels.labels))
                         {
-                            return make_parser_error(0, line_count, ParserError::ErrorType::NoLabelFound);
+                            return make_parser_error(
+                                0, line_count,
+                                ParserError::ErrorType::NoLabelFound);
                         }
 
                         op.value = found->idx;
@@ -165,14 +172,13 @@ namespace momiji
             return instructions;
         }
 
-    private:
-
+      private:
         void handleBreakpoints()
         {
             // Check if we should insert a breakpoint
             auto found_breakpoint = std::find_if(
-                std::begin(settings.breakpoints), std::end(settings.breakpoints),
-                [this] (momiji::Breakpoint x) {
+                std::begin(settings.breakpoints),
+                std::end(settings.breakpoints), [this](momiji::Breakpoint x) {
                     return x.source_line == line_count;
                 });
 
@@ -188,24 +194,12 @@ namespace momiji
 
         void handlePCIncrement(momiji::Instruction& instr)
         {
-            program_counter += 2;
-
             if (instr.instructionType == InstructionType::Declare)
             {
                 switch (instr.dataType)
                 {
                 case DataType::Byte:
                     program_counter += instr.operands.size();
-
-                    // Fix the PC alignment
-                    if (program_counter & 1)
-                    {
-                        --program_counter;
-                    }
-                    else
-                    {
-                        program_counter -= 2;
-                    }
                     break;
 
                 case DataType::Word:
@@ -219,6 +213,7 @@ namespace momiji
             }
             else
             {
+                program_counter += 2;
                 for (const auto& op : instr.operands)
                 {
                     if (isImmediate(op))
@@ -241,27 +236,27 @@ namespace momiji
             }
         }
 
-        std::int64_t line_count{0};
-        std::int64_t program_counter{0};
+        std::int64_t line_count { 0 };
+        std::int64_t program_counter { 0 };
         std::string_view str;
         std::vector<momiji::Instruction> instructions;
         LabelInfo labels;
-        bool parsing_error{false};
+        bool parsing_error { false };
         ParserError last_error;
         ParserSettings settings;
     };
 
     momiji::ParsingResult parse(const std::string& str)
     {
-        Parser parser{str};
+        Parser parser { str };
 
         return parser.run();
     }
 
     momiji::ParsingResult parse(const std::string& str, ParserSettings settings)
     {
-        Parser parser{str, settings};
+        Parser parser { str, settings };
 
         return parser.run();
     }
-}
+} // namespace momiji

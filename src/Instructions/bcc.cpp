@@ -21,7 +21,7 @@ namespace momiji::instr
 
         const auto& statReg = sys.cpu.statusRegister;
 
-        const auto normalIncrement = [&] () {
+        const auto normalIncrement = [&]() {
             sys.cpu.programCounter.address += skipTwoBytes ? 2 : 1;
         };
 
@@ -64,8 +64,10 @@ namespace momiji::instr
 
         // GT
         case 0b1110:
-            if ((statReg.zero == 0 && statReg.negative == 0 && statReg.overflow == 0) ||
-                (statReg.zero == 0 && statReg.negative == 1 && statReg.overflow == 1))
+            if ((statReg.zero == 0 && statReg.negative == 0 &&
+                 statReg.overflow == 0) ||
+                (statReg.zero == 0 && statReg.negative == 1 &&
+                 statReg.overflow == 1))
             {
                 shouldBranch = true;
             }
@@ -80,7 +82,6 @@ namespace momiji::instr
                 shouldBranch = true;
             }
             break;
-
         }
 
         if (shouldBranch)
@@ -92,7 +93,6 @@ namespace momiji::instr
             normalIncrement();
         }
 
-
         return sys;
     }
-}
+} // namespace momiji::instr

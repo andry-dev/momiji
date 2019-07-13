@@ -10,20 +10,26 @@ namespace momiji::instr
 
         switch (data.size)
         {
-        case 1: {
+        case 1:
+        {
             auto dstreg = utils::readDestOp8(sys, data);
             *dstreg = *dstreg + srcval;
-        } break;
+        }
+        break;
 
-        case 2: {
+        case 2:
+        {
             auto dstreg = utils::readDestOp16(sys, data);
             *dstreg = *dstreg + srcval;
-        } break;
+        }
+        break;
 
-        case 4: {
+        case 4:
+        {
             auto dstreg = utils::readDestOp32(sys, data);
             *dstreg = *dstreg + srcval;
-        } break;
+        }
+        break;
         }
 
         return sys;
@@ -35,20 +41,26 @@ namespace momiji::instr
 
         switch (data.size)
         {
-        case 1: {
+        case 1:
+        {
             auto dstreg = utils::readDestOp8(sys, data);
             *dstreg = *dstreg + srcval;
-        } break;
+        }
+        break;
 
-        case 2: {
+        case 2:
+        {
             auto dstreg = utils::readDestOp16(sys, data);
             *dstreg = *dstreg + srcval;
-        } break;
+        }
+        break;
 
-        case 4: {
+        case 4:
+        {
             auto dstreg = utils::readDestOp32(sys, data);
             *dstreg = *dstreg + srcval;
-        } break;
+        }
+        break;
         }
 
         return sys;
@@ -60,22 +72,28 @@ namespace momiji::instr
 
         switch (data.size)
         {
-        case 1: {
+        case 1:
+        {
             auto dstreg = utils::readDestOp8(sys, data);
             *dstreg = *dstreg + srcval;
-        } break;
+        }
+        break;
 
-        case 2: {
+        case 2:
+        {
             auto dstreg = utils::readDestOp16(sys, data);
             *dstreg = *dstreg + srcval;
-        } break;
+        }
+        break;
 
-        case 4: {
+        case 4:
+        {
             auto dstreg = utils::readDestOp32(sys, data);
             *dstreg = *dstreg + srcval;
-        } break;
+        }
+        break;
         }
 
         return sys;
     }
-}
+} // namespace momiji::instr

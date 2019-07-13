@@ -1,11 +1,11 @@
 #pragma once
 
+#include <Memory.h>
 #include <Parser.h>
 #include <Utils.h>
-#include <cstdint>
-#include <cstddef>
 #include <array>
-#include <Memory.h>
+#include <cstddef>
+#include <cstdint>
 
 namespace momiji
 {
@@ -34,12 +34,18 @@ namespace momiji
     {
         switch (instr.operands[num].operandType)
         {
-        case OperandType::DataRegister:    [[fallthrough]];
-        case OperandType::AddressRegister: [[fallthrough]];
-        case OperandType::Address:         [[fallthrough]];
-        case OperandType::AddressPost:     [[fallthrough]];
-        case OperandType::AddressPre:      [[fallthrough]];
-        case OperandType::AddressIndex:    [[fallthrough]];
+        case OperandType::DataRegister:
+            [[fallthrough]];
+        case OperandType::AddressRegister:
+            [[fallthrough]];
+        case OperandType::Address:
+            [[fallthrough]];
+        case OperandType::AddressPost:
+            [[fallthrough]];
+        case OperandType::AddressPre:
+            [[fallthrough]];
+        case OperandType::AddressIndex:
+            [[fallthrough]];
         case OperandType::AddressOffset:
             return instr.operands[num].value & 0b111;
 
@@ -48,9 +54,11 @@ namespace momiji
         }
     }
 
-    void handleAdditionalData(const momiji::Instruction& instr, AdditionalData& additionalData)
+    void handleAdditionalData(const momiji::Instruction& instr,
+                              AdditionalData& additionalData)
     {
-        Expects(instr.operands.size() <= 2, "How even could you get more than 2 operands here?");
+        Expects(instr.operands.size() <= 2,
+                "How even could you get more than 2 operands here?");
 
         for (int i = 0; i < instr.operands.size(); ++i)
         {
@@ -59,13 +67,12 @@ namespace momiji
             // offset(a*)
             case OperandType::AddressOffset:
             {
-                
-            } break;
+            }
+            break;
 
             // (offset, a*, X*)
             case OperandType::AddressIndex:
                 break;
-
 
             case OperandType::Immediate:
                 break;
@@ -91,4 +98,4 @@ namespace momiji
         2, // Byte
         4, // Word
     };
-}
+} // namespace momiji

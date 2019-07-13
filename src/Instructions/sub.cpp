@@ -26,7 +26,6 @@ namespace momiji::instr
             break;
         }
 
-
         std::int32_t* dstreg = nullptr;
         const std::uint8_t dstnum = utils::to_val(data.mod2);
 
@@ -79,7 +78,6 @@ namespace momiji::instr
             srcreg = &sys.cpu.addressRegisters[srcnum].value;
             break;
         }
-
 
         const std::uint8_t dstnum = utils::to_val(data.mod2);
         std::int32_t* dstreg = &sys.cpu.addressRegisters[dstnum].value;
@@ -142,4 +140,4 @@ namespace momiji::instr
 
         return sys;
     }
-}
+} // namespace momiji::instr

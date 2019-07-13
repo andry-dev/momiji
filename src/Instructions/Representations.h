@@ -1,15 +1,17 @@
 #pragma once
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 
 namespace momiji::repr
 {
     struct Move
     {
         Move()
-            : header{0b00}, size{0}
-        {}
+            : header { 0b00 }
+            , size { 0 }
+        {
+        }
 
         std::uint16_t header : 2;
         std::uint16_t size : 2;
@@ -30,14 +32,15 @@ namespace momiji::repr
     struct Add
     {
         Add()
-            : header{0b1101}
-        {}
+            : header { 0b1101 }
+        {
+        }
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
 
         // 0 = Dn + EA -> Dn ; add.* (a0), d0
         // 1 = EA + Dn -> EA ; add.* d0, (a2)
-        std::uint16_t direction : 1; 
+        std::uint16_t direction : 1;
 
         std::uint16_t size : 2;
         std::uint16_t othtype : 3;
@@ -47,8 +50,9 @@ namespace momiji::repr
     struct AddA
     {
         AddA()
-            : header{0b1101}
-        {}
+            : header { 0b1101 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t addreg : 3;
@@ -61,8 +65,9 @@ namespace momiji::repr
     struct AddI
     {
         AddI()
-            : header{0b00000110}
-        {}
+            : header { 0b00000110 }
+        {
+        }
 
         std::uint16_t header : 8;
         std::uint16_t size : 2;
@@ -77,8 +82,9 @@ namespace momiji::repr
     struct Sub
     {
         Sub()
-            : header{0b1001}
-        {}
+            : header { 0b1001 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
@@ -91,9 +97,10 @@ namespace momiji::repr
     struct SubA
     {
         SubA()
-            : header{0b1001}
-            , padding{0b11}
-        {}
+            : header { 0b1001 }
+            , padding { 0b11 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t addreg : 3;
@@ -106,8 +113,9 @@ namespace momiji::repr
     struct SubI
     {
         SubI()
-            : header{0b00000100}
-        {}
+            : header { 0b00000100 }
+        {
+        }
 
         std::uint16_t header : 8;
         std::uint16_t size : 2;
@@ -122,9 +130,10 @@ namespace momiji::repr
     struct DivS
     {
         DivS()
-            : header{0b1000}
-            , padding{0b111}
-        {}
+            : header { 0b1000 }
+            , padding { 0b111 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
@@ -136,9 +145,10 @@ namespace momiji::repr
     struct DivU
     {
         DivU()
-            : header{0b1000}
-            , padding{0b011}
-        {}
+            : header { 0b1000 }
+            , padding { 0b011 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
@@ -150,9 +160,10 @@ namespace momiji::repr
     struct MulS
     {
         MulS()
-            : header{0b1100}
-            , padding{0b111}
-        {}
+            : header { 0b1100 }
+            , padding { 0b111 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
@@ -164,9 +175,10 @@ namespace momiji::repr
     struct MulU
     {
         MulU()
-            : header{0b1100}
-            , padding{0b011}
-        {}
+            : header { 0b1100 }
+            , padding { 0b011 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
@@ -178,8 +190,9 @@ namespace momiji::repr
     struct Or
     {
         Or()
-            : header{0b1000}
-        {}
+            : header { 0b1000 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
@@ -196,8 +209,9 @@ namespace momiji::repr
     struct OrI
     {
         OrI()
-            : header{0b00000000}
-        {}
+            : header { 0b00000000 }
+        {
+        }
 
         std::uint16_t header : 8;
         std::uint16_t size : 2;
@@ -208,8 +222,9 @@ namespace momiji::repr
     struct And
     {
         And()
-            : header{0b1100}
-        {}
+            : header { 0b1100 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
@@ -222,8 +237,9 @@ namespace momiji::repr
     struct AndI
     {
         AndI()
-            : header{0b00000010}
-        {}
+            : header { 0b00000010 }
+        {
+        }
 
         std::uint16_t header : 8;
         std::uint16_t size : 2;
@@ -235,9 +251,10 @@ namespace momiji::repr
     struct Xor
     {
         Xor()
-            : header{0b1011}
-            , padding{0b1}
-        {}
+            : header { 0b1011 }
+            , padding { 0b1 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
@@ -251,8 +268,9 @@ namespace momiji::repr
     struct XorI
     {
         XorI()
-            : header{0b00001010}
-        {}
+            : header { 0b00001010 }
+        {
+        }
 
         std::uint16_t header : 8;
         std::uint16_t size : 2;
@@ -267,8 +285,9 @@ namespace momiji::repr
     struct Swap
     {
         Swap()
-            : header{0b01001000'01000}
-        {}
+            : header { 0b01001000'01000 }
+        {
+        }
 
         std::uint16_t header : 13;
         std::uint16_t datareg : 3;
@@ -277,9 +296,10 @@ namespace momiji::repr
     struct Exg
     {
         Exg()
-            : header{0b1100}
-            , padding{0b1}
-        {}
+            : header { 0b1100 }
+            , padding { 0b1 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
@@ -291,9 +311,10 @@ namespace momiji::repr
     struct Cmp
     {
         Cmp()
-            : header{0b1011}
-            , padding{0b0}
-        {}
+            : header { 0b1011 }
+            , padding { 0b0 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t datareg : 3;
@@ -306,9 +327,10 @@ namespace momiji::repr
     struct CmpA
     {
         CmpA()
-            : header{0b1011}
-            , padding{0b011}
-        {}
+            : header { 0b1011 }
+            , padding { 0b011 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t addreg : 3;
@@ -321,8 +343,9 @@ namespace momiji::repr
     struct CmpI
     {
         CmpI()
-            : header{0b00001100}
-        {}
+            : header { 0b00001100 }
+        {
+        }
 
         std::uint16_t header : 8;
         std::uint16_t size : 2;
@@ -333,8 +356,9 @@ namespace momiji::repr
     struct Tst
     {
         Tst()
-            : header{0b01001010}
-        {}
+            : header { 0b01001010 }
+        {
+        }
 
         std::uint16_t header : 8;
         std::uint16_t size : 2;
@@ -345,8 +369,9 @@ namespace momiji::repr
     struct Bra
     {
         Bra()
-            : header{0b0110'0000}
-        {}
+            : header { 0b0110'0000 }
+        {
+        }
 
         std::uint16_t header : 8;
         std::uint16_t displacement : 8;
@@ -356,8 +381,9 @@ namespace momiji::repr
     struct Bcc
     {
         Bcc()
-            : header{0b0110}
-        {}
+            : header { 0b0110 }
+        {
+        }
 
         std::uint16_t header : 4;
         std::uint16_t condition : 4;
@@ -367,20 +393,21 @@ namespace momiji::repr
     struct Jmp
     {
         Jmp()
-            : header{0b01001110'11}
-        {}
+            : header { 0b01001110'11 }
+        {
+        }
 
         std::uint16_t header : 10;
         std::uint16_t regtype : 3;
         std::uint16_t regmode : 3;
     };
 
-
     struct Illegal
     {
         Illegal()
-            : value{0b01001010'11111100}
-        {}
+            : value { 0b01001010'11111100 }
+        {
+        }
 
         std::uint16_t value;
     };
@@ -388,8 +415,9 @@ namespace momiji::repr
     struct Nop
     {
         Nop()
-            : value{0b01001110'01110001}
-        {}
+            : value { 0b01001110'01110001 }
+        {
+        }
 
         std::uint16_t value;
     };
@@ -410,4 +438,4 @@ namespace momiji::repr
     static_assert(sizeof(CmpA) == 2, "'cmpa' is not 16-bit long");
     static_assert(sizeof(Illegal) == 2, "'illegal' is not 16-bit long");
     static_assert(sizeof(Nop) == 2, "'nop' is not 16-bit long");
-}
+} // namespace momiji::repr

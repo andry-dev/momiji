@@ -29,9 +29,9 @@ void gui()
     emuSettings.programStart = 0;
     emuSettings.dataSectionOffset = 0;
     emuSettings.retainStates = momiji::EmulatorSettings::RetainStates::Always;
-    //emuSettings.parserSettings.breakpoints = gsl::null_span{};
+    // emuSettings.parserSettings.breakpoints = gsl::null_span{};
 
-    momiji::Emulator emu{emuSettings};
+    momiji::Emulator emu { emuSettings };
 
     tewi::Window<def_tag> win { "momiji", tewi::Width { 800 },
                                 tewi::Height { 600 } };
@@ -178,10 +178,10 @@ void gui()
         {
             ImGui::Begin("Emulator Settings");
 
-            static std::array<std::string_view, 3> possibleSettingsStr {{
+            static std::array<std::string_view, 3> possibleSettingsStr { {
                 "Always",
                 "Never",
-            }};
+            } };
 
             ImGui::TextUnformatted("Retain states");
 
@@ -221,12 +221,12 @@ void gui()
 
                 for (int i = 0; i < memview.size(); i += 2)
                 {
-                    std::uint8_t higher = memview.read8(i);
-                    std::uint8_t lower = 0;
+                    std::uint8_t lower = memview.read8(i);
+                    std::uint8_t higher = 0;
 
                     if ((i + 1) < memview.size())
                     {
-                        lower = memview.read8(i + 1);
+                        higher = memview.read8(i + 1);
                     }
 
                     auto pcadd = memview.begin() + pc;
@@ -234,14 +234,14 @@ void gui()
 
                     ImGui::TextUnformatted(pcadd == curradd ? "=>" : "  ");
                     ImGui::SameLine();
-                    ImGui::Text("%p: %x %x", memview.begin() + i, higher, lower);
+                    ImGui::Text("%p: %x %x", memview.begin() + i, higher,
+                                lower);
                 }
             }
             else
             {
                 ImGui::Text("No memory output available!\n");
             }
-
 
             ImGui::End();
         }
@@ -310,11 +310,12 @@ void gui()
                     error_string = "unknown error.";
                     break;
                 }
-                ImGui::Text("Error at line %d, %s", error.line, error_string.data());
+                ImGui::Text("Error at line %d, %s", error.line,
+                            error_string.data());
             }
             else
             {
-                //ImGui::Text("No errors!");
+                // ImGui::Text("No errors!");
             }
 
             ImGui::BeginChild("Source code");
@@ -395,7 +396,8 @@ void gui()
             {
                 const auto memview = momiji::make_memory_view(last);
                 const auto pc = last.cpu.programCounter.address;
-                const auto addr = reinterpret_cast<std::uint64_t>(memview.begin() + pc);
+                const auto addr =
+                    reinterpret_cast<std::uint64_t>(memview.begin() + pc);
                 ImGui::SameLine();
                 ImGui::Text("%x", addr);
             }

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <System.h>
 #include <Decoder.h>
+#include <System.h>
 #include <iostream>
 
 namespace momiji
@@ -13,5 +13,5 @@ namespace momiji
             std::cout << "NOOP\n";
             return sys;
         }
-    }
-}
+    } // namespace instr
+} // namespace momiji

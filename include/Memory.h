@@ -1,11 +1,11 @@
 #pragma once
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 
-#include <vector>
-#include <stack>
 #include <gsl/span>
+#include <stack>
+#include <vector>
 
 #include <gsl/assert>
 
@@ -15,7 +15,7 @@ namespace momiji
     {
         struct ExecutableMemoryTag;
         struct StackMemoryTag;
-    }
+    } // namespace details
 
     template <typename Tag>
     class MemoryView;
@@ -26,7 +26,7 @@ namespace momiji
     template <typename Container>
     class BasicMemory
     {
-    public:
+      public:
         std::uint32_t read32(std::uint64_t offset) const;
         std::uint16_t read16(std::uint64_t offset) const;
         std::uint8_t read8(std::uint64_t offset) const;
@@ -78,15 +78,14 @@ namespace momiji
             return m_data.data();
         }
 
-    protected:
+      protected:
         Container m_data;
     };
 
     template <typename Tag>
     class ModifiableMemory final : public BasicMemory<std::vector<std::uint8_t>>
     {
-    public:
-
+      public:
         template <typename T>
         void push32(T val) = delete;
         void push32(std::uint32_t val);
@@ -103,8 +102,7 @@ namespace momiji
         void pop16();
         void pop8();
 
-    private:
-
+      private:
         friend class MemoryView<Tag>;
         friend class ConstMemoryView<Tag>;
     };
@@ -112,7 +110,7 @@ namespace momiji
     template <typename Tag>
     class MemoryView final : public BasicMemory<gsl::span<std::uint8_t>>
     {
-    public:
+      public:
         MemoryView(ModifiableMemory<Tag>& mem)
         {
             m_data = { mem.m_data.data(), mem.m_data.size() };
@@ -125,9 +123,10 @@ namespace momiji
     };
 
     template <typename Tag>
-    class ConstMemoryView final : public BasicMemory<gsl::span<const std::uint8_t>>
+    class ConstMemoryView final
+        : public BasicMemory<gsl::span<const std::uint8_t>>
     {
-    public:
+      public:
         ConstMemoryView(const ModifiableMemory<Tag>& mem)
         {
             m_data = { mem.m_data.data(), mem.m_data.size() };
@@ -141,7 +140,8 @@ namespace momiji
 
     using ExecutableMemory = ModifiableMemory<details::ExecutableMemoryTag>;
     using ExecutableMemoryView = MemoryView<details::ExecutableMemoryTag>;
-    using ConstExecutableMemoryView = ConstMemoryView<details::ExecutableMemoryTag>;
+    using ConstExecutableMemoryView =
+        ConstMemoryView<details::ExecutableMemoryTag>;
 
     using StackMemory = ModifiableMemory<details::StackMemoryTag>;
     using StackMemoryView = MemoryView<details::StackMemoryTag>;
@@ -156,10 +156,8 @@ namespace momiji
             return 0;
         }
 
-        return   (m_data[offset] << 24)
-               | (m_data[offset + 1] << 16)
-               | (m_data[offset + 2] << 8)
-               | (m_data[offset + 3]);
+        return (m_data[offset]) | (m_data[offset + 1] << 8) |
+               (m_data[offset + 2] << 16) | (m_data[offset + 3] << 24);
     }
 
     template <typename Container>
@@ -170,8 +168,7 @@ namespace momiji
             return 0;
         }
 
-        return   (m_data[offset] << 8)
-               | (m_data[offset + 1]);
+        return (m_data[offset]) | (m_data[offset + 1] << 8);
     }
 
     template <typename Container>
@@ -186,17 +183,18 @@ namespace momiji
     }
 
     template <typename Container>
-    void BasicMemory<Container>::write32(std::uint32_t val, std::uint64_t offset)
+    void BasicMemory<Container>::write32(std::uint32_t val,
+                                         std::uint64_t offset)
     {
         if (offset >= m_data.size())
         {
             return;
         }
 
-        const std::uint8_t first =  (val & 0xFF000000) >> 24;
-        const std::uint8_t second = (val & 0x00FF0000) >> 16;
-        const std::uint8_t third =  (val & 0x0000FF00) >> 8;
-        const std::uint8_t fourth = (val & 0x000000FF);
+        const std::uint8_t first = (val & 0x000000FF);
+        const std::uint8_t second = (val & 0x0000FF00) >> 8;
+        const std::uint8_t third = (val & 0x00FF0000) >> 16;
+        const std::uint8_t fourth = (val & 0xFF000000) >> 24;
 
         m_data[offset] = first;
         m_data[offset + 1] = second;
@@ -205,15 +203,16 @@ namespace momiji
     }
 
     template <typename Container>
-    void BasicMemory<Container>::write16(std::uint16_t val, std::uint64_t offset)
+    void BasicMemory<Container>::write16(std::uint16_t val,
+                                         std::uint64_t offset)
     {
         if (offset >= m_data.size())
         {
             return;
         }
 
-        const std::uint8_t first =  (val & 0xFF00) >> 8;
-        const std::uint8_t second = (val & 0x00FF);
+        const std::uint8_t first = (val & 0x00FF);
+        const std::uint8_t second = (val & 0xFF00) >> 8;
 
         m_data[offset] = first;
         m_data[offset + 1] = second;
@@ -241,11 +240,10 @@ namespace momiji
             m_data.push_back(0);
         }
 
-
-        const std::uint8_t first  = (val & 0xFF00'0000) >> 24;
-        const std::uint8_t second = (val & 0x00FF'0000) >> 16;
-        const std::uint8_t third  = (val & 0x0000'FF00) >> 8;
-        const std::uint8_t fourth = (val & 0x0000'00FF);
+        const std::uint8_t first = (val & 0x0000'00FF);
+        const std::uint8_t second = (val & 0x0000'FF00) >> 8;
+        const std::uint8_t third = (val & 0x00FF'0000) >> 16;
+        const std::uint8_t fourth = (val & 0xFF00'0000) >> 24;
 
         m_data.push_back(first);
         m_data.push_back(second);
@@ -263,8 +261,8 @@ namespace momiji
             m_data.push_back(0);
         }
 
-        const std::uint8_t first =  (val & 0xFF00) >> 8;
-        const std::uint8_t second = (val & 0x00FF);
+        const std::uint8_t first = (val & 0x00FF);
+        const std::uint8_t second = (val & 0xFF00) >> 8;
 
         m_data.push_back(first);
         m_data.push_back(second);
@@ -297,4 +295,4 @@ namespace momiji
     {
         m_data.pop_back();
     }
-}
+} // namespace momiji

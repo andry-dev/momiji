@@ -5,8 +5,8 @@
 #include <cstdint>
 #include <vector>
 
-#include <Utils.h>
 #include <Memory.h>
+#include <Utils.h>
 
 namespace momiji
 {

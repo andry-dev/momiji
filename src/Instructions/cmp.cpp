@@ -44,7 +44,8 @@ namespace momiji::instr
 
         sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
         sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
-        sys.cpu.statusRegister.overflow = utils::sub_overflow(dstreg, srcreg) ? 1 : 0;
+        sys.cpu.statusRegister.overflow =
+            utils::sub_overflow(dstreg, srcreg) ? 1 : 0;
 
         return sys;
     }
@@ -89,7 +90,8 @@ namespace momiji::instr
 
         sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
         sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
-        sys.cpu.statusRegister.overflow = utils::sub_overflow(dstreg, srcreg) ? 1 : 0;
+        sys.cpu.statusRegister.overflow =
+            utils::sub_overflow(dstreg, srcreg) ? 1 : 0;
 
         return sys;
     }
@@ -139,8 +141,9 @@ namespace momiji::instr
 
         sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
         sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
-        sys.cpu.statusRegister.overflow = utils::sub_overflow(dstreg, srcval) ? 1 : 0;
+        sys.cpu.statusRegister.overflow =
+            utils::sub_overflow(dstreg, srcval) ? 1 : 0;
 
         return sys;
     }
-}
+} // namespace momiji::instr

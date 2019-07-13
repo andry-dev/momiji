@@ -1,15 +1,14 @@
 #pragma once
 
-#include "./Utils.h"
 #include "../Instructions/Representations.h"
+#include "./Utils.h"
 
 #include <Parser.h>
 #include <Utils.h>
 
 namespace momiji
 {
-    void jmp(const momiji::Instruction& instr,
-             OpcodeDescription& opcode,
+    void jmp(const momiji::Instruction& instr, OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Jmp bits;
@@ -27,8 +26,6 @@ namespace momiji
             additionalData[0].cnt = 4;
         }
 
-        opcode.val =   (bits.header << 6)
-                     | (bits.regtype << 3)
-                     | (bits.regmode);
+        opcode.val = (bits.header << 6) | (bits.regtype << 3) | (bits.regmode);
     }
-}
+} // namespace momiji

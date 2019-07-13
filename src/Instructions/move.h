@@ -1,7 +1,7 @@
 #pragma once
 
-#include <System.h>
 #include <Decoder.h>
+#include <System.h>
 
 namespace momiji::instr
 {

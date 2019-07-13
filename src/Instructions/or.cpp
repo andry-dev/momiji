@@ -1,5 +1,5 @@
-#include <System.h>
 #include <Decoder.h>
+#include <System.h>
 
 #include "./Utils.h"
 
@@ -43,14 +43,12 @@ namespace momiji::instr
         {
         case 1:
             tmp = (*srcreg) & 0x000000FF;
-            *dstreg = (*dstreg & 0xFFFFFF00) |
-                      ((*dstreg | tmp) & 0x000000FF);
+            *dstreg = (*dstreg & 0xFFFFFF00) | ((*dstreg | tmp) & 0x000000FF);
             break;
 
         case 2:
             tmp = (*srcreg) & 0x0000FFFF;
-            *dstreg = (*dstreg & 0xFFFF0000) |
-                      ((*dstreg | tmp) & 0x0000FFFF);
+            *dstreg = (*dstreg & 0xFFFF0000) | ((*dstreg | tmp) & 0x0000FFFF);
             break;
 
         case 4:
@@ -87,14 +85,12 @@ namespace momiji::instr
         {
         case 1:
             srcval = memview.read8(pc + 2);
-            *reg = (*reg & 0xFFFF'FF00) |
-                   ((*reg | srcval) & 0x0000'00FF);
+            *reg = (*reg & 0xFFFF'FF00) | ((*reg | srcval) & 0x0000'00FF);
             break;
 
         case 2:
             srcval = memview.read8(pc + 2);
-            *reg = (*reg & 0xFFFF'0000) |
-                   ((*reg | srcval) & 0x0000'FFFF);
+            *reg = (*reg & 0xFFFF'0000) | ((*reg | srcval) & 0x0000'FFFF);
             break;
 
         case 4:
@@ -105,4 +101,4 @@ namespace momiji::instr
 
         return sys;
     }
-}
+} // namespace momiji::instr

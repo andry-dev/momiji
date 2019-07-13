@@ -1,16 +1,15 @@
 #pragma once
 
-#include "./Utils.h"
 #include "../Instructions/OpCodes.h"
 #include "../Instructions/Representations.h"
+#include "./Utils.h"
 
 #include <Parser.h>
 #include <Utils.h>
 
 namespace momiji
 {
-    void sub(const momiji::Instruction& instr,
-             OpcodeDescription& opcode,
+    void sub(const momiji::Instruction& instr, OpcodeDescription& opcode,
              std::array<AdditionalData, 2>&)
     {
         repr::Sub bits;
@@ -26,22 +25,19 @@ namespace momiji
             bits.direction = 0;
         }
 
-        bits.othtype = utils::to_val(instr.operands[bits.direction].operandType);
+        bits.othtype =
+            utils::to_val(instr.operands[bits.direction].operandType);
         bits.othmode = getCorrectOpMode(instr, bits.direction);
 
         std::uint8_t size = utils::to_val(instr.dataType);
         bits.size = size & 0b11;
 
-        opcode.val =  (bits.header << 12)
-                    | (bits.datareg << 9)
-                    | (bits.direction << 8)
-                    | (bits.size << 6)
-                    | (bits.othtype << 3)
-                    | (bits.othmode);
+        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
+                     (bits.direction << 8) | (bits.size << 6) |
+                     (bits.othtype << 3) | (bits.othmode);
     }
 
-    void suba(const momiji::Instruction& instr,
-              OpcodeDescription& opcode,
+    void suba(const momiji::Instruction& instr, OpcodeDescription& opcode,
               std::array<AdditionalData, 2>&)
     {
         repr::SubA bits;
@@ -64,16 +60,12 @@ namespace momiji
         bits.srctype = utils::to_val(instr.operands[0].operandType) & 0b111;
         bits.srcmode = getCorrectOpMode(instr, 0);
 
-        opcode.val =  (bits.header << 12)
-                    | (bits.addreg << 9)
-                    | (bits.size << 8)
-                    | (bits.padding << 6)
-                    | (bits.srctype << 3)
-                    | (bits.srcmode);
+        opcode.val = (bits.header << 12) | (bits.addreg << 9) |
+                     (bits.size << 8) | (bits.padding << 6) |
+                     (bits.srctype << 3) | (bits.srcmode);
     }
 
-    void subi(const momiji::Instruction& instr,
-              OpcodeDescription& opcode,
+    void subi(const momiji::Instruction& instr, OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         const std::uint8_t size = utils::to_val(instr.dataType);
@@ -88,9 +80,7 @@ namespace momiji
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1);
 
-        opcode.val =  (bits.header << 8)
-                    | (bits.size << 6)
-                    | (bits.dsttype << 3)
-                    | (bits.dstmode);
+        opcode.val = (bits.header << 8) | (bits.size << 6) |
+                     (bits.dsttype << 3) | (bits.dstmode);
     }
-}
+} // namespace momiji

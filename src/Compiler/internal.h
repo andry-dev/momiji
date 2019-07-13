@@ -7,8 +7,7 @@
 
 namespace momiji
 {
-    void hcf(const momiji::Instruction& instr,
-             OpcodeDescription& opcode,
+    void hcf(const momiji::Instruction& instr, OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
         additionalData[0].cnt = 2;
@@ -17,8 +16,7 @@ namespace momiji
         opcode.val = 0xFFFF;
     }
 
-    void breakpoint(const momiji::Instruction& instr,
-                    OpcodeDescription& opcode,
+    void breakpoint(const momiji::Instruction& instr, OpcodeDescription& opcode,
                     std::array<AdditionalData, 2>& additionalData)
     {
         additionalData[0].cnt = 2;
@@ -26,4 +24,4 @@ namespace momiji
 
         opcode.val = 0xFFFF;
     }
-}
+} // namespace momiji

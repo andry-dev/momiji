@@ -84,4 +84,4 @@ namespace momiji::instr
 
         return sys;
     }
-}
+} // namespace momiji::instr

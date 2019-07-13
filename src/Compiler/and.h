@@ -1,17 +1,16 @@
 #pragma once
 
-#include "./Utils.h"
 #include "../Instructions/OpCodes.h"
 #include "../Instructions/Representations.h"
+#include "./Utils.h"
 
 #include <Parser.h>
 #include <Utils.h>
 
 namespace momiji
 {
-    void and_instr(const momiji::Instruction& instr,
-              OpcodeDescription& opcode,
-              std::array<AdditionalData, 2>& additionalData)
+    void and_instr(const momiji::Instruction& instr, OpcodeDescription& opcode,
+                   std::array<AdditionalData, 2>& additionalData)
     {
         repr::And bits;
 
@@ -28,21 +27,18 @@ namespace momiji
             bits.direction = 1;
         }
 
-        bits.othtype = utils::to_val(instr.operands[bits.direction].operandType);
+        bits.othtype =
+            utils::to_val(instr.operands[bits.direction].operandType);
         bits.othmode = getCorrectOpMode(instr, bits.direction);
 
         bits.size = utils::to_val(instr.dataType) & 0b11;
 
-        opcode.val =  (bits.header << 12)
-                    | (bits.datareg << 9)
-                    | (bits.direction << 8)
-                    | (bits.size << 6)
-                    | (bits.othtype << 3)
-                    | (bits.othmode);
+        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
+                     (bits.direction << 8) | (bits.size << 6) |
+                     (bits.othtype << 3) | (bits.othmode);
     }
 
-    void andi(const momiji::Instruction& instr,
-              OpcodeDescription& opcode,
+    void andi(const momiji::Instruction& instr, OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::AndI bits;
@@ -56,9 +52,7 @@ namespace momiji
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1);
 
-        opcode.val =  (bits.header << 8)
-                    | (bits.size << 6)
-                    | (bits.dsttype << 3)
-                    | (bits.dstmode);
+        opcode.val = (bits.header << 8) | (bits.size << 6) |
+                     (bits.dsttype << 3) | (bits.dstmode);
     }
-}
+} // namespace momiji
