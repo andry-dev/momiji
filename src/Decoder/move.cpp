@@ -15,7 +15,7 @@ namespace momiji::dec
 
         repr::Move repr;
 
-        repr.size = (val & 0b00110000'00000000) >> 12;
+        repr.size    = (val & 0b00110000'00000000) >> 12;
         repr.dstmode = (val & 0b00001110'00000000) >> 9;
         repr.dsttype = (val & 0b00000001'11000000) >> 6;
         repr.srctype = (val & 0b00000000'00111000) >> 3;
@@ -40,11 +40,11 @@ namespace momiji::dec
             return ret;
         }
 
-        ret.data.op1 = static_cast<OperandType>(repr.srctype);
+        ret.data.op1  = static_cast<OperandType>(repr.srctype);
         ret.data.mod1 = static_cast<SpecialAddressingMode>(repr.srcmode);
-        ret.data.op2 = static_cast<OperandType>(repr.dsttype);
+        ret.data.op2  = static_cast<OperandType>(repr.dsttype);
         ret.data.mod2 = static_cast<SpecialAddressingMode>(repr.dstmode);
-        ret.exec = momiji::instr::move;
+        ret.exec      = momiji::instr::move;
 
         return ret;
     }

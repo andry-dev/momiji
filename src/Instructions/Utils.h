@@ -86,8 +86,8 @@ namespace momiji
                                          const InstructionData& instr)
         {
             const auto regnum = utils::to_val(instr.mod1);
-            const auto pc = sys.cpu.programCounter.address;
-            std::int32_t val = 0;
+            const auto pc     = sys.cpu.programCounter.address;
+            std::int32_t val  = 0;
 
             switch (instr.op1)
             {
@@ -133,9 +133,9 @@ namespace momiji
             {
                 val = sys.cpu.addressRegisters[regnum].value;
 
-                const std::int16_t tmp = readImmediateFromPC(sys.mem, pc, 2);
+                const std::int16_t tmp   = readImmediateFromPC(sys.mem, pc, 2);
                 const std::int8_t newreg = (tmp & 0xF000) >> 12;
-                const std::int8_t index = (tmp & 0x00FF);
+                const std::int8_t index  = (tmp & 0x00FF);
 
                 if (newreg < 8) // Data register [0, 7]
                 {
@@ -162,7 +162,7 @@ namespace momiji
                 case SpecialAddressingMode::AbsoluteShort:
                 {
                     std::uint32_t addr = readImmediateFromPC(sys.mem, pc, 2);
-                    addr = utils::sign_extend<std::int16_t>(addr);
+                    addr               = utils::sign_extend<std::int16_t>(addr);
                     val = readFromMemory(sys.mem, addr, instr.size);
                 }
                 break;
@@ -187,9 +187,9 @@ namespace momiji
                                         const InstructionData& instr)
         {
             const auto regnum = utils::to_val(instr.mod2);
-            const auto pc = sys.cpu.programCounter.address;
-            std::int32_t tmp = 0;
-            std::int8_t* val = nullptr;
+            const auto pc     = sys.cpu.programCounter.address;
+            std::int32_t tmp  = 0;
+            std::int8_t* val  = nullptr;
 
             switch (instr.op2)
             {
@@ -238,7 +238,7 @@ namespace momiji
                 tmp = readImmediateFromPC(sys.mem, pc + isImmediate(instr), 2);
 
                 const std::uint8_t newreg = (tmp & 0xF000) >> 12;
-                const std::uint8_t index = (tmp & 0x00FF);
+                const std::uint8_t index  = (tmp & 0x00FF);
 
                 tmp = sys.cpu.addressRegisters[regnum].value;
 
@@ -262,8 +262,8 @@ namespace momiji
                 {
                 case SpecialAddressingMode::AbsoluteShort:
                 {
-                    tmp = readImmediateFromPC(sys.mem, pc + isImmediate(instr),
-                                              2);
+                    tmp = readImmediateFromPC(
+                        sys.mem, pc + isImmediate(instr), 2);
 
                     tmp = utils::sign_extend<std::int16_t>(tmp);
                     val = reinterpret_cast<std::int8_t*>(sys.mem.data() + tmp);
@@ -272,8 +272,8 @@ namespace momiji
 
                 case SpecialAddressingMode::AbsoluteLong:
                 {
-                    tmp = readImmediateFromPC(sys.mem, pc + isImmediate(instr),
-                                              4);
+                    tmp = readImmediateFromPC(
+                        sys.mem, pc + isImmediate(instr), 4);
 
                     val = reinterpret_cast<std::int8_t*>(sys.mem.data() + tmp);
                 }
@@ -294,8 +294,8 @@ namespace momiji
                                           const InstructionData& instr)
         {
             const auto regnum = utils::to_val(instr.mod2);
-            const auto pc = sys.cpu.programCounter.address;
-            std::int32_t tmp = 0;
+            const auto pc     = sys.cpu.programCounter.address;
+            std::int32_t tmp  = 0;
             std::int16_t* val = nullptr;
 
             switch (instr.op2)
@@ -345,7 +345,7 @@ namespace momiji
                 tmp = readImmediateFromPC(sys.mem, pc + isImmediate(instr), 2);
 
                 const std::uint8_t newreg = (tmp & 0xF000) >> 12;
-                const std::uint8_t index = (tmp & 0x00FF);
+                const std::uint8_t index  = (tmp & 0x00FF);
 
                 tmp = sys.cpu.addressRegisters[regnum].value;
 
@@ -403,8 +403,8 @@ namespace momiji
                                           const InstructionData& instr)
         {
             const auto regnum = utils::to_val(instr.mod2);
-            const auto pc = sys.cpu.programCounter.address;
-            std::int32_t tmp = 0;
+            const auto pc     = sys.cpu.programCounter.address;
+            std::int32_t tmp  = 0;
             std::int32_t* val = nullptr;
 
             switch (instr.op2)
@@ -454,7 +454,7 @@ namespace momiji
                     readImmediateFromPC(sys.mem, pc + isImmediate(instr), 2);
 
                 const std::uint8_t newreg = (tmp & 0xF000) >> 12;
-                const std::uint8_t index = (tmp & 0x00FF);
+                const std::uint8_t index  = (tmp & 0x00FF);
 
                 tmp = sys.cpu.addressRegisters[regnum].value;
 

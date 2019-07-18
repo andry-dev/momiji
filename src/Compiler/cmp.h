@@ -9,13 +9,14 @@
 
 namespace momiji
 {
-    void cmp(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void cmp(const momiji::Instruction& instr,
+             OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Cmp bits;
 
         bits.datareg = instr.operands[1].value & 0b111;
-        bits.size = utils::to_val(instr.dataType) & 0b11;
+        bits.size    = utils::to_val(instr.dataType) & 0b11;
         bits.srctype = utils::to_val(instr.operands[0].operandType) & 0b111;
         bits.srcmode = getCorrectOpMode(instr, 0);
 
@@ -24,7 +25,8 @@ namespace momiji
                      (bits.srctype << 3) | (bits.srcmode);
     }
 
-    void cmpa(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void cmpa(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::CmpA bits;
@@ -55,7 +57,8 @@ namespace momiji
                      (bits.srctype << 3) | (bits.srcmode);
     }
 
-    void cmpi(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void cmpi(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::CmpI bits;

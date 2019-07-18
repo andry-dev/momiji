@@ -25,7 +25,7 @@ namespace momiji::instr
         // The real modification happens in the status register
 
         const std::int8_t dstval = utils::to_val(instr.mod2);
-        std::int32_t dstreg = sys.cpu.dataRegisters[dstval].value;
+        std::int32_t dstreg      = sys.cpu.dataRegisters[dstval].value;
 
         switch (instr.size)
         {
@@ -43,7 +43,7 @@ namespace momiji::instr
         const std::int32_t res = dstreg - srcreg;
 
         sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
-        sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
+        sys.cpu.statusRegister.zero     = (res == 0) ? 1 : 0;
         sys.cpu.statusRegister.overflow =
             utils::sub_overflow(dstreg, srcreg) ? 1 : 0;
 
@@ -71,7 +71,7 @@ namespace momiji::instr
         // The real modification happens in the status register
 
         const std::int8_t dstval = utils::to_val(instr.mod2);
-        std::int32_t dstreg = sys.cpu.addressRegisters[dstval].value;
+        std::int32_t dstreg      = sys.cpu.addressRegisters[dstval].value;
 
         switch (instr.size)
         {
@@ -89,7 +89,7 @@ namespace momiji::instr
         const std::int32_t res = dstreg - srcreg;
 
         sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
-        sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
+        sys.cpu.statusRegister.zero     = (res == 0) ? 1 : 0;
         sys.cpu.statusRegister.overflow =
             utils::sub_overflow(dstreg, srcreg) ? 1 : 0;
 
@@ -103,7 +103,7 @@ namespace momiji::instr
         auto memview = momiji::make_memory_view(sys);
 
         const std::int8_t dstval = utils::to_val(instr.mod2);
-        std::int32_t dstreg = sys.cpu.addressRegisters[dstval].value;
+        std::int32_t dstreg      = sys.cpu.addressRegisters[dstval].value;
 
         switch (instr.op2)
         {
@@ -140,7 +140,7 @@ namespace momiji::instr
         const std::int32_t res = dstreg - srcval;
 
         sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
-        sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
+        sys.cpu.statusRegister.zero     = (res == 0) ? 1 : 0;
         sys.cpu.statusRegister.overflow =
             utils::sub_overflow(dstreg, srcval) ? 1 : 0;
 

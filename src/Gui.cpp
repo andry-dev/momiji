@@ -26,14 +26,15 @@ void gui()
 
     momiji::EmulatorSettings emuSettings;
 
-    emuSettings.programStart = 0;
+    emuSettings.programStart      = 0;
     emuSettings.dataSectionOffset = 0;
     emuSettings.retainStates = momiji::EmulatorSettings::RetainStates::Always;
     // emuSettings.parserSettings.breakpoints = gsl::null_span{};
 
     momiji::Emulator emu { emuSettings };
 
-    tewi::Window<def_tag> win { "momiji", tewi::Width { 800 },
+    tewi::Window<def_tag> win { "momiji",
+                                tewi::Width { 800 },
                                 tewi::Height { 600 } };
 
     tewi::InputBuffer inputBuffer;
@@ -60,7 +61,7 @@ void gui()
 
     auto shader = renderer.createShaderProgram();
 
-    auto proj = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+    auto proj     = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
     glm::mat4 MVP = proj;
 
     while (!win.isClosed())
@@ -99,7 +100,10 @@ void gui()
                     ImGui::SameLine();
                     static std::int32_t ext8 = 0;
                     ImGui::PushItemWidth(70.0f);
-                    ImGui::InputInt("##1", &ext8, 0, 0,
+                    ImGui::InputInt("##1",
+                                    &ext8,
+                                    0,
+                                    0,
                                     ImGuiInputTextFlags_CharsHexadecimal);
                     ImGui::PopItemWidth();
                     ImGui::SameLine();
@@ -112,7 +116,10 @@ void gui()
                     ImGui::SameLine();
                     static std::int32_t ext16 = 0;
                     ImGui::PushItemWidth(70.0f);
-                    ImGui::InputInt("##2", &ext16, 0, 0,
+                    ImGui::InputInt("##2",
+                                    &ext16,
+                                    0,
+                                    0,
                                     ImGuiInputTextFlags_CharsHexadecimal);
                     ImGui::PopItemWidth();
                     ImGui::SameLine();
@@ -125,7 +132,10 @@ void gui()
                     ImGui::SameLine();
                     static std::int32_t num10 = 0;
                     ImGui::PushItemWidth(70.0f);
-                    ImGui::InputInt("##n10", &num10, 0, 0,
+                    ImGui::InputInt("##n10",
+                                    &num10,
+                                    0,
+                                    0,
                                     ImGuiInputTextFlags_CharsDecimal);
                     ImGui::PopItemWidth();
                     ImGui::SameLine();
@@ -137,7 +147,10 @@ void gui()
                     ImGui::SameLine();
                     static std::int32_t num16 = 0;
                     ImGui::PushItemWidth(70.0f);
-                    ImGui::InputInt("##n16", &num16, 0, 0,
+                    ImGui::InputInt("##n16",
+                                    &num16,
+                                    0,
+                                    0,
                                     ImGuiInputTextFlags_CharsHexadecimal);
                     ImGui::PopItemWidth();
                     ImGui::SameLine();
@@ -221,7 +234,7 @@ void gui()
 
                 for (int i = 0; i < memview.size(); i += 2)
                 {
-                    std::uint8_t lower = memview.read8(i);
+                    std::uint8_t lower  = memview.read8(i);
                     std::uint8_t higher = 0;
 
                     if ((i + 1) < memview.size())
@@ -229,13 +242,13 @@ void gui()
                         higher = memview.read8(i + 1);
                     }
 
-                    auto pcadd = memview.begin() + pc;
+                    auto pcadd   = memview.begin() + pc;
                     auto curradd = memview.begin() + i;
 
                     ImGui::TextUnformatted(pcadd == curradd ? "=>" : "  ");
                     ImGui::SameLine();
-                    ImGui::Text("%p: %x %x", memview.begin() + i, higher,
-                                lower);
+                    ImGui::Text(
+                        "%p: %x %x", memview.begin() + i, higher, lower);
                 }
             }
             else
@@ -310,8 +323,8 @@ void gui()
                     error_string = "unknown error.";
                     break;
                 }
-                ImGui::Text("Error at line %d, %s", error.line,
-                            error_string.data());
+                ImGui::Text(
+                    "Error at line %d, %s", error.line, error_string.data());
             }
             else
             {
@@ -326,11 +339,12 @@ void gui()
         }
 
         {
-            ImGui::Begin("Registers", 0,
+            ImGui::Begin("Registers",
+                         0,
                          ImGuiWindowFlags_AlwaysAutoResize |
                              ImGuiWindowFlags_NoResize);
 
-            static bool hexDump = false;
+            static bool hexDump      = false;
             static bool allowEditing = false;
 
             ImGui::Checkbox("Hex", &hexDump);
@@ -390,12 +404,12 @@ void gui()
             ImGui::Text("PC");
             ImGui::SameLine();
             ImGui::PushItemWidth(70.0f);
-            ImGui::InputInt("##pc", (int*)&last.cpu.programCounter.address, 0,
-                            0, flags);
+            ImGui::InputInt(
+                "##pc", (int*)&last.cpu.programCounter.address, 0, 0, flags);
             if (!last.mem.empty())
             {
                 const auto memview = momiji::make_memory_view(last);
-                const auto pc = last.cpu.programCounter.address;
+                const auto pc      = last.cpu.programCounter.address;
                 const auto addr =
                     reinterpret_cast<std::uint64_t>(memview.begin() + pc);
                 ImGui::SameLine();

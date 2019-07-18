@@ -54,7 +54,7 @@ namespace momiji
     void renderer<tewi::API::OpenGLTag>::add(const Renderable& rend)
     {
         const auto& size = rend.texture.size;
-        const auto tid = rend.texture.id;
+        const auto tid   = rend.texture.id;
         const auto scale = rend.scale;
 
         for (auto& saved_texture : m_textures)
@@ -71,27 +71,27 @@ namespace momiji
         }
 
         m_buffer->position = glm::vec2(rend.pos.x, rend.pos.y + size.y * scale);
-        m_buffer->color = rend.color;
-        m_buffer->uv = glm::vec2(0.0f, 1.0f);
+        m_buffer->color    = rend.color;
+        m_buffer->uv       = glm::vec2(0.0f, 1.0f);
         m_buffer->textureID = tid;
         m_buffer++;
 
         m_buffer->position =
             glm::vec2(rend.pos.x + size.x * scale, rend.pos.y + size.y * scale);
-        m_buffer->color = rend.color;
-        m_buffer->uv = glm::vec2(1.0f, 1.0f);
+        m_buffer->color     = rend.color;
+        m_buffer->uv        = glm::vec2(1.0f, 1.0f);
         m_buffer->textureID = tid;
         m_buffer++;
 
         m_buffer->position = glm::vec2(rend.pos.x + size.x * scale, rend.pos.y);
-        m_buffer->color = rend.color;
-        m_buffer->uv = glm::vec2(1.0f, 0.0f);
+        m_buffer->color    = rend.color;
+        m_buffer->uv       = glm::vec2(1.0f, 0.0f);
         m_buffer->textureID = tid;
         m_buffer++;
 
-        m_buffer->position = rend.pos;
-        m_buffer->color = rend.color;
-        m_buffer->uv = glm::vec2(0.0f, 0.0f);
+        m_buffer->position  = rend.pos;
+        m_buffer->color     = rend.color;
+        m_buffer->uv        = glm::vec2(0.0f, 0.0f);
         m_buffer->textureID = tid;
         m_buffer++;
 

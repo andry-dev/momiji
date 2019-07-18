@@ -9,7 +9,8 @@
 
 namespace momiji
 {
-    void xor_instr(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void xor_instr(const momiji::Instruction& instr,
+                   OpcodeDescription& opcode,
                    std::array<AdditionalData, 2>& additionalData)
     {
         repr::Xor bits;
@@ -27,13 +28,14 @@ namespace momiji
                      (bits.othtype << 3) | (bits.othmode);
     }
 
-    void xori(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void xori(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::XorI bits;
 
         const std::uint8_t size = utils::to_val(instr.dataType) & 0b111;
-        bits.size = size & 0b111;
+        bits.size               = size & 0b111;
 
         additionalData[0].cnt = tobyte[size];
         additionalData[0].val = instr.operands[0].value;

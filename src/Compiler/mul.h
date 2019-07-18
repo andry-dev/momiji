@@ -9,7 +9,8 @@
 
 namespace momiji
 {
-    void muls(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void muls(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::MulS bits;
@@ -39,7 +40,8 @@ namespace momiji
                      (bits.padding << 6) | (bits.srctype << 3) | (bits.srcmode);
     }
 
-    void mulu(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void mulu(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::MulU bits;

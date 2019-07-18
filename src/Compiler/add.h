@@ -9,7 +9,8 @@
 
 namespace momiji
 {
-    void add(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void add(const momiji::Instruction& instr,
+             OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Add bits;
@@ -17,13 +18,13 @@ namespace momiji
         // add.* d*, *
         if (instr.operands[0].operandType == OperandType::DataRegister)
         {
-            bits.datareg = (instr.operands[0].value & 0b111);
+            bits.datareg   = (instr.operands[0].value & 0b111);
             bits.direction = 1;
         }
         // add.* *, d*
         else
         {
-            bits.datareg = (instr.operands[1].value & 0b111);
+            bits.datareg   = (instr.operands[1].value & 0b111);
             bits.direction = 0;
         }
 
@@ -32,7 +33,7 @@ namespace momiji
         bits.othmode = getCorrectOpMode(instr, bits.direction);
 
         std::uint8_t size = utils::to_val(instr.dataType);
-        bits.size = (size & 0b11);
+        bits.size         = (size & 0b11);
 
         handleAdditionalData(instr, additionalData);
 
@@ -41,7 +42,8 @@ namespace momiji
                      (bits.othtype << 3) | (bits.othmode);
     }
 
-    void adda(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void adda(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
 
@@ -72,7 +74,8 @@ namespace momiji
                      (bits.srctype << 3) | (bits.srcmode);
     }
 
-    void addi(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void addi(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         const std::uint8_t size = utils::to_val(instr.dataType) & 0b111;

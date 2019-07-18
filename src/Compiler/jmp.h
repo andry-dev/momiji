@@ -8,7 +8,8 @@
 
 namespace momiji
 {
-    void jmp(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void jmp(const momiji::Instruction& instr,
+             OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Jmp bits;

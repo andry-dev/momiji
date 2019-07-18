@@ -11,13 +11,14 @@
 
 namespace momiji
 {
-    void tst(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void tst(const momiji::Instruction& instr,
+             OpcodeDescription& opcode,
              std::array<AdditionalData, 2>&)
     {
 
         repr::Tst bits;
 
-        bits.size = utils::to_val(instr.dataType);
+        bits.size    = utils::to_val(instr.dataType);
         bits.regtype = utils::to_val(instr.operands[0].operandType);
         bits.regmode = getCorrectOpMode(instr, 0);
 

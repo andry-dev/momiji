@@ -19,9 +19,9 @@ namespace momiji::dec
 
         // Mul is always two bytes
         ret.data.size = 2;
-        ret.data.op1 = static_cast<OperandType>(bits.srctype);
+        ret.data.op1  = static_cast<OperandType>(bits.srctype);
         ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
-        ret.data.op2 = OperandType::DataRegister;
+        ret.data.op2  = OperandType::DataRegister;
         ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
 
         ret.exec = instr::muls;
@@ -43,11 +43,11 @@ namespace momiji::dec
 
         // Mul is always two bytes
         ret.data.size = 2;
-        ret.data.op1 = static_cast<OperandType>(bits.srctype);
+        ret.data.op1  = static_cast<OperandType>(bits.srctype);
         ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
-        ret.data.op2 = OperandType::DataRegister;
+        ret.data.op2  = OperandType::DataRegister;
         ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
-        ret.exec = instr::mulu;
+        ret.exec      = instr::mulu;
 
         return ret;
     }

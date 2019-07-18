@@ -105,9 +105,9 @@ namespace momiji
 
         if (res)
         {
-            auto mem = momiji::compile(*res);
+            auto mem     = momiji::compile(*res);
             auto lastSys = m_systemStates.back();
-            lastSys.mem = std::move(mem);
+            lastSys.mem  = std::move(mem);
             m_systemStates.emplace_back(std::move(lastSys));
 
             return std::nullopt;
@@ -129,9 +129,9 @@ namespace momiji
 
     bool Emulator::rollback()
     {
-        auto& lastSys = m_systemStates.back();
+        auto& lastSys                = m_systemStates.back();
         ExecutableMemoryView memview = lastSys.mem;
-        const auto pc = lastSys.cpu.programCounter.address;
+        const auto pc                = lastSys.cpu.programCounter.address;
 
         auto pcadd = memview.begin() + pc;
 
@@ -155,7 +155,7 @@ namespace momiji
         }
 
         const auto pc = lastSys.cpu.programCounter.address;
-        auto memview = momiji::make_memory_view(lastSys);
+        auto memview  = momiji::make_memory_view(lastSys);
 
         auto pcadd = memview.begin() + pc;
 

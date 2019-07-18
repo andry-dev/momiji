@@ -18,7 +18,7 @@ namespace momiji
         using value_type = IntType;
     };
 
-    using DataRegister = Register<std::int32_t>;
+    using DataRegister    = Register<std::int32_t>;
     using AddressRegister = Register<std::int32_t>;
 
     struct StatusRegister
@@ -52,15 +52,15 @@ namespace momiji
         {
         }
 
-        Label() = default;
-        ~Label() = default;
+        Label()             = default;
+        ~Label()            = default;
         Label(const Label&) = default;
         Label& operator=(const Label&) = default;
-        Label(Label&&) = default;
+        Label(Label&&)                 = default;
         Label& operator=(Label&&) = default;
 
         std::int32_t name_hash = 0;
-        std::int32_t idx = 0;
+        std::int32_t idx       = 0;
     };
 
     struct Cpu

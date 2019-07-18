@@ -15,13 +15,13 @@ namespace momiji::instr
         if (data.op1 == OperandType::Immediate)
         {
             const auto pc = sys.cpu.programCounter.address;
-            jmpadd = utils::readImmediateFromPC(memview, pc, 4);
+            jmpadd        = utils::readImmediateFromPC(memview, pc, 4);
         }
         else if (data.op1 == OperandType::Address)
         {
             // jmp (a0)
             const std::int32_t reg = utils::to_val(data.mod1);
-            jmpadd = sys.cpu.addressRegisters[reg].value;
+            jmpadd                 = sys.cpu.addressRegisters[reg].value;
         }
 
         sys.cpu.programCounter.address = jmpadd;

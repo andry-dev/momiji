@@ -22,7 +22,7 @@ namespace momiji::dec
         }
 
         ret.data.size = 2;
-        ret.data.op1 = OperandType::Immediate;
+        ret.data.op1  = OperandType::Immediate;
 
         return ret;
     }

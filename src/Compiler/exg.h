@@ -9,13 +9,14 @@
 
 namespace momiji
 {
-    void exg(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void exg(const momiji::Instruction& instr,
+             OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Exg bits;
 
         bits.datareg = instr.operands[0].value & 0b111;
-        bits.addreg = instr.operands[1].value & 0b111;
+        bits.addreg  = instr.operands[1].value & 0b111;
 
         if (instr.operands[0].operandType == OperandType::DataRegister &&
             instr.operands[1].operandType == OperandType::DataRegister)
@@ -37,9 +38,9 @@ namespace momiji
                      OperandType::AddressRegister &&
                  instr.operands[1].operandType == OperandType::DataRegister)
         {
-            bits.addreg = instr.operands[0].value & 0b111;
+            bits.addreg  = instr.operands[0].value & 0b111;
             bits.datareg = instr.operands[1].value & 0b111;
-            bits.mode = 0b10001;
+            bits.mode    = 0b10001;
         }
 
         opcode.val = (bits.header << 12) | (bits.datareg << 9) |

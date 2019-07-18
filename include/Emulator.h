@@ -12,7 +12,7 @@ namespace momiji
 {
     struct EmulatorSettings
     {
-        std::int32_t programStart = 0;
+        std::int32_t programStart      = 0;
         std::int32_t dataSectionOffset = -1;
 
         // Use Always to tell the emulator to always create new copies of the

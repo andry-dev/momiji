@@ -8,7 +8,8 @@
 
 namespace momiji
 {
-    void bcc(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void bcc(const momiji::Instruction& instr,
+             OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Bcc bits;

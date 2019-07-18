@@ -19,9 +19,9 @@ namespace momiji::dec
 
         // Div is always two bytes
         ret.data.size = 2;
-        ret.data.op1 = static_cast<OperandType>(bits.srctype);
+        ret.data.op1  = static_cast<OperandType>(bits.srctype);
         ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
-        ret.data.op2 = OperandType::DataRegister;
+        ret.data.op2  = OperandType::DataRegister;
         ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
 
         ret.exec = instr::divs;
@@ -43,11 +43,11 @@ namespace momiji::dec
 
         // Div is always two bytes
         ret.data.size = 2;
-        ret.data.op1 = static_cast<OperandType>(bits.srctype);
+        ret.data.op1  = static_cast<OperandType>(bits.srctype);
         ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
-        ret.data.op2 = OperandType::DataRegister;
+        ret.data.op2  = OperandType::DataRegister;
         ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
-        ret.exec = instr::divu;
+        ret.exec      = instr::divu;
 
         return ret;
     }

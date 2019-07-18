@@ -9,7 +9,8 @@
 
 namespace momiji
 {
-    void and_instr(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void and_instr(const momiji::Instruction& instr,
+                   OpcodeDescription& opcode,
                    std::array<AdditionalData, 2>& additionalData)
     {
         repr::And bits;
@@ -17,13 +18,13 @@ namespace momiji
         // and.* *, d*
         if (instr.operands[1].operandType == OperandType::DataRegister)
         {
-            bits.datareg = (instr.operands[1].value) & 0b111;
+            bits.datareg   = (instr.operands[1].value) & 0b111;
             bits.direction = 0;
         }
         // and.* d*, *
         else
         {
-            bits.datareg = (instr.operands[0].value) & 0b111;
+            bits.datareg   = (instr.operands[0].value) & 0b111;
             bits.direction = 1;
         }
 
@@ -38,13 +39,14 @@ namespace momiji
                      (bits.othtype << 3) | (bits.othmode);
     }
 
-    void andi(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void andi(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::AndI bits;
 
         const std::uint8_t size = utils::to_val(instr.dataType) & 0b111;
-        bits.size = size & 0b111;
+        bits.size               = size & 0b111;
 
         additionalData[0].cnt = tobyte[size];
         additionalData[0].val = instr.operands[0].value;

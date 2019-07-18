@@ -13,7 +13,7 @@ namespace momiji::dec
 
         const std::uint16_t val = mem.read16(idx);
 
-        bits.condition = (val & 0b00001111'00000000) >> 8;
+        bits.condition    = (val & 0b00001111'00000000) >> 8;
         bits.displacement = (val & 0b00000000'11111111);
 
         ret.data.op1 = static_cast<OperandType>(bits.condition);

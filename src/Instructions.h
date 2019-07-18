@@ -189,7 +189,7 @@ namespace momiji
                                     const momiji::Instruction& instr)
         {
             std::int8_t trunc = instr.operands[0].value & 0x000000FF;
-            std::int32_t tmp = instr.operands[1].value;
+            std::int32_t tmp  = instr.operands[1].value;
 
             switch (instr.operands[1].registerType)
             {
@@ -717,15 +717,15 @@ namespace momiji
 
             val = utils::sign_extend<std::int16_t>(val);
 
-            std::int32_t tmp = instr.operands[1].value;
+            std::int32_t tmp      = instr.operands[1].value;
             std::int32_t quotient = 0;
             std::int32_t reminder = 0;
 
             switch (instr.operands[1].registerType)
             {
             case RegisterType::Address:
-                tmp = sys.cpu.addressRegisters[tmp].value;
-                tmp = utils::sign_extend<std::int16_t>(tmp);
+                tmp      = sys.cpu.addressRegisters[tmp].value;
+                tmp      = utils::sign_extend<std::int16_t>(tmp);
                 quotient = tmp / val;
                 reminder = tmp % val;
                 tmp = ((quotient & 0x0000FFFF) << 16) | (reminder & 0x0000FFFF);
@@ -733,8 +733,8 @@ namespace momiji
                 break;
 
             case RegisterType::Data:
-                tmp = sys.cpu.dataRegisters[tmp].value;
-                tmp = utils::sign_extend<std::int16_t>(tmp);
+                tmp      = sys.cpu.dataRegisters[tmp].value;
+                tmp      = utils::sign_extend<std::int16_t>(tmp);
                 quotient = tmp / val;
                 reminder = tmp % val;
                 tmp = ((quotient & 0x0000FFFF) << 16) | (reminder & 0x0000FFFF);
@@ -774,14 +774,14 @@ namespace momiji
 
             val = val & 0x0000FFFF;
 
-            std::uint32_t tmp = instr.operands[1].value;
+            std::uint32_t tmp      = instr.operands[1].value;
             std::uint32_t quotient = 0;
             std::uint32_t reminder = 0;
 
             switch (instr.operands[1].registerType)
             {
             case RegisterType::Address:
-                tmp = sys.cpu.addressRegisters[tmp].value & 0x0000FFFF;
+                tmp      = sys.cpu.addressRegisters[tmp].value & 0x0000FFFF;
                 quotient = tmp / val;
                 reminder = tmp % val;
                 tmp = ((quotient & 0x0000FFFF) << 16) | (reminder & 0x0000FFFF);
@@ -789,7 +789,7 @@ namespace momiji
                 break;
 
             case RegisterType::Data:
-                tmp = sys.cpu.dataRegisters[tmp].value & 0x0000FFFF;
+                tmp      = sys.cpu.dataRegisters[tmp].value & 0x0000FFFF;
                 quotient = tmp / val;
                 reminder = tmp % val;
                 tmp = ((quotient & 0x0000FFFF) << 16) | (reminder & 0x0000FFFF);
@@ -806,7 +806,7 @@ namespace momiji
         inline momiji::System swap(momiji::System sys,
                                    const momiji::Instruction& instr)
         {
-            const auto val = instr.operands[0].value;
+            const auto val    = instr.operands[0].value;
             std::int32_t* reg = nullptr; // oof
 
             switch (instr.operands[0].registerType)
@@ -823,7 +823,7 @@ namespace momiji
                 break;
             }
 
-            std::int32_t low = (*reg & 0x0000FFFF) << 16;
+            std::int32_t low  = (*reg & 0x0000FFFF) << 16;
             std::int32_t high = (*reg & 0xFFFF0000) >> 16;
 
             *reg = (low | high);
@@ -890,7 +890,7 @@ namespace momiji
             const std::int32_t res = dst - src;
 
             sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
-            sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
+            sys.cpu.statusRegister.zero     = (res == 0) ? 1 : 0;
             sys.cpu.statusRegister.overflow =
                 utils::sub_overflow(dst, src) ? 1 : 0;
 
@@ -950,7 +950,7 @@ namespace momiji
             const std::int32_t res = dst - src;
 
             sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
-            sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
+            sys.cpu.statusRegister.zero     = (res == 0) ? 1 : 0;
             sys.cpu.statusRegister.overflow =
                 utils::sub_overflow(dst, src) ? 1 : 0;
 
@@ -1008,7 +1008,7 @@ namespace momiji
             const std::int32_t res = dst - src;
 
             sys.cpu.statusRegister.negative = (res < 0) ? 1 : 0;
-            sys.cpu.statusRegister.zero = (res == 0) ? 1 : 0;
+            sys.cpu.statusRegister.zero     = (res == 0) ? 1 : 0;
             sys.cpu.statusRegister.overflow =
                 utils::sub_overflow(dst, src) ? 1 : 0;
 
@@ -1139,7 +1139,8 @@ namespace momiji
             return sys;
         }
 
-        constexpr std::array<momiji::instr_fn_t, 3> move { move8, move16,
+        constexpr std::array<momiji::instr_fn_t, 3> move { move8,
+                                                           move16,
                                                            move32 };
         constexpr std::array<momiji::instr_fn_t, 3> add { add8, add16, add32 };
         constexpr std::array<momiji::instr_fn_t, 3> sub { sub8, sub16, sub32 };

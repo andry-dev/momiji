@@ -16,8 +16,8 @@
 
 namespace momiji
 {
-    static auto make_parser_error(int column, int line,
-                                  ParserError::ErrorType error)
+    static auto
+    make_parser_error(int column, int line, ParserError::ErrorType error)
     {
         return nonstd::make_unexpected<ParserError>({ line, column, error });
     }
@@ -55,7 +55,7 @@ namespace momiji
 
                 {
                     auto skip_whitespace = Whitespace()(tmp_str);
-                    tmp_str = skip_whitespace.rest;
+                    tmp_str              = skip_whitespace.rest;
                 }
 
                 auto skip_comments = Comment()(tmp_str);
@@ -72,20 +72,20 @@ namespace momiji
                     // We found a label!
                     auto label_hash = utils::hash(try_label.parsed_str);
                     labels.labels.emplace_back(label_hash, program_counter);
-                    tmp_str = try_label.rest;
+                    tmp_str              = try_label.rest;
                     auto skip_whitespace = Whitespace()(tmp_str);
-                    tmp_str = skip_whitespace.rest;
+                    tmp_str              = skip_whitespace.rest;
                 }
 
                 // Maybe we have an instruction?
                 auto instrword = Word()(tmp_str);
-                tmp_str = instrword.rest;
+                tmp_str        = instrword.rest;
 
                 // If we don't find an instruction, we just skip the line
                 if (!instrword.result)
                 {
                     auto skip_to_end = SkipLine()(tmp_str);
-                    tmp_str = skip_to_end.rest;
+                    tmp_str          = skip_to_end.rest;
                     ++line_count;
                     continue;
                 }
@@ -93,16 +93,18 @@ namespace momiji
                 auto str_hash = momiji::utils::hash(instrword.parsed_str);
 
                 // Check for a matching instruction
-                auto found_instr = std::find_if(
-                    std::begin(momiji::mappings), std::end(momiji::mappings),
-                    [str_hash](MappingType hash) {
-                        return hash.mapping == str_hash;
-                    });
+                auto found_instr =
+                    std::find_if(std::begin(momiji::mappings),
+                                 std::end(momiji::mappings),
+                                 [str_hash](MappingType hash) {
+                                     return hash.mapping == str_hash;
+                                 });
 
                 if (found_instr == std::end(momiji::mappings))
                 {
                     return make_parser_error(
-                        0, line_count,
+                        0,
+                        line_count,
                         ParserError::ErrorType::NoInstructionFound);
                 }
 
@@ -122,14 +124,14 @@ namespace momiji
                 }
                 else
                 {
-                    return make_parser_error(0, line_count,
-                                             res.error.errorType);
+                    return make_parser_error(
+                        0, line_count, res.error.errorType);
                 }
 
                 tmp_str = res.rest;
 
                 auto skip_to_end = SkipLine()(tmp_str);
-                tmp_str = skip_to_end.rest;
+                tmp_str          = skip_to_end.rest;
                 ++line_count;
             }
 
@@ -148,11 +150,12 @@ namespace momiji
                         if (found == std::end(labels.labels))
                         {
                             return make_parser_error(
-                                0, line_count,
+                                0,
+                                line_count,
                                 ParserError::ErrorType::NoLabelFound);
                         }
 
-                        op.value = found->idx;
+                        op.value         = found->idx;
                         op.labelResolved = true;
                     }
                 }
@@ -176,11 +179,12 @@ namespace momiji
         void handleBreakpoints()
         {
             // Check if we should insert a breakpoint
-            auto found_breakpoint = std::find_if(
-                std::begin(settings.breakpoints),
-                std::end(settings.breakpoints), [this](momiji::Breakpoint x) {
-                    return x.source_line == line_count;
-                });
+            auto found_breakpoint =
+                std::find_if(std::begin(settings.breakpoints),
+                             std::end(settings.breakpoints),
+                             [this](momiji::Breakpoint x) {
+                                 return x.source_line == line_count;
+                             });
 
             if (found_breakpoint != std::end(settings.breakpoints))
             {

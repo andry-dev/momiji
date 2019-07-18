@@ -13,21 +13,21 @@ namespace momiji::instr
         case 1:
         {
             auto dstreg = utils::readDestOp8(sys, data);
-            *dstreg = *dstreg + (srcval & 0x0000'00FF);
+            *dstreg     = *dstreg + (srcval & 0x0000'00FF);
         }
         break;
 
         case 2:
         {
             auto dstreg = utils::readDestOp16(sys, data);
-            *dstreg = *dstreg + (srcval & 0x0000'FFFF);
+            *dstreg     = *dstreg + (srcval & 0x0000'FFFF);
         }
         break;
 
         case 4:
         {
             auto dstreg = utils::readDestOp32(sys, data);
-            *dstreg = *dstreg + srcval;
+            *dstreg     = *dstreg + srcval;
         }
         break;
         }

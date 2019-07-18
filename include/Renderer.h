@@ -49,7 +49,7 @@ namespace momiji
         std::unique_ptr<tewi::IndexBuffer<tewi::API::OpenGLTag>> m_IBO;
 
         const asl::i64 m_indicesSize = MaxTextures * 6;
-        const asl::i64 m_bufferSize = sizeof(tewi::Vertex) * 4 * MaxTextures;
+        const asl::i64 m_bufferSize  = sizeof(tewi::Vertex) * 4 * MaxTextures;
     };
 
     template <asl::i16 MaxTextures>
@@ -63,22 +63,33 @@ namespace momiji
         glBufferData(GL_ARRAY_BUFFER, m_bufferSize, 0, GL_STATIC_DRAW);
 
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
-                              (const void*)(0));
+        glVertexAttribPointer(
+            0, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex), (const void*)(0));
 
         // UV
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
+        glVertexAttribPointer(1,
+                              2,
+                              GL_FLOAT,
+                              GL_FALSE,
+                              sizeof(tewi::Vertex),
                               (const void*)(offsetof(Vertex, uv)));
 
         // TID
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
+        glVertexAttribPointer(2,
+                              1,
+                              GL_FLOAT,
+                              GL_FALSE,
+                              sizeof(tewi::Vertex),
                               (const void*)(offsetof(Vertex, textureID)));
 
         // Color
         glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 4, GL_UNSIGNED_BYTE, GL_TRUE,
+        glVertexAttribPointer(3,
+                              4,
+                              GL_UNSIGNED_BYTE,
+                              GL_TRUE,
                               sizeof(tewi::Vertex),
                               (const void*)(offsetof(Vertex, color)));
 
@@ -88,7 +99,7 @@ namespace momiji
         for (asl::sizei i = 0, offset = 0; i < indices.size();
              i += 6, offset += 4)
         {
-            indices[i] = offset + 0;
+            indices[i]     = offset + 0;
             indices[i + 1] = offset + 1;
             indices[i + 2] = offset + 2;
 

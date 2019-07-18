@@ -9,7 +9,8 @@
 
 namespace momiji
 {
-    void divs(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void divs(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::DivS bits;
@@ -39,7 +40,8 @@ namespace momiji
                      (bits.padding << 6) | (bits.srctype << 3) | (bits.srcmode);
     }
 
-    void divu(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void divu(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::DivS bits;

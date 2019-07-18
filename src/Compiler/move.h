@@ -14,7 +14,8 @@
 
 namespace momiji
 {
-    void move(const momiji::Instruction& instr, OpcodeDescription& opcode,
+    void move(const momiji::Instruction& instr,
+              OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::Move bits;

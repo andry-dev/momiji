@@ -15,13 +15,13 @@ namespace momiji::dec
 
         const std::uint16_t val = mem.read16(idx);
 
-        bits.size = (val & 0b00000000'11000000) >> 6;
+        bits.size    = (val & 0b00000000'11000000) >> 6;
         bits.regmode = (val & 0b00000000'00111000) >> 3;
         bits.regtype = (val & 0b00000000'00000111);
 
         momiji::assignNormalSize(ret, bits.size);
 
-        ret.data.op1 = static_cast<OperandType>(bits.regtype);
+        ret.data.op1  = static_cast<OperandType>(bits.regtype);
         ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.regmode);
 
         ret.exec = instr::tst;

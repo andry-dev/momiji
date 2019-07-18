@@ -60,7 +60,7 @@ namespace momiji
     DecodedInstruction decodeFirstGroup(ExecutableMemoryView mem,
                                         std::uint64_t idx)
     {
-        constexpr std::uint16_t firstmask = 0b11110000'00000000;
+        constexpr std::uint16_t firstmask  = 0b11110000'00000000;
         constexpr std::uint16_t secondmask = 0b11111111'00000000;
 
         switch (mem.read16(idx) & firstmask)
@@ -99,8 +99,8 @@ namespace momiji
     DecodedInstruction decodeSecondGroup(ExecutableMemoryView mem,
                                          std::uint64_t idx)
     {
-        constexpr std::uint16_t firstmask = 0b11110000'00000000;
-        constexpr std::uint16_t bramask = 0b11111111'00000000;
+        constexpr std::uint16_t firstmask  = 0b11110000'00000000;
+        constexpr std::uint16_t bramask    = 0b11111111'00000000;
         constexpr std::uint16_t secondmask = 0b11111111'11000000;
 
         switch (mem.read16(idx) & firstmask)
@@ -165,7 +165,7 @@ namespace momiji
                                         std::uint64_t idx)
     {
         constexpr std::uint16_t firstmask = 0b11110000'11000000;
-        constexpr std::uint16_t divmask = 0b11110001'11000000;
+        constexpr std::uint16_t divmask   = 0b11110001'11000000;
 
         switch (mem.read16(idx) & firstmask)
         {
@@ -223,7 +223,7 @@ namespace momiji
         }
 
         constexpr std::uint16_t firstmask = 0b11110000'11000000;
-        constexpr std::uint16_t mulmask = 0b11110001'11000000;
+        constexpr std::uint16_t mulmask   = 0b11110001'11000000;
 
         // Used to discriminate between AND or EXG
         constexpr std::uint16_t exgmask = 0b11110001'11001000;

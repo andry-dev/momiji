@@ -27,7 +27,7 @@ namespace momiji::details
     {
         if (isImmediate(op))
         {
-            metadata.result = false;
+            metadata.result          = false;
             metadata.error.errorType = ParserError::ErrorType::WrongOperandType;
 
             return false;
@@ -42,8 +42,8 @@ namespace momiji::details
         return ((x != y) && ...);
     }
 
-    parser_metadata parseMove(std::string_view str, Instruction& instr,
-                              LabelInfo&)
+    parser_metadata
+    parseMove(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
@@ -65,8 +65,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseMoveQ(std::string_view str, Instruction& instr,
-                               LabelInfo&)
+    parser_metadata
+    parseMoveQ(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = ImmediateInstructionParser(instr)(str);
 
@@ -77,8 +77,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseAdd(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseAdd(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
         switch (instr.operands[1].operandType)
@@ -111,8 +111,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseSub(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseSub(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
@@ -152,8 +152,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseMuls(std::string_view str, Instruction& instr,
-                              LabelInfo&)
+    parser_metadata
+    parseMuls(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
@@ -164,69 +164,69 @@ namespace momiji::details
 
         sanitizeImmediate(instr.operands[1], res);
 
-        instr.dataType = DataType::Word;
+        instr.dataType        = DataType::Word;
         instr.instructionType = InstructionType::SignedMul;
 
         return res;
     }
 
-    parser_metadata parseMulu(std::string_view str, Instruction& instr,
-                              LabelInfo&)
+    parser_metadata
+    parseMulu(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
-        instr.dataType = DataType::Word;
+        instr.dataType        = DataType::Word;
         instr.instructionType = InstructionType::UnsignedMul;
 
         return res;
     }
 
-    parser_metadata parseDivs(std::string_view str, Instruction& instr,
-                              LabelInfo&)
+    parser_metadata
+    parseDivs(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
-        instr.dataType = DataType::Word;
+        instr.dataType        = DataType::Word;
         instr.instructionType = InstructionType::SignedDiv;
 
         return res;
     }
 
-    parser_metadata parseDivu(std::string_view str, Instruction& instr,
-                              LabelInfo&)
+    parser_metadata
+    parseDivu(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
-        instr.dataType = DataType::Word;
+        instr.dataType        = DataType::Word;
         instr.instructionType = InstructionType::UnsignedDiv;
 
         return res;
     }
 
-    parser_metadata parseSwap(std::string_view str, Instruction& instr,
-                              LabelInfo&)
+    parser_metadata
+    parseSwap(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = OneRegisterInstructionParser(instr)(str);
 
-        instr.dataType = DataType::Long;
+        instr.dataType        = DataType::Long;
         instr.instructionType = InstructionType::Swap;
 
         return res;
     }
 
-    parser_metadata parseExg(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseExg(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
-        instr.dataType = DataType::Word;
+        instr.dataType        = DataType::Word;
         instr.instructionType = InstructionType::Exchange;
 
         return res;
     }
 
-    parser_metadata parseOr(std::string_view str, Instruction& instr,
-                            LabelInfo&)
+    parser_metadata
+    parseOr(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
@@ -255,8 +255,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseAnd(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseAnd(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
@@ -285,14 +285,14 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseNot(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseNot(std::string_view str, Instruction& instr, LabelInfo&)
     {
         return { false, str, "", {} };
     }
 
-    parser_metadata parseXor(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseXor(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
 
@@ -320,15 +320,15 @@ namespace momiji::details
 
         if (instr.operands[0].operandType != OperandType::DataRegister)
         {
-            res.result = false;
+            res.result          = false;
             res.error.errorType = ParserError::ErrorType::WrongOperandType;
         }
 
         return res;
     }
 
-    parser_metadata parseCmp(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseCmp(std::string_view str, Instruction& instr, LabelInfo&)
     {
 
         auto res = CommonInstructionParser(instr)(str);
@@ -365,19 +365,20 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseTst(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseTst(std::string_view str, Instruction& instr, LabelInfo&)
     {
         instr.instructionType = InstructionType::Tst;
         return OneRegisterInstructionParser(instr)(str);
         ;
     }
 
-    parser_metadata parseJmp(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseJmp(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
-        auto res = SeqNext(Whitespace(), AnyOf(MemoryAddress(instr, 0),
-                                               AsAddress(instr, 0)))(str);
+        auto res =
+            SeqNext(Whitespace(),
+                    AnyOf(MemoryAddress(instr, 0), AsAddress(instr, 0)))(str);
 
         instr.instructionType = InstructionType::Jmp;
 
@@ -395,21 +396,21 @@ namespace momiji::details
                 break;
 
             default:
-                res.result = false;
+                res.result          = false;
                 res.error.errorType = ParserError::ErrorType::WrongOperandType;
             }
             break;
 
         default:
-            res.result = false;
+            res.result          = false;
             res.error.errorType = ParserError::ErrorType::WrongOperandType;
         }
 
         return res;
     }
 
-    parser_metadata parseJsr(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseJsr(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
         auto res = parseJmp(str, instr, labels);
 
@@ -418,8 +419,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseBra(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseBra(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
         auto res = BranchInstructionParser(instr, labels)(str);
 
@@ -428,8 +429,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseBsr(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseBsr(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
         auto res = parseBra(str, instr, labels);
 
@@ -438,18 +439,18 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseRts(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseRts(std::string_view str, Instruction& instr, LabelInfo&)
     {
-        instr.instructionType = InstructionType::ReturnSubroutine;
+        instr.instructionType         = InstructionType::ReturnSubroutine;
         instr.operands[0].operandType = OperandType::DataRegister;
         instr.operands[1].operandType = OperandType::DataRegister;
 
         return { true, str, "", {} };
     }
 
-    parser_metadata parseBlt(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseBlt(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
         auto res = BranchInstructionParser(instr, labels)(str);
 
@@ -459,8 +460,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseBle(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseBle(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
         auto res = BranchInstructionParser(instr, labels)(str);
 
@@ -470,8 +471,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseBgt(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseBgt(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
         auto res = BranchInstructionParser(instr, labels)(str);
 
@@ -481,8 +482,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseBge(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseBge(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
         auto res = BranchInstructionParser(instr, labels)(str);
 
@@ -492,8 +493,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseBeq(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseBeq(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
         auto res = BranchInstructionParser(instr, labels)(str);
 
@@ -503,8 +504,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseBne(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseBne(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
 
         auto res = BranchInstructionParser(instr, labels)(str);
@@ -515,32 +516,32 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseAsl(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseAsl(std::string_view str, Instruction& instr, LabelInfo&)
     {
         return { false, str, "", {} };
     }
 
-    parser_metadata parseAsr(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseAsr(std::string_view str, Instruction& instr, LabelInfo&)
     {
         return { false, str, "", {} };
     }
 
-    parser_metadata parseLsl(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseLsl(std::string_view str, Instruction& instr, LabelInfo&)
     {
         return { false, str, "", {} };
     }
 
-    parser_metadata parseLsr(std::string_view str, Instruction& instr,
-                             LabelInfo&)
+    parser_metadata
+    parseLsr(std::string_view str, Instruction& instr, LabelInfo&)
     {
         return { false, str, "", {} };
     }
 
-    parser_metadata parseDeclare(std::string_view str, Instruction& instr,
-                                 LabelInfo& labels)
+    parser_metadata
+    parseDeclare(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
         parser_metadata res = (DataType(instr))(str);
 
@@ -592,8 +593,8 @@ namespace momiji::details
         return res;
     }
 
-    parser_metadata parseHcf(std::string_view str, Instruction& instr,
-                             LabelInfo& labels)
+    parser_metadata
+    parseHcf(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
         instr.instructionType = InstructionType::HaltCatchFire;
 

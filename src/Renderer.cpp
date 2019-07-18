@@ -6,10 +6,10 @@
 
 namespace momiji
 {
-    constexpr auto g_maxSprites = 10;
-    constexpr auto g_vertexSize = sizeof(tewi::Vertex);
-    constexpr auto g_spriteSize = g_vertexSize * 4;
-    constexpr auto g_bufferSize = g_spriteSize * g_maxSprites;
+    constexpr auto g_maxSprites        = 10;
+    constexpr auto g_vertexSize        = sizeof(tewi::Vertex);
+    constexpr auto g_spriteSize        = g_vertexSize * 4;
+    constexpr auto g_bufferSize        = g_spriteSize * g_maxSprites;
     constexpr auto g_indicesBufferSize = g_maxSprites * 6;
 
     constexpr asl::string_view vertshader = R"(
@@ -75,19 +75,30 @@ namespace momiji
         glEnableVertexAttribArray(3);
 
         // Pos
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
-                              (const void*)(0));
+        glVertexAttribPointer(
+            0, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex), (const void*)(0));
 
         // UV
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
+        glVertexAttribPointer(1,
+                              2,
+                              GL_FLOAT,
+                              GL_FALSE,
+                              sizeof(tewi::Vertex),
                               (const void*)(offsetof(tewi::Vertex, uv)));
 
         // TID
-        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex),
+        glVertexAttribPointer(2,
+                              1,
+                              GL_FLOAT,
+                              GL_FALSE,
+                              sizeof(tewi::Vertex),
                               (const void*)(offsetof(tewi::Vertex, textureID)));
 
         // Color
-        glVertexAttribPointer(3, 4, GL_UNSIGNED_BYTE, GL_TRUE,
+        glVertexAttribPointer(3,
+                              4,
+                              GL_UNSIGNED_BYTE,
+                              GL_TRUE,
                               sizeof(tewi::Vertex),
                               (const void*)(offsetof(tewi::Vertex, color)));
 
@@ -97,7 +108,7 @@ namespace momiji
         for (asl::u32 i = 0, offset = 0; i < indices.size();
              i += 6, offset += 4)
         {
-            indices[i] = offset + 0;
+            indices[i]     = offset + 0;
             indices[i + 1] = offset + 1;
             indices[i + 2] = offset + 2;
 
@@ -108,8 +119,10 @@ namespace momiji
 
         glGenBuffers(1, &m_IBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
-                     indices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                     indices.size() * sizeof(GLuint),
+                     indices.data(),
+                     GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
         glBindVertexArray(0);

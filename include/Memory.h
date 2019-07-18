@@ -138,12 +138,12 @@ namespace momiji
         }
     };
 
-    using ExecutableMemory = ModifiableMemory<details::ExecutableMemoryTag>;
+    using ExecutableMemory     = ModifiableMemory<details::ExecutableMemoryTag>;
     using ExecutableMemoryView = MemoryView<details::ExecutableMemoryTag>;
     using ConstExecutableMemoryView =
         ConstMemoryView<details::ExecutableMemoryTag>;
 
-    using StackMemory = ModifiableMemory<details::StackMemoryTag>;
+    using StackMemory     = ModifiableMemory<details::StackMemoryTag>;
     using StackMemoryView = MemoryView<details::StackMemoryTag>;
 
     // BasicMemory implementation
@@ -191,12 +191,12 @@ namespace momiji
             return;
         }
 
-        const std::uint8_t first = (val & 0x000000FF);
+        const std::uint8_t first  = (val & 0x000000FF);
         const std::uint8_t second = (val & 0x0000FF00) >> 8;
-        const std::uint8_t third = (val & 0x00FF0000) >> 16;
+        const std::uint8_t third  = (val & 0x00FF0000) >> 16;
         const std::uint8_t fourth = (val & 0xFF000000) >> 24;
 
-        m_data[offset] = first;
+        m_data[offset]     = first;
         m_data[offset + 1] = second;
         m_data[offset + 2] = third;
         m_data[offset + 3] = fourth;
@@ -211,10 +211,10 @@ namespace momiji
             return;
         }
 
-        const std::uint8_t first = (val & 0x00FF);
+        const std::uint8_t first  = (val & 0x00FF);
         const std::uint8_t second = (val & 0xFF00) >> 8;
 
-        m_data[offset] = first;
+        m_data[offset]     = first;
         m_data[offset + 1] = second;
     }
 
@@ -240,9 +240,9 @@ namespace momiji
             m_data.push_back(0);
         }
 
-        const std::uint8_t first = (val & 0x0000'00FF);
+        const std::uint8_t first  = (val & 0x0000'00FF);
         const std::uint8_t second = (val & 0x0000'FF00) >> 8;
-        const std::uint8_t third = (val & 0x00FF'0000) >> 16;
+        const std::uint8_t third  = (val & 0x00FF'0000) >> 16;
         const std::uint8_t fourth = (val & 0xFF00'0000) >> 24;
 
         m_data.push_back(first);
@@ -261,7 +261,7 @@ namespace momiji
             m_data.push_back(0);
         }
 
-        const std::uint8_t first = (val & 0x00FF);
+        const std::uint8_t first  = (val & 0x00FF);
         const std::uint8_t second = (val & 0xFF00) >> 8;
 
         m_data.push_back(first);

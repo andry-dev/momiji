@@ -6,17 +6,17 @@ namespace momiji::instr
 {
     momiji::System bcc(momiji::System& sys, const InstructionData& data)
     {
-        const auto pc = sys.cpu.programCounter.address;
-        const auto memview = momiji::make_memory_view(sys);
+        const auto pc        = sys.cpu.programCounter.address;
+        const auto memview   = momiji::make_memory_view(sys);
         const auto condition = utils::to_val(data.op1);
-        std::int16_t offset = utils::to_val(data.op2);
+        std::int16_t offset  = utils::to_val(data.op2);
 
         bool skipTwoBytes = false;
 
         if (offset == 0)
         {
             skipTwoBytes = true;
-            offset = utils::readFromMemory(memview, pc, 2);
+            offset       = utils::readFromMemory(memview, pc, 2);
         }
 
         const auto& statReg = sys.cpu.statusRegister;

@@ -29,7 +29,7 @@ namespace momiji
         constexpr std::uint16_t addq = 0b0101'000'0'00'000000;
 
         // 1001 3*DST 3*OPMODE 6*EA
-        constexpr std::uint16_t sub = 0b1001'000'000'000000;
+        constexpr std::uint16_t sub  = 0b1001'000'000'000000;
         constexpr std::uint16_t suba = sub;
 
         // 00000 100 2*SIZE 6*EA
@@ -57,7 +57,7 @@ namespace momiji
         constexpr std::uint16_t tst = 0b01001010'00'000000;
 
         // 1011 3*DST 3*OPMODE 6*EA
-        constexpr std::uint16_t cmp = 0b1011'000'000'000000;
+        constexpr std::uint16_t cmp  = 0b1011'000'000'000000;
         constexpr std::uint16_t cmpa = cmp;
 
         // 00001100 2*SIZE 6*EA

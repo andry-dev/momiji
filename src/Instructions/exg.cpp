@@ -6,7 +6,7 @@ namespace momiji::instr
 {
     momiji::System exg(momiji::System& sys, const InstructionData& instr)
     {
-        std::int32_t* srcreg = nullptr;
+        std::int32_t* srcreg     = nullptr;
         const std::int8_t srcval = utils::to_val(instr.mod1);
 
         switch (instr.op1)
@@ -20,7 +20,7 @@ namespace momiji::instr
             break;
         }
 
-        std::int32_t* dstreg = nullptr;
+        std::int32_t* dstreg     = nullptr;
         const std::int8_t dstval = utils::to_val(instr.mod2);
 
         switch (instr.op2)

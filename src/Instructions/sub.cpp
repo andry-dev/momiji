@@ -18,21 +18,21 @@ namespace momiji::instr
         case 1:
         {
             auto dst = utils::readDestOp8(sys, data);
-            *dst = *dst - (srcval & 0x0000'00FF);
+            *dst     = *dst - (srcval & 0x0000'00FF);
         }
         break;
 
         case 2:
         {
             auto dst = utils::readDestOp16(sys, data);
-            *dst = *dst - (srcval & 0x0000'FFFF);
+            *dst     = *dst - (srcval & 0x0000'FFFF);
         }
         break;
 
         case 4:
         {
             auto dst = utils::readDestOp32(sys, data);
-            *dst = *dst - srcval;
+            *dst     = *dst - srcval;
         }
         break;
         }
