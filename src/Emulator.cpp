@@ -47,7 +47,13 @@ namespace momiji
         {
             bool pc_incremented = false;
 
-            if (instr.data.op1 == OperandType::Immediate)
+            auto check_multibyte = [](OperandType op) {
+                return op == OperandType::Immediate ||
+                       op == OperandType::AddressOffset ||
+                       op == OperandType::AddressIndex;
+            };
+
+            if (check_multibyte(instr.data.op1))
             {
                 newstate.cpu.programCounter.address =
                     immediateIncrPC(instr, newstate.cpu.programCounter.address);
@@ -55,7 +61,7 @@ namespace momiji
                 pc_incremented = true;
             }
 
-            if (instr.data.op2 == OperandType::Immediate)
+            if (check_multibyte(instr.data.op2))
             {
                 newstate.cpu.programCounter.address =
                     immediateIncrPC(instr, newstate.cpu.programCounter.address);

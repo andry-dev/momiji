@@ -16,21 +16,21 @@ namespace momiji::instr
         {
         case 1:
         {
-            std::int8_t* dst = utils::readDestOp8(sys, data);
+            auto dst = utils::readDestOp8(sys, data);
             *dst = (srcval & 0x0000'00FF);
         }
         break;
 
         case 2:
         {
-            std::int16_t* dst = utils::readDestOp16(sys, data);
+            auto dst = utils::readDestOp16(sys, data);
             *dst = (srcval & 0x0000'FFFF);
         }
         break;
 
         case 4:
         {
-            std::int32_t* dst = utils::readDestOp32(sys, data);
+            auto dst = utils::readDestOp32(sys, data);
             *dst = srcval;
         }
         break;

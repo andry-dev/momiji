@@ -33,9 +33,9 @@ namespace momiji
             return 0;
         }
 
-        inline std::uint32_t readImmediateFromPC(ExecutableMemoryView base,
-                                                 std::uint32_t pc,
-                                                 std::int16_t size)
+        inline std::int32_t readImmediateFromPC(ExecutableMemoryView base,
+                                                std::uint32_t pc,
+                                                std::int16_t size)
         {
             switch (size)
             {
@@ -52,9 +52,9 @@ namespace momiji
             return 0;
         }
 
-        inline std::uint32_t readFromMemory(ExecutableMemoryView base,
-                                            std::uint32_t offset,
-                                            std::int16_t size)
+        inline std::int32_t readFromMemory(ExecutableMemoryView base,
+                                           std::uint32_t offset,
+                                           std::int16_t size)
         {
             switch (size)
             {
@@ -133,9 +133,9 @@ namespace momiji
             {
                 val = sys.cpu.addressRegisters[regnum].value;
 
-                const std::uint16_t tmp = readImmediateFromPC(sys.mem, pc, 2);
-                const std::uint8_t newreg = (tmp & 0xF000) >> 12;
-                const std::uint8_t index = (tmp & 0x00FF);
+                const std::int16_t tmp = readImmediateFromPC(sys.mem, pc, 2);
+                const std::int8_t newreg = (tmp & 0xF000) >> 12;
+                const std::int8_t index = (tmp & 0x00FF);
 
                 if (newreg < 8) // Data register [0, 7]
                 {

@@ -687,12 +687,57 @@ namespace momiji
         };
     }
 
+    constexpr auto AddressWithDisplacement(momiji::Instruction& instr,
+                                           int opNum)
+    {
+        // num(a*)
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
+            std::int32_t parsed_displacement = 0;
+
+            auto num_parser =
+                Map(GenericDecimal(), [&](std::string_view parsed_str) {
+                    parsed_displacement =
+                        std::stoll(std::string { parsed_str });
+                });
+
+            auto reg_parser =
+                Map(AsAddress(instr, opNum), [&](std::string_view parsed_str) {
+                    instr.operands[opNum].operandType =
+                        OperandType::AddressOffset;
+                });
+
+            return Map(SeqNext(num_parser, reg_parser), [&](auto parsed_str) {
+                instr.operands[opNum].value |= (parsed_displacement << 16);
+            })(str);
+        };
+    }
+
+    constexpr auto IndexedAddress(momiji::Instruction& instr, int opNum)
+    {
+        // (a*, *)
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
+
+        };
+    }
+
+    constexpr auto IndexedAddressWithDisplacement(momiji::Instruction& instr,
+                                                  int opNum)
+    {
+        // (num, a*, *)
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
+
+        };
+    }
+
     constexpr auto AnyOperand(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum](std::string_view str) -> parser_metadata {
-            auto op_parser =
-                AnyOf(OperandImmediate(instr, opNum), AnyRegister(instr, opNum),
-                      AsAddress(instr, opNum), MemoryAddress(instr, opNum));
+            auto op_parser = AnyOf(
+                OperandImmediate(instr, opNum), AnyRegister(instr, opNum),
+                AsAddress(instr, opNum), AddressWithDisplacement(instr, opNum),
+                IndexedAddress(instr, opNum),
+                IndexedAddressWithDisplacement(instr, opNum),
+                MemoryAddress(instr, opNum));
 
             return op_parser(str);
         };
@@ -724,6 +769,7 @@ namespace momiji
         };
     }
 
+#if 0
     constexpr auto ResolveLabel(momiji::Instruction& instr,
                                 const LabelInfo& labels)
     {
@@ -751,6 +797,7 @@ namespace momiji
             return res;
         };
     }
+#endif
 
     constexpr auto CommonInstructionParser(momiji::Instruction& instr)
     {
