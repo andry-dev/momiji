@@ -18,7 +18,7 @@ namespace momiji
         inline auto find_label(const LabelInfo& labels, std::uint32_t hash)
         {
             auto begin = std::begin(labels.labels);
-            auto end = std::end(labels.labels);
+            auto end   = std::end(labels.labels);
 
             auto it = std::find_if(begin, end, [&](const momiji::Label& x) {
                 return x.name_hash == hash;
@@ -63,9 +63,9 @@ namespace momiji
                         return;
                     }
 
-                    res = parsers(str);
+                    res     = parsers(str);
                     notdone = res.result;
-                    str = res.rest;
+                    str     = res.rest;
                 }(),
                 ...);
 
@@ -77,7 +77,7 @@ namespace momiji
     constexpr auto AnyOf(Ts&&... parsers)
     {
         return [=](std::string_view str) -> parser_metadata {
-            bool done = false;
+            bool done           = false;
             parser_metadata res = { false, str, "", {} };
 
             (
@@ -87,7 +87,7 @@ namespace momiji
                         return;
                     }
 
-                    res = parsers(str);
+                    res  = parsers(str);
                     done = res.result;
                 }(),
                 ...);
@@ -160,7 +160,7 @@ namespace momiji
 
             if (idx > 0)
             {
-                ret.result = true;
+                ret.result     = true;
                 ret.parsed_str = backup.substr(0, idx);
             }
 
@@ -170,17 +170,17 @@ namespace momiji
 
     // This doesn't actually work.
     /*
-    template <typename Parser>
-    auto Not(Parser&& parser)
-    {
-        return [&] (std::string_view str) -> parser_metadata
-        {
-            auto res = parser(str);
+       template <typename Parser>
+       auto Not(Parser&& parser)
+       {
+       return [&] (std::string_view str) -> parser_metadata
+       {
+       auto res = parser(str);
 
-            return { !res.result, str, res.parsed_str };
-        };
-    }
-    */
+       return { !res.result, str, res.parsed_str };
+       };
+       }
+       */
 
     template <typename Parser, typename Fun>
     constexpr auto Map(Parser&& parser, Fun&& f)
@@ -377,13 +377,13 @@ namespace momiji
     constexpr auto DecNumber()
     {
         return [](std::string_view str) -> parser_metadata {
-            int idx = 0;
+            int idx        = 0;
             bool found_num = false;
 
             auto check_sign =
                 Map(AnyOf(Char('+'), Char('-')), [&idx](auto) { ++idx; })(str);
 
-            auto check_size = [&]() { return str.size() > idx; };
+            auto check_size   = [&]() { return str.size() > idx; };
             auto check_number = [&]() {
                 return (str[idx] >= '0' && str[idx] <= '9');
             };
@@ -411,7 +411,7 @@ namespace momiji
             auto check_sign =
                 Map(AnyOf(Char('+'), Char('-')), [&idx](auto) { ++idx; })(str);
 
-            auto check_size = [&]() { return idx < str.size(); };
+            auto check_size   = [&]() { return idx < str.size(); };
             auto check_number = [&]() {
                 return (str[idx] >= '0' && str[idx] <= '9') ||
                        (str[idx] >= 'a' && str[idx] <= 'f') ||
@@ -519,7 +519,7 @@ namespace momiji
                 });
 
             constexpr auto inter_hex_parser = SeqNext(Char('#'), GenericHex());
-            auto hex_num = Map(
+            auto hex_num                    = Map(
                 inter_hex_parser, [&instr, opNum](std::string_view parsed_str) {
                     const std::int32_t val =
                         std::stoll(std::string { parsed_str }, 0, 16);
@@ -584,28 +584,30 @@ namespace momiji
         return [&instr, opNum](std::string_view str) -> parser_metadata {
             constexpr auto inter_dec_parser = GenericDecimal();
 
-            auto dec_mem = Map(inter_dec_parser, [&instr,
-                                                  opNum](auto parsed_str) {
-                const std::int32_t val = std::stoll(std::string { parsed_str });
+            auto dec_mem =
+                Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
+                    const std::int32_t val =
+                        std::stoll(std::string { parsed_str });
 
-                SpecialAddressingMode res_add_mode {};
+                    SpecialAddressingMode res_add_mode {};
 
-                switch (instr.dataType)
-                {
-                case DataType::Byte:
-                case DataType::Word:
-                    res_add_mode = SpecialAddressingMode::AbsoluteShort;
-                    break;
+                    switch (instr.dataType)
+                    {
+                    case DataType::Byte:
+                    case DataType::Word:
+                        res_add_mode = SpecialAddressingMode::AbsoluteShort;
+                        break;
 
-                case DataType::Long:
-                    res_add_mode = SpecialAddressingMode::AbsoluteLong;
-                    break;
-                }
+                    case DataType::Long:
+                        res_add_mode = SpecialAddressingMode::AbsoluteLong;
+                        break;
+                    }
 
-                instr.operands[opNum].operandType = OperandType::AbsoluteLong;
-                instr.operands[opNum].specialAddressingMode = res_add_mode;
-                instr.operands[opNum].value = val;
-            });
+                    instr.operands[opNum].operandType =
+                        OperandType::AbsoluteLong;
+                    instr.operands[opNum].specialAddressingMode = res_add_mode;
+                    instr.operands[opNum].value                 = val;
+                });
 
             constexpr auto inter_hex_parser = GenericHex();
             auto hex_mem =
@@ -629,7 +631,7 @@ namespace momiji
                     instr.operands[opNum].operandType =
                         OperandType::AbsoluteLong;
                     instr.operands[opNum].specialAddressingMode = res_add_mode;
-                    instr.operands[opNum].value = val;
+                    instr.operands[opNum].value                 = val;
                 });
 
             // Example: move.w arr, a0
@@ -675,13 +677,12 @@ namespace momiji
     constexpr auto AsAddress(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum](std::string_view str) -> parser_metadata {
-            auto register_parser =
-                Map(Between(Char('('), AddressRegisterParser(instr, opNum),
-                            Char(')')),
-                    [&](std::string_view parsed_str) {
-                        instr.operands[opNum].operandType =
-                            OperandType::Address;
-                    });
+            auto register_parser = Map(
+                Between(
+                    Char('('), AddressRegisterParser(instr, opNum), Char(')')),
+                [&](std::string_view parsed_str) {
+                    instr.operands[opNum].operandType = OperandType::Address;
+                });
 
             return register_parser(str);
         };
@@ -716,7 +717,36 @@ namespace momiji
     {
         // (a*, *)
         return [&instr, opNum](std::string_view str) -> parser_metadata {
+            std::int16_t addreg = 0;
+            std::int16_t othreg = 0;
 
+            auto first_reg_parser =
+                Map(AddressRegisterParser(instr, opNum),
+                    [&](auto) { addreg = instr.operands[opNum].value; });
+
+            auto oth_reg_parser = Map(AnyRegister(instr, opNum), [&](auto) {
+                othreg = instr.operands[opNum].value;
+                if (instr.operands[opNum].operandType ==
+                    OperandType::AddressRegister)
+                {
+                    othreg += 8;
+                }
+            });
+
+            auto combined_parser = SeqNext(AlwaysTrue(Whitespace()),
+                                           first_reg_parser,
+                                           AlwaysTrue(Whitespace()),
+                                           Char(','),
+                                           AlwaysTrue(Whitespace()),
+                                           oth_reg_parser);
+
+            return Map(
+                Between(Char('('), combined_parser, Char(')')), [&](auto) {
+                    instr.operands[opNum].operandType =
+                        OperandType::AddressIndex;
+                    std::int16_t higher         = (othreg << 12);
+                    instr.operands[opNum].value = (higher << 16) | addreg;
+                })(str);
         };
     }
 
@@ -725,19 +755,58 @@ namespace momiji
     {
         // (num, a*, *)
         return [&instr, opNum](std::string_view str) -> parser_metadata {
+            std::int16_t addreg = 0;
+            std::int16_t othreg = 0;
+            std::int16_t offset = 0;
 
+            auto offset_parser = Map(GenericDecimal(), [&](auto parsed_str) {
+                offset = std::stol(std::string { parsed_str });
+            });
+
+            auto first_reg_parser =
+                Map(AddressRegisterParser(instr, opNum),
+                    [&](auto) { addreg = instr.operands[opNum].value; });
+
+            auto oth_reg_parser = Map(AnyRegister(instr, opNum), [&](auto) {
+                othreg = instr.operands[opNum].value;
+                if (instr.operands[opNum].operandType ==
+                    OperandType::AddressRegister)
+                {
+                    othreg += 8;
+                }
+            });
+
+            auto combined_parser = SeqNext(AlwaysTrue(Whitespace()),
+                                           offset_parser,
+                                           AlwaysTrue(Whitespace()),
+                                           Char(','),
+                                           AlwaysTrue(Whitespace()),
+                                           first_reg_parser,
+                                           AlwaysTrue(Whitespace()),
+                                           Char(','),
+                                           AlwaysTrue(Whitespace()),
+                                           oth_reg_parser);
+
+            return Map(
+                Between(Char('('), combined_parser, Char(')')), [&](auto) {
+                    instr.operands[opNum].operandType =
+                        OperandType::AddressIndex;
+                    std::int16_t higher         = offset | (othreg << 12);
+                    instr.operands[opNum].value = (higher << 16) | addreg;
+                })(str);
         };
     }
 
     constexpr auto AnyOperand(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum](std::string_view str) -> parser_metadata {
-            auto op_parser = AnyOf(
-                OperandImmediate(instr, opNum), AnyRegister(instr, opNum),
-                AsAddress(instr, opNum), AddressWithDisplacement(instr, opNum),
-                IndexedAddress(instr, opNum),
-                IndexedAddressWithDisplacement(instr, opNum),
-                MemoryAddress(instr, opNum));
+            auto op_parser = AnyOf(OperandImmediate(instr, opNum),
+                                   AnyRegister(instr, opNum),
+                                   AsAddress(instr, opNum),
+                                   AddressWithDisplacement(instr, opNum),
+                                   IndexedAddress(instr, opNum),
+                                   IndexedAddressWithDisplacement(instr, opNum),
+                                   MemoryAddress(instr, opNum));
 
             return op_parser(str);
         };
@@ -771,7 +840,7 @@ namespace momiji
 
 #if 0
     constexpr auto ResolveLabel(momiji::Instruction& instr,
-                                const LabelInfo& labels)
+            const LabelInfo& labels)
     {
         return [&instr, &labels](std::string_view str) -> parser_metadata {
             auto res = Word()(str);
@@ -802,10 +871,14 @@ namespace momiji
     constexpr auto CommonInstructionParser(momiji::Instruction& instr)
     {
         return [&instr](std::string_view str) -> parser_metadata {
-            auto parser = SeqNext(
-                AlwaysTrue(DataType(instr)), // data type is optional
-                Whitespace(), AnyOperand(instr, 0), AlwaysTrue(Whitespace()),
-                Char(','), AlwaysTrue(Whitespace()), AnyOperand(instr, 1));
+            auto parser =
+                SeqNext(AlwaysTrue(DataType(instr)), // data type is optional
+                        Whitespace(),
+                        AnyOperand(instr, 0),
+                        AlwaysTrue(Whitespace()),
+                        Char(','),
+                        AlwaysTrue(Whitespace()),
+                        AnyOperand(instr, 1));
 
             return parser(str);
         };
@@ -814,10 +887,13 @@ namespace momiji
     constexpr auto ImmediateInstructionParser(momiji::Instruction& instr)
     {
         return [&instr](std::string_view str) -> parser_metadata {
-            auto parser = SeqNext(
-                AlwaysTrue(DataType(instr)), Whitespace(),
-                OperandImmediate(instr, 0), AlwaysTrue(Whitespace()), Char(','),
-                AlwaysTrue(Whitespace()), AnyOperand(instr, 1));
+            auto parser = SeqNext(AlwaysTrue(DataType(instr)),
+                                  Whitespace(),
+                                  OperandImmediate(instr, 0),
+                                  AlwaysTrue(Whitespace()),
+                                  Char(','),
+                                  AlwaysTrue(Whitespace()),
+                                  AnyOperand(instr, 1));
 
             return parser(str);
         };
@@ -827,9 +903,9 @@ namespace momiji
                                            const momiji::LabelInfo& labels)
     {
         return [&instr, &labels](std::string_view str) -> parser_metadata {
-            auto parser =
-                SeqNext(Whitespace(), AnyOf(OperandImmediate(instr, 0),
-                                            MemoryAddress(instr, 0)));
+            auto parser = SeqNext(
+                Whitespace(),
+                AnyOf(OperandImmediate(instr, 0), MemoryAddress(instr, 0)));
 
             return parser(str);
         };
