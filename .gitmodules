@@ -1,3 +1,4 @@
-[submodule "external/tewi"]
-	path = external/tewi
+[submodule "momiji-gl/external/tewi"]
+	path = momiji-gl/external/tewi
 	url = https://github.com/andry-dev/tewi
+	branch = newdoc
