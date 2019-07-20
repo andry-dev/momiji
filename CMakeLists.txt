@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 
 project(momiji)
 
-option(MOMIJI_BUILD_GL_GUI "Enable OpenGL GUI support (requires tewi)" ON)
+option(MOMIJI_BUILD_GL_GUI "Enable OpenGL GUI support (requires tewi)" OFF)
 option(MOMIJI_BUILD_QT_GUI "Enable Qt GUI support" OFF)
 option(MOMIJI_BUILD_TOOLS "Build CLI tools" OFF)
 
