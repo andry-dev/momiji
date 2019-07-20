@@ -402,6 +402,18 @@ namespace momiji::repr
         std::uint16_t regmode : 3;
     };
 
+    struct Jsr
+    {
+        Jsr()
+            : header { 0b0100111010 }
+        {
+        }
+
+        std::uint16_t header : 10;
+        std::uint16_t regtype : 3;
+        std::uint16_t regmode : 3;
+    };
+
     struct Illegal
     {
         Illegal()

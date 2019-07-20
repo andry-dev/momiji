@@ -49,13 +49,7 @@ namespace momiji::details
 
         for (const auto& op : instr.operands)
         {
-            switch (op.operandType)
-            {
-            case OperandType::AddressRegister:
-            case OperandType::DataRegister:
-                sanitizeRegisters(op, res);
-                break;
-            }
+            sanitizeRegisters(op, res);
         }
 
         sanitizeImmediate(instr.operands[1], res);

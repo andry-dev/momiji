@@ -1,6 +1,5 @@
 #include <Compiler.h>
 
-#include "../Instructions/OpCodes.h"
 #include "./Utils.h"
 
 #include <Utils.h>
@@ -39,7 +38,6 @@ namespace momiji
             switch (instr.instructionType)
             {
             case InstructionType::Move:
-            case InstructionType::MoveAddress:
                 momiji::move(instr, opcode, additional_data);
                 break;
 
@@ -131,6 +129,7 @@ namespace momiji
                 break;
 
             case InstructionType::JmpSubroutine:
+                momiji::jsr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Branch:

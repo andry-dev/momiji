@@ -54,6 +54,8 @@ namespace momiji
 
         auto data();
 
+        Container& underlying();
+
       protected:
         BasicMemory(std::int64_t size);
         Container m_data;
@@ -163,6 +165,12 @@ namespace momiji
     auto BasicMemory<Container>::data()
     {
         return m_data.data();
+    }
+
+    template <typename Container>
+    Container& BasicMemory<Container>::underlying()
+    {
+        return m_data;
     }
 
     template <typename Container>

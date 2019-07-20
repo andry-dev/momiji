@@ -108,4 +108,19 @@ namespace momiji::utils
 
         return ret;
     }
+
+    constexpr std::int64_t make_kb(std::int64_t n)
+    {
+        return n * 1024;
+    }
+
+    constexpr std::int64_t make_mb(std::int64_t n)
+    {
+        return 1024 * make_kb(n);
+    }
+
+    constexpr std::int64_t make_gb(std::int64_t n)
+    {
+        return 1024 * make_mb(n);
+    }
 } // namespace momiji::utils

@@ -225,14 +225,14 @@ namespace momiji
                 sys.cpu.addressRegisters[regnum].value += instr.size;
                 break;
 
-            // index(a*)
+            // offset(a*)
             case OperandType::AddressOffset:
                 tmp = readImmediateFromPC(sys.mem, pc + isImmediate(instr), 2);
                 tmp += sys.cpu.addressRegisters[regnum].value;
                 val = reinterpret_cast<std::int8_t*>(sys.mem.data() + tmp);
                 break;
 
-            // (index, a*, d*)
+            // (offset, a*, **)
             case OperandType::AddressIndex:
             {
                 tmp = readImmediateFromPC(sys.mem, pc + isImmediate(instr), 2);

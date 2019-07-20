@@ -56,7 +56,7 @@ namespace momiji
         Illegal,
 
         // Specific to momiji
-        HaltCatchFire,
+        HaltCatchFire, // hcf
         Breakpoint,
         Declare, // dc.*
     };

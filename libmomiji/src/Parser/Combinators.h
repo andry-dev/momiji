@@ -797,15 +797,43 @@ namespace momiji
         };
     }
 
+    constexpr auto AddressPreDecr(momiji::Instruction& instr, int opNum)
+    {
+        // -(a*)
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
+            auto combined_parser = SeqNext(
+                Char('-'), AlwaysTrue(Whitespace()), AsAddress(instr, opNum));
+
+            return Map(combined_parser, [&](auto) {
+                instr.operands[opNum].operandType = OperandType::AddressPre;
+            })(str);
+        };
+    }
+
+    constexpr auto AddressPostIncr(momiji::Instruction& instr, int opNum)
+    {
+        // (a*)+
+        return [&instr, opNum](std::string_view str) -> parser_metadata {
+            auto combined_parser = SeqNext(
+                AsAddress(instr, opNum), AlwaysTrue(Whitespace()), Char('+'));
+
+            return Map(combined_parser, [&](auto) {
+                instr.operands[opNum].operandType = OperandType::AddressPost;
+            })(str);
+        };
+    }
+
     constexpr auto AnyOperand(momiji::Instruction& instr, int opNum)
     {
         return [&instr, opNum](std::string_view str) -> parser_metadata {
             auto op_parser = AnyOf(OperandImmediate(instr, opNum),
                                    AnyRegister(instr, opNum),
-                                   AsAddress(instr, opNum),
+                                   AddressPreDecr(instr, opNum),
+                                   AddressPostIncr(instr, opNum),
                                    AddressWithDisplacement(instr, opNum),
                                    IndexedAddress(instr, opNum),
                                    IndexedAddressWithDisplacement(instr, opNum),
+                                   AsAddress(instr, opNum),
                                    MemoryAddress(instr, opNum));
 
             return op_parser(str);

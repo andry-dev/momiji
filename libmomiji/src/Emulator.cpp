@@ -77,7 +77,10 @@ namespace momiji
 
     Emulator::Emulator()
         : m_systemStates(1)
-        , m_settings({ 0, -1, EmulatorSettings::RetainStates::Always })
+        , m_settings({ 0,
+                       -1,
+                       utils::make_kb(4),
+                       EmulatorSettings::RetainStates::Always })
     {
     }
 
@@ -104,9 +107,15 @@ namespace momiji
 
         if (res)
         {
-            auto mem     = momiji::compile(*res);
+            auto mem = momiji::compile(*res);
+
+            // this is fine
+            mem.underlying().resize(mem.size() + m_settings.stackSize, 0);
+
             auto lastSys = m_systemStates.back();
             lastSys.mem  = std::move(mem);
+
+            lastSys.cpu.addressRegisters[7].value = (lastSys.mem.size() - 1);
             m_systemStates.emplace_back(std::move(lastSys));
 
             return std::nullopt;

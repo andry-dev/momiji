@@ -125,6 +125,10 @@ namespace momiji
             case 0b01001000'01000000:
                 break;
 
+            // JSR
+            case 0b01001110'10000000:
+                return momiji::dec::jsr(mem, idx);
+
             // JMP
             case 0b01001110'11000000:
                 return momiji::dec::jmp(mem, idx);

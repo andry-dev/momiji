@@ -7,4 +7,5 @@
 namespace momiji::dec
 {
     DecodedInstruction jmp(ExecutableMemoryView mem, std::uint64_t idx);
-}
+    DecodedInstruction jsr(ExecutableMemoryView mem, std::uint64_t idx);
+} // namespace momiji::dec

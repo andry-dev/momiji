@@ -24,16 +24,14 @@ void gui()
 
     momiji::EmulatorSettings emuSettings;
 
-    emuSettings.programStart      = 0;
-    emuSettings.dataSectionOffset = 0;
     emuSettings.retainStates = momiji::EmulatorSettings::RetainStates::Always;
     // emuSettings.parserSettings.breakpoints = gsl::null_span{};
 
     momiji::Emulator emu { emuSettings };
 
     tewi::Window<def_tag> win { "momiji",
-                                tewi::Width { 800 },
-                                tewi::Height { 600 } };
+                                tewi::Width { 1024 },
+                                tewi::Height { 768 } };
 
     tewi::InputBuffer inputBuffer;
     win.bindTo(inputBuffer);
@@ -245,8 +243,7 @@ void gui()
 
                     ImGui::TextUnformatted(pcadd == curradd ? "=>" : "  ");
                     ImGui::SameLine();
-                    ImGui::Text(
-                        "%p: %x %x", memview.begin() + i, higher, lower);
+                    ImGui::Text("%.8x: %x %x", i, higher, lower);
                 }
             }
             else
@@ -323,6 +320,8 @@ void gui()
                 }
                 ImGui::Text(
                     "Error at line %d, %s", error.line, error_string.data());
+                ImGui::Text(
+                    "Around: %.*s", error.codeStr.size(), error.codeStr.data());
             }
             else
             {
@@ -429,6 +428,40 @@ void gui()
         {
             ImGui::Begin("Stack");
 
+            const auto& states = emu.getStates();
+
+            if (states.size() > 1)
+            {
+                const auto& lastSys = states.back();
+
+                const momiji::ConstExecutableMemoryView memview = lastSys.mem;
+                const auto sp = lastSys.cpu.addressRegisters[7].value;
+
+                const auto maxStackLength =
+                    memview.size() - emuSettings.stackSize;
+
+                for (int i = memview.size() - 1; i >= maxStackLength; i -= 2)
+                {
+                    std::uint8_t lower  = memview.read8(i);
+                    std::uint8_t higher = 0;
+
+                    if ((i - 1) >= maxStackLength)
+                    {
+                        higher = memview.read8(i - 1);
+                    }
+
+                    auto pcadd   = memview.begin() + sp;
+                    auto curradd = memview.begin() + i;
+
+                    ImGui::TextUnformatted(pcadd == curradd ? "=>" : "  ");
+                    ImGui::SameLine();
+                    ImGui::Text("%.8x: %x %x", i, higher, lower);
+                }
+            }
+            else
+            {
+                ImGui::Text("No stack output available!\n");
+            }
             ImGui::End();
         }
 

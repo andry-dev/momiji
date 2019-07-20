@@ -71,6 +71,8 @@ namespace momiji
             WrongRegisterNumber,
             UnexpectedCharacter,
         } errorType;
+
+        std::string codeStr;
     };
 
     using ParsingResult =

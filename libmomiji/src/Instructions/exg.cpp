@@ -18,6 +18,10 @@ namespace momiji::instr
         case OperandType::AddressRegister:
             srcreg = &sys.cpu.addressRegisters[srcval].value;
             break;
+
+        default:
+            // Nothing
+            break;
         }
 
         std::int32_t* dstreg     = nullptr;
@@ -31,6 +35,10 @@ namespace momiji::instr
 
         case OperandType::AddressRegister:
             dstreg = &sys.cpu.addressRegisters[dstval].value;
+            break;
+
+        default:
+            // Nothing
             break;
         }
 

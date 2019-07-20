@@ -15,6 +15,8 @@ namespace momiji
         std::int32_t programStart      = 0;
         std::int32_t dataSectionOffset = -1;
 
+        std::int64_t stackSize = utils::make_kb(4);
+
         // Use Always to tell the emulator to always create new copies of the
         // system state for each instruction execution.
         //

@@ -22,6 +22,15 @@ namespace momiji
         return nonstd::make_unexpected<ParserError>({ line, column, error });
     }
 
+    static auto make_parser_error(int column,
+                                  int line,
+                                  ParserError::ErrorType error,
+                                  std::string_view sourceCode)
+    {
+        return nonstd::make_unexpected<ParserError>(
+            { line, column, error, std::string { sourceCode } });
+    }
+
     static bool isImmediate(const Operand& op)
     {
         return op.operandType == OperandType::Immediate &&
@@ -105,7 +114,8 @@ namespace momiji
                     return make_parser_error(
                         0,
                         line_count,
-                        ParserError::ErrorType::NoInstructionFound);
+                        ParserError::ErrorType::NoInstructionFound,
+                        instrword.parsed_str);
                 }
 
                 if (!settings.breakpoints.empty())
@@ -124,8 +134,13 @@ namespace momiji
                 }
                 else
                 {
+                    auto begin = instrword.parsed_str.data();
+                    auto end   = res.rest.data();
                     return make_parser_error(
-                        0, line_count, res.error.errorType);
+                        0,
+                        line_count,
+                        res.error.errorType,
+                        std::string_view(begin, end - begin));
                 }
 
                 tmp_str = res.rest;
@@ -240,7 +255,7 @@ namespace momiji
             }
         }
 
-        std::int64_t line_count { 0 };
+        std::int64_t line_count { 1 };
         std::int64_t program_counter { 0 };
         std::string_view str;
         std::vector<momiji::Instruction> instructions;
