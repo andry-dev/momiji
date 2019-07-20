@@ -1,9 +1,8 @@
 #pragma once
 
-#include <System.h>
-#include <Types.h>
-
-#include <Memory.h>
+#include <momiji/Memory.h>
+#include <momiji/System.h>
+#include <momiji/Types.h>
 
 namespace momiji
 {

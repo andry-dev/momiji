@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-#include <Emulator.h>
+#include <momiji/Emulator.h>
 
 namespace Ui
 {
@@ -18,10 +18,10 @@ class MainWindow : public QMainWindow
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-private slots:
+  private slots:
     void on_sourceCode_textChanged();
 
-private:
+  private:
     Ui::MainWindow* ui;
     momiji::Emulator m_emulator;
 };

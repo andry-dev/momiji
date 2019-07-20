@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Memory.h>
-#include <Parser.h>
+#include <momiji/Memory.h>
+#include <momiji/Parser.h>
 
 namespace momiji
 {

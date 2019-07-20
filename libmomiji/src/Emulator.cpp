@@ -1,10 +1,9 @@
-#include "Emulator.h"
+#include <momiji/Emulator.h>
 
-#include <iostream>
 #include <iterator>
 
-#include <Compiler.h>
-#include <Decoder.h>
+#include <momiji/Compiler.h>
+#include <momiji/Decoder.h>
 
 #include "Instructions/bcc.h"
 #include "Instructions/bra.h"
@@ -114,6 +113,13 @@ namespace momiji
         }
 
         return res.error();
+    }
+
+    void Emulator::newState(momiji::ExecutableMemory binary)
+    {
+        auto lastSys = m_systemStates.back();
+        lastSys.mem  = std::move(binary);
+        m_systemStates.emplace_back(std::move(lastSys));
     }
 
     bool Emulator::rollbackSys()

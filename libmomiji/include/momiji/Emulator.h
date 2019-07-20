@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Parser.h>
-#include <System.h>
+#include <momiji/Parser.h>
+#include <momiji/System.h>
 #include <optional>
 #include <string>
 #include <vector>
 
-#include <Decoder.h>
+#include <momiji/Decoder.h>
 
 namespace momiji
 {
@@ -68,6 +68,7 @@ namespace momiji
         const std::vector<momiji::System>& getStates() const;
 
         std::optional<momiji::ParserError> newState(const std::string& str);
+        void newState(momiji::ExecutableMemory binary);
         bool rollbackSys();
         bool rollback();
         bool step();

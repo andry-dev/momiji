@@ -12,9 +12,9 @@
 #include <tewi/Video/Sprite.h>
 #include <tewi/Video/Window.hpp>
 
-#include "Emulator.h"
 #include "Renderer.h"
-#include <Utils.h>
+#include <momiji/Emulator.h>
+#include <momiji/Utils.h>
 
 #include <cstdio>
 

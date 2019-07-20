@@ -5,6 +5,7 @@ target_compile_features(libmomiji PUBLIC cxx_std_17)
 target_include_directories(libmomiji PUBLIC SYSTEM
                            include
                            external/nonstd)
+target_include_directories(libmomiji PRIVATE SYSTEM include/momiji)
 
 target_sources(libmomiji
     PRIVATE

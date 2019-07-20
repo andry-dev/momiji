@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Parser.h>
 #include <array>
 #include <cstdint>
+#include <momiji/Parser.h>
 #include <vector>
 
-#include <Memory.h>
-#include <Utils.h>
+#include <momiji/Memory.h>
+#include <momiji/Utils.h>
 
 namespace momiji
 {

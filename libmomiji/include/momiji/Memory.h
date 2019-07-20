@@ -27,6 +27,8 @@ namespace momiji
     class BasicMemory
     {
       public:
+        BasicMemory() = default;
+
         std::uint32_t read32(std::uint64_t offset) const;
         std::uint16_t read16(std::uint64_t offset) const;
         std::uint8_t read8(std::uint64_t offset) const;
@@ -43,42 +45,17 @@ namespace momiji
         void write8(T val, std::uint64_t offset) = delete;
         void write8(std::uint8_t val, std::uint64_t offset);
 
-        auto begin() const
-        {
-            return m_data.begin();
-        }
+        auto begin() const;
+        auto end() const;
 
-        auto begin()
-        {
-            return m_data.begin();
-        }
+        auto size() const;
 
-        auto end() const
-        {
-            return m_data.end();
-        }
+        auto empty() const;
 
-        auto end()
-        {
-            return m_data.end();
-        }
-
-        auto size() const
-        {
-            return m_data.size();
-        }
-
-        auto empty() const
-        {
-            return m_data.empty();
-        }
-
-        auto data()
-        {
-            return m_data.data();
-        }
+        auto data();
 
       protected:
+        BasicMemory(std::int64_t size);
         Container m_data;
     };
 
@@ -86,6 +63,9 @@ namespace momiji
     class ModifiableMemory final : public BasicMemory<std::vector<std::uint8_t>>
     {
       public:
+        ModifiableMemory() = default;
+        ModifiableMemory(std::int64_t size);
+
         template <typename T>
         void push32(T val) = delete;
         void push32(std::uint32_t val);
@@ -147,6 +127,43 @@ namespace momiji
     using StackMemoryView = MemoryView<details::StackMemoryTag>;
 
     // BasicMemory implementation
+
+    template <typename Container>
+    BasicMemory<Container>::BasicMemory(std::int64_t size)
+        : m_data(size)
+    {
+        Expects(size > 0, "Passing negative size to basic memory");
+    }
+
+    template <typename Container>
+    auto BasicMemory<Container>::begin() const
+    {
+        return m_data.begin();
+    }
+
+    template <typename Container>
+    auto BasicMemory<Container>::end() const
+    {
+        return m_data.end();
+    }
+
+    template <typename Container>
+    auto BasicMemory<Container>::size() const
+    {
+        return m_data.size();
+    }
+
+    template <typename Container>
+    auto BasicMemory<Container>::empty() const
+    {
+        return m_data.empty();
+    }
+
+    template <typename Container>
+    auto BasicMemory<Container>::data()
+    {
+        return m_data.data();
+    }
 
     template <typename Container>
     std::uint32_t BasicMemory<Container>::read32(std::uint64_t offset) const
@@ -230,6 +247,12 @@ namespace momiji
     }
 
     // ModifiableMemory
+
+    template <typename Tag>
+    ModifiableMemory<Tag>::ModifiableMemory(std::int64_t size)
+        : BasicMemory(size)
+    {
+    }
 
     template <typename Tag>
     void ModifiableMemory<Tag>::push32(std::uint32_t val)
