@@ -442,7 +442,7 @@ namespace momiji
             {
                 if ((str[0] >= 'a' && str[0] <= 'z') ||
                     (str[0] >= 'A' && str[0] <= 'Z') ||
-                    (str[0] >= '0' && str[0] <= '9'))
+                    (str[0] >= '0' && str[0] <= '9') || (str[0] == '_'))
                 {
                     return { true, str.substr(1), str.substr(0, 1), {} };
                 }

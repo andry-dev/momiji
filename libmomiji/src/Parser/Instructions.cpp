@@ -11,7 +11,7 @@ namespace momiji::details
     static bool sanitizeRegisters(const Operand& op, parser_metadata& metadata)
     {
         if ((op.operandType != OperandType::Immediate) &&
-            (op.value < 0 || op.value > 7))
+            ((op.value & 0b111) < 0 || (op.value & 0b111) > 7))
         {
             metadata.result = false;
             metadata.error.errorType =
@@ -579,11 +579,6 @@ namespace momiji::details
             }
         }
 
-        for (const auto& x : instr.operands)
-        {
-            std::cout << x.value << '\n';
-        }
-
         return res;
     }
 
@@ -595,6 +590,9 @@ namespace momiji::details
         instr.operands[0].operandType = OperandType::Immediate;
         instr.operands[0].specialAddressingMode =
             SpecialAddressingMode::Immediate;
+
+        instr.operands[1].operandType = OperandType::DataRegister;
+
         instr.dataType = DataType::Word;
 
         return { true, str, "", {} };

@@ -17,6 +17,7 @@
 #include "move.h"
 #include "mul.h"
 #include "or.h"
+#include "rts.h"
 #include "sub.h"
 #include "swap.h"
 #include "tst.h"
@@ -141,9 +142,11 @@ namespace momiji
                 break;
 
             case InstructionType::BranchSubroutine:
+                momiji::bsr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::ReturnSubroutine:
+                momiji::rts(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Swap:

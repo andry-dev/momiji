@@ -17,6 +17,7 @@
 #include "move.h"
 #include "mul.h"
 #include "or.h"
+#include "rts.h"
 #include "sub.h"
 #include "tst.h"
 
@@ -37,7 +38,7 @@ namespace momiji
         // Find by groups
         std::uint16_t mask = 0b11000000'00000000;
 
-        std::uint16_t val = mem.read16(idx) & mask;
+        const std::uint16_t val = mem.read16(idx) & mask;
 
         switch (val)
         {
@@ -103,11 +104,13 @@ namespace momiji
         constexpr std::uint16_t bramask    = 0b11111111'00000000;
         constexpr std::uint16_t secondmask = 0b11111111'11000000;
 
-        switch (mem.read16(idx) & firstmask)
+        const std::uint16_t val = mem.read16(idx);
+
+        switch (val & firstmask)
         {
         // JMP / MOVEM
         case 0b01000000'00000000:
-            switch (mem.read16(idx) & secondmask)
+            switch (val & secondmask)
             {
             // TST
             case 0b01001010'00000000:
@@ -123,6 +126,16 @@ namespace momiji
 
             // SWAP / PEA
             case 0b01001000'01000000:
+                break;
+
+            // RTE / RTS / TRAPV / RTR
+            case 0b01001110'01000000:
+                switch (val)
+                {
+                // RTS
+                case 0b01001110'01110101:
+                    return momiji::dec::rts(mem, idx);
+                }
                 break;
 
             // JSR
@@ -149,6 +162,7 @@ namespace momiji
 
             // BSR
             case 0b01100001'00000000:
+                return momiji::dec::bsr(mem, idx);
                 break;
 
             // Bcc, probably
@@ -171,11 +185,13 @@ namespace momiji
         constexpr std::uint16_t firstmask = 0b11110000'11000000;
         constexpr std::uint16_t divmask   = 0b11110001'11000000;
 
-        switch (mem.read16(idx) & firstmask)
+        const std::uint16_t val = mem.read16(idx);
+
+        switch (val & firstmask)
         {
         // DIVU / DIVS
         case 0b10000000'11000000:
-            switch (mem.read16(idx) & divmask)
+            switch (val & divmask)
             {
             // DIVU
             case 0b10000000'11000000:

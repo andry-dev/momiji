@@ -390,6 +390,16 @@ namespace momiji::repr
         std::uint16_t displacement : 8;
     };
 
+    struct Bsr
+    {
+        Bsr()
+            : header { 0b01100001 }
+        {
+        }
+        std::uint16_t header : 8;
+        std::uint16_t displacement : 8;
+    }; // namespace momiji::repr
+
     struct Jmp
     {
         Jmp()
@@ -412,6 +422,11 @@ namespace momiji::repr
         std::uint16_t header : 10;
         std::uint16_t regtype : 3;
         std::uint16_t regmode : 3;
+    };
+
+    struct Rts
+    {
+        std::uint16_t header { 0b01001110'01110101 };
     };
 
     struct Illegal

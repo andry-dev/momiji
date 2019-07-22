@@ -22,7 +22,7 @@ namespace momiji::instr
         const auto& statReg = sys.cpu.statusRegister;
 
         const auto normalIncrement = [&]() {
-            sys.cpu.programCounter.address += skipTwoBytes ? 2 : 1;
+            sys.cpu.programCounter.address += skipTwoBytes ? 4 : 2;
         };
 
         bool shouldBranch = false;

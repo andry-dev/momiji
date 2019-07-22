@@ -103,7 +103,7 @@ namespace momiji::instr
         auto memview = momiji::make_memory_view(sys);
 
         const std::int8_t dstval = utils::to_val(instr.mod2);
-        std::int32_t dstreg      = sys.cpu.addressRegisters[dstval].value;
+        std::int32_t dstreg      = sys.cpu.dataRegisters[dstval].value;
 
         switch (instr.op2)
         {

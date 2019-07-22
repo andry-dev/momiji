@@ -41,6 +41,20 @@ namespace momiji
                     SpecialAddressingMode::AbsoluteLong);
     }
 
+    static bool requiresImmediateData(const Operand& op)
+    {
+        return isImmediate(op) ||
+               op.operandType == OperandType::AddressOffset ||
+               op.operandType == OperandType::AddressIndex;
+    }
+
+    static bool isBranchInstr(const Instruction& instr)
+    {
+        return instr.instructionType == InstructionType::Branch ||
+               instr.instructionType == InstructionType::BranchCondition ||
+               instr.instructionType == InstructionType::BranchSubroutine;
+    }
+
     struct Parser
     {
         Parser(std::string_view str)
@@ -179,8 +193,7 @@ namespace momiji
             for (auto& x : instructions)
             {
                 // Fix displacements for branch instructions
-                if (x.instructionType == InstructionType::BranchCondition ||
-                    x.instructionType == InstructionType::Branch)
+                if (isBranchInstr(x))
                 {
                     auto& op = x.operands[0];
                     op.value = op.value - x.programCounter;
@@ -230,12 +243,20 @@ namespace momiji
                     break;
                 }
             }
+            else if (isBranchInstr(instr))
+            {
+                program_counter += 2;
+                if (instr.operands[0].value > 255)
+                {
+                    program_counter += 2;
+                }
+            }
             else
             {
                 program_counter += 2;
                 for (const auto& op : instr.operands)
                 {
-                    if (isImmediate(op))
+                    if (requiresImmediateData(op))
                     {
                         switch (instr.dataType)
                         {

@@ -31,8 +31,9 @@ namespace momiji
 
     static bool isJumpInstr(const momiji::DecodedInstruction& instr)
     {
-        if (instr.exec == instr::bra || instr.exec == instr::bcc ||
-            instr.exec == instr::jmp)
+        if (instr.exec == instr::bra || instr.exec == instr::bsr ||
+            instr.exec == instr::bcc || instr.exec == instr::jmp ||
+            instr.exec == instr::jsr)
         {
             return true;
         }
