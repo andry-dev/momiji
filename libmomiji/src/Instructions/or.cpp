@@ -7,31 +7,36 @@ namespace momiji::instr
 {
     momiji::System or_instr(momiji::System& sys, const InstructionData& data)
     {
-        const auto srcval = utils::readOperand1(sys, data);
+        auto& pc          = sys.cpu.programCounter.address;
+        const auto srcval = utils::readOperandVal(sys, data, 0);
 
         switch (data.size)
         {
         case 1:
         {
-            auto dstval = utils::readDestOp8(sys, data);
+            auto dstval = utils::readOperandPtr8(sys, data, 1);
             *dstval     = *dstval | (srcval & 0x0000'00FF);
         }
         break;
 
         case 2:
         {
-            auto dstval = utils::readDestOp16(sys, data);
+            auto dstval = utils::readOperandPtr16(sys, data, 1);
             *dstval     = *dstval | (srcval & 0x0000'FFFF);
         }
         break;
 
         case 4:
         {
-            auto dstval = utils::readDestOp32(sys, data);
+            auto dstval = utils::readOperandPtr32(sys, data, 1);
             *dstval     = *dstval | srcval;
         }
         break;
         }
+
+        pc += 2;
+        pc += utils::isImmediate(data, 0);
+        pc += utils::isImmediate(data, 1);
 
         return sys;
     }

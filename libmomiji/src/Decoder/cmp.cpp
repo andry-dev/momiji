@@ -22,11 +22,16 @@ namespace momiji::dec
 
         momiji::assignNormalSize(ret, bits.size);
 
-        ret.data.op2  = OperandType::DataRegister;
-        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
-        ret.data.op1  = static_cast<OperandType>(bits.srctype);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
-        ret.exec      = instr::cmp;
+        ret.data.operandType[1] = OperandType::DataRegister;
+        ret.data.addressingMode[1] =
+            static_cast<SpecialAddressingMode>(bits.datareg);
+        ret.data.operandType[0] = static_cast<OperandType>(bits.srctype);
+        ret.data.addressingMode[0] =
+            static_cast<SpecialAddressingMode>(bits.srcmode);
+
+        ret.exec = instr::cmp;
+
+        ret.string = "cmp" + dataTypeToString(ret.data.size);
 
         return ret;
     }
@@ -55,11 +60,16 @@ namespace momiji::dec
             break;
         }
 
-        ret.data.op2  = OperandType::AddressRegister;
-        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.addreg);
-        ret.data.op1  = static_cast<OperandType>(bits.srctype);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
-        ret.exec      = instr::cmpa;
+        ret.data.operandType[0] = static_cast<OperandType>(bits.srctype);
+        ret.data.addressingMode[0] =
+            static_cast<SpecialAddressingMode>(bits.srcmode);
+        ret.data.operandType[1] = OperandType::AddressRegister;
+        ret.data.addressingMode[1] =
+            static_cast<SpecialAddressingMode>(bits.addreg);
+
+        ret.exec = instr::cmpa;
+
+        ret.string = "cmpa" + dataTypeToString(ret.data.size);
 
         return ret;
     }
@@ -78,11 +88,14 @@ namespace momiji::dec
 
         momiji::assignNormalSize(ret, bits.size);
 
-        ret.exec      = instr::cmpi;
-        ret.data.op1  = OperandType::Immediate;
-        ret.data.mod1 = SpecialAddressingMode::Immediate;
-        ret.data.op2  = static_cast<OperandType>(bits.dsttype);
-        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.dstmode);
+        ret.exec                   = instr::cmpi;
+        ret.data.operandType[0]    = OperandType::Immediate;
+        ret.data.addressingMode[0] = SpecialAddressingMode::Immediate;
+        ret.data.operandType[1]    = static_cast<OperandType>(bits.dsttype);
+        ret.data.addressingMode[1] =
+            static_cast<SpecialAddressingMode>(bits.dstmode);
+
+        ret.string = "cmpi" + dataTypeToString(ret.data.size);
 
         return ret;
     }

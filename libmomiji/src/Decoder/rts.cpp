@@ -9,9 +9,12 @@ namespace momiji::dec
     {
         DecodedInstruction ret;
 
-        ret.data.op1 = OperandType::DataRegister;
-        ret.data.op2 = OperandType::DataRegister;
-        ret.exec     = instr::rts;
+        ret.data.operandType[0] = OperandType::DataRegister;
+        ret.data.operandType[1] = OperandType::DataRegister;
+
+        ret.exec = instr::rts;
+
+        ret.string = "rts";
 
         return ret;
     }

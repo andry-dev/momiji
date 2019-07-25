@@ -18,13 +18,18 @@ namespace momiji::dec
         bits.srcmode = (val & 0b00000000'00000111);
 
         // Mul is always two bytes
-        ret.data.size = 2;
-        ret.data.op1  = static_cast<OperandType>(bits.srctype);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
-        ret.data.op2  = OperandType::DataRegister;
-        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
+        ret.data.size           = 2;
+        ret.data.operandType[0] = static_cast<OperandType>(bits.srctype);
+        ret.data.addressingMode[0] =
+            static_cast<SpecialAddressingMode>(bits.srcmode);
+
+        ret.data.operandType[1] = OperandType::DataRegister;
+        ret.data.addressingMode[1] =
+            static_cast<SpecialAddressingMode>(bits.datareg);
 
         ret.exec = instr::muls;
+
+        ret.string = "muls";
 
         return ret;
     }
@@ -43,11 +48,17 @@ namespace momiji::dec
 
         // Mul is always two bytes
         ret.data.size = 2;
-        ret.data.op1  = static_cast<OperandType>(bits.srctype);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
-        ret.data.op2  = OperandType::DataRegister;
-        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
-        ret.exec      = instr::mulu;
+
+        ret.data.operandType[0] = static_cast<OperandType>(bits.srctype);
+        ret.data.addressingMode[0] =
+            static_cast<SpecialAddressingMode>(bits.srcmode);
+
+        ret.data.operandType[1] = OperandType::DataRegister;
+        ret.data.addressingMode[1] =
+            static_cast<SpecialAddressingMode>(bits.datareg);
+        ret.exec = instr::mulu;
+
+        ret.string = "mulu";
 
         return ret;
     }

@@ -20,24 +20,30 @@ namespace momiji::dec
         switch (bits.mode)
         {
         case 0b01000:
-            ret.data.op1  = OperandType::DataRegister;
-            ret.data.op2  = OperandType::DataRegister;
-            ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.datareg);
-            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.addreg);
+            ret.data.operandType[0] = OperandType::DataRegister;
+            ret.data.operandType[1] = OperandType::DataRegister;
+            ret.data.addressingMode[0] =
+                static_cast<SpecialAddressingMode>(bits.datareg);
+            ret.data.addressingMode[1] =
+                static_cast<SpecialAddressingMode>(bits.addreg);
             break;
 
         case 0b01001:
-            ret.data.op1  = OperandType::AddressRegister;
-            ret.data.op2  = OperandType::AddressRegister;
-            ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.datareg);
-            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.addreg);
+            ret.data.operandType[0] = OperandType::AddressRegister;
+            ret.data.operandType[1] = OperandType::AddressRegister;
+            ret.data.addressingMode[0] =
+                static_cast<SpecialAddressingMode>(bits.datareg);
+            ret.data.addressingMode[1] =
+                static_cast<SpecialAddressingMode>(bits.addreg);
             break;
 
         case 0b10001:
-            ret.data.op1  = OperandType::DataRegister;
-            ret.data.op2  = OperandType::AddressRegister;
-            ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.datareg);
-            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.addreg);
+            ret.data.operandType[0] = OperandType::DataRegister;
+            ret.data.operandType[1] = OperandType::AddressRegister;
+            ret.data.addressingMode[0] =
+                static_cast<SpecialAddressingMode>(bits.datareg);
+            ret.data.addressingMode[1] =
+                static_cast<SpecialAddressingMode>(bits.addreg);
             break;
         }
 

@@ -1,15 +1,17 @@
 #include "exg.h"
 
-#include <iostream>
+#include "./Utils.h"
 
 namespace momiji::instr
 {
     momiji::System exg(momiji::System& sys, const InstructionData& instr)
     {
-        std::int32_t* srcreg     = nullptr;
-        const std::int8_t srcval = utils::to_val(instr.mod1);
+        auto& pc = sys.cpu.programCounter.address;
 
-        switch (instr.op1)
+        std::int32_t* srcreg     = nullptr;
+        const std::int8_t srcval = utils::to_val(instr.addressingMode[0]);
+
+        switch (instr.operandType[0])
         {
         case OperandType::DataRegister:
             srcreg = &sys.cpu.dataRegisters[srcval].value;
@@ -25,9 +27,9 @@ namespace momiji::instr
         }
 
         std::int32_t* dstreg     = nullptr;
-        const std::int8_t dstval = utils::to_val(instr.mod2);
+        const std::int8_t dstval = utils::to_val(instr.addressingMode[1]);
 
-        switch (instr.op2)
+        switch (instr.operandType[1])
         {
         case OperandType::DataRegister:
             dstreg = &sys.cpu.dataRegisters[dstval].value;
@@ -43,6 +45,10 @@ namespace momiji::instr
         }
 
         std::swap(*srcreg, *dstreg);
+
+        pc += 2;
+        pc += utils::isImmediate(instr, 0);
+        pc += utils::isImmediate(instr, 1);
 
         return sys;
     }

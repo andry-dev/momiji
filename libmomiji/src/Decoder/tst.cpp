@@ -21,8 +21,9 @@ namespace momiji::dec
 
         momiji::assignNormalSize(ret, bits.size);
 
-        ret.data.op1  = static_cast<OperandType>(bits.regtype);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.regmode);
+        ret.data.operandType[0] = static_cast<OperandType>(bits.regtype);
+        ret.data.addressingMode[0] =
+            static_cast<SpecialAddressingMode>(bits.regmode);
 
         ret.exec = instr::tst;
 

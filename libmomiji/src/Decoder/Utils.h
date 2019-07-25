@@ -21,4 +21,21 @@ namespace momiji
             break;
         }
     }
+
+    inline std::string dataTypeToString(int size)
+    {
+        switch (size)
+        {
+        case 1:
+            return ".b";
+
+        case 2:
+            return ".w";
+
+        case 4:
+            return ".l";
+        }
+
+        return "";
+    }
 } // namespace momiji

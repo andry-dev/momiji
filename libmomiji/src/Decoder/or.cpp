@@ -26,18 +26,22 @@ namespace momiji::dec
         // or d*, *
         if (bits.direction == 1)
         {
-            ret.data.op1  = OperandType::DataRegister;
-            ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.datareg);
-            ret.data.op2  = static_cast<OperandType>(bits.othtype);
-            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.othmode);
+            ret.data.operandType[0] = OperandType::DataRegister;
+            ret.data.addressingMode[0] =
+                static_cast<SpecialAddressingMode>(bits.datareg);
+            ret.data.operandType[1] = static_cast<OperandType>(bits.othtype);
+            ret.data.addressingMode[1] =
+                static_cast<SpecialAddressingMode>(bits.othmode);
         }
         // or *, d*
         else
         {
-            ret.data.op1  = static_cast<OperandType>(bits.othtype);
-            ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.othmode);
-            ret.data.op2  = OperandType::DataRegister;
-            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
+            ret.data.operandType[0] = static_cast<OperandType>(bits.othtype);
+            ret.data.addressingMode[0] =
+                static_cast<SpecialAddressingMode>(bits.othmode);
+            ret.data.operandType[1] = OperandType::DataRegister;
+            ret.data.addressingMode[1] =
+                static_cast<SpecialAddressingMode>(bits.datareg);
         }
 
         ret.exec = instr::or_instr;
@@ -59,11 +63,13 @@ namespace momiji::dec
 
         momiji::assignNormalSize(ret, bits.size);
 
-        ret.exec      = instr::ori;
-        ret.data.op1  = OperandType::Immediate;
-        ret.data.mod1 = SpecialAddressingMode::Immediate;
-        ret.data.op2  = static_cast<OperandType>(bits.dsttype);
-        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.dstmode);
+        ret.exec = instr::ori;
+
+        ret.data.operandType[0]    = OperandType::Immediate;
+        ret.data.addressingMode[0] = SpecialAddressingMode::Immediate;
+        ret.data.operandType[1]    = static_cast<OperandType>(bits.dsttype);
+        ret.data.addressingMode[1] =
+            static_cast<SpecialAddressingMode>(bits.dstmode);
 
         return ret;
     }

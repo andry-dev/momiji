@@ -16,8 +16,9 @@ namespace momiji::dec
         bits.regtype = (val & 0b00000000'00111000) >> 3;
         bits.regmode = (val & 0b00000000'00000111);
 
-        ret.data.op1  = static_cast<OperandType>(bits.regtype);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.regmode);
+        ret.data.operandType[0] = static_cast<OperandType>(bits.regtype);
+        ret.data.addressingMode[0] =
+            static_cast<SpecialAddressingMode>(bits.regmode);
 
         ret.exec = instr::jmp;
 
@@ -35,8 +36,9 @@ namespace momiji::dec
         bits.regtype = (val & 0b00000000'00111000) >> 3;
         bits.regmode = (val & 0b00000000'00000111);
 
-        ret.data.op1  = static_cast<OperandType>(bits.regtype);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.regmode);
+        ret.data.operandType[0] = static_cast<OperandType>(bits.regtype);
+        ret.data.addressingMode[0] =
+            static_cast<SpecialAddressingMode>(bits.regmode);
 
         ret.exec = instr::jsr;
 

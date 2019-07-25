@@ -14,15 +14,18 @@ namespace momiji::dec
         switch (controlcode)
         {
         case 0:
-            ret.exec = instr::hcf;
+            ret.exec   = instr::hcf;
+            ret.string = "hcf";
             break;
         case 1:
-            ret.exec = instr::handleBreakpoint;
+            ret.exec   = instr::handleBreakpoint;
+            ret.string = "breakpoint";
             break;
         }
 
         ret.data.size = 2;
-        ret.data.op1  = OperandType::Immediate;
+
+        ret.data.operandType[0] = OperandType::Immediate;
 
         return ret;
     }

@@ -102,6 +102,16 @@ namespace momiji
         {
             m_data = span;
         }
+
+        MemoryView(ConstMemoryView<Tag> mem)
+        {
+            std::uint8_t* begin = const_cast<std::uint8_t*>(mem.m_data.data());
+
+            m_data = { begin, mem.m_data.size() };
+        }
+
+      private:
+        friend class ConstMemoryView<Tag>;
     };
 
     template <typename Tag>
@@ -118,6 +128,9 @@ namespace momiji
         {
             m_data = span;
         }
+
+      private:
+        friend class MemoryView<Tag>;
     };
 
     using ExecutableMemory     = ModifiableMemory<details::ExecutableMemoryTag>;

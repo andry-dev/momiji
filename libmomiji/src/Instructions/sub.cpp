@@ -11,31 +11,37 @@ namespace momiji::instr
     // destination
     momiji::System sub(momiji::System& sys, const InstructionData& data)
     {
-        std::int32_t srcval = utils::readOperand1(sys, data);
+        auto& pc = sys.cpu.programCounter.address;
+
+        std::int32_t srcval = utils::readOperandVal(sys, data, 0);
 
         switch (data.size)
         {
         case 1:
         {
-            auto dst = utils::readDestOp8(sys, data);
+            auto dst = utils::readOperandPtr8(sys, data, 1);
             *dst     = *dst - (srcval & 0x0000'00FF);
         }
         break;
 
         case 2:
         {
-            auto dst = utils::readDestOp16(sys, data);
+            auto dst = utils::readOperandPtr16(sys, data, 1);
             *dst     = *dst - (srcval & 0x0000'FFFF);
         }
         break;
 
         case 4:
         {
-            auto dst = utils::readDestOp32(sys, data);
+            auto dst = utils::readOperandPtr32(sys, data, 1);
             *dst     = *dst - srcval;
         }
         break;
         }
+
+        pc += 2;
+        pc += utils::isImmediate(data, 0);
+        pc += utils::isImmediate(data, 1);
 
         return sys;
     }

@@ -13,7 +13,7 @@ namespace momiji::instr
 
     momiji::System hcf(momiji::System& sys, const InstructionData& instr)
     {
-        sys.cpu.programCounter.address = 0xFFFFFFFB;
+        sys.cpu.programCounter.address = 0xFFFFFFFF;
 
         return sys;
     }

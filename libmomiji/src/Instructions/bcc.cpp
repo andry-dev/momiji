@@ -8,15 +8,15 @@ namespace momiji::instr
     {
         const auto pc        = sys.cpu.programCounter.address;
         const auto memview   = momiji::make_memory_view(sys);
-        const auto condition = utils::to_val(data.op1);
-        std::int16_t offset  = utils::to_val(data.op2);
+        const auto condition = utils::to_val(data.operandType[0]);
+        std::int16_t offset  = utils::to_val(data.operandType[1]);
 
         bool skipTwoBytes = false;
 
         if (offset == 0)
         {
             skipTwoBytes = true;
-            offset       = utils::readFromMemory(memview, pc, 2);
+            offset       = sys.mem.read16(pc + 2);
         }
 
         const auto& statReg = sys.cpu.statusRegister;

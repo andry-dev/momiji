@@ -16,10 +16,51 @@ namespace momiji::dec
         bits.condition    = (val & 0b00001111'00000000) >> 8;
         bits.displacement = (val & 0b00000000'11111111);
 
-        ret.data.op1 = static_cast<OperandType>(bits.condition);
-        ret.data.op2 = static_cast<OperandType>(bits.displacement);
+        ret.data.operandType[0] = static_cast<OperandType>(bits.condition);
+        ret.data.operandType[1] = static_cast<OperandType>(bits.displacement);
 
         ret.exec = instr::bcc;
+
+        auto cond = static_cast<momiji::BranchConditions>(bits.condition);
+
+        switch (cond)
+        {
+        case BranchConditions::NotEqual:
+            ret.string = "bne";
+            break;
+
+        case BranchConditions::Equal:
+            ret.string = "beq";
+            break;
+
+        case BranchConditions::OverClear:
+            break;
+
+        case BranchConditions::OverSet:
+            break;
+
+        case BranchConditions::Plus:
+            break;
+
+        case BranchConditions::Minus:
+            break;
+
+        case BranchConditions::GreaterEq:
+            ret.string = "bge";
+            break;
+
+        case BranchConditions::LessThan:
+            ret.string = "blt";
+            break;
+
+        case BranchConditions::GreaterThan:
+            ret.string = "bgt";
+            break;
+
+        case BranchConditions::LessEq:
+            ret.string = "beq";
+            break;
+        }
 
         return ret;
     }

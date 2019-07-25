@@ -24,20 +24,26 @@ namespace momiji::dec
 
         if (bits.direction == 0)
         {
-            ret.data.op1  = static_cast<OperandType>(bits.othtype);
-            ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.othmode);
-            ret.data.op2  = OperandType::DataRegister;
-            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.datareg);
+            ret.data.operandType[0] = static_cast<OperandType>(bits.othtype);
+            ret.data.addressingMode[0] =
+                static_cast<SpecialAddressingMode>(bits.othmode);
+            ret.data.operandType[1] = OperandType::DataRegister;
+            ret.data.addressingMode[1] =
+                static_cast<SpecialAddressingMode>(bits.datareg);
         }
         else
         {
-            ret.data.op1  = OperandType::DataRegister;
-            ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.datareg);
-            ret.data.op2  = static_cast<OperandType>(bits.othtype);
-            ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.othmode);
+            ret.data.operandType[0] = OperandType::DataRegister;
+            ret.data.addressingMode[0] =
+                static_cast<SpecialAddressingMode>(bits.datareg);
+            ret.data.operandType[1] = static_cast<OperandType>(bits.othtype);
+            ret.data.addressingMode[1] =
+                static_cast<SpecialAddressingMode>(bits.othmode);
         }
 
         ret.exec = instr::add;
+
+        ret.string = "add" + dataTypeToString(ret.data.size);
 
         return ret;
     }
@@ -57,12 +63,16 @@ namespace momiji::dec
 
         ret.data.size = (bits.size == 0) ? 2 : 4;
 
-        ret.data.op1  = static_cast<OperandType>(bits.srctype);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(bits.srcmode);
-        ret.data.op2  = OperandType::AddressRegister;
-        ret.data.mod2 = static_cast<SpecialAddressingMode>(bits.addreg);
+        ret.data.operandType[0] = static_cast<OperandType>(bits.srctype);
+        ret.data.addressingMode[0] =
+            static_cast<SpecialAddressingMode>(bits.srcmode);
+        ret.data.operandType[1] = OperandType::AddressRegister;
+        ret.data.addressingMode[1] =
+            static_cast<SpecialAddressingMode>(bits.addreg);
 
         ret.exec = instr::adda;
+
+        ret.string = "adda" + dataTypeToString(ret.data.size);
 
         return ret;
     }
@@ -81,11 +91,14 @@ namespace momiji::dec
 
         momiji::assignNormalSize(ret, repr.size);
 
-        ret.exec      = instr::addi;
-        ret.data.op1  = OperandType::Immediate;
-        ret.data.mod1 = SpecialAddressingMode::Immediate;
-        ret.data.op2  = static_cast<OperandType>(repr.dsttype);
-        ret.data.mod2 = static_cast<SpecialAddressingMode>(repr.dstmode);
+        ret.exec                   = instr::addi;
+        ret.data.operandType[0]    = OperandType::Immediate;
+        ret.data.addressingMode[0] = SpecialAddressingMode::Immediate;
+        ret.data.operandType[1]    = static_cast<OperandType>(repr.dsttype);
+        ret.data.addressingMode[1] =
+            static_cast<SpecialAddressingMode>(repr.dstmode);
+
+        ret.string = "addi" + dataTypeToString(ret.data.size);
 
         return ret;
     }

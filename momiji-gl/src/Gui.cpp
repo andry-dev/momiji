@@ -25,6 +25,7 @@ void gui()
     momiji::EmulatorSettings emuSettings;
 
     emuSettings.retainStates = momiji::EmulatorSettings::RetainStates::Always;
+    emuSettings.stackSize    = momiji::utils::make_kb(1);
     // emuSettings.parserSettings.breakpoints = gsl::null_span{};
 
     momiji::Emulator emu { emuSettings };
@@ -223,13 +224,16 @@ void gui()
 
             if (states.size() > 1)
             {
-                const auto& lastSys = states.back();
+                auto& lastSys = states.back();
 
-                const momiji::ConstExecutableMemoryView memview = lastSys.mem;
+                momiji::ConstExecutableMemoryView memview = lastSys.mem;
                 const auto pc = lastSys.cpu.programCounter.address;
 
                 for (int i = 0; i < memview.size(); i += 2)
                 {
+                    momiji::DecodedInstruction instr =
+                        momiji::decode(memview, i);
+
                     std::uint8_t lower  = memview.read8(i);
                     std::uint8_t higher = 0;
 
@@ -243,7 +247,11 @@ void gui()
 
                     ImGui::TextUnformatted(pcadd == curradd ? "=>" : "  ");
                     ImGui::SameLine();
-                    ImGui::Text("%.8x: %x %x", i, higher, lower);
+                    ImGui::Text("%.8x: %.2x %.2x %s",
+                                i,
+                                higher,
+                                lower,
+                                instr.string.c_str());
                 }
             }
             else

@@ -840,7 +840,7 @@ namespace momiji
         };
     }
 
-    constexpr auto DataType(momiji::Instruction& instr)
+    constexpr auto ParseDataType(momiji::Instruction& instr)
     {
         return [&instr](std::string_view str) -> parser_metadata {
             constexpr auto inter_parser =
@@ -899,14 +899,14 @@ namespace momiji
     constexpr auto CommonInstructionParser(momiji::Instruction& instr)
     {
         return [&instr](std::string_view str) -> parser_metadata {
-            auto parser =
-                SeqNext(AlwaysTrue(DataType(instr)), // data type is optional
-                        Whitespace(),
-                        AnyOperand(instr, 0),
-                        AlwaysTrue(Whitespace()),
-                        Char(','),
-                        AlwaysTrue(Whitespace()),
-                        AnyOperand(instr, 1));
+            auto parser = SeqNext(
+                AlwaysTrue(ParseDataType(instr)), // data type is optional
+                Whitespace(),
+                AnyOperand(instr, 0),
+                AlwaysTrue(Whitespace()),
+                Char(','),
+                AlwaysTrue(Whitespace()),
+                AnyOperand(instr, 1));
 
             return parser(str);
         };
@@ -915,7 +915,7 @@ namespace momiji
     constexpr auto ImmediateInstructionParser(momiji::Instruction& instr)
     {
         return [&instr](std::string_view str) -> parser_metadata {
-            auto parser = SeqNext(AlwaysTrue(DataType(instr)),
+            auto parser = SeqNext(AlwaysTrue(ParseDataType(instr)),
                                   Whitespace(),
                                   OperandImmediate(instr, 0),
                                   AlwaysTrue(Whitespace()),

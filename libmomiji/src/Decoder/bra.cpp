@@ -15,9 +15,11 @@ namespace momiji::dec
 
         bits.displacement = (val & 0b00000000'11111111);
 
-        ret.data.op1 = static_cast<OperandType>(bits.displacement);
+        ret.data.operandType[0] = static_cast<OperandType>(bits.displacement);
 
         ret.exec = instr::bra;
+
+        ret.string = "bra";
 
         return ret;
     }
@@ -32,9 +34,11 @@ namespace momiji::dec
 
         bits.displacement = (val & 0b00000000'11111111);
 
-        ret.data.op1 = static_cast<OperandType>(bits.displacement);
+        ret.data.operandType[0] = static_cast<OperandType>(bits.displacement);
 
         ret.exec = instr::bsr;
+
+        ret.string = "bsr";
 
         return ret;
     }

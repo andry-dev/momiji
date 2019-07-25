@@ -10,14 +10,11 @@ namespace momiji
     {
         std::uint8_t size { 2 };
 
-        OperandType op1;
-        SpecialAddressingMode mod1;
-
-        OperandType op2;
-        SpecialAddressingMode mod2;
-
-        gsl::span<std::uint16_t> mem;
+        std::array<OperandType, 2> operandType;
+        std::array<SpecialAddressingMode, 2> addressingMode;
     };
+
+    using InstructionString = std::string;
 
     using DecodedInstructionFn =
         momiji::System (*)(momiji::System&, const InstructionData& data);
@@ -27,6 +24,7 @@ namespace momiji
         DecodedInstruction();
 
         InstructionData data;
+        InstructionString string;
         DecodedInstructionFn exec;
     };
 

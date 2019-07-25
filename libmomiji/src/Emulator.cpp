@@ -41,6 +41,7 @@ namespace momiji
         return false;
     }
 
+#if 0
     static void handlePC(System& newstate, const DecodedInstruction& instr)
     {
         if (!isJumpInstr(instr))
@@ -75,6 +76,7 @@ namespace momiji
             }
         }
     }
+#endif
 
     Emulator::Emulator()
         : m_systemStates(1)
@@ -201,7 +203,7 @@ namespace momiji
 
         instr.exec(lastSys, instr.data);
 
-        handlePC(lastSys, instr);
+        // handlePC(lastSys, instr);
 
         return true;
     }
@@ -216,7 +218,7 @@ namespace momiji
 
         instr.exec(newstate, instr.data);
 
-        handlePC(newstate, instr);
+        // handlePC(newstate, instr);
 
         m_systemStates.emplace_back(std::move(newstate));
 

@@ -163,7 +163,6 @@ namespace momiji
             // BSR
             case 0b01100001'00000000:
                 return momiji::dec::bsr(mem, idx);
-                break;
 
             // Bcc, probably
             default:

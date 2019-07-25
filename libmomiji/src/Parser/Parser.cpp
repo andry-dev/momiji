@@ -1,6 +1,5 @@
 #include <Parser.h>
 
-#include "Combinators.h"
 #include "Common.h"
 #include "Mappings.h"
 #include "Utils.h"
@@ -13,6 +12,8 @@
 #include <System.h>
 
 #include <asl/types>
+
+#include <momiji/Types.h>
 
 namespace momiji
 {
@@ -41,11 +42,48 @@ namespace momiji
                     SpecialAddressingMode::AbsoluteLong);
     }
 
-    static bool requiresImmediateData(const Operand& op)
+    static bool isInternal(const Instruction& instr)
     {
-        return isImmediate(op) ||
-               op.operandType == OperandType::AddressOffset ||
-               op.operandType == OperandType::AddressIndex;
+        return instr.instructionType == InstructionType::Breakpoint ||
+               instr.instructionType == InstructionType::HaltCatchFire;
+    }
+
+    static int requiresImmediateData(const Operand& op,
+                                     momiji::DataType dataType)
+    {
+        if ((op.operandType == OperandType::Immediate) &&
+            (op.specialAddressingMode == SpecialAddressingMode::Immediate))
+        {
+            switch (dataType)
+            {
+            case DataType::Byte:
+            case DataType::Word:
+                return 2;
+
+            case DataType::Long:
+                return 4;
+            }
+        }
+
+        if ((op.operandType == OperandType::Immediate) &&
+            (op.specialAddressingMode == SpecialAddressingMode::AbsoluteShort))
+        {
+            return 2;
+        }
+
+        if ((op.operandType == OperandType::Immediate) &&
+            (op.specialAddressingMode == SpecialAddressingMode::AbsoluteLong))
+        {
+            return 4;
+        }
+
+        if ((op.operandType == OperandType::AddressOffset) ||
+            (op.operandType == OperandType::AddressIndex))
+        {
+            return 2;
+        }
+
+        return 0;
     }
 
     static bool isBranchInstr(const Instruction& instr)
@@ -104,7 +142,8 @@ namespace momiji
                 auto instrword = Word()(tmp_str);
                 tmp_str        = instrword.rest;
 
-                // If we don't find an instruction, we just skip the line
+                // If we don't find an instruction, we just skip the
+                // line
                 if (!instrword.result)
                 {
                     auto skip_to_end = SkipLine()(tmp_str);
@@ -164,8 +203,8 @@ namespace momiji
                 ++line_count;
             }
 
-            // All the instructions are parsed now, we should resolve all
-            // label resolution issues
+            // All the instructions are parsed now, we should resolve
+            // all label resolution issues
             for (auto& x : instructions)
             {
                 for (int i = 0; i < x.operands.size(); ++i)
@@ -243,35 +282,29 @@ namespace momiji
                     break;
                 }
             }
+            else if (isInternal(instr))
+            {
+                program_counter += 4;
+            }
             else if (isBranchInstr(instr))
             {
+#ifdef LIBMOMIJI_CORRECT_BRA_IMPL
                 program_counter += 2;
                 if (instr.operands[0].value > 255)
                 {
                     program_counter += 2;
                 }
+#else
+                program_counter += 4;
+#endif
             }
             else
             {
                 program_counter += 2;
                 for (const auto& op : instr.operands)
                 {
-                    if (requiresImmediateData(op))
-                    {
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                            // 2 bytes of immediate data
-                            program_counter += 2;
-                            break;
-
-                        case DataType::Long:
-                            // 4 bytes of immediate data
-                            program_counter += 4;
-                            break;
-                        }
-                    }
+                    program_counter +=
+                        requiresImmediateData(op, instr.dataType);
                 }
             }
         }

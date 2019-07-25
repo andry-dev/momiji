@@ -6,11 +6,13 @@ namespace momiji::instr
 {
     momiji::System cmp(momiji::System& sys, const InstructionData& instr)
     {
+        auto& pc = sys.cpu.programCounter.address;
+
         std::int32_t srcreg = 0;
 
-        const std::uint8_t srcval = utils::to_val(instr.mod1);
+        const std::uint8_t srcval = utils::to_val(instr.addressingMode[0]);
 
-        switch (instr.op1)
+        switch (instr.operandType[0])
         {
         case OperandType::DataRegister:
             srcreg = sys.cpu.dataRegisters[srcval].value;
@@ -24,7 +26,7 @@ namespace momiji::instr
         // ""Destination"" register is a Data Register
         // The real modification happens in the status register
 
-        const std::int8_t dstval = utils::to_val(instr.mod2);
+        const std::int8_t dstval = utils::to_val(instr.addressingMode[1]);
         std::int32_t dstreg      = sys.cpu.dataRegisters[dstval].value;
 
         switch (instr.size)
@@ -47,16 +49,20 @@ namespace momiji::instr
         sys.cpu.statusRegister.overflow =
             utils::sub_overflow(dstreg, srcreg) ? 1 : 0;
 
+        pc += 2;
+        pc += utils::isImmediate(instr, 0);
+
         return sys;
     }
 
     momiji::System cmpa(momiji::System& sys, const InstructionData& instr)
     {
+        auto& pc            = sys.cpu.programCounter.address;
         std::int32_t srcreg = 0;
 
-        const std::uint8_t srcval = utils::to_val(instr.mod1);
+        const std::uint8_t srcval = utils::to_val(instr.addressingMode[0]);
 
-        switch (instr.op1)
+        switch (instr.operandType[0])
         {
         case OperandType::DataRegister:
             srcreg = sys.cpu.dataRegisters[srcval].value;
@@ -70,7 +76,7 @@ namespace momiji::instr
         // ""Destination"" register is an Address Register
         // The real modification happens in the status register
 
-        const std::int8_t dstval = utils::to_val(instr.mod2);
+        const std::int8_t dstval = utils::to_val(instr.addressingMode[1]);
         std::int32_t dstreg      = sys.cpu.addressRegisters[dstval].value;
 
         switch (instr.size)
@@ -93,19 +99,23 @@ namespace momiji::instr
         sys.cpu.statusRegister.overflow =
             utils::sub_overflow(dstreg, srcreg) ? 1 : 0;
 
+        pc += 2;
+        pc += utils::isImmediate(instr, 0);
+        pc += utils::isImmediate(instr, 1);
+
         return sys;
     }
 
     momiji::System cmpi(momiji::System& sys, const InstructionData& instr)
     {
-        auto pc = sys.cpu.programCounter.address;
+        auto& pc = sys.cpu.programCounter.address;
 
         auto memview = momiji::make_memory_view(sys);
 
-        const std::int8_t dstval = utils::to_val(instr.mod2);
+        const std::int8_t dstval = utils::to_val(instr.addressingMode[1]);
         std::int32_t dstreg      = sys.cpu.dataRegisters[dstval].value;
 
-        switch (instr.op2)
+        switch (instr.operandType[1])
         {
         case OperandType::DataRegister:
             dstreg = sys.cpu.dataRegisters[dstval].value;
@@ -143,6 +153,10 @@ namespace momiji::instr
         sys.cpu.statusRegister.zero     = (res == 0) ? 1 : 0;
         sys.cpu.statusRegister.overflow =
             utils::sub_overflow(dstreg, srcval) ? 1 : 0;
+
+        pc += 2;
+        pc += utils::isImmediate(instr, 0);
+        pc += utils::isImmediate(instr, 1);
 
         return sys;
     }

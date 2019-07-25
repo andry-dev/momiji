@@ -6,7 +6,7 @@ namespace momiji::instr
 {
     momiji::System bra(momiji::System& sys, const InstructionData& data)
     {
-        std::int16_t offset = utils::to_val(data.op1);
+        std::int16_t offset = utils::to_val(data.operandType[0]);
 
         auto& pc = sys.cpu.programCounter.address;
 
@@ -31,7 +31,7 @@ namespace momiji::instr
 
         sys.mem.write32(pc, sp);
 
-        std::int16_t offset = utils::to_val(data.op1);
+        std::int16_t offset = utils::to_val(data.operandType[0]);
 
         if (offset == 0)
         {

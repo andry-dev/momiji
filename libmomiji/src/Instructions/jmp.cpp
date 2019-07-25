@@ -8,9 +8,9 @@ namespace momiji::instr
                                                  const InstructionData& instr)
     {
         const auto& pc             = sys.cpu.programCounter.address;
-        const std::uint32_t regnum = utils::to_val(instr.mod1);
+        const std::uint32_t regnum = utils::to_val(instr.addressingMode[0]);
 
-        switch (instr.op1)
+        switch (instr.operandType[0])
         {
         // (a*)
         case OperandType::Address:
@@ -55,7 +55,7 @@ namespace momiji::instr
         break;
 
         case OperandType::Immediate:
-            switch (instr.mod1)
+            switch (instr.addressingMode[0])
             {
             case SpecialAddressingMode::AbsoluteShort:
                 return utils::readImmediateFromPC(sys.mem, pc, 2);

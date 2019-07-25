@@ -98,7 +98,13 @@ namespace momiji::details
             case SpecialAddressingMode::Immediate:
                 instr.instructionType = InstructionType::AddI;
                 break;
+
+            default:
+                break;
             }
+            break;
+
+        default:
             break;
         }
 
@@ -537,7 +543,7 @@ namespace momiji::details
     parser_metadata
     parseDeclare(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
-        parser_metadata res = (DataType(instr))(str);
+        parser_metadata res = (ParseDataType(instr))(str);
 
         instr.instructionType = InstructionType::Declare;
 

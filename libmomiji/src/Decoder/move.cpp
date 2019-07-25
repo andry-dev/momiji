@@ -5,6 +5,8 @@
 
 #include "../Instructions/Representations.h"
 
+#include "./Utils.h"
+
 namespace momiji::dec
 {
     DecodedInstruction move(ExecutableMemoryView mem, std::uint64_t idx)
@@ -40,11 +42,15 @@ namespace momiji::dec
             return ret;
         }
 
-        ret.data.op1  = static_cast<OperandType>(repr.srctype);
-        ret.data.mod1 = static_cast<SpecialAddressingMode>(repr.srcmode);
-        ret.data.op2  = static_cast<OperandType>(repr.dsttype);
-        ret.data.mod2 = static_cast<SpecialAddressingMode>(repr.dstmode);
-        ret.exec      = momiji::instr::move;
+        ret.data.operandType[0] = static_cast<OperandType>(repr.srctype);
+        ret.data.addressingMode[0] =
+            static_cast<SpecialAddressingMode>(repr.srcmode);
+        ret.data.operandType[1] = static_cast<OperandType>(repr.dsttype);
+        ret.data.addressingMode[1] =
+            static_cast<SpecialAddressingMode>(repr.dstmode);
+        ret.exec = momiji::instr::move;
+
+        ret.string = "move" + dataTypeToString(ret.data.size);
 
         return ret;
     }
