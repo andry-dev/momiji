@@ -12,10 +12,10 @@ namespace momiji
     {
         inline int isImmediate(const InstructionData& instr, int op)
         {
-            if (instr.operandType[op] == OperandType::Immediate &&
-                instr.addressingMode[op] == SpecialAddressingMode::Immediate)
+            if ((instr.operandType[op] == OperandType::Immediate) &&
+                (instr.addressingMode[op] == SpecialAddressingMode::Immediate))
             {
-                if (instr.size == 1 || instr.size == 2)
+                if ((instr.size == 1) || (instr.size == 2))
                 {
                     return 2;
                 }
@@ -32,8 +32,9 @@ namespace momiji
                 return 2;
             }
 
-            if (instr.operandType[op] == OperandType::Immediate &&
-                instr.addressingMode[op] == SpecialAddressingMode::AbsoluteLong)
+            if ((instr.operandType[op] == OperandType::Immediate) &&
+                (instr.addressingMode[op] ==
+                 SpecialAddressingMode::AbsoluteLong))
             {
                 return 4;
             }
@@ -45,6 +46,16 @@ namespace momiji
             }
 
             return 0;
+        }
+
+        inline int resolveOp1Size(const InstructionData& instr, int op)
+        {
+            if (op == 0)
+            {
+                return 0;
+            }
+
+            return isImmediate(instr, 0);
         }
 
         inline std::int32_t readImmediateFromPC(ExecutableMemoryView base,
@@ -244,7 +255,7 @@ namespace momiji
             // offset(a*)
             case OperandType::AddressOffset:
                 tmp = readImmediateFromPC(
-                    sys.mem, pc + isImmediate(instr, op), 2);
+                    sys.mem, pc + resolveOp1Size(instr, op), 2);
                 tmp += sys.cpu.addressRegisters[regnum].value;
                 val = reinterpret_cast<std::int8_t*>(sys.mem.data() + tmp);
                 break;
@@ -253,7 +264,7 @@ namespace momiji
             case OperandType::AddressIndex:
             {
                 tmp = readImmediateFromPC(
-                    sys.mem, pc + isImmediate(instr, op), 2);
+                    sys.mem, pc + resolveOp1Size(instr, op), 2);
 
                 const std::uint8_t newreg = (tmp & 0xF000) >> 12;
                 const std::uint8_t index  = (tmp & 0x00FF);
@@ -281,7 +292,7 @@ namespace momiji
                 case SpecialAddressingMode::AbsoluteShort:
                 {
                     tmp = readImmediateFromPC(
-                        sys.mem, pc + isImmediate(instr, op), 2);
+                        sys.mem, pc + resolveOp1Size(instr, op), 2);
 
                     tmp = utils::sign_extend<std::int16_t>(tmp);
                     val = reinterpret_cast<std::int8_t*>(sys.mem.data() + tmp);
@@ -291,7 +302,7 @@ namespace momiji
                 case SpecialAddressingMode::AbsoluteLong:
                 {
                     tmp = readImmediateFromPC(
-                        sys.mem, pc + isImmediate(instr, op), 4);
+                        sys.mem, pc + resolveOp1Size(instr, op), 4);
 
                     val = reinterpret_cast<std::int8_t*>(sys.mem.data() + tmp);
                 }
@@ -358,7 +369,7 @@ namespace momiji
             // index(a*)
             case OperandType::AddressOffset:
                 tmp = readImmediateFromPC(
-                    sys.mem, pc + isImmediate(instr, op), 2);
+                    sys.mem, pc + resolveOp1Size(instr, op), 2);
                 tmp += sys.cpu.addressRegisters[regnum].value;
                 val = reinterpret_cast<std::int16_t*>(sys.mem.data() + tmp);
                 break;
@@ -367,7 +378,7 @@ namespace momiji
             case OperandType::AddressIndex:
             {
                 tmp = readImmediateFromPC(
-                    sys.mem, pc + isImmediate(instr, op), 2);
+                    sys.mem, pc + resolveOp1Size(instr, op), 2);
 
                 const std::uint8_t newreg = (tmp & 0xF000) >> 12;
                 const std::uint8_t index  = (tmp & 0x00FF);
@@ -399,7 +410,7 @@ namespace momiji
                 case SpecialAddressingMode::AbsoluteShort:
                 {
                     std::uint32_t addr = readImmediateFromPC(
-                        sys.mem, pc + isImmediate(instr, op), 2);
+                        sys.mem, pc + resolveOp1Size(instr, op), 2);
 
                     addr = utils::sign_extend<std::int16_t>(addr);
                     val =
@@ -410,7 +421,7 @@ namespace momiji
                 case SpecialAddressingMode::AbsoluteLong:
                 {
                     std::uint32_t addr = readImmediateFromPC(
-                        sys.mem, pc + isImmediate(instr, op), 4);
+                        sys.mem, pc + resolveOp1Size(instr, op), 4);
 
                     val =
                         reinterpret_cast<std::int16_t*>(sys.mem.data() + addr);
@@ -472,7 +483,7 @@ namespace momiji
             // index(a*)
             case OperandType::AddressOffset:
                 tmp = readImmediateFromPC(
-                    sys.mem, pc + isImmediate(instr, op), 2);
+                    sys.mem, pc + resolveOp1Size(instr, op), 2);
 
                 tmp += sys.cpu.addressRegisters[regnum].value;
                 val = reinterpret_cast<std::int32_t*>(sys.mem.data() + tmp);
@@ -482,7 +493,7 @@ namespace momiji
             case OperandType::AddressIndex:
             {
                 std::uint16_t tmp = readImmediateFromPC(
-                    sys.mem, pc + isImmediate(instr, op), 2);
+                    sys.mem, pc + resolveOp1Size(instr, op), 2);
 
                 const std::uint8_t newreg = (tmp & 0xF000) >> 12;
                 const std::uint8_t index  = (tmp & 0x00FF);
@@ -514,7 +525,7 @@ namespace momiji
                 case SpecialAddressingMode::AbsoluteShort:
                 {
                     std::uint32_t addr = readImmediateFromPC(
-                        sys.mem, pc + isImmediate(instr, op), 2);
+                        sys.mem, pc + resolveOp1Size(instr, op), 2);
 
                     addr = utils::sign_extend<std::int16_t>(addr);
                     val =
@@ -525,7 +536,7 @@ namespace momiji
                 case SpecialAddressingMode::AbsoluteLong:
                 {
                     std::uint32_t addr = readImmediateFromPC(
-                        sys.mem, pc + isImmediate(instr, op), 4);
+                        sys.mem, pc + resolveOp1Size(instr, op), 4);
                     val =
                         reinterpret_cast<std::int32_t*>(sys.mem.data() + addr);
                 }
