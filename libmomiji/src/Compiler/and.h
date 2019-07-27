@@ -34,6 +34,8 @@ namespace momiji
 
         bits.size = utils::to_val(instr.dataType) & 0b11;
 
+        handleAdditionalData(instr, additionalData);
+
         opcode.val = (bits.header << 12) | (bits.datareg << 9) |
                      (bits.direction << 8) | (bits.size << 6) |
                      (bits.othtype << 3) | (bits.othmode);
@@ -53,6 +55,8 @@ namespace momiji
 
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1);
+
+        handleAdditionalData(instr, additionalData);
 
         opcode.val = (bits.header << 8) | (bits.size << 6) |
                      (bits.dsttype << 3) | (bits.dstmode);

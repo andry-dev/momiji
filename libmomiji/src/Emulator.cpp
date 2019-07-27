@@ -112,8 +112,15 @@ namespace momiji
         {
             auto mem = momiji::compile(*res);
 
+            if (m_settings.stackSize & 0b1)
+            {
+                ++m_settings.stackSize;
+            }
+
             // this is fine
-            mem.underlying().resize(mem.size() + m_settings.stackSize, 0);
+            mem.stackMarker.begin = mem.size();
+            mem.stackMarker.end = mem.stackMarker.begin + m_settings.stackSize;
+            mem.underlying().resize(mem.stackMarker.end, 0);
 
             auto lastSys = m_systemStates.back();
             lastSys.mem  = std::move(mem);

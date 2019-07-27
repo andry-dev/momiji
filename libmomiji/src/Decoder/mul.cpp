@@ -3,6 +3,8 @@
 #include "../Instructions/Representations.h"
 #include "../Instructions/mul.h"
 
+#include "./Utils.h"
+
 namespace momiji::dec
 {
     DecodedInstruction muls(ExecutableMemoryView mem, std::uint64_t idx)
@@ -29,7 +31,7 @@ namespace momiji::dec
 
         ret.exec = instr::muls;
 
-        ret.string = "muls";
+        ret.string = "muls " + commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
@@ -58,7 +60,7 @@ namespace momiji::dec
             static_cast<SpecialAddressingMode>(bits.datareg);
         ret.exec = instr::mulu;
 
-        ret.string = "mulu";
+        ret.string = "mulu " + commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }

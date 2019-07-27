@@ -53,12 +53,11 @@ void gui()
     tewi::Sprite<def_tag> background { glm::vec2 { 0.0f, 0.0f },
                                        "res/bgimage.png" };
 
-    using BatchRenderer2D = tewi::Renderer2D<def_tag, tewi::BatchRenderer2D>;
     momiji::renderer<def_tag> renderer {};
 
     auto shader = renderer.createShaderProgram();
 
-    auto proj     = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+    auto proj     = glm::ortho(0.0f, 1024.0f, 0.0f, 768.0f);
     glm::mat4 MVP = proj;
 
     while (!win.isClosed())
@@ -186,16 +185,17 @@ void gui()
         }
 
         {
-            ImGui::Begin("Emulator Settings");
+            ImGui::Begin(
+                "Emulator Settings", 0, ImGuiWindowFlags_AlwaysAutoResize);
 
-            static std::array<std::string_view, 3> possibleSettingsStr { {
+            static std::array<std::string_view, 2> possibleSettingsStr { {
                 "Always",
                 "Never",
             } };
 
             ImGui::TextUnformatted("Retain states");
 
-            if (ImGui::BeginCombo("", emuSettings.toString().data()))
+            if (ImGui::BeginCombo("##cb_states", emuSettings.toString().data()))
             {
                 if (ImGui::Selectable(possibleSettingsStr[0].data()))
                 {
@@ -212,6 +212,13 @@ void gui()
                 }
 
                 ImGui::EndCombo();
+            }
+
+            ImGui::TextUnformatted("Stack size (Bytes)");
+
+            if (ImGui::InputInt("##in_size", (int*)&emuSettings.stackSize, 0))
+            {
+                emu.loadNewSettings(emuSettings);
             }
 
             ImGui::End();

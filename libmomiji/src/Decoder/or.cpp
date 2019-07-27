@@ -46,6 +46,9 @@ namespace momiji::dec
 
         ret.exec = instr::or_instr;
 
+        ret.string = "or" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
+
         return ret;
     }
 
@@ -70,6 +73,9 @@ namespace momiji::dec
         ret.data.operandType[1]    = static_cast<OperandType>(bits.dsttype);
         ret.data.addressingMode[1] =
             static_cast<SpecialAddressingMode>(bits.dstmode);
+
+        ret.string = "ori" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }

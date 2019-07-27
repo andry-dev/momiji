@@ -29,4 +29,55 @@ namespace momiji
     };
 
     DecodedInstruction decode(ExecutableMemoryView mem, std::uint64_t idx);
+
+    namespace utils
+    {
+        inline int isImmediate(const momiji::InstructionData& instr, int op)
+        {
+            if ((instr.operandType[op] == OperandType::Immediate) &&
+                (instr.addressingMode[op] == SpecialAddressingMode::Immediate))
+            {
+                if ((instr.size == 1) || (instr.size == 2))
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 4;
+                }
+            }
+
+            if (instr.operandType[op] == OperandType::Immediate &&
+                instr.addressingMode[op] ==
+                    SpecialAddressingMode::AbsoluteShort)
+            {
+                return 2;
+            }
+
+            if ((instr.operandType[op] == OperandType::Immediate) &&
+                (instr.addressingMode[op] ==
+                 SpecialAddressingMode::AbsoluteLong))
+            {
+                return 4;
+            }
+
+            if ((instr.operandType[op] == OperandType::AddressOffset) ||
+                (instr.operandType[op] == OperandType::AddressIndex))
+            {
+                return 2;
+            }
+
+            return 0;
+        }
+
+        inline int resolveOp1Size(const momiji::InstructionData& instr, int op)
+        {
+            if (op == 0)
+            {
+                return 0;
+            }
+
+            return isImmediate(instr, 0);
+        }
+    } // namespace utils
 } // namespace momiji

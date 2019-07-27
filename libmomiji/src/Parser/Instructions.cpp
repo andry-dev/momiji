@@ -370,7 +370,6 @@ namespace momiji::details
     {
         instr.instructionType = InstructionType::Tst;
         return OneRegisterInstructionParser(instr)(str);
-        ;
     }
 
     parser_metadata
@@ -519,25 +518,33 @@ namespace momiji::details
     parser_metadata
     parseAsl(std::string_view str, Instruction& instr, LabelInfo&)
     {
-        return { false, str, "", {} };
+        instr.instructionType = InstructionType::ArithmeticShiftLeft;
+
+        return ShiftInstructionParser(instr)(str);
     }
 
     parser_metadata
     parseAsr(std::string_view str, Instruction& instr, LabelInfo&)
     {
-        return { false, str, "", {} };
+        instr.instructionType = InstructionType::ArithmeticShiftRight;
+
+        return ShiftInstructionParser(instr)(str);
     }
 
     parser_metadata
     parseLsl(std::string_view str, Instruction& instr, LabelInfo&)
     {
-        return { false, str, "", {} };
+        instr.instructionType = InstructionType::LogicalShiftLeft;
+
+        return ShiftInstructionParser(instr)(str);
     }
 
     parser_metadata
     parseLsr(std::string_view str, Instruction& instr, LabelInfo&)
     {
-        return { false, str, "", {} };
+        instr.instructionType = InstructionType::LogicalShiftRight;
+
+        return ShiftInstructionParser(instr)(str);
     }
 
     parser_metadata

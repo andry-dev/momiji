@@ -3,6 +3,8 @@
 #include "../Instructions/Representations.h"
 #include "../Instructions/jmp.h"
 
+#include "./Utils.h"
+
 namespace momiji::dec
 {
     DecodedInstruction jmp(ExecutableMemoryView mem, std::uint64_t idx)
@@ -21,6 +23,8 @@ namespace momiji::dec
             static_cast<SpecialAddressingMode>(bits.regmode);
 
         ret.exec = instr::jmp;
+
+        ret.string = "jmp " + opToString(ret.data, 0, mem, idx);
 
         return ret;
     }
@@ -41,6 +45,8 @@ namespace momiji::dec
             static_cast<SpecialAddressingMode>(bits.regmode);
 
         ret.exec = instr::jsr;
+
+        ret.string = "jsr " + opToString(ret.data, 0, mem, idx);
 
         return ret;
     }

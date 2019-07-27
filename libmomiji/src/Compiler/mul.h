@@ -20,21 +20,7 @@ namespace momiji
         bits.srctype = utils::to_val(instr.operands[0].operandType);
         bits.srcmode = getCorrectOpMode(instr, 0);
 
-        switch (instr.operands[0].operandType)
-        {
-        case OperandType::Immediate:
-            switch (instr.operands[0].specialAddressingMode)
-            {
-            case SpecialAddressingMode::Immediate:
-                additionalData[0].val = instr.operands[0].value;
-                additionalData[0].cnt = 2;
-                break;
-            }
-            break;
-
-        default:
-            break;
-        }
+        handleAdditionalData(instr, additionalData);
 
         opcode.val = (bits.header << 12) | (bits.datareg << 9) |
                      (bits.padding << 6) | (bits.srctype << 3) | (bits.srcmode);
@@ -51,21 +37,7 @@ namespace momiji
         bits.srctype = utils::to_val(instr.operands[0].operandType);
         bits.srcmode = getCorrectOpMode(instr, 0);
 
-        switch (instr.operands[0].operandType)
-        {
-        case OperandType::Immediate:
-            switch (instr.operands[0].specialAddressingMode)
-            {
-            case SpecialAddressingMode::Immediate:
-                additionalData[0].val = instr.operands[0].value;
-                additionalData[0].cnt = 2;
-                break;
-            }
-            break;
-
-        default:
-            break;
-        }
+        handleAdditionalData(instr, additionalData);
 
         opcode.val = (bits.header << 12) | (bits.datareg << 9) |
                      (bits.padding << 6) | (bits.srctype << 3) | (bits.srcmode);

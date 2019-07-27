@@ -45,7 +45,8 @@ namespace momiji::dec
 
         ret.exec = instr::sub;
 
-        ret.string = "sub" + dataTypeToString(ret.data.size);
+        ret.string = "sub" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
@@ -73,7 +74,8 @@ namespace momiji::dec
 
         ret.exec = instr::suba;
 
-        ret.string = "suba" + dataTypeToString(ret.data.size);
+        ret.string = "suba" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
@@ -99,7 +101,8 @@ namespace momiji::dec
         ret.data.addressingMode[1] =
             static_cast<SpecialAddressingMode>(bits.dstmode);
 
-        ret.string = "subi" + dataTypeToString(ret.data.size);
+        ret.string = "subi" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }

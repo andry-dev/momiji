@@ -13,6 +13,7 @@ target_sources(libmomiji
     src/Parser/Parser.cpp
     src/Parser/Instructions.cpp
     src/Compiler/Compiler.cpp
+
     src/Decoder/Decoder.cpp
     src/Decoder/move.cpp
     src/Decoder/add.cpp
@@ -23,6 +24,7 @@ target_sources(libmomiji
     src/Decoder/tst.cpp
     src/Decoder/or.cpp
     src/Decoder/and.cpp
+    src/Decoder/not.cpp
     src/Decoder/exg.cpp
     src/Decoder/bra.cpp
     src/Decoder/bcc.cpp

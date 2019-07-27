@@ -130,4 +130,16 @@ namespace momiji
         }
     }
 
+    inline bool discriminateShifts(const Instruction& instr)
+    {
+        if ((instr.operands[0].operandType != OperandType::DataRegister) &&
+            ((instr.operands[0].operandType != OperandType::Immediate) &&
+             (instr.operands[0].specialAddressingMode !=
+              SpecialAddressingMode::Immediate)))
+        {
+            return false;
+        }
+
+        return true;
+    }
 } // namespace momiji

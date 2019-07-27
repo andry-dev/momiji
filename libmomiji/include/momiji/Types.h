@@ -10,9 +10,12 @@ namespace momiji
         Add,  // add.*
         AddI, // addi.*
         AddA, // adda.*
+        AddQ, // addq
+
         Sub,  // sub.*
         SubI, // subi.*
         SubA, // suba.*
+        SubQ, // subq
 
         SignedMul,   // muls
         UnsignedMul, // mulu
@@ -24,35 +27,40 @@ namespace momiji
 
         Move,      // move.*
         MoveQuick, // moveq
-        MoveAddress,
 
-        Or,
-        OrI,
-        And,
-        AndI,
-        Xor,
-        XorI,
-        Not,
-        Neg,
+        Or,  // or
+        OrI, // ori
 
-        Compare,
-        CompareI,
-        CompareA,
-        Tst,
+        And,  // and
+        AndI, // andi
 
-        Jmp,
-        JmpSubroutine,
-        Branch,
-        BranchSubroutine,
-        BranchCondition,
-        ReturnSubroutine,
+        Xor,  // eor
+        XorI, // eori
 
-        ArithmeticShiftLeft,
-        ArithmeticShiftRight,
-        LogicalShiftLeft,
-        LogicalShiftRight,
+        Not, // not
+        Neg, // noti
 
-        Nop,
+        Compare,  // cmp
+        CompareI, // cmpi
+        CompareA, // cmpa
+
+        Tst, // tst
+
+        Jmp,           // jmp
+        JmpSubroutine, // jsr
+
+        Branch,           // bra
+        BranchSubroutine, // bsr
+        BranchCondition,  // bcc
+
+        ReturnSubroutine, // rts
+
+        ArithmeticShiftLeft,  // asl
+        ArithmeticShiftRight, // asr
+        LogicalShiftLeft,     // lsl
+        LogicalShiftRight,    // lsr
+
+        Nop, // nop
         Illegal,
 
         // Specific to momiji

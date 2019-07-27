@@ -19,7 +19,14 @@ namespace momiji::dec
 
         ret.exec = instr::bra;
 
-        ret.string = "bra";
+        std::int16_t displ = bits.displacement;
+
+        if (displ == 0)
+        {
+            displ = mem.read16(idx + 2);
+        }
+
+        ret.string = "bra " + std::to_string(displ);
 
         return ret;
     }
@@ -38,7 +45,14 @@ namespace momiji::dec
 
         ret.exec = instr::bsr;
 
-        ret.string = "bsr";
+        std::int16_t displ = bits.displacement;
+
+        if (displ == 0)
+        {
+            displ = mem.read16(idx + 2);
+        }
+
+        ret.string = "bsr " + std::to_string(displ);
 
         return ret;
     }

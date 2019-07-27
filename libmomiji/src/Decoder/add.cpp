@@ -43,7 +43,8 @@ namespace momiji::dec
 
         ret.exec = instr::add;
 
-        ret.string = "add" + dataTypeToString(ret.data.size);
+        ret.string = "add" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
@@ -72,7 +73,8 @@ namespace momiji::dec
 
         ret.exec = instr::adda;
 
-        ret.string = "adda" + dataTypeToString(ret.data.size);
+        ret.string = "adda" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
@@ -98,7 +100,8 @@ namespace momiji::dec
         ret.data.addressingMode[1] =
             static_cast<SpecialAddressingMode>(repr.dstmode);
 
-        ret.string = "addi" + dataTypeToString(ret.data.size);
+        ret.string = "addi" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }

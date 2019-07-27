@@ -942,9 +942,26 @@ namespace momiji
     constexpr auto OneRegisterInstructionParser(momiji::Instruction& instr)
     {
         return [&instr](std::string_view str) -> parser_metadata {
-            auto parser = SeqNext(Whitespace(), AnyRegister(instr, 0));
+            auto parser = SeqNext(AlwaysTrue(ParseDataType(instr)),
+                                  Whitespace(),
+                                  AnyRegister(instr, 0));
 
             return parser(str);
+        };
+    }
+
+    constexpr auto ShiftInstructionParser(momiji::Instruction& instr)
+    {
+        return [&instr](std::string_view str) -> parser_metadata {
+            auto tryRegMode = CommonInstructionParser(instr)(str);
+            if (tryRegMode.result)
+            {
+                return tryRegMode;
+            }
+
+            auto tryMemMode = SeqNext(Whitespace(), AnyOperand(instr, 0));
+
+            return tryMemMode(str);
         };
     }
 } // namespace momiji

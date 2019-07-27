@@ -45,6 +45,9 @@ namespace momiji::dec
 
         ret.exec = instr::and_instr;
 
+        ret.string = "and" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
+
         return ret;
     }
 
@@ -61,6 +64,15 @@ namespace momiji::dec
 
         ret.data.operandType[0]    = OperandType::Immediate;
         ret.data.addressingMode[0] = SpecialAddressingMode::Immediate;
+
+        ret.data.operandType[1] = OperandType::DataRegister;
+        ret.data.addressingMode[1] =
+            static_cast<SpecialAddressingMode>(bits.dsttype);
+
+        ret.exec = instr::andi;
+
+        ret.string = "andi" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }

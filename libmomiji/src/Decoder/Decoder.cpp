@@ -16,9 +16,14 @@
 #include "jmp.h"
 #include "move.h"
 #include "mul.h"
+#include "not.h"
 #include "or.h"
+#include "rod.h"
+#include "roxd.h"
 #include "rts.h"
+#include "shifts.h"
 #include "sub.h"
+#include "swap.h"
 #include "tst.h"
 
 namespace momiji
@@ -122,10 +127,12 @@ namespace momiji
             case 0b01000110'00000000:
             case 0b01000110'01000000:
             case 0b01000110'10000000:
+                // return momiji::dec::not_instr(mem, idx);
                 break;
 
             // SWAP / PEA
             case 0b01001000'01000000:
+                // return momiji::dec::swap(mem, idx);
                 break;
 
             // RTE / RTS / TRAPV / RTR
@@ -172,6 +179,7 @@ namespace momiji
 
         // MOVEQ
         case 0b011100000'00000000:
+            // return momiji::dec::moveq(mem, idx);
             break;
         }
 
@@ -247,11 +255,16 @@ namespace momiji
         // Used to discriminate between AND or EXG
         constexpr std::uint16_t exgmask = 0b11110001'11001000;
 
-        switch (mem.read16(idx) & firstmask)
+        constexpr std::uint16_t memshiftmask = 0b11111111'11000000;
+        constexpr std::uint16_t regshiftmask = 0b11110001'00111000;
+
+        const std::int16_t val = mem.read16(idx);
+
+        switch (val & firstmask)
         {
         // MULU / MULS
         case 0b11000000'11000000:
-            switch (mem.read16(idx) & mulmask)
+            switch (val & mulmask)
             {
             // MULU
             case 0b11000000'11000000:
@@ -266,7 +279,7 @@ namespace momiji
         case 0b11000000'00000000:
         case 0b11000000'01000000:
         case 0b11000000'10000000:
-            switch (mem.read16(idx) & exgmask)
+            switch (val & exgmask)
             {
             // Probably an EXG
             case 0b11000001'01000000:
@@ -289,6 +302,66 @@ namespace momiji
         // ADDA
         case 0b11010000'11000000:
             return momiji::dec::adda(mem, idx);
+        }
+
+        // Memory Shifts
+        switch (val & memshiftmask)
+        {
+        // AS* (mem)
+        case 0b11100000'11000000:
+        case 0b11100001'11000000:
+            return momiji::dec::any_mem_shift<
+                dec::details::ArithmeticShiftMetaType>(mem, idx);
+
+        // LS* (mem)
+        case 0b11100010'11000000:
+        case 0b11100011'11000000:
+            return momiji::dec::any_mem_shift<
+                dec::details::LogicalShiftMetaType>(mem, idx);
+
+        // ROX* (mem)
+        case 0b11100100'11000000:
+        case 0b11100101'11000000:
+            // return momiji::dec::mem_roxd(mem, idx);
+
+        // RO* (mem)
+        case 0b11100110'11000000:
+        case 0b11100111'11000000:
+            // return momiji::dec::mem_rod(mem, idx);
+            break;
+        }
+
+        switch (val & regshiftmask)
+        {
+        // AS* (reg)
+        case 0b11100000'00000000:
+        case 0b11100000'00100000:
+        case 0b11100001'00000000:
+        case 0b11100001'00100000:
+            return momiji::dec::any_reg_shift<
+                dec::details::ArithmeticShiftMetaType>(mem, idx);
+
+        // LS* (reg)
+        case 0b11100000'00001000:
+        case 0b11100000'00101000:
+        case 0b11100001'00001000:
+        case 0b11100001'00101000:
+            return momiji::dec::any_reg_shift<
+                dec::details::LogicalShiftMetaType>(mem, idx);
+
+        // ROX* (reg)
+        case 0b11100000'00010000:
+        case 0b11100000'00110000:
+        case 0b11100001'00010000:
+        case 0b11100001'00110000:
+            // return momiji::dec::reg_roxd(mem, idx);
+
+        case 0b11100000'00011000:
+        case 0b11100000'00111000:
+        case 0b11100001'00011000:
+        case 0b11100001'00111000:
+            // return momiji::dec::reg_rod(mem, idx);
+            break;
         }
 
         return {};

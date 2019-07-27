@@ -1,8 +1,34 @@
 #include "utils.h"
+#include <bitset>
 #include <filesystem>
 #include <momiji/Emulator.h>
 #include <momiji/Memory.h>
 #include <string_view>
+
+static void hackyPrintBin(std::uint8_t num)
+{
+
+    constexpr std::array<std::string_view, 16> binTable = { { "0000",
+                                                              "0001",
+                                                              "0010",
+                                                              "0011",
+                                                              "0100",
+                                                              "0101",
+                                                              "0110",
+                                                              "0111",
+                                                              "1000",
+                                                              "1001",
+                                                              "1010",
+                                                              "1011",
+                                                              "1100",
+                                                              "1101",
+                                                              "1110",
+                                                              "1111"
+
+    } };
+
+    std::printf("%s%s", binTable[num >> 4].data(), binTable[num & 0x0F].data());
+}
 
 constexpr std::string_view usage = "USAGE: momiji-dump input_file\n";
 
@@ -44,7 +70,11 @@ int main(int argc, const char** argv)
             higher = memview.read8(i + 1);
         }
 
-        std::printf("%p: %x %x\n", (memview.begin() + i), higher, lower);
+        std::printf("%p: %.2x %.2x ", (memview.begin() + i), higher, lower);
+        hackyPrintBin(higher);
+        std::printf(" ");
+        hackyPrintBin(lower);
+        std::printf("\n");
     }
 
     std::printf("\n--- Data registers ---\n");
@@ -52,14 +82,14 @@ int main(int argc, const char** argv)
     for (int i = 0; i < state.cpu.dataRegisters.size(); ++i)
     {
         const auto val = state.cpu.dataRegisters[i].value;
-        std::printf("d%d: %d %x\n", i, val, val);
+        std::printf("d%d: 0x%.8x %d\n", i, val, val);
     }
 
     std::printf("\n--- Address registers ---\n");
     for (int i = 0; i < state.cpu.addressRegisters.size(); ++i)
     {
         const auto val = state.cpu.addressRegisters[i].value;
-        std::printf("a%d: %d %x\n", i, val, val);
+        std::printf("a%d: 0x%.8x %d\n", i, val, val);
     }
 
     std::printf("\n--- Status register ---\n");

@@ -16,8 +16,12 @@
 #include "jmp.h"
 #include "move.h"
 #include "mul.h"
+#include "not.h"
 #include "or.h"
+#include "rod.h"
+#include "roxd.h"
 #include "rts.h"
+#include "shifts.h"
 #include "sub.h"
 #include "swap.h"
 #include "tst.h"
@@ -107,6 +111,7 @@ namespace momiji
                 break;
 
             case InstructionType::Not:
+                momiji::not_instr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Compare:
@@ -157,10 +162,24 @@ namespace momiji
                 momiji::exg(instr, opcode, additional_data);
                 break;
 
-            case InstructionType::ArithmeticShiftLeft:
             case InstructionType::ArithmeticShiftRight:
-            case InstructionType::LogicalShiftLeft:
+                momiji::com::any_shift<repr::RegAsd, repr::MemAsd>(
+                    instr, opcode, additional_data, 0);
+                break;
+
+            case InstructionType::ArithmeticShiftLeft:
+                momiji::com::any_shift<repr::RegAsd, repr::MemAsd>(
+                    instr, opcode, additional_data, 1);
+                break;
+
             case InstructionType::LogicalShiftRight:
+                momiji::com::any_shift<repr::RegLsd, repr::MemLsd>(
+                    instr, opcode, additional_data, 0);
+                break;
+
+            case InstructionType::LogicalShiftLeft:
+                momiji::com::any_shift<repr::RegLsd, repr::MemLsd>(
+                    instr, opcode, additional_data, 1);
                 break;
 
             case InstructionType::HaltCatchFire:

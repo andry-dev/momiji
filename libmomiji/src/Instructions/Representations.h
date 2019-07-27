@@ -280,6 +280,15 @@ namespace momiji::repr
 
     struct Not
     {
+        Not()
+            : header { 0b010000110 }
+        {
+        }
+
+        std::uint16_t header : 8;
+        std::uint16_t size : 2;
+        std::uint16_t regtype : 3;
+        std::uint16_t regmode : 3;
     };
 
     struct Swap
@@ -427,6 +436,134 @@ namespace momiji::repr
     struct Rts
     {
         std::uint16_t header { 0b01001110'01110101 };
+    };
+
+    struct MemAsd
+    {
+        MemAsd()
+            : header { 0b1110000 }
+            , padding { 0b11 }
+        {
+        }
+
+        std::uint16_t header : 7;
+        std::uint16_t direction : 1;
+        std::uint16_t padding : 2;
+        std::uint16_t regtype : 3;
+        std::uint16_t regmode : 3;
+    };
+
+    struct RegAsd
+    {
+        RegAsd()
+            : header { 0b1110 }
+            , padding { 0b00 }
+        {
+        }
+
+        std::uint16_t header : 4;
+        std::uint16_t rotation : 3;
+        std::uint16_t direction : 1;
+        std::uint16_t size : 2;
+        std::uint16_t rotmode : 1;
+        std::uint16_t padding : 2;
+        std::uint16_t datareg : 3;
+    };
+
+    struct MemLsd
+    {
+        MemLsd()
+            : header { 0b1110001 }
+            , padding { 0b11 }
+        {
+        }
+
+        std::uint16_t header : 7;
+        std::uint16_t direction : 1;
+        std::uint16_t padding : 2;
+        std::uint16_t regtype : 3;
+        std::uint16_t regmode : 3;
+    };
+
+    struct RegLsd
+    {
+        RegLsd()
+            : header { 0b1110 }
+            , padding { 0b01 }
+        {
+        }
+
+        std::uint16_t header : 4;
+        std::uint16_t rotation : 3;
+        std::uint16_t direction : 1;
+        std::uint16_t size : 2;
+        std::uint16_t rotmode : 1;
+        std::uint16_t padding : 2;
+        std::uint16_t datareg : 3;
+    };
+
+    struct MemRoxd
+    {
+        MemRoxd()
+            : header { 0b1110010 }
+            , padding { 0b11 }
+        {
+        }
+
+        std::uint16_t header : 7;
+        std::uint16_t direction : 1;
+        std::uint16_t padding : 2;
+        std::uint16_t regtype : 3;
+        std::uint16_t regmode : 3;
+    };
+
+    struct RegRoxd
+    {
+        RegRoxd()
+            : header { 0b1110 }
+            , padding { 0b10 }
+        {
+        }
+
+        std::uint16_t header : 4;
+        std::uint16_t rotation : 3;
+        std::uint16_t direction : 1;
+        std::uint16_t size : 2;
+        std::uint16_t rotmode : 1;
+        std::uint16_t padding : 2;
+        std::uint16_t datareg : 3;
+    };
+
+    struct MemRod
+    {
+        MemRod()
+            : header { 0b1110 }
+            , padding { 0b11 }
+        {
+        }
+
+        std::uint16_t header : 4;
+        std::uint16_t rotation : 3;
+        std::uint16_t direction : 1;
+        std::uint16_t size : 2;
+        std::uint16_t rotmode : 1;
+        std::uint16_t padding : 2;
+        std::uint16_t datareg : 3;
+    };
+
+    struct RegRod
+    {
+        RegRod()
+            : header { 0b1110011 }
+            , padding { 0b11 }
+        {
+        }
+
+        std::uint16_t header : 7;
+        std::uint16_t direction : 1;
+        std::uint16_t padding : 2;
+        std::uint16_t regtype : 3;
+        std::uint16_t regmode : 3;
     };
 
     struct Illegal

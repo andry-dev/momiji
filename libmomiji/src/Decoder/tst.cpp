@@ -27,6 +27,9 @@ namespace momiji::dec
 
         ret.exec = instr::tst;
 
+        ret.string = "tst" + dataTypeToString(ret.data.size) + " " +
+                     opToString(ret.data, 0, mem, idx);
+
         return ret;
     }
 } // namespace momiji::dec

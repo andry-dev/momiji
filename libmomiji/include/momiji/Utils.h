@@ -2,11 +2,12 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <iostream>
 #include <limits>
 #include <string>
 #include <string_view>
 #include <type_traits>
+
+#include <momiji/Decoder.h>
 
 namespace momiji::utils
 {
@@ -17,6 +18,7 @@ namespace momiji::utils
         {
         };
     } // namespace details
+
     // From Chaiscript
     // https://github.com/ChaiScript/ChaiScript/blob/develop/include/chaiscript/utility/hash.hpp
     template <typename Itr>
@@ -123,4 +125,5 @@ namespace momiji::utils
     {
         return 1024 * make_mb(n);
     }
+
 } // namespace momiji::utils

@@ -31,7 +31,8 @@ namespace momiji::dec
 
         ret.exec = instr::cmp;
 
-        ret.string = "cmp" + dataTypeToString(ret.data.size);
+        ret.string = "cmp" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
@@ -69,7 +70,8 @@ namespace momiji::dec
 
         ret.exec = instr::cmpa;
 
-        ret.string = "cmpa" + dataTypeToString(ret.data.size);
+        ret.string = "cmpa" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
@@ -95,7 +97,8 @@ namespace momiji::dec
         ret.data.addressingMode[1] =
             static_cast<SpecialAddressingMode>(bits.dstmode);
 
-        ret.string = "cmpi" + dataTypeToString(ret.data.size);
+        ret.string = "cmpi" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }

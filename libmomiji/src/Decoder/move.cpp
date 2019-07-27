@@ -50,7 +50,8 @@ namespace momiji::dec
             static_cast<SpecialAddressingMode>(repr.dstmode);
         ret.exec = momiji::instr::move;
 
-        ret.string = "move" + dataTypeToString(ret.data.size);
+        ret.string = "move" + dataTypeToString(ret.data.size) + " " +
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }

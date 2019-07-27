@@ -3,6 +3,8 @@
 #include "../Instructions/Representations.h"
 #include "../Instructions/div.h"
 
+#include "./Utils.h"
+
 namespace momiji::dec
 {
     DecodedInstruction divs(ExecutableMemoryView mem, std::uint64_t idx)
@@ -28,7 +30,7 @@ namespace momiji::dec
 
         ret.exec = instr::divs;
 
-        ret.string = "divs";
+        ret.string = "divs " + commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
@@ -55,7 +57,7 @@ namespace momiji::dec
             static_cast<SpecialAddressingMode>(bits.datareg);
         ret.exec = instr::divu;
 
-        ret.string = "divu";
+        ret.string = "divu " + commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }

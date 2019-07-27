@@ -26,11 +26,11 @@ namespace momiji::dec
         switch (cond)
         {
         case BranchConditions::NotEqual:
-            ret.string = "bne";
+            ret.string = "bne ";
             break;
 
         case BranchConditions::Equal:
-            ret.string = "beq";
+            ret.string = "beq ";
             break;
 
         case BranchConditions::OverClear:
@@ -46,21 +46,30 @@ namespace momiji::dec
             break;
 
         case BranchConditions::GreaterEq:
-            ret.string = "bge";
+            ret.string = "bge ";
             break;
 
         case BranchConditions::LessThan:
-            ret.string = "blt";
+            ret.string = "blt ";
             break;
 
         case BranchConditions::GreaterThan:
-            ret.string = "bgt";
+            ret.string = "bgt ";
             break;
 
         case BranchConditions::LessEq:
-            ret.string = "beq";
+            ret.string = "beq ";
             break;
         }
+
+        std::int16_t displ = bits.displacement;
+
+        if (displ == 0)
+        {
+            displ = mem.read16(idx + 2);
+        }
+
+        ret.string += std::to_string(displ);
 
         return ret;
     }

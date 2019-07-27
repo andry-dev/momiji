@@ -13,9 +13,25 @@ namespace momiji
 {
     namespace details
     {
+        // Instructions
+        // You should not write here
         struct ExecutableMemoryTag;
+
+        // Static/global variables
+        struct StaticMemoryTag;
+
+        // Stack
         struct StackMemoryTag;
     } // namespace details
+
+    template <typename Tag>
+    struct MemoryMarker
+    {
+        using tag = Tag;
+
+        std::int64_t begin { -1 };
+        std::int64_t end { -1 };
+    };
 
     template <typename Tag>
     class MemoryView;
@@ -55,6 +71,10 @@ namespace momiji
         auto data();
 
         Container& underlying();
+
+        MemoryMarker<details::ExecutableMemoryTag> executableMarker {};
+        MemoryMarker<details::StackMemoryTag> stackMarker {};
+        MemoryMarker<details::StaticMemoryTag> staticMarker {};
 
       protected:
         BasicMemory(std::int64_t size);
@@ -96,6 +116,10 @@ namespace momiji
         MemoryView(ModifiableMemory<Tag>& mem)
         {
             m_data = { mem.m_data.data(), mem.m_data.size() };
+
+            executableMarker = mem.executableMarker;
+            stackMarker      = mem.stackMarker;
+            staticMarker     = mem.staticMarker;
         }
 
         MemoryView(gsl::span<std::uint8_t> span)
@@ -108,6 +132,10 @@ namespace momiji
             std::uint8_t* begin = const_cast<std::uint8_t*>(mem.m_data.data());
 
             m_data = { begin, mem.m_data.size() };
+
+            executableMarker = mem.executableMarker;
+            stackMarker      = mem.stackMarker;
+            staticMarker     = mem.staticMarker;
         }
 
       private:
@@ -122,11 +150,10 @@ namespace momiji
         ConstMemoryView(const ModifiableMemory<Tag>& mem)
         {
             m_data = { mem.m_data.data(), mem.m_data.size() };
-        }
 
-        ConstMemoryView(gsl::span<const std::uint8_t> span)
-        {
-            m_data = span;
+            executableMarker = mem.executableMarker;
+            stackMarker      = mem.stackMarker;
+            staticMarker     = mem.staticMarker;
         }
 
       private:
