@@ -22,7 +22,8 @@ namespace momiji::instr
         struct ArithShiftLeft
         {
             template <typename T>
-            static void compute(T& reg, std::int8_t count, std::int32_t mask)
+            static void
+            compute(T& reg, std::int8_t count, std::int32_t /*mask*/)
             {
                 reg <<= count;
             }
@@ -31,7 +32,8 @@ namespace momiji::instr
         struct LogicalShiftRight
         {
             template <typename T>
-            static void compute(T& reg, std::int8_t count, std::int32_t mask)
+            static void
+            compute(T& reg, std::int8_t count, std::int32_t /*mask*/)
             {
                 reg >>= count;
             }
@@ -40,7 +42,8 @@ namespace momiji::instr
         struct LogicalShiftLeft
         {
             template <typename T>
-            static void compute(T& reg, std::int8_t count, std::int32_t mask)
+            static void
+            compute(T& reg, std::int8_t count, std::int32_t /*mask*/)
             {
                 reg <<= count;
             }

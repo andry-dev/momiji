@@ -43,151 +43,151 @@ namespace momiji
             switch (instr.instructionType)
             {
             case InstructionType::Move:
-                momiji::move(instr, opcode, additional_data);
+                momiji::enc::move(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Add:
-                momiji::add(instr, opcode, additional_data);
+                momiji::enc::add(instr, opcode, additional_data);
                 break;
 
             case InstructionType::AddA:
-                momiji::adda(instr, opcode, additional_data);
+                momiji::enc::adda(instr, opcode, additional_data);
                 break;
 
             case InstructionType::AddI:
-                momiji::addi(instr, opcode, additional_data);
+                momiji::enc::addi(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Sub:
-                momiji::sub(instr, opcode, additional_data);
+                momiji::enc::sub(instr, opcode, additional_data);
                 break;
 
             case InstructionType::SubA:
-                momiji::suba(instr, opcode, additional_data);
+                momiji::enc::suba(instr, opcode, additional_data);
                 break;
 
             case InstructionType::SubI:
-                momiji::subi(instr, opcode, additional_data);
+                momiji::enc::subi(instr, opcode, additional_data);
                 break;
 
             case InstructionType::SignedDiv:
-                momiji::divs(instr, opcode, additional_data);
+                momiji::enc::divs(instr, opcode, additional_data);
                 break;
 
             case InstructionType::UnsignedDiv:
-                momiji::divu(instr, opcode, additional_data);
+                momiji::enc::divu(instr, opcode, additional_data);
                 break;
 
             case InstructionType::SignedMul:
-                momiji::muls(instr, opcode, additional_data);
+                momiji::enc::muls(instr, opcode, additional_data);
                 break;
 
             case InstructionType::UnsignedMul:
-                momiji::mulu(instr, opcode, additional_data);
+                momiji::enc::mulu(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Or:
-                momiji::or_instr(instr, opcode, additional_data);
+                momiji::enc::or_instr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::OrI:
-                momiji::ori(instr, opcode, additional_data);
+                momiji::enc::ori(instr, opcode, additional_data);
                 break;
 
             case InstructionType::And:
-                momiji::and_instr(instr, opcode, additional_data);
+                momiji::enc::and_instr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::AndI:
-                momiji::andi(instr, opcode, additional_data);
+                momiji::enc::andi(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Xor:
-                momiji::xor_instr(instr, opcode, additional_data);
+                momiji::enc::xor_instr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::XorI:
-                momiji::xori(instr, opcode, additional_data);
+                momiji::enc::xori(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Not:
-                momiji::not_instr(instr, opcode, additional_data);
+                momiji::enc::not_instr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Compare:
-                momiji::cmp(instr, opcode, additional_data);
+                momiji::enc::cmp(instr, opcode, additional_data);
                 break;
 
             case InstructionType::CompareA:
-                momiji::cmpa(instr, opcode, additional_data);
+                momiji::enc::cmpa(instr, opcode, additional_data);
                 break;
 
             case InstructionType::CompareI:
-                momiji::cmpi(instr, opcode, additional_data);
+                momiji::enc::cmpi(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Tst:
-                momiji::tst(instr, opcode, additional_data);
+                momiji::enc::tst(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Jmp:
-                momiji::jmp(instr, opcode, additional_data);
+                momiji::enc::jmp(instr, opcode, additional_data);
                 break;
 
             case InstructionType::JmpSubroutine:
-                momiji::jsr(instr, opcode, additional_data);
+                momiji::enc::jsr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Branch:
-                momiji::bra(instr, opcode, additional_data);
+                momiji::enc::bra(instr, opcode, additional_data);
                 break;
 
             case InstructionType::BranchCondition:
-                momiji::bcc(instr, opcode, additional_data);
+                momiji::enc::bcc(instr, opcode, additional_data);
                 break;
 
             case InstructionType::BranchSubroutine:
-                momiji::bsr(instr, opcode, additional_data);
+                momiji::enc::bsr(instr, opcode, additional_data);
                 break;
 
             case InstructionType::ReturnSubroutine:
-                momiji::rts(instr, opcode, additional_data);
+                momiji::enc::rts(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Swap:
-                momiji::swap(instr, opcode, additional_data);
+                momiji::enc::swap(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Exchange:
-                momiji::exg(instr, opcode, additional_data);
+                momiji::enc::exg(instr, opcode, additional_data);
                 break;
 
             case InstructionType::ArithmeticShiftRight:
-                momiji::com::any_shift<repr::RegAsd, repr::MemAsd>(
+                momiji::enc::any_shift<repr::RegAsd, repr::MemAsd>(
                     instr, opcode, additional_data, 0);
                 break;
 
             case InstructionType::ArithmeticShiftLeft:
-                momiji::com::any_shift<repr::RegAsd, repr::MemAsd>(
+                momiji::enc::any_shift<repr::RegAsd, repr::MemAsd>(
                     instr, opcode, additional_data, 1);
                 break;
 
             case InstructionType::LogicalShiftRight:
-                momiji::com::any_shift<repr::RegLsd, repr::MemLsd>(
+                momiji::enc::any_shift<repr::RegLsd, repr::MemLsd>(
                     instr, opcode, additional_data, 0);
                 break;
 
             case InstructionType::LogicalShiftLeft:
-                momiji::com::any_shift<repr::RegLsd, repr::MemLsd>(
+                momiji::enc::any_shift<repr::RegLsd, repr::MemLsd>(
                     instr, opcode, additional_data, 1);
                 break;
 
             case InstructionType::HaltCatchFire:
-                momiji::hcf(instr, opcode, additional_data);
+                momiji::enc::hcf(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Breakpoint:
-                momiji::breakpoint(instr, opcode, additional_data);
+                momiji::enc::breakpoint(instr, opcode, additional_data);
                 break;
 
             case InstructionType::Declare:

@@ -46,7 +46,6 @@ namespace momiji
                                   ExecutableMemoryView mem,
                                   std::uint64_t idx)
     {
-        const std::int32_t optype = utils::to_val(instr.operandType[opNum]);
         const std::int32_t opmode = utils::to_val(instr.addressingMode[opNum]);
 
         idx += 2;
@@ -89,13 +88,13 @@ namespace momiji
             std::string ret = "(" + std::to_string(offset) + ", a" +
                               std::to_string(opmode) + ", ";
 
-            if (offset < 8)
+            if (reg < 8)
             {
-                ret += "d" + std::to_string(offset) + ")";
+                ret += "d" + std::to_string(reg) + ")";
             }
             else
             {
-                ret += "a" + std::to_string(offset - 8) + ")";
+                ret += "a" + std::to_string(reg - 8) + ")";
             }
 
             return ret;

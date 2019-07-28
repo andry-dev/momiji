@@ -12,7 +12,27 @@ target_sources(libmomiji
 
     src/Parser/Parser.cpp
     src/Parser/Instructions.cpp
+
     src/Compiler/Compiler.cpp
+    src/Compiler/move.cpp
+    src/Compiler/add.cpp
+    src/Compiler/sub.cpp
+    src/Compiler/div.cpp
+    src/Compiler/mul.cpp
+    src/Compiler/or.cpp
+    src/Compiler/and.cpp
+    src/Compiler/xor.cpp
+    src/Compiler/not.cpp
+    src/Compiler/cmp.cpp
+    src/Compiler/tst.cpp
+    src/Compiler/jmp.cpp
+    src/Compiler/bra.cpp
+    src/Compiler/bcc.cpp
+    src/Compiler/rts.cpp
+    src/Compiler/swap.cpp
+    src/Compiler/exg.cpp
+    src/Compiler/internal.cpp
+    src/Compiler/Utils.cpp
 
     src/Decoder/Decoder.cpp
     src/Decoder/move.cpp
@@ -47,6 +67,7 @@ target_sources(libmomiji
     src/Instructions/jmp.cpp
     src/Instructions/rts.cpp
     src/Instructions/internal.cpp
+    src/Instructions/noop.cpp
 
     src/Emulator.cpp)
 

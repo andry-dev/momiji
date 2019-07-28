@@ -232,7 +232,7 @@ namespace momiji
     constexpr auto Char(char c)
     {
         return [=](std::string_view str) -> parser_metadata {
-            if (str.size() > 0 && str[0] == c)
+            if (!str.empty() && str[0] == c)
             {
                 return { true, str.substr(1), str.substr(0, 1), {} };
             }
@@ -244,7 +244,7 @@ namespace momiji
     constexpr auto NotChar(char c)
     {
         return [=](std::string_view str) -> parser_metadata {
-            if (str.size() > 0 && str[0] != c)
+            if (!str.empty() && str[0] != c)
             {
                 return { true, str.substr(1), str.substr(0, 1) };
             }
@@ -319,9 +319,7 @@ namespace momiji
     constexpr auto Endl()
     {
         return [](std::string_view str) -> parser_metadata {
-            const bool check_size = str.size() == 0;
-
-            if (check_size)
+            if (str.empty())
             {
                 return { true, str, "", {} };
             }
@@ -333,9 +331,7 @@ namespace momiji
     constexpr auto NotEndl()
     {
         return [](std::string_view str) -> parser_metadata {
-            const bool check_size = str.size() == 0;
-
-            if (check_size)
+            if (str.empty())
             {
                 return { false, str, "", {} };
             }
@@ -438,7 +434,7 @@ namespace momiji
     constexpr auto AsciiAlphabet()
     {
         return [](std::string_view str) -> parser_metadata {
-            if (str.size() > 0)
+            if (!str.empty())
             {
                 if ((str[0] >= 'a' && str[0] <= 'z') ||
                     (str[0] >= 'A' && str[0] <= 'Z') ||
@@ -680,7 +676,7 @@ namespace momiji
             auto register_parser = Map(
                 Between(
                     Char('('), AddressRegisterParser(instr, opNum), Char(')')),
-                [&](std::string_view parsed_str) {
+                [&](std::string_view /*parsed_str*/) {
                     instr.operands[opNum].operandType = OperandType::Address;
                 });
 

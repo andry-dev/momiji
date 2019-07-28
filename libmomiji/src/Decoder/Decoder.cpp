@@ -33,10 +33,14 @@ namespace momiji
     {
     }
 
-    DecodedInstruction decodeFirstGroup(ExecutableMemoryView, std::uint64_t);
-    DecodedInstruction decodeSecondGroup(ExecutableMemoryView, std::uint64_t);
-    DecodedInstruction decodeThirdGroup(ExecutableMemoryView, std::uint64_t);
-    DecodedInstruction decodeFourthGroup(ExecutableMemoryView, std::uint64_t);
+    DecodedInstruction decodeFirstGroup(ExecutableMemoryView mem,
+                                        std::uint64_t idx);
+    DecodedInstruction decodeSecondGroup(ExecutableMemoryView mem,
+                                         std::uint64_t idx);
+    DecodedInstruction decodeThirdGroup(ExecutableMemoryView mem,
+                                        std::uint64_t idx);
+    DecodedInstruction decodeFourthGroup(ExecutableMemoryView mem,
+                                         std::uint64_t idx);
 
     DecodedInstruction decode(ExecutableMemoryView mem, std::uint64_t idx)
     {

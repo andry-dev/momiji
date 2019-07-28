@@ -207,13 +207,11 @@ namespace momiji
             // all label resolution issues
             for (auto& x : instructions)
             {
-                for (int i = 0; i < x.operands.size(); ++i)
+                for (auto& op : x.operands)
                 {
-                    auto& op = x.operands[i];
                     if (!op.labelResolved)
                     {
-                        auto found =
-                            alg::find_label(labels, x.operands[i].value);
+                        auto found = alg::find_label(labels, op.value);
 
                         if (found == std::end(labels.labels))
                         {

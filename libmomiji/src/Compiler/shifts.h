@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-namespace momiji::com
+namespace momiji::enc
 {
     template <typename RegRepr, typename MemRepr>
     void any_shift(const Instruction& instr,
@@ -56,4 +56,4 @@ namespace momiji::com
                          (bits.regmode);
         }
     }
-} // namespace momiji::com
+} // namespace momiji::enc
