@@ -136,7 +136,7 @@ namespace momiji
 
             // SWAP / PEA
             case 0b01001000'01000000:
-                // return momiji::dec::swap(mem, idx);
+                return momiji::dec::swap(mem, idx);
                 break;
 
             // RTE / RTS / TRAPV / RTR

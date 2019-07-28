@@ -35,7 +35,7 @@ function! GenCompilerInstr(header)
     \#include <momiji/Compiler.h>\<CR>\<CR>
     \#include \"../Instructions/Representations.h\"\<CR>\<CR>
     \#include \"./Utils.h\"\<CR>\<CR>
-    \namespace momiji::com\<CR>
+    \namespace momiji::enc\<CR>
     \{\<CR>\<CR>
     \}"
     execute "w"

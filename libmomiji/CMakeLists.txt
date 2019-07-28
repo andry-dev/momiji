@@ -50,6 +50,7 @@ target_sources(libmomiji
     src/Decoder/bcc.cpp
     src/Decoder/jmp.cpp
     src/Decoder/rts.cpp
+    src/Decoder/swap.cpp
     src/Decoder/internal.cpp
 
     src/Instructions/move.cpp
@@ -66,8 +67,9 @@ target_sources(libmomiji
     src/Instructions/bcc.cpp
     src/Instructions/jmp.cpp
     src/Instructions/rts.cpp
-    src/Instructions/internal.cpp
+    src/Instructions/swap.cpp
     src/Instructions/noop.cpp
+    src/Instructions/internal.cpp
 
     src/Emulator.cpp)
 
