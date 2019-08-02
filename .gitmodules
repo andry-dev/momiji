@@ -2,3 +2,6 @@
 	path = momiji-gl/external/tewi
 	url = https://github.com/andry-dev/tewi
 	branch = newdoc
+[submodule "libmomiji/external/asl"]
+	path = libmomiji/external/asl
+	url = https://github.com/andry-dev/asl

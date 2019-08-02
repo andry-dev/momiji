@@ -31,7 +31,46 @@ int main(int argc, const char** argv)
     auto parsedInstr = momiji::parse(sourceCode);
     if (!parsedInstr)
     {
-        std::cout << "Parsing error\n";
+        using momiji::ParserError;
+
+        const auto error = parsedInstr.error();
+        std::string errorStr =
+            "Parsing error at line " + std::to_string(error.line) + ": ";
+
+        switch (error.errorType)
+        {
+        case ParserError::ErrorType::NoInstructionFound:
+            errorStr += "no instruction found.";
+            break;
+
+        case ParserError::ErrorType::NoLabelFound:
+            errorStr +=
+                "no label found. Are you sure you typed everything correctly?";
+            break;
+
+        case ParserError::ErrorType::WrongInstruction:
+            errorStr += "the instruction name is wrong.";
+            break;
+
+        case ParserError::ErrorType::WrongOperandType:
+            errorStr += "the operand type is not supported for the following "
+                        "instruction.";
+            break;
+
+        case ParserError::ErrorType::WrongRegisterNumber:
+            errorStr += "the register number is wrong (either less than 0 or "
+                        "more than 7).";
+            break;
+
+        case ParserError::ErrorType::UnexpectedCharacter:
+            errorStr += "unexpected character.";
+            break;
+        }
+
+        errorStr += "\n\tContext: " + error.codeStr + "\n";
+
+        std::cout << errorStr;
+
         return 1;
     }
 

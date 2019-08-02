@@ -45,6 +45,7 @@ int main(int argc, const char** argv)
 
     momiji::EmulatorSettings settings;
     settings.retainStates = momiji::EmulatorSettings::RetainStates::Never;
+    settings.stackSize    = momiji::utils::make_kb(1);
 
     momiji::Emulator emu { settings };
     emu.newState(binary);
@@ -60,7 +61,9 @@ int main(int argc, const char** argv)
 
     const momiji::ConstExecutableMemoryView memview = state.mem;
 
-    for (int i = 0; i < state.mem.size(); i += 2)
+    for (int i = memview.executableMarker.begin;
+         i < memview.executableMarker.end;
+         i += 2)
     {
         std::uint8_t lower  = memview.read8(i);
         std::uint8_t higher = 0;

@@ -73,10 +73,12 @@ target_sources(libmomiji
 
     src/Emulator.cpp)
 
-find_package(asl REQUIRED)
+find_package(asl)
 
 if (NOT TARGET asl::asl)
-    message(STATUS "[libmomiji] Can't find asl")
+	message(STATUS "[momiji] Using local asl repo")
+	add_subdirectory(external/asl)
+	add_library(asl::asl ALIAS asl)
 endif()
 
 target_link_libraries(libmomiji PUBLIC asl::asl)

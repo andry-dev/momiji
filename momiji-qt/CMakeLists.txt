@@ -5,11 +5,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
 
 add_executable(momiji-qt
     src/main.cpp
     src/mainwindow.cpp
-    src/mainwindow.ui)
+    src/mainwindow.ui
+    src/MemoryModel.cpp)
 
-target_link_libraries(momiji-qt Qt5::Widgets libmomiji)
+target_link_libraries(momiji-qt PUBLIC Qt5::Widgets Qt5::Core Qt5::Gui libmomiji)

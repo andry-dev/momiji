@@ -41,43 +41,6 @@ namespace momiji
         return false;
     }
 
-#if 0
-    static void handlePC(System& newstate, const DecodedInstruction& instr)
-    {
-        if (!isJumpInstr(instr))
-        {
-            bool pc_incremented = false;
-
-            auto check_multibyte = [](OperandType op) {
-                return op == OperandType::Immediate ||
-                       op == OperandType::AddressOffset ||
-                       op == OperandType::AddressIndex;
-            };
-
-            if (check_multibyte(instr.data.op1))
-            {
-                newstate.cpu.programCounter.address =
-                    immediateIncrPC(instr, newstate.cpu.programCounter.address);
-
-                pc_incremented = true;
-            }
-
-            if (check_multibyte(instr.data.op2))
-            {
-                newstate.cpu.programCounter.address =
-                    immediateIncrPC(instr, newstate.cpu.programCounter.address);
-
-                pc_incremented = true;
-            }
-
-            if (!pc_incremented)
-            {
-                newstate.cpu.programCounter.address += 2;
-            }
-        }
-    }
-#endif
-
     Emulator::Emulator()
         : m_systemStates(1)
         , m_settings({ 0,
@@ -117,15 +80,18 @@ namespace momiji
                 ++m_settings.stackSize;
             }
 
-            // this is fine
+            mem.executableMarker.begin = 0;
+            mem.executableMarker.end   = mem.size();
+
             mem.stackMarker.begin = mem.size();
             mem.stackMarker.end = mem.stackMarker.begin + m_settings.stackSize;
+
             mem.underlying().resize(mem.stackMarker.end, 0);
 
             auto lastSys = m_systemStates.back();
             lastSys.mem  = std::move(mem);
 
-            lastSys.cpu.addressRegisters[7].value = (lastSys.mem.size() - 1);
+            lastSys.cpu.addressRegisters[7].value = (lastSys.mem.size() - 2);
             m_systemStates.emplace_back(std::move(lastSys));
 
             return std::nullopt;
@@ -138,6 +104,20 @@ namespace momiji
     {
         auto lastSys = m_systemStates.back();
         lastSys.mem  = std::move(binary);
+        auto& mem    = lastSys.mem;
+
+        if (m_settings.stackSize & 0b1)
+        {
+            ++m_settings.stackSize;
+        }
+
+        mem.executableMarker.begin = 0;
+        mem.executableMarker.end   = mem.size();
+        mem.stackMarker.begin      = mem.size();
+        mem.stackMarker.end = mem.stackMarker.begin + m_settings.stackSize;
+        mem.underlying().resize(mem.stackMarker.end, 0);
+        lastSys.cpu.addressRegisters[7].value = (lastSys.mem.size() - 2);
+
         m_systemStates.emplace_back(std::move(lastSys));
     }
 
@@ -154,17 +134,20 @@ namespace momiji
 
     bool Emulator::rollback()
     {
-        auto& lastSys                = m_systemStates.back();
-        ExecutableMemoryView memview = lastSys.mem;
-        const auto pc                = lastSys.cpu.programCounter.address;
-
-        auto pcadd = memview.begin() + pc;
-
-        if (pcadd > memview.begin())
+        if (m_systemStates.size() > 1)
         {
-            --lastSys.cpu.programCounter.address;
+            auto& lastSys                = m_systemStates.back();
+            ExecutableMemoryView memview = lastSys.mem;
+            const auto pc                = lastSys.cpu.programCounter.address;
 
-            return true;
+            auto pcadd = memview.begin() + pc;
+
+            if (pcadd > memview.begin())
+            {
+                --lastSys.cpu.programCounter.address;
+
+                return true;
+            }
         }
 
         return false;
@@ -182,9 +165,12 @@ namespace momiji
         const auto pc = lastSys.cpu.programCounter.address;
         auto memview  = momiji::make_memory_view(lastSys);
 
-        auto pcadd = memview.begin() + pc;
+        auto pcadd = memview.executableMarker.begin + pc;
 
-        if (pcadd < memview.begin() || pcadd >= memview.end())
+        const auto membegin = memview.executableMarker.begin;
+        const auto memend   = memview.executableMarker.end;
+
+        if (pcadd < membegin || pcadd >= memend)
         {
             return false;
         }

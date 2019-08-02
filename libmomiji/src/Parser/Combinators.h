@@ -57,7 +57,7 @@ namespace momiji
             parser_metadata res = { false, str, "", {} };
 
             (
-                [&]() constexpr {
+                [&]() /*constexpr*/ {
                     if (!notdone)
                     {
                         return;
@@ -125,7 +125,7 @@ namespace momiji
             parser_metadata res = { false, str, "", {} };
 
             (
-                [&]() constexpr {
+                [&]() /*constexpr*/ {
                     res = parsers(str);
                     str = res.rest;
                 }(),
@@ -505,7 +505,7 @@ namespace momiji
 
             auto decimal_num =
                 Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
-                    const std::int32_t val =
+                    const std::int64_t val =
                         std::stoll(std::string { parsed_str });
 
                     instr.operands[opNum].operandType = OperandType::Immediate;
@@ -517,7 +517,7 @@ namespace momiji
             constexpr auto inter_hex_parser = SeqNext(Char('#'), GenericHex());
             auto hex_num                    = Map(
                 inter_hex_parser, [&instr, opNum](std::string_view parsed_str) {
-                    const std::int32_t val =
+                    const std::int64_t val =
                         std::stoll(std::string { parsed_str }, 0, 16);
 
                     instr.operands[opNum].operandType = OperandType::Immediate;
@@ -547,7 +547,7 @@ namespace momiji
         return [&instr, opNum](std::string_view str) -> parser_metadata {
             constexpr auto inter_parser = SeqNext(Char('a'), DecNumber());
             auto register_parser = Map(inter_parser, [&](auto parsed_str) {
-                const int reg_num = std::stoi(std::string { parsed_str });
+                const auto reg_num = std::stoll(std::string { parsed_str });
 
                 instr.operands[opNum].operandType =
                     OperandType::AddressRegister;
@@ -564,7 +564,7 @@ namespace momiji
             constexpr auto inter_parser = SeqNext(Char('d'), DecNumber());
             auto register_parser =
                 Map(inter_parser, [&](std::string_view parsed_str) {
-                    const int reg_num = std::stoi(std::string { parsed_str });
+                    const int reg_num = std::stoll(std::string { parsed_str });
 
                     instr.operands[opNum].operandType =
                         OperandType::DataRegister;

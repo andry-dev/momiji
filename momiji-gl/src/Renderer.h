@@ -1,6 +1,6 @@
 #pragma once
 
-#include <tewi/Platform/OpenGL/Glew.h>
+#include <tewi/Platform/OpenGL/GL.h>
 
 #include <array>
 

@@ -45,6 +45,12 @@ namespace momiji
       public:
         BasicMemory() = default;
 
+        BasicMemory(const BasicMemory& oth) = default;
+        BasicMemory(BasicMemory&& oth)      = default;
+
+        BasicMemory& operator=(const BasicMemory& oth) = default;
+        BasicMemory& operator=(BasicMemory&& oth) = default;
+
         std::uint32_t read32(std::uint64_t offset) const;
         std::uint16_t read16(std::uint64_t offset) const;
         std::uint8_t read8(std::uint64_t offset) const;
@@ -109,6 +115,10 @@ namespace momiji
         friend class ConstMemoryView<Tag>;
     };
 
+    struct NullMemoryView
+    {
+    };
+
     template <typename Tag>
     class MemoryView final : public BasicMemory<gsl::span<std::uint8_t>>
     {
@@ -136,6 +146,29 @@ namespace momiji
             executableMarker = mem.executableMarker;
             stackMarker      = mem.stackMarker;
             staticMarker     = mem.staticMarker;
+        }
+
+        MemoryView(NullMemoryView)
+        {
+            m_data = { gsl::null_span {} };
+        }
+
+        template <typename T>
+        MemoryView& operator=(const T& oth)
+        {
+            MemoryView newMem { oth };
+            std::swap(*this, newMem);
+
+            return *this;
+        }
+
+        template <typename T>
+        MemoryView& operator=(T&& oth)
+        {
+            MemoryView newMem { std::move(oth) };
+            std::swap(*this, newMem);
+
+            return *this;
         }
 
       private:

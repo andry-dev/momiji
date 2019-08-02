@@ -1,4 +1,8 @@
 build/
+build32/
 compile_commands.json
 clang-tidy-issues
+CMakeLists.txt.user
+CMakeSettings.json
+.vs/
 .idea/

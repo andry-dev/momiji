@@ -14,7 +14,7 @@ endif()
 
 target_sources(momiji-gl PRIVATE src/Gui.cpp src/Renderer.cpp)
 target_link_libraries(momiji-gl PRIVATE tewi::tewi)
-target_compile_definitions(momiji-gl PRIVATE MOMIJI_INCLUDE_GUI=1)
+target_compile_definitions(momiji-gl PRIVATE MOMIJI_INCLUDE_GUI=1 TEWI_STATIC_LIB)
 
 add_custom_command(TARGET momiji-gl POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
