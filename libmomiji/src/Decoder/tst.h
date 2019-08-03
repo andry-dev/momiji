@@ -6,5 +6,5 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction tst(ExecutableMemoryView mem, std::uint64_t idx);
+    DecodedInstruction tst(ExecutableMemoryView mem, std::int64_t idx);
 }

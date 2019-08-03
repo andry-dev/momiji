@@ -19,29 +19,29 @@ namespace momiji::instr
         {
         case 1:
         {
-            auto dst = utils::readOperandPtr8(sys, data, 1);
-            *dst     = *dst - (srcval & 0x0000'00FF);
+            auto dst = utils::readOperandPtr<std::int8_t>(sys, data, 1);
+            *dst     = *dst - std::int8_t(srcval & 0x0000'00FF);
         }
         break;
 
         case 2:
         {
-            auto dst = utils::readOperandPtr16(sys, data, 1);
-            *dst     = *dst - (srcval & 0x0000'FFFF);
+            auto dst = utils::readOperandPtr<std::int16_t>(sys, data, 1);
+            *dst     = *dst - std::int8_t(srcval & 0x0000'FFFF);
         }
         break;
 
         case 4:
         {
-            auto dst = utils::readOperandPtr32(sys, data, 1);
+            auto dst = utils::readOperandPtr<std::int32_t>(sys, data, 1);
             *dst     = *dst - srcval;
         }
         break;
         }
 
         pc += 2;
-        pc += utils::isImmediate(data, 0);
-        pc += utils::isImmediate(data, 1);
+        pc += std::uint8_t(utils::isImmediate(data, 0));
+        pc += std::uint8_t(utils::isImmediate(data, 1));
 
         return sys;
     }

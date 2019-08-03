@@ -7,6 +7,8 @@
 #include <tewi/Video/Shader.hpp>
 #include <tewi/Video/Vertex.h>
 
+#include <asl/types>
+
 namespace tewi
 {
     namespace API
@@ -44,7 +46,7 @@ namespace momiji
         GLuint m_VAO { 0 };
         GLuint m_VBO { 0 };
 
-        int m_count { 0 };
+        asl::isize m_count { 0 };
 
         tewi::Vertex* m_buffer { nullptr };
         std::array<int, 2> m_textures { 0, 0 };
@@ -59,14 +61,14 @@ namespace momiji
 
         for (auto& saved_texture : m_textures)
         {
-            if (tid == saved_texture)
+            if (int(tid) == saved_texture)
             {
                 continue;
             }
 
-            if (saved_texture == 0 && tid != saved_texture)
+            if (saved_texture == 0 && int(tid) != saved_texture)
             {
-                saved_texture = tid;
+                saved_texture = int(tid);
             }
         }
 

@@ -33,9 +33,9 @@ namespace momiji::enc
 
         handleAdditionalData(instr, additionalData);
 
-        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
-                     (bits.direction << 8) | (bits.size << 6) |
-                     (bits.othtype << 3) | (bits.othmode);
+        opcode.val = std::uint16_t((bits.header << 12) | (bits.datareg << 9) |
+                                   (bits.direction << 8) | (bits.size << 6) |
+                                   (bits.othtype << 3) | (bits.othmode));
     }
 
     void andi(const momiji::Instruction& instr,
@@ -48,14 +48,14 @@ namespace momiji::enc
         bits.size               = size & 0b111;
 
         additionalData[0].cnt = tobyte[size];
-        additionalData[0].val = instr.operands[0].value;
+        additionalData[0].val = std::uint32_t(instr.operands[0].value);
 
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1);
 
         handleAdditionalData(instr, additionalData);
 
-        opcode.val = (bits.header << 8) | (bits.size << 6) |
-                     (bits.dsttype << 3) | (bits.dstmode);
+        opcode.val = std::uint16_t((bits.header << 8) | (bits.size << 6) |
+                                   (bits.dsttype << 3) | (bits.dstmode));
     }
 } // namespace momiji::enc

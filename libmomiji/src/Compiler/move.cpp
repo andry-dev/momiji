@@ -21,7 +21,8 @@ namespace momiji::enc
         bits.header = 0b00;
 
         // This Move requires special handling of sizes.
-        const std::int8_t size = move_sizeconv[utils::to_val(instr.dataType)];
+        const std::int8_t size =
+            std::int8_t(move_sizeconv[utils::to_val(instr.dataType)]);
 
         // Byte size
         bits.size = size & 0b011;
@@ -35,8 +36,8 @@ namespace momiji::enc
 
         handleAdditionalData(instr, additionalData);
 
-        opcode.val = (bits.header << 14) | (bits.size << 12) |
-                     (bits.dstmode << 9) | (bits.dsttype << 6) |
-                     (bits.srctype << 3) | (bits.srcmode);
+        opcode.val = std::uint16_t((bits.header << 14) | (bits.size << 12) |
+                                   (bits.dstmode << 9) | (bits.dsttype << 6) |
+                                   (bits.srctype << 3) | (bits.srcmode));
     }
 } // namespace momiji::enc

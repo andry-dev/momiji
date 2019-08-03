@@ -4,6 +4,8 @@
 
 namespace momiji::instr
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-conversion"
     momiji::System exg(momiji::System& sys, const InstructionData& instr)
     {
         auto& pc = sys.cpu.programCounter.address;
@@ -26,8 +28,8 @@ namespace momiji::instr
             break;
         }
 
-        std::int32_t* dstreg     = nullptr;
-        const std::int8_t dstval = utils::to_val(instr.addressingMode[1]);
+        std::int32_t* dstreg = nullptr;
+        const auto dstval = std::int8_t(utils::to_val(instr.addressingMode[1]));
 
         switch (instr.operandType[1])
         {
@@ -52,4 +54,5 @@ namespace momiji::instr
 
         return sys;
     }
+#pragma clang diagnostic pop
 } // namespace momiji::instr

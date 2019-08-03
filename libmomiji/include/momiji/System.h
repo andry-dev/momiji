@@ -46,7 +46,7 @@ namespace momiji
 
     struct Label
     {
-        Label(std::int32_t name_hash, std::int32_t idx)
+        Label(std::uint32_t name_hash, std::int64_t idx)
             : name_hash(name_hash)
             , idx(idx)
         {
@@ -59,8 +59,8 @@ namespace momiji
         Label(Label&&)                 = default;
         Label& operator=(Label&&) = default;
 
-        std::int32_t name_hash = 0;
-        std::int32_t idx       = 0;
+        std::uint32_t name_hash = 0;
+        std::int64_t idx        = 0;
     };
 
     struct Cpu

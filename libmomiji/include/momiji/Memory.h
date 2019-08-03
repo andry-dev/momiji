@@ -11,6 +11,9 @@
 
 namespace momiji
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-conversion"
+
     namespace details
     {
         // Instructions
@@ -51,21 +54,21 @@ namespace momiji
         BasicMemory& operator=(const BasicMemory& oth) = default;
         BasicMemory& operator=(BasicMemory&& oth) = default;
 
-        std::uint32_t read32(std::uint64_t offset) const;
-        std::uint16_t read16(std::uint64_t offset) const;
-        std::uint8_t read8(std::uint64_t offset) const;
+        std::uint32_t read32(std::int64_t offset) const;
+        std::uint16_t read16(std::int64_t offset) const;
+        std::uint8_t read8(std::int64_t offset) const;
 
         template <typename T>
-        void write32(T val, std::uint64_t offset) = delete;
-        void write32(std::uint32_t val, std::uint64_t offset);
+        void write32(T val, std::int64_t offset) = delete;
+        void write32(std::uint32_t val, std::int64_t offset);
 
         template <typename T>
-        void write16(T val, std::uint64_t offset) = delete;
-        void write16(std::uint16_t val, std::uint64_t offset);
+        void write16(T val, std::int64_t offset) = delete;
+        void write16(std::uint16_t val, std::int64_t offset);
 
         template <typename T>
-        void write8(T val, std::uint64_t offset) = delete;
-        void write8(std::uint8_t val, std::uint64_t offset);
+        void write8(T val, std::int64_t offset) = delete;
+        void write8(std::uint8_t val, std::int64_t offset);
 
         auto begin() const;
         auto end() const;
@@ -125,7 +128,7 @@ namespace momiji
       public:
         MemoryView(ModifiableMemory<Tag>& mem)
         {
-            m_data = { mem.m_data.data(), mem.m_data.size() };
+            m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
 
             executableMarker = mem.executableMarker;
             stackMarker      = mem.stackMarker;
@@ -141,7 +144,7 @@ namespace momiji
         {
             std::uint8_t* begin = const_cast<std::uint8_t*>(mem.m_data.data());
 
-            m_data = { begin, mem.m_data.size() };
+            m_data = { begin, asl::ssize(mem.m_data) };
 
             executableMarker = mem.executableMarker;
             stackMarker      = mem.stackMarker;
@@ -182,7 +185,7 @@ namespace momiji
       public:
         ConstMemoryView(const ModifiableMemory<Tag>& mem)
         {
-            m_data = { mem.m_data.data(), mem.m_data.size() };
+            m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
 
             executableMarker = mem.executableMarker;
             stackMarker      = mem.stackMarker;
@@ -207,7 +210,7 @@ namespace momiji
     BasicMemory<Container>::BasicMemory(std::int64_t size)
         : m_data(size)
     {
-        Expects(size > 0, "Passing negative size to basic memory");
+        Expects(size > 0, "Passing negative size to basic memory")
     }
 
     template <typename Container>
@@ -247,32 +250,33 @@ namespace momiji
     }
 
     template <typename Container>
-    std::uint32_t BasicMemory<Container>::read32(std::uint64_t offset) const
+    std::uint32_t BasicMemory<Container>::read32(std::int64_t offset) const
     {
-        if (offset >= m_data.size())
+        if (offset >= asl::ssize(m_data))
         {
             return 0;
         }
 
-        return (m_data[offset]) | (m_data[offset + 1] << 8) |
-               (m_data[offset + 2] << 16) | (m_data[offset + 3] << 24);
+        return std::uint32_t((m_data[offset]) | (m_data[offset + 1] << 8) |
+                             (m_data[offset + 2] << 16) |
+                             (m_data[offset + 3] << 24));
     }
 
     template <typename Container>
-    std::uint16_t BasicMemory<Container>::read16(std::uint64_t offset) const
+    std::uint16_t BasicMemory<Container>::read16(std::int64_t offset) const
     {
-        if (offset >= m_data.size())
+        if (offset >= asl::ssize(m_data))
         {
             return 0;
         }
 
-        return (m_data[offset]) | (m_data[offset + 1] << 8);
+        return std::uint16_t((m_data[offset]) | (m_data[offset + 1] << 8));
     }
 
     template <typename Container>
-    std::uint8_t BasicMemory<Container>::read8(std::uint64_t offset) const
+    std::uint8_t BasicMemory<Container>::read8(std::int64_t offset) const
     {
-        if (offset >= m_data.size())
+        if (offset >= asl::ssize(m_data))
         {
             return 0;
         }
@@ -281,10 +285,9 @@ namespace momiji
     }
 
     template <typename Container>
-    void BasicMemory<Container>::write32(std::uint32_t val,
-                                         std::uint64_t offset)
+    void BasicMemory<Container>::write32(std::uint32_t val, std::int64_t offset)
     {
-        if (offset >= m_data.size())
+        if (offset >= asl::ssize(m_data))
         {
             return;
         }
@@ -301,10 +304,9 @@ namespace momiji
     }
 
     template <typename Container>
-    void BasicMemory<Container>::write16(std::uint16_t val,
-                                         std::uint64_t offset)
+    void BasicMemory<Container>::write16(std::uint16_t val, std::int64_t offset)
     {
-        if (offset >= m_data.size())
+        if (offset >= asl::ssize(m_data))
         {
             return;
         }
@@ -317,9 +319,9 @@ namespace momiji
     }
 
     template <typename Container>
-    void BasicMemory<Container>::write8(std::uint8_t val, std::uint64_t offset)
+    void BasicMemory<Container>::write8(std::uint8_t val, std::int64_t offset)
     {
-        if (offset >= m_data.size())
+        if (offset >= asl::ssize(m_data.size))
         {
             return;
         }
@@ -339,7 +341,7 @@ namespace momiji
     void ModifiableMemory<Tag>::push32(std::uint32_t val)
     {
         // Possibly align for odd addresses
-        if (m_data.size() & 1)
+        if (asl::ssize(m_data) & 1)
         {
             m_data.push_back(0);
         }
@@ -358,9 +360,8 @@ namespace momiji
     template <typename Tag>
     void ModifiableMemory<Tag>::push16(std::uint16_t val)
     {
-
         // Possibly align for odd addresses
-        if (m_data.size() & 1)
+        if (asl::ssize(m_data) & 1)
         {
             m_data.push_back(0);
         }
@@ -399,4 +400,7 @@ namespace momiji
     {
         m_data.pop_back();
     }
+
+#pragma clang diagnostic pop
+
 } // namespace momiji

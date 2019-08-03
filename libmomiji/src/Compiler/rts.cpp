@@ -5,9 +5,9 @@
 
 namespace momiji::enc
 {
-    void rts(const momiji::Instruction& instr,
+    void rts(const momiji::Instruction& /*instr*/,
              OpcodeDescription& opcode,
-             std::array<AdditionalData, 2>& additionalData)
+             std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::Rts bits;
         opcode.val = bits.header;

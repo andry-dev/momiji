@@ -18,14 +18,16 @@ namespace momiji::instr
         // Always a data register
         const std::int32_t dstreg = utils::to_val(data.addressingMode[1]);
 
-        std::int32_t dstval = sys.cpu.dataRegisters[dstreg].value;
-        std::int32_t quot   = (dstval / srcval) & 0x0000'FFFF;
-        std::int32_t rem    = (dstval % srcval) & 0x0000'FFFF;
+        const std::int32_t dstval =
+            asl::saccess(sys.cpu.dataRegisters, dstreg).value;
+        const std::int32_t quot = (dstval / srcval) & 0x0000'FFFF;
+        const std::int32_t rem  = (dstval % srcval) & 0x0000'FFFF;
 
-        sys.cpu.dataRegisters[dstreg].value = (rem << 16) | (quot);
+        asl::saccess(sys.cpu.dataRegisters, dstreg).value =
+            (rem << 16) | (quot);
 
         pc += 2;
-        pc += utils::isImmediate(data, 0);
+        pc += std::uint8_t(utils::isImmediate(data, 0));
 
         return sys;
     }
@@ -39,14 +41,15 @@ namespace momiji::instr
         // Always a data register
         const std::int32_t dstreg = utils::to_val(data.addressingMode[1]);
 
-        std::int32_t dstval = sys.cpu.dataRegisters[dstreg].value;
+        std::int32_t dstval = asl::saccess(sys.cpu.dataRegisters, dstreg).value;
         std::int32_t quot   = (dstval / srcval) & 0x0000'FFFF;
         std::int32_t rem    = (dstval % srcval) & 0x0000'FFFF;
 
-        sys.cpu.dataRegisters[dstreg].value = (rem << 16) | (quot);
+        asl::saccess(sys.cpu.dataRegisters, dstreg).value =
+            (rem << 16) | (quot);
 
         pc += 2;
-        pc += utils::isImmediate(data, 0);
+        pc += std::uint8_t(utils::isImmediate(data, 0));
 
         return sys;
     }

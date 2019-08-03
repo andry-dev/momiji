@@ -5,9 +5,11 @@
 
 namespace momiji
 {
-    std::uint8_t getCorrectOpMode(const momiji::Instruction& instr, int op)
+    std::uint8_t getCorrectOpMode(const momiji::Instruction& instr,
+                                  std::int8_t opNum)
     {
-        switch (instr.operands[op].operandType)
+        const auto& op = asl::saccess(instr.operands, opNum);
+        switch (op.operandType)
         {
         case OperandType::DataRegister:
             [[fallthrough]];
@@ -22,10 +24,10 @@ namespace momiji
         case OperandType::AddressIndex:
             [[fallthrough]];
         case OperandType::AddressOffset:
-            return instr.operands[op].value & 0b111;
+            return op.value & 0b111;
 
         default:
-            return utils::to_val(instr.operands[op].specialAddressingMode);
+            return utils::to_val(op.specialAddressingMode);
         }
     }
 
@@ -37,39 +39,41 @@ namespace momiji
 
         auto size = utils::to_val(instr.dataType);
 
-        for (int i = 0; i < instr.operands.size(); ++i)
+        for (std::int64_t i = 0; i < asl::ssize(instr.operands); ++i)
         {
-            switch (instr.operands[i].operandType)
+            const auto& op = asl::saccess(instr.operands, i);
+            auto& data     = asl::saccess(additionalData, i);
+
+            switch (op.operandType)
             {
             // offset(a*)
             case OperandType::AddressIndex:
                 [[fallthrough]];
             // (offset, a*, X*)
             case OperandType::AddressOffset:
-                additionalData[i].cnt = 2;
-                additionalData[i].val =
-                    (instr.operands[i].value & 0xFFFF'0000) >> 16;
+                data.cnt = 2;
+                data.val = (std::uint32_t(op.value) & 0xFFFF'0000) >> 16;
                 break;
 
             case OperandType::Immediate:
-                switch (instr.operands[i].specialAddressingMode)
+                switch (op.specialAddressingMode)
                 {
                 // #1234
                 case SpecialAddressingMode::Immediate:
-                    additionalData[i].cnt = tobyte[size];
-                    additionalData[i].val = instr.operands[i].value;
+                    data.cnt = tobyte[size];
+                    data.val = std::uint32_t(op.value);
                     break;
 
                 // *.w 1234
                 case SpecialAddressingMode::AbsoluteShort:
-                    additionalData[i].cnt = 2;
-                    additionalData[i].val = instr.operands[i].value;
+                    data.cnt = 2;
+                    data.val = std::uint32_t(op.value);
                     break;
 
                 // *.l 1234
                 case SpecialAddressingMode::AbsoluteLong:
-                    additionalData[i].cnt = 4;
-                    additionalData[i].val = instr.operands[i].value;
+                    data.cnt = 4;
+                    data.val = std::uint32_t(op.value);
                     break;
 
                 case SpecialAddressingMode::ProgramCounterOffset:

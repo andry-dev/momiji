@@ -34,15 +34,15 @@ namespace momiji
     }
 
     DecodedInstruction decodeFirstGroup(ExecutableMemoryView mem,
-                                        std::uint64_t idx);
+                                        std::int64_t idx);
     DecodedInstruction decodeSecondGroup(ExecutableMemoryView mem,
-                                         std::uint64_t idx);
+                                         std::int64_t idx);
     DecodedInstruction decodeThirdGroup(ExecutableMemoryView mem,
-                                        std::uint64_t idx);
+                                        std::int64_t idx);
     DecodedInstruction decodeFourthGroup(ExecutableMemoryView mem,
-                                         std::uint64_t idx);
+                                         std::int64_t idx);
 
-    DecodedInstruction decode(ExecutableMemoryView mem, std::uint64_t idx)
+    DecodedInstruction decode(ExecutableMemoryView mem, std::int64_t idx)
     {
         // Find by groups
         std::uint16_t mask = 0b11000000'00000000;
@@ -68,7 +68,7 @@ namespace momiji
     }
 
     DecodedInstruction decodeFirstGroup(ExecutableMemoryView mem,
-                                        std::uint64_t idx)
+                                        std::int64_t idx)
     {
         constexpr std::uint16_t firstmask  = 0b11110000'00000000;
         constexpr std::uint16_t secondmask = 0b11111111'00000000;
@@ -107,7 +107,7 @@ namespace momiji
     }
 
     DecodedInstruction decodeSecondGroup(ExecutableMemoryView mem,
-                                         std::uint64_t idx)
+                                         std::int64_t idx)
     {
         constexpr std::uint16_t firstmask  = 0b11110000'00000000;
         constexpr std::uint16_t bramask    = 0b11111111'00000000;
@@ -137,7 +137,6 @@ namespace momiji
             // SWAP / PEA
             case 0b01001000'01000000:
                 return momiji::dec::swap(mem, idx);
-                break;
 
             // RTE / RTS / TRAPV / RTR
             case 0b01001110'01000000:
@@ -179,7 +178,6 @@ namespace momiji
             default:
                 return momiji::dec::bcc(mem, idx);
             }
-            break;
 
         // MOVEQ
         case 0b011100000'00000000:
@@ -191,7 +189,7 @@ namespace momiji
     }
 
     DecodedInstruction decodeThirdGroup(ExecutableMemoryView mem,
-                                        std::uint64_t idx)
+                                        std::int64_t idx)
     {
         constexpr std::uint16_t firstmask = 0b11110000'11000000;
         constexpr std::uint16_t divmask   = 0b11110001'11000000;
@@ -245,7 +243,7 @@ namespace momiji
     }
 
     DecodedInstruction decodeFourthGroup(ExecutableMemoryView mem,
-                                         std::uint64_t idx)
+                                         std::int64_t idx)
     {
         // Momiji specific control code!
         if (mem.read16(idx) == 0xFFFF)
@@ -262,7 +260,7 @@ namespace momiji
         constexpr std::uint16_t memshiftmask = 0b11111111'11000000;
         constexpr std::uint16_t regshiftmask = 0b11110001'00111000;
 
-        const std::int16_t val = mem.read16(idx);
+        const auto val = mem.read16(idx);
 
         switch (val & firstmask)
         {
@@ -295,7 +293,6 @@ namespace momiji
             default:
                 return momiji::dec::and_instr(mem, idx);
             }
-            break;
 
         // ADD
         case 0b11010000'00000000:

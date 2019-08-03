@@ -19,8 +19,9 @@ namespace momiji::enc
 
         handleAdditionalData(instr, additionalData);
 
-        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
-                     (bits.padding << 6) | (bits.srctype << 3) | (bits.srcmode);
+        opcode.val = std::uint16_t((bits.header << 12) | (bits.datareg << 9) |
+                                   (bits.padding << 6) | (bits.srctype << 3) |
+                                   (bits.srcmode));
     }
 
     void mulu(const momiji::Instruction& instr,
@@ -36,7 +37,8 @@ namespace momiji::enc
 
         handleAdditionalData(instr, additionalData);
 
-        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
-                     (bits.padding << 6) | (bits.srctype << 3) | (bits.srcmode);
+        opcode.val = std::uint16_t((bits.header << 12) | (bits.datareg << 9) |
+                                   (bits.padding << 6) | (bits.srctype << 3) |
+                                   (bits.srcmode));
     }
 } // namespace momiji::enc

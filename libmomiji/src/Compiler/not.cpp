@@ -7,7 +7,7 @@
 namespace momiji::enc
 {
     void not_instr(const momiji::Instruction& instr,
-                   OpcodeDescription& opcode,
+                   OpcodeDescription& /*opcode*/,
                    std::array<AdditionalData, 2>& additionalData)
     {
         repr::Not bits;

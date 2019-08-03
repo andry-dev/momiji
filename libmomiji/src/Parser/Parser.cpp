@@ -17,29 +17,21 @@
 
 namespace momiji
 {
-    static auto
-    make_parser_error(int column, int line, ParserError::ErrorType error)
+    static auto make_parser_error(std::int64_t column,
+                                  std::int64_t line,
+                                  ParserError::ErrorType error)
     {
-        return nonstd::make_unexpected<ParserError>({ line, column, error });
+        return nonstd::make_unexpected<ParserError>(
+            { line, column, error, {} });
     }
 
-    static auto make_parser_error(int column,
-                                  int line,
+    static auto make_parser_error(std::int64_t column,
+                                  std::int64_t line,
                                   ParserError::ErrorType error,
                                   std::string_view sourceCode)
     {
         return nonstd::make_unexpected<ParserError>(
             { line, column, error, std::string { sourceCode } });
-    }
-
-    static bool isImmediate(const Operand& op)
-    {
-        return op.operandType == OperandType::Immediate &&
-               (op.specialAddressingMode == SpecialAddressingMode::Immediate ||
-                op.specialAddressingMode ==
-                    SpecialAddressingMode::AbsoluteShort ||
-                op.specialAddressingMode ==
-                    SpecialAddressingMode::AbsoluteLong);
     }
 
     static bool isInternal(const Instruction& instr)
@@ -110,7 +102,7 @@ namespace momiji
         ParsingResult run()
         {
             auto tmp_str = str;
-            while (tmp_str.size() > 0 && !parsing_error)
+            while (!tmp_str.empty() && !parsing_error)
             {
                 momiji::Instruction instr;
 
@@ -193,7 +185,7 @@ namespace momiji
                         0,
                         line_count,
                         res.error.errorType,
-                        std::string_view(begin, end - begin));
+                        std::string_view(begin, std::uint32_t(end - begin)));
                 }
 
                 tmp_str = res.rest;
@@ -211,7 +203,8 @@ namespace momiji
                 {
                     if (!op.labelResolved)
                     {
-                        auto found = alg::find_label(labels, op.value);
+                        auto found =
+                            alg::find_label(labels, std::uint32_t(op.value));
 
                         if (found == std::end(labels.labels))
                         {
@@ -221,7 +214,7 @@ namespace momiji
                                 ParserError::ErrorType::NoLabelFound);
                         }
 
-                        op.value         = found->idx;
+                        op.value         = std::int32_t(found->idx);
                         op.labelResolved = true;
                     }
                 }
@@ -233,7 +226,7 @@ namespace momiji
                 if (isBranchInstr(x))
                 {
                     auto& op = x.operands[0];
-                    op.value = op.value - x.programCounter;
+                    op.value = op.value - std::int32_t(x.programCounter);
                 }
             }
 

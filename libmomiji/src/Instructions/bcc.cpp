@@ -7,7 +7,6 @@ namespace momiji::instr
     momiji::System bcc(momiji::System& sys, const InstructionData& data)
     {
         const auto pc        = sys.cpu.programCounter.address;
-        const auto memview   = momiji::make_memory_view(sys);
         const auto condition = utils::to_val(data.operandType[0]);
         std::int16_t offset  = utils::to_val(data.operandType[1]);
 
@@ -16,7 +15,8 @@ namespace momiji::instr
         if (offset == 0)
         {
             skipTwoBytes = true;
-            offset       = sys.mem.read16(pc + 2);
+
+            offset = std::int16_t(sys.mem.read16(pc + 2));
         }
 
         const auto& statReg = sys.cpu.statusRegister;
@@ -86,7 +86,7 @@ namespace momiji::instr
 
         if (shouldBranch)
         {
-            sys.cpu.programCounter.address += offset;
+            sys.cpu.programCounter.address += std::uint32_t(offset);
         }
         else
         {

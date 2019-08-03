@@ -67,7 +67,7 @@ namespace momiji
 
         glBindVertexArray(m_VAO);
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER, g_bufferSize, 0, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, g_bufferSize, nullptr, GL_DYNAMIC_DRAW);
 
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
@@ -76,31 +76,34 @@ namespace momiji
 
         // Pos
         glVertexAttribPointer(
-            0, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex), (const void*)(0));
+            0, 2, GL_FLOAT, GL_FALSE, sizeof(tewi::Vertex), nullptr);
 
         // UV
-        glVertexAttribPointer(1,
-                              2,
-                              GL_FLOAT,
-                              GL_FALSE,
-                              sizeof(tewi::Vertex),
-                              (const void*)(offsetof(tewi::Vertex, uv)));
+        glVertexAttribPointer(
+            1,
+            2,
+            GL_FLOAT,
+            GL_FALSE,
+            sizeof(tewi::Vertex),
+            reinterpret_cast<const void*>(offsetof(tewi::Vertex, uv)));
 
         // TID
-        glVertexAttribPointer(2,
-                              1,
-                              GL_FLOAT,
-                              GL_FALSE,
-                              sizeof(tewi::Vertex),
-                              (const void*)(offsetof(tewi::Vertex, textureID)));
+        glVertexAttribPointer(
+            2,
+            1,
+            GL_FLOAT,
+            GL_FALSE,
+            sizeof(tewi::Vertex),
+            reinterpret_cast<const void*>(offsetof(tewi::Vertex, textureID)));
 
         // Color
-        glVertexAttribPointer(3,
-                              4,
-                              GL_UNSIGNED_BYTE,
-                              GL_TRUE,
-                              sizeof(tewi::Vertex),
-                              (const void*)(offsetof(tewi::Vertex, color)));
+        glVertexAttribPointer(
+            3,
+            4,
+            GL_UNSIGNED_BYTE,
+            GL_TRUE,
+            sizeof(tewi::Vertex),
+            reinterpret_cast<const void*>(offsetof(tewi::Vertex, color)));
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -160,7 +163,7 @@ namespace momiji
         glBindVertexArray(m_VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 
-        glDrawElements(GL_TRIANGLES, m_count, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, m_count, GL_UNSIGNED_INT, nullptr);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindVertexArray(0);

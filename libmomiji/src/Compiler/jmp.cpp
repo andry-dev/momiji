@@ -20,22 +20,24 @@ namespace momiji::enc
             (op.specialAddressingMode == SpecialAddressingMode::AbsoluteLong ||
              op.specialAddressingMode == SpecialAddressingMode::AbsoluteShort))
         {
-            additionalData[0].val = op.value;
+            additionalData[0].val = std::uint32_t(op.value);
             additionalData[0].cnt = 4;
         }
 
-        opcode.val = (bits.header << 6) | (bits.regtype << 3) | (bits.regmode);
+        opcode.val = std::uint16_t((bits.header << 6) | (bits.regtype << 3) |
+                                   (bits.regmode));
     }
 
     void jsr(const momiji::Instruction& instr,
              OpcodeDescription& opcode,
-             std::array<AdditionalData, 2>& additionalData)
+             std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::Jsr bits;
 
         bits.regtype = utils::to_val(instr.operands[0].operandType);
         bits.regmode = getCorrectOpMode(instr, 0);
 
-        opcode.val = (bits.header << 6) | (bits.regtype << 3) | (bits.regmode);
+        opcode.val = std::uint16_t((bits.header << 6) | (bits.regtype << 3) |
+                                   (bits.regmode));
     }
 } // namespace momiji::enc

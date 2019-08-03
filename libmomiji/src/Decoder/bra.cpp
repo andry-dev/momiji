@@ -5,7 +5,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction bra(ExecutableMemoryView mem, std::uint64_t idx)
+    DecodedInstruction bra(ExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -23,7 +23,7 @@ namespace momiji::dec
 
         if (displ == 0)
         {
-            displ = mem.read16(idx + 2);
+            displ = std::int16_t(mem.read16(idx + 2));
         }
 
         ret.string = "bra " + std::to_string(displ);
@@ -31,7 +31,7 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction bsr(ExecutableMemoryView mem, std::uint64_t idx)
+    DecodedInstruction bsr(ExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -49,7 +49,7 @@ namespace momiji::dec
 
         if (displ == 0)
         {
-            displ = mem.read16(idx + 2);
+            displ = std::int16_t(mem.read16(idx + 2));
         }
 
         ret.string = "bsr " + std::to_string(displ);

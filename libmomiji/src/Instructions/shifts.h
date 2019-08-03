@@ -53,39 +53,43 @@ namespace momiji::instr
     template <typename ShiftType>
     momiji::System shift(momiji::System& sys, const InstructionData& instr)
     {
-        std::int32_t mask = 0b10000000'00000000'00000000'00000000;
+        const auto mask = [&]() -> std::int32_t {
+            switch (instr.size)
+            {
+            case 1:
+                return std::int32_t(0b00000000'00000000'00000000'10000000);
+
+            case 2:
+                return std::int32_t(0b00000000'00000000'10000000'00000000);
+
+            default:
+                return std::int32_t(0b10000000'00000000'00000000'00000000);
+            }
+        }();
 
         auto& pc = sys.cpu.programCounter.address;
         pc += 2;
 
-        switch (instr.size)
-        {
-        case 1:
-            mask = 0b00000000'00000000'00000000'10000000;
-            break;
-
-        case 2:
-            mask = 0b00000000'00000000'10000000'00000000;
-            break;
-        }
-
         if (instr.operandType[1] == OperandType::Address)
         {
             // Memory shift
-            std::int16_t* dst = utils::readOperandPtr16(sys, instr, 0);
+            auto dst = utils::readOperandPtr<std::int16_t>(sys, instr, 0);
 
             auto& dstref = *dst;
             ShiftType::compute(dstref, 1, mask);
 
-            pc += utils::isImmediate(instr, 0);
+            pc += std::uint32_t(utils::isImmediate(instr, 0));
         }
         else
         {
             // Reg shift
-            const std::int8_t src     = utils::to_val(instr.addressingMode[0]);
-            const std::int32_t dstreg = utils::to_val(instr.addressingMode[1]);
+            const auto src =
+                std::int8_t(utils::to_val(instr.addressingMode[0]));
 
-            auto& dst = sys.cpu.dataRegisters[dstreg].value;
+            const auto dstreg =
+                std::int32_t(utils::to_val(instr.addressingMode[1]));
+
+            auto& dst = asl::saccess(sys.cpu.dataRegisters, dstreg).value;
 
             if (instr.operandType[0] == OperandType::Immediate)
             {
@@ -93,8 +97,8 @@ namespace momiji::instr
             }
             else
             {
-                ShiftType::compute(
-                    dst, sys.cpu.dataRegisters[src].value % 64, mask);
+                const auto reg = asl::saccess(sys.cpu.dataRegisters, src);
+                ShiftType::compute(dst, reg.value % 64, mask);
             }
         }
 

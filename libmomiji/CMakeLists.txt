@@ -2,9 +2,11 @@ cmake_minimum_required(VERSION 3.8)
 
 add_library(libmomiji)
 target_compile_features(libmomiji PUBLIC cxx_std_17)
+
 target_include_directories(libmomiji PUBLIC SYSTEM
                            include
                            external/nonstd)
+
 target_include_directories(libmomiji PRIVATE SYSTEM include/momiji)
 
 target_sources(libmomiji
@@ -73,6 +75,8 @@ target_sources(libmomiji
 
     src/Emulator.cpp)
 
+momiji_set_target_flags(libmomiji)
+
 find_package(asl)
 
 if (NOT TARGET asl::asl)
@@ -82,4 +86,6 @@ if (NOT TARGET asl::asl)
 endif()
 
 target_link_libraries(libmomiji PUBLIC asl::asl)
-set_target_properties(libmomiji PROPERTIES PREFIX "")
+set_target_properties(libmomiji PROPERTIES
+    PREFIX ""
+    CXX_EXTENSIONS OFF)

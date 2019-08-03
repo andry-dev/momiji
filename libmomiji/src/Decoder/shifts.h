@@ -64,8 +64,7 @@ namespace momiji::dec
     } // namespace details
 
     template <typename ShiftType>
-    DecodedInstruction any_mem_shift(ExecutableMemoryView mem,
-                                     std::uint64_t idx)
+    DecodedInstruction any_mem_shift(ExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -100,8 +99,7 @@ namespace momiji::dec
     }
 
     template <typename ShiftType>
-    DecodedInstruction any_reg_shift(ExecutableMemoryView mem,
-                                     std::uint64_t idx)
+    DecodedInstruction any_reg_shift(ExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 

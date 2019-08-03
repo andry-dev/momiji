@@ -17,7 +17,7 @@ namespace momiji::enc
         bits.regtype = utils::to_val(instr.operands[0].operandType);
         bits.regmode = getCorrectOpMode(instr, 0);
 
-        opcode.val = (bits.header << 8) | (bits.size << 6) |
-                     (bits.regmode << 3) | (bits.regtype);
+        opcode.val = std::uint16_t((bits.header << 8) | (bits.size << 6) |
+                                   (bits.regmode << 3) | (bits.regtype));
     }
 } // namespace momiji::enc

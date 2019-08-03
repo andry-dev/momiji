@@ -8,7 +8,7 @@ namespace momiji::enc
 {
     void exg(const momiji::Instruction& instr,
              OpcodeDescription& opcode,
-             std::array<AdditionalData, 2>& additionalData)
+             std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::Exg bits;
 
@@ -40,7 +40,8 @@ namespace momiji::enc
             bits.mode    = 0b10001;
         }
 
-        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
-                     (bits.padding << 8) | (bits.mode << 3) | (bits.addreg);
+        opcode.val = std::uint16_t((bits.header << 12) | (bits.datareg << 9) |
+                                   (bits.padding << 8) | (bits.mode << 3) |
+                                   (bits.addreg));
     }
 } // namespace momiji::enc

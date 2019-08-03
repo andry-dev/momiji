@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(momiji)
+project(momiji CXX)
 
 option(MOMIJI_BUILD_GL_GUI "Enable OpenGL GUI support (requires tewi)" OFF)
 option(MOMIJI_BUILD_QT_GUI "Enable Qt GUI support" OFF)
@@ -8,6 +8,8 @@ option(MOMIJI_BUILD_TOOLS "Build CLI tools" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_BINARY_DIR})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+include(cmake/set-flags.cmake)
 
 # The library
 add_subdirectory(libmomiji)

@@ -16,9 +16,9 @@ namespace utils
 
     inline ProgramArguments convArgs(int argc, const char** argv)
     {
-        ProgramArguments args(argc - 1);
+        ProgramArguments args(std::size_t(argc - 1));
 
-        for (int i = 1; i < argc; ++i)
+        for (std::size_t i = 1; i < std::size_t(argc); ++i)
         {
             const auto len = std::strlen(argv[i]);
 
@@ -34,10 +34,10 @@ namespace utils
         std::fseek(file, 0, SEEK_END);
         const auto length = std::ftell(file);
 
-        std::string content(length, '\0');
+        std::string content(std::size_t(length), '\0');
 
         std::fseek(file, 0, SEEK_SET);
-        std::fread(content.data(), 1, length, file);
+        std::fread(content.data(), 1, std::size_t(length), file);
         std::fclose(file);
 
         return content;
@@ -53,7 +53,7 @@ namespace utils
 
         momiji::ExecutableMemory mem { length };
 
-        std::fread(mem.data(), 1, length, file);
+        std::fread(mem.data(), 1, std::size_t(length), file);
         std::fclose(file);
 
         return mem;

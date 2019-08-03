@@ -5,15 +5,15 @@
 #include "../Instructions/Representations.h"
 #include "./Utils.h"
 
-#include <iostream>
+#include <momiji/Utils.h>
 
 namespace momiji::enc
 {
     template <typename RegRepr, typename MemRepr>
     void any_shift(const Instruction& instr,
                    OpcodeDescription& opcode,
-                   std::array<AdditionalData, 2>& additionalData,
-                   int dirBit)
+                   std::array<AdditionalData, 2>& /*additionalData*/,
+                   std::uint8_t dirBit)
     {
         // Reg
         if (discriminateShifts(instr))
@@ -21,7 +21,7 @@ namespace momiji::enc
             RegRepr bits;
 
             bits.direction = dirBit;
-            bits.rotation  = instr.operands[0].value;
+            bits.rotation  = std::uint16_t(instr.operands[0].value);
 
             if (instr.operands[0].operandType == OperandType::DataRegister)
             {
@@ -32,13 +32,13 @@ namespace momiji::enc
                 bits.rotmode = 0;
             }
 
-            bits.datareg = instr.operands[1].value;
+            bits.datareg = std::uint16_t(instr.operands[1].value);
             bits.size    = utils::to_val(instr.dataType) & 0b111;
 
-            opcode.val = (bits.header << 12) | (bits.rotation << 9) |
-                         (bits.direction << 8) | (bits.size << 6) |
-                         (bits.rotmode << 5) | (bits.padding << 3) |
-                         (bits.datareg);
+            opcode.val = std::uint16_t(
+                (bits.header << 12) | (bits.rotation << 9) |
+                (bits.direction << 8) | (bits.size << 6) | (bits.rotmode << 5) |
+                (bits.padding << 3) | (bits.datareg));
         }
         // Mem
         else
@@ -51,9 +51,9 @@ namespace momiji::enc
             bits.regmode =
                 utils::to_val(instr.operands[0].specialAddressingMode);
 
-            opcode.val = (bits.header << 9) | (bits.direction << 8) |
-                         (bits.padding << 6) | (bits.regtype << 3) |
-                         (bits.regmode);
+            opcode.val = std::uint16_t(
+                (bits.header << 9) | (bits.direction << 8) |
+                (bits.padding << 6) | (bits.regtype << 3) | (bits.regmode));
         }
     }
 } // namespace momiji::enc

@@ -11,42 +11,13 @@
 
 namespace momiji
 {
-    static std::uint32_t
-    immediateIncrPC(const momiji::DecodedInstruction& instr, std::uint32_t pc)
-    {
-        switch (instr.data.size)
-        {
-        case 1:
-        case 2:
-            pc += 4;
-            break;
-
-        case 4:
-            pc += 6;
-            break;
-        }
-
-        return pc;
-    }
-
-    static bool isJumpInstr(const momiji::DecodedInstruction& instr)
-    {
-        if (instr.exec == instr::bra || instr.exec == instr::bsr ||
-            instr.exec == instr::bcc || instr.exec == instr::jmp ||
-            instr.exec == instr::jsr)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
     Emulator::Emulator()
         : m_systemStates(1)
         , m_settings({ 0,
                        -1,
                        utils::make_kb(4),
-                       EmulatorSettings::RetainStates::Always })
+                       EmulatorSettings::RetainStates::Always,
+                       {} })
     {
     }
 
@@ -81,17 +52,18 @@ namespace momiji
             }
 
             mem.executableMarker.begin = 0;
-            mem.executableMarker.end   = mem.size();
+            mem.executableMarker.end   = asl::ssize(mem);
 
-            mem.stackMarker.begin = mem.size();
+            mem.stackMarker.begin = asl::ssize(mem);
             mem.stackMarker.end = mem.stackMarker.begin + m_settings.stackSize;
 
-            mem.underlying().resize(mem.stackMarker.end, 0);
+            mem.underlying().resize(std::size_t(mem.stackMarker.end), 0);
 
             auto lastSys = m_systemStates.back();
             lastSys.mem  = std::move(mem);
 
-            lastSys.cpu.addressRegisters[7].value = (lastSys.mem.size() - 2);
+            lastSys.cpu.addressRegisters[7].value =
+                std::int32_t(lastSys.mem.size() - 2);
             m_systemStates.emplace_back(std::move(lastSys));
 
             return std::nullopt;
@@ -112,11 +84,14 @@ namespace momiji
         }
 
         mem.executableMarker.begin = 0;
-        mem.executableMarker.end   = mem.size();
-        mem.stackMarker.begin      = mem.size();
-        mem.stackMarker.end = mem.stackMarker.begin + m_settings.stackSize;
-        mem.underlying().resize(mem.stackMarker.end, 0);
-        lastSys.cpu.addressRegisters[7].value = (lastSys.mem.size() - 2);
+        mem.executableMarker.end   = asl::ssize(mem);
+
+        mem.stackMarker.begin = asl::ssize(mem);
+        mem.stackMarker.end   = mem.stackMarker.begin + m_settings.stackSize;
+
+        mem.underlying().resize(std::size_t(mem.stackMarker.end), 0);
+        lastSys.cpu.addressRegisters[7].value =
+            std::int32_t(lastSys.mem.size() - 2);
 
         m_systemStates.emplace_back(std::move(lastSys));
     }

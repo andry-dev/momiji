@@ -7,7 +7,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction cmp(ExecutableMemoryView mem, std::uint64_t idx)
+    DecodedInstruction cmp(ExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -37,7 +37,7 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction cmpa(ExecutableMemoryView mem, std::uint64_t idx)
+    DecodedInstruction cmpa(ExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -76,7 +76,7 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction cmpi(ExecutableMemoryView mem, std::uint64_t idx)
+    DecodedInstruction cmpi(ExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 

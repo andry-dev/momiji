@@ -35,9 +35,9 @@ namespace momiji::enc
 
         handleAdditionalData(instr, additionalData);
 
-        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
-                     (bits.direction << 8) | (bits.size << 6) |
-                     (bits.othtype << 3) | (bits.othmode);
+        opcode.val = std::uint16_t((bits.header << 12) | (bits.datareg << 9) |
+                                   (bits.direction << 8) | (bits.size << 6) |
+                                   (bits.othtype << 3) | (bits.othmode));
     }
 
     void adda(const momiji::Instruction& instr,
@@ -67,9 +67,9 @@ namespace momiji::enc
         bits.srctype = utils::to_val(instr.operands[0].operandType) & 0b111;
         bits.srcmode = getCorrectOpMode(instr, 0) & 0b111;
 
-        opcode.val = (bits.header << 12) | (bits.addreg << 9) |
-                     (bits.size << 8) | (bits.padding << 6) |
-                     (bits.srctype << 3) | (bits.srcmode);
+        opcode.val = std::uint16_t((bits.header << 12) | (bits.addreg << 9) |
+                                   (bits.size << 8) | (bits.padding << 6) |
+                                   (bits.srctype << 3) | (bits.srcmode));
     }
 
     void addi(const momiji::Instruction& instr,
@@ -86,8 +86,8 @@ namespace momiji::enc
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1) & 0b111;
 
-        opcode.val = (bits.header << 8) | (bits.size << 6) |
-                     (bits.dsttype << 3) | (bits.dstmode);
+        opcode.val = std::uint16_t((bits.header << 8) | (bits.size << 6) |
+                                   (bits.dsttype << 3) | (bits.dstmode));
     }
 
 } // namespace momiji::enc

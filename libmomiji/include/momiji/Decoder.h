@@ -8,7 +8,7 @@ namespace momiji
 {
     struct InstructionData
     {
-        std::uint8_t size { 2 };
+        std::int8_t size { 2 };
 
         std::array<OperandType, 2> operandType;
         std::array<SpecialAddressingMode, 2> addressingMode;
@@ -28,14 +28,18 @@ namespace momiji
         DecodedInstructionFn exec;
     };
 
-    DecodedInstruction decode(ExecutableMemoryView mem, std::uint64_t idx);
+    DecodedInstruction decode(ExecutableMemoryView mem, std::int64_t idx);
 
     namespace utils
     {
-        inline int isImmediate(const momiji::InstructionData& instr, int op)
+        inline std::int8_t isImmediate(const momiji::InstructionData& instr,
+                                       std::int8_t opNum)
         {
-            if ((instr.operandType[op] == OperandType::Immediate) &&
-                (instr.addressingMode[op] == SpecialAddressingMode::Immediate))
+            const auto& op   = asl::saccess(instr.operandType, opNum);
+            const auto& mode = asl::saccess(instr.addressingMode, opNum);
+
+            if ((op == OperandType::Immediate) &&
+                (mode == SpecialAddressingMode::Immediate))
             {
                 if ((instr.size == 1) || (instr.size == 2))
                 {
@@ -47,22 +51,20 @@ namespace momiji
                 }
             }
 
-            if (instr.operandType[op] == OperandType::Immediate &&
-                instr.addressingMode[op] ==
-                    SpecialAddressingMode::AbsoluteShort)
+            if ((op == OperandType::Immediate) &&
+                (mode == SpecialAddressingMode::AbsoluteShort))
             {
                 return 2;
             }
 
-            if ((instr.operandType[op] == OperandType::Immediate) &&
-                (instr.addressingMode[op] ==
-                 SpecialAddressingMode::AbsoluteLong))
+            if ((op == OperandType::Immediate) &&
+                (mode == SpecialAddressingMode::AbsoluteLong))
             {
                 return 4;
             }
 
-            if ((instr.operandType[op] == OperandType::AddressOffset) ||
-                (instr.operandType[op] == OperandType::AddressIndex))
+            if ((op == OperandType::AddressOffset) ||
+                (op == OperandType::AddressIndex))
             {
                 return 2;
             }
@@ -70,7 +72,8 @@ namespace momiji
             return 0;
         }
 
-        inline int resolveOp1Size(const momiji::InstructionData& instr, int op)
+        inline std::int8_t resolveOp1Size(const momiji::InstructionData& instr,
+                                          std::int8_t op)
         {
             if (op == 0)
             {

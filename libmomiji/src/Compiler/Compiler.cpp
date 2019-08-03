@@ -212,22 +212,32 @@ namespace momiji
                 case DataType::Long:
                     for (const auto& x : instr.operands)
                     {
-                        const std::uint32_t val = x.value;
+                        const std::uint32_t val = std::uint32_t(x.value);
                         memory.push32(val);
                     }
                     break;
                 }
                 continue;
-                break;
 
-            default:
+            case InstructionType::AddQ:
+                [[fallthrough]];
+            case InstructionType::SubQ:
+                [[fallthrough]];
+            case InstructionType::MoveQuick:
+                [[fallthrough]];
+            case InstructionType::Neg:
+                [[fallthrough]];
+            case InstructionType::Nop:
+                [[fallthrough]];
+            case InstructionType::Illegal:
+                /* default: */
                 std::cerr << utils::to_val(instr.instructionType)
                           << ": Instruction not implemented yet\n";
             }
 
             memory.push16(opcode.val);
 
-            for (int i = 0; i < additional_data.size(); ++i)
+            for (std::uint32_t i = 0; i < additional_data.size(); ++i)
             {
                 switch (additional_data[i].cnt)
                 {

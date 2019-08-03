@@ -59,8 +59,8 @@ namespace momiji
 
     struct ParserError
     {
-        int line { 0 };
-        int column { 0 };
+        std::int64_t line { 0 };
+        std::int64_t column { 0 };
 
         enum class ErrorType
         {

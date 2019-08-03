@@ -1,11 +1,11 @@
-#include "bra.h"
+#include "bcc.h"
 
 #include "../Instructions/Representations.h"
 #include "../Instructions/bcc.h"
 
 namespace momiji::dec
 {
-    DecodedInstruction bcc(ExecutableMemoryView mem, std::uint64_t idx)
+    DecodedInstruction bcc(ExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -60,14 +60,22 @@ namespace momiji::dec
         case BranchConditions::LessEq:
             ret.string = "beq ";
             break;
+
+        default:
+            ret.string = "b?? ";
+            break;
         }
 
-        std::int16_t displ = bits.displacement;
+        const auto displ = [&]() -> std::int16_t {
+            auto tmp = std::int16_t(bits.displacement);
 
-        if (displ == 0)
-        {
-            displ = mem.read16(idx + 2);
-        }
+            if (tmp == 0)
+            {
+                tmp = std::int16_t(mem.read16(idx + 2));
+            }
+
+            return tmp;
+        }();
 
         ret.string += std::to_string(displ);
 

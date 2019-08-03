@@ -6,7 +6,7 @@
 
 namespace momiji
 {
-    inline void assignNormalSize(DecodedInstruction& instr, std::uint8_t size)
+    inline void assignNormalSize(DecodedInstruction& instr, std::int8_t size)
     {
         switch (size)
         {
@@ -24,7 +24,7 @@ namespace momiji
         }
     }
 
-    inline std::string dataTypeToString(int size)
+    inline std::string dataTypeToString(std::int8_t size)
     {
         switch (size)
         {
@@ -42,15 +42,16 @@ namespace momiji
     }
 
     inline std::string opToString(const InstructionData& instr,
-                                  int opNum,
+                                  std::int8_t opNum,
                                   ExecutableMemoryView mem,
-                                  std::uint64_t idx)
+                                  std::int64_t idx)
     {
-        const std::int32_t opmode = utils::to_val(instr.addressingMode[opNum]);
+        const std::int32_t opmode =
+            utils::to_val(asl::saccess(instr.addressingMode, opNum));
 
         idx += 2;
 
-        switch (instr.operandType[opNum])
+        switch (asl::saccess(instr.operandType, opNum))
         {
         case OperandType::DataRegister:
             return "d" + std::to_string(opmode);
@@ -66,24 +67,22 @@ namespace momiji
 
         case OperandType::Address:
             return "(a" + std::to_string(opmode) + ")";
-            break;
 
         case OperandType::AddressOffset:
         {
-            std::int16_t offset =
+            std::uint16_t offset =
                 mem.read16(idx + utils::resolveOp1Size(instr, opNum));
 
             return std::to_string(offset) + "(a" + std::to_string(opmode) + ")";
         }
-        break;
 
         case OperandType::AddressIndex:
         {
-            std::int16_t imm =
+            std::uint16_t imm =
                 mem.read16(idx + utils::resolveOp1Size(instr, opNum));
 
-            std::int8_t reg    = (imm & 0xF000) >> 12;
-            std::int8_t offset = (imm & 0x00FF);
+            const auto reg    = std::uint8_t((imm & 0xF000) >> 12);
+            const auto offset = std::uint8_t((imm & 0x00FF));
 
             std::string ret = "(" + std::to_string(offset) + ", a" +
                               std::to_string(opmode) + ", ";
@@ -99,10 +98,9 @@ namespace momiji
 
             return ret;
         }
-        break;
 
         case OperandType::Immediate:
-            switch (instr.addressingMode[opNum])
+            switch (asl::saccess(instr.addressingMode, opNum))
             {
             case SpecialAddressingMode::Immediate:
             {
@@ -112,14 +110,14 @@ namespace momiji
                     [[fallthrough]];
                 case 2:
                 {
-                    std::int16_t val =
+                    std::uint16_t val =
                         mem.read16(idx + utils::resolveOp1Size(instr, opNum));
                     return "#" + std::to_string(val);
                 }
 
                 case 4:
                 {
-                    std::int32_t val =
+                    std::uint32_t val =
                         mem.read32(idx + utils::resolveOp1Size(instr, opNum));
                     return "#" + std::to_string(val);
                 }
@@ -129,21 +127,19 @@ namespace momiji
 
             case SpecialAddressingMode::AbsoluteShort:
             {
-                std::int16_t addr =
+                std::uint16_t addr =
                     mem.read16(idx + utils::resolveOp1Size(instr, opNum));
 
                 return std::to_string(addr);
             }
-            break;
 
             case SpecialAddressingMode::AbsoluteLong:
             {
-                std::int32_t addr =
+                std::uint32_t addr =
                     mem.read32(idx + utils::resolveOp1Size(instr, opNum));
 
                 return std::to_string(addr);
             }
-            break;
 
             default:
                 return "???";
@@ -156,7 +152,7 @@ namespace momiji
 
     inline std::string commonStringConverter(const InstructionData& instr,
                                              ExecutableMemoryView mem,
-                                             std::uint64_t idx)
+                                             std::int64_t idx)
     {
         return opToString(instr, 0, mem, idx) + ", " +
                opToString(instr, 1, mem, idx);

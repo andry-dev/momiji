@@ -30,11 +30,6 @@ namespace momiji
     union OpcodeDescription
     {
         std::uint16_t val;
-        struct
-        {
-            std::uint8_t lower;
-            std::uint8_t higher;
-        };
     };
 
     struct AdditionalData
@@ -48,7 +43,8 @@ namespace momiji
         std::uint8_t cnt = 0;
     };
 
-    std::uint8_t getCorrectOpMode(const momiji::Instruction& instr, int op);
+    std::uint8_t getCorrectOpMode(const momiji::Instruction& instr,
+                                  std::int8_t op);
 
     void handleAdditionalData(const momiji::Instruction& instr,
                               std::array<AdditionalData, 2>& additionalData);

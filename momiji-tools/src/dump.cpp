@@ -38,6 +38,7 @@ int main(int argc, const char** argv)
 
     if (args.size() != 1)
     {
+        std::cout << usage;
         return 1;
     }
 
@@ -61,14 +62,14 @@ int main(int argc, const char** argv)
 
     const momiji::ConstExecutableMemoryView memview = state.mem;
 
-    for (int i = memview.executableMarker.begin;
+    for (std::int64_t i = memview.executableMarker.begin;
          i < memview.executableMarker.end;
          i += 2)
     {
         std::uint8_t lower  = memview.read8(i);
         std::uint8_t higher = 0;
 
-        if ((i + 1) < memview.size())
+        if ((i + 1) < std::int64_t(memview.size()))
         {
             higher = memview.read8(i + 1);
         }
@@ -82,14 +83,14 @@ int main(int argc, const char** argv)
 
     std::printf("\n--- Data registers ---\n");
 
-    for (int i = 0; i < state.cpu.dataRegisters.size(); ++i)
+    for (std::uint32_t i = 0; i < state.cpu.dataRegisters.size(); ++i)
     {
         const auto val = state.cpu.dataRegisters[i].value;
         std::printf("d%d: 0x%.8x %d\n", i, val, val);
     }
 
     std::printf("\n--- Address registers ---\n");
-    for (int i = 0; i < state.cpu.addressRegisters.size(); ++i)
+    for (std::uint32_t i = 0; i < state.cpu.addressRegisters.size(); ++i)
     {
         const auto val = state.cpu.addressRegisters[i].value;
         std::printf("a%d: 0x%.8x %d\n", i, val, val);

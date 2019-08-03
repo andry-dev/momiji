@@ -4,19 +4,25 @@
 
 namespace momiji::instr
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-conversion"
+
     momiji::System swap(momiji::System& sys, const InstructionData& instr)
     {
-        const std::int8_t datareg = utils::to_val(instr.addressingMode[0]);
+        const auto datareg =
+            std::int8_t(utils::to_val(instr.addressingMode[0]));
 
-        std::int32_t& reg = sys.cpu.dataRegisters[datareg].value;
+        std::int32_t& reg = asl::saccess(sys.cpu.dataRegisters, datareg).value;
 
-        std::int16_t higher = (reg & 0xFFFF0000) >> 16;
-        std::int16_t lower  = (reg & 0x0000FFFF);
+        const auto higher = std::uint16_t((reg & 0xFFFF0000) >> 16);
+        const auto lower  = std::uint16_t(reg & 0x0000FFFF);
 
-        reg = (lower << 16) | higher;
+        reg = std::int32_t((lower << 16) | higher);
 
         sys.cpu.programCounter.address += 2;
 
         return sys;
     }
+#pragma clang diagnostic pop
+
 } // namespace momiji::instr

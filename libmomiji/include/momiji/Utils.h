@@ -28,7 +28,7 @@ namespace momiji::utils
 
         while (begin != end)
         {
-            hash = (hash ^ *begin) * 0x1000193;
+            hash = (hash ^ std::uint32_t(*begin)) * 0x1000193;
             ++begin;
         }
 
@@ -83,15 +83,18 @@ namespace momiji::utils
         return 0;
     }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-conversion"
+
     template <>
     constexpr std::int32_t sign_extend<std::int8_t>(std::int32_t val)
     {
-        std::int32_t ret = val & 0x000000FF;
-        std::int8_t sign = (ret & 0x000000FF);
+        std::int32_t ret  = val & 0x000000FF;
+        std::uint8_t sign = std::uint8_t(ret & 0x000000FF);
 
         if ((sign & 0b10000000) != 0)
         {
-            ret = ret | 0xFFFFFF00;
+            ret = std::int32_t(ret | 0xFFFFFF00);
         }
 
         return ret;
@@ -100,16 +103,18 @@ namespace momiji::utils
     template <>
     constexpr std::int32_t sign_extend<std::int16_t>(std::int32_t val)
     {
-        std::int32_t ret = val & 0x0000FFFF;
-        std::int8_t sign = (ret & 0x0000FF00) >> 8;
+        std::int32_t ret  = val & 0x0000FFFF;
+        std::uint8_t sign = std::uint8_t((ret & 0x0000FF00) >> 8);
 
         if ((sign & 0b10000000) != 0)
         {
-            ret = ret | 0xFFFF0000;
+            ret = std::int32_t(ret | 0xFFFF0000);
         }
 
         return ret;
     }
+
+#pragma clang diagnostic pop
 
     constexpr std::int64_t make_kb(std::int64_t n)
     {

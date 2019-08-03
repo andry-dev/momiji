@@ -9,7 +9,7 @@ namespace momiji::enc
 {
     void xor_instr(const momiji::Instruction& instr,
                    OpcodeDescription& opcode,
-                   std::array<AdditionalData, 2>& additionalData)
+                   std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::Xor bits;
 
@@ -21,9 +21,9 @@ namespace momiji::enc
 
         bits.size = utils::to_val(instr.dataType) & 0b11;
 
-        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
-                     (bits.padding << 8) | (bits.size << 6) |
-                     (bits.othtype << 3) | (bits.othmode);
+        opcode.val = std::uint16_t((bits.header << 12) | (bits.datareg << 9) |
+                                   (bits.padding << 8) | (bits.size << 6) |
+                                   (bits.othtype << 3) | (bits.othmode));
     }
 
     void xori(const momiji::Instruction& instr,
@@ -36,12 +36,12 @@ namespace momiji::enc
         bits.size               = size & 0b111;
 
         additionalData[0].cnt = tobyte[size];
-        additionalData[0].val = instr.operands[0].value;
+        additionalData[0].val = std::uint32_t(instr.operands[0].value);
 
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1);
 
-        opcode.val = (bits.header << 8) | (bits.size << 6) |
-                     (bits.dsttype << 3) | (bits.dstmode);
+        opcode.val = std::uint16_t((bits.header << 8) | (bits.size << 6) |
+                                   (bits.dsttype << 3) | (bits.dstmode));
     }
 } // namespace momiji::enc

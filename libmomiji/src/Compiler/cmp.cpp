@@ -8,7 +8,7 @@ namespace momiji::enc
 {
     void cmp(const momiji::Instruction& instr,
              OpcodeDescription& opcode,
-             std::array<AdditionalData, 2>& additionalData)
+             std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::Cmp bits;
 
@@ -17,14 +17,14 @@ namespace momiji::enc
         bits.srctype = utils::to_val(instr.operands[0].operandType) & 0b111;
         bits.srcmode = getCorrectOpMode(instr, 0);
 
-        opcode.val = (bits.header << 12) | (bits.datareg << 9) |
-                     (bits.padding << 8) | (bits.size << 6) |
-                     (bits.srctype << 3) | (bits.srcmode);
+        opcode.val = std::uint16_t((bits.header << 12) | (bits.datareg << 9) |
+                                   (bits.padding << 8) | (bits.size << 6) |
+                                   (bits.srctype << 3) | (bits.srcmode));
     }
 
     void cmpa(const momiji::Instruction& instr,
               OpcodeDescription& opcode,
-              std::array<AdditionalData, 2>& additionalData)
+              std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::CmpA bits;
 
@@ -35,7 +35,6 @@ namespace momiji::enc
         case DataType::Byte:
             opcode.val = repr::Illegal {}.value;
             return;
-            break;
 
         case DataType::Word:
             bits.size = 0;
@@ -49,9 +48,9 @@ namespace momiji::enc
         bits.srctype = utils::to_val(instr.operands[0].operandType) & 0b111;
         bits.srcmode = getCorrectOpMode(instr, 0);
 
-        opcode.val = (bits.header << 12) | (bits.addreg << 9) |
-                     (bits.size << 8) | (bits.padding << 6) |
-                     (bits.srctype << 3) | (bits.srcmode);
+        opcode.val = std::uint16_t((bits.header << 12) | (bits.addreg << 9) |
+                                   (bits.size << 8) | (bits.padding << 6) |
+                                   (bits.srctype << 3) | (bits.srcmode));
     }
 
     void cmpi(const momiji::Instruction& instr,
@@ -65,12 +64,12 @@ namespace momiji::enc
         bits.size = size & 0b11;
 
         additionalData[0].cnt = tobyte[size];
-        additionalData[0].val = instr.operands[0].value;
+        additionalData[0].val = std::uint32_t(instr.operands[0].value);
 
         bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
         bits.dstmode = getCorrectOpMode(instr, 1);
 
-        opcode.val = (bits.header << 8) | (bits.size << 6) |
-                     (bits.dsttype << 3) | (bits.dstmode);
+        opcode.val = std::uint16_t((bits.header << 8) | (bits.size << 6) |
+                                   (bits.dsttype << 3) | (bits.dstmode));
     }
 } // namespace momiji::enc

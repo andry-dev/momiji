@@ -1,3 +1,5 @@
+#include "Gui.h"
+
 #include <chrono>
 #include <thread>
 
@@ -84,8 +86,8 @@ void gui()
             ImGui::Begin("Debug menu");
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
-                        1000.0f / ImGui::GetIO().Framerate,
-                        ImGui::GetIO().Framerate);
+                        1000.0 / asl::f64(ImGui::GetIO().Framerate),
+                        asl::f64(ImGui::GetIO().Framerate));
 
             ImGui::Separator();
 
@@ -185,8 +187,9 @@ void gui()
         }
 
         {
-            ImGui::Begin(
-                "Emulator Settings", 0, ImGuiWindowFlags_AlwaysAutoResize);
+            ImGui::Begin("Emulator Settings",
+                         nullptr,
+                         ImGuiWindowFlags_AlwaysAutoResize);
 
             static std::array<std::string_view, 2> possibleSettingsStr { {
                 "Always",
@@ -216,7 +219,9 @@ void gui()
 
             ImGui::TextUnformatted("Stack size (Bytes)");
 
-            if (ImGui::InputInt("##in_size", (int*)&emuSettings.stackSize, 0))
+            if (ImGui::InputInt("##in_size",
+                                reinterpret_cast<int*>(&emuSettings.stackSize),
+                                0))
             {
                 emu.loadNewSettings(emuSettings);
             }
@@ -236,7 +241,13 @@ void gui()
                 momiji::ConstExecutableMemoryView memview = lastSys.mem;
                 const auto pc = lastSys.cpu.programCounter.address;
 
-                for (int i = 0; i < memview.size(); i += 2)
+                const auto begin =
+                    std::uint32_t(memview.executableMarker.begin);
+
+                const auto end = std::uint32_t(memview.executableMarker.end);
+                ;
+
+                for (std::uint32_t i = begin; i < end; i += 2)
                 {
                     momiji::DecodedInstruction instr =
                         momiji::decode(memview, i);
@@ -244,7 +255,7 @@ void gui()
                     std::uint8_t lower  = memview.read8(i);
                     std::uint8_t higher = 0;
 
-                    if ((i + 1) < memview.size())
+                    if ((i + 1) < end)
                     {
                         higher = memview.read8(i + 1);
                     }
@@ -328,15 +339,13 @@ void gui()
                 case momiji::ParserError::ErrorType::WrongRegisterNumber:
                     error_string = "wrong register number.";
                     break;
-
-                default:
-                    error_string = "unknown error.";
-                    break;
                 }
+
                 ImGui::Text(
-                    "Error at line %d, %s", error.line, error_string.data());
-                ImGui::Text(
-                    "Around: %.*s", error.codeStr.size(), error.codeStr.data());
+                    "Error at line %ld, %s", error.line, error_string.data());
+                ImGui::Text("Around: %.*s",
+                            static_cast<int>(error.codeStr.size()),
+                            error.codeStr.data());
             }
             else
             {
@@ -352,7 +361,7 @@ void gui()
 
         {
             ImGui::Begin("Registers",
-                         0,
+                         nullptr,
                          ImGuiWindowFlags_AlwaysAutoResize |
                              ImGuiWindowFlags_NoResize);
 
@@ -382,14 +391,16 @@ void gui()
 
             ImGui::BeginGroup();
             ImGui::Text("Address");
-            for (int i = 0; i < last.cpu.addressRegisters.size(); ++i)
+            for (asl::isize i = 0; i < asl::ssize(last.cpu.addressRegisters);
+                 ++i)
             {
-                auto& reg = last.cpu.addressRegisters[i];
+                auto& reg = asl::saccess(last.cpu.addressRegisters, i);
                 ImGui::PushID(&reg);
-                ImGui::Text("a%d", i);
+                ImGui::Text("a%ld", i);
                 ImGui::SameLine();
                 ImGui::PushItemWidth(70.0f);
-                ImGui::InputInt("##", (int*)&reg.value, 0, 0, flags);
+                ImGui::InputInt(
+                    "##", const_cast<int*>(&reg.value), 0, 0, flags);
                 ImGui::PopItemWidth();
                 ImGui::PopID();
             }
@@ -399,14 +410,15 @@ void gui()
 
             ImGui::BeginGroup();
             ImGui::Text("Data");
-            for (int i = 0; i < last.cpu.dataRegisters.size(); ++i)
+            for (asl::isize i = 0; i < asl::ssize(last.cpu.dataRegisters); ++i)
             {
-                auto& reg = last.cpu.dataRegisters[i];
+                auto& reg = asl::saccess(last.cpu.dataRegisters, i);
                 ImGui::PushID(&reg);
-                ImGui::Text("d%d", i);
+                ImGui::Text("d%ld", i);
                 ImGui::SameLine();
                 ImGui::PushItemWidth(70.0f);
-                ImGui::InputInt("##", (int*)&reg.value, 0, 0, flags);
+                ImGui::InputInt(
+                    "##", const_cast<int*>(&reg.value), 0, 0, flags);
                 ImGui::PopItemWidth();
                 ImGui::PopID();
             }
@@ -416,8 +428,13 @@ void gui()
             ImGui::Text("PC");
             ImGui::SameLine();
             ImGui::PushItemWidth(70.0f);
-            ImGui::InputInt(
-                "##pc", (int*)&last.cpu.programCounter.address, 0, 0, flags);
+            ImGui::InputInt("##pc",
+                            const_cast<int*>(reinterpret_cast<const int*>(
+                                &last.cpu.programCounter.address)),
+                            0,
+                            0,
+                            flags);
+
             if (!last.mem.empty())
             {
                 const auto memview = momiji::make_memory_view(last);
@@ -425,7 +442,7 @@ void gui()
                 const auto addr =
                     reinterpret_cast<std::uint64_t>(memview.begin() + pc);
                 ImGui::SameLine();
-                ImGui::Text("%x", addr);
+                ImGui::Text("%lx", addr);
             }
 
             ImGui::PopItemWidth();
@@ -455,7 +472,9 @@ void gui()
                 const auto maxStackLength =
                     memview.size() - emuSettings.stackSize;
 
-                for (int i = memview.size() - 1; i >= maxStackLength; i -= 2)
+                for (asl::isize i = asl::ssize(memview) - 2;
+                     i >= maxStackLength;
+                     i -= 2)
                 {
                     std::uint8_t lower  = memview.read8(i);
                     std::uint8_t higher = 0;
@@ -470,7 +489,7 @@ void gui()
 
                     ImGui::TextUnformatted(pcadd == curradd ? "=>" : "  ");
                     ImGui::SameLine();
-                    ImGui::Text("%.8x: %x %x", i, higher, lower);
+                    ImGui::Text("%.8lx: %x %x", i, higher, lower);
                 }
             }
             else

@@ -28,11 +28,11 @@ namespace momiji::enc
 #else
         bits.displacement = 0;
 
-        additionalData[0].val = instr.operands[0].value;
+        additionalData[0].val = std::uint32_t(instr.operands[0].value);
         additionalData[0].cnt = 2;
 #endif
 
-        opcode.val = (bits.header << 8) | (bits.displacement);
+        opcode.val = std::uint16_t((bits.header << 8) | (bits.displacement));
     }
 
     void bsr(const momiji::Instruction& instr,
@@ -57,10 +57,10 @@ namespace momiji::enc
 #else
         bits.displacement     = 0;
 
-        additionalData[0].val = instr.operands[0].value;
+        additionalData[0].val = std::uint32_t(instr.operands[0].value);
         additionalData[0].cnt = 2;
 #endif
 
-        opcode.val = (bits.header << 8) | (bits.displacement);
+        opcode.val = std::uint16_t((bits.header << 8) | (bits.displacement));
     }
 } // namespace momiji::enc

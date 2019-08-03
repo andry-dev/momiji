@@ -1,4 +1,4 @@
-void gui();
+#include "Gui.h"
 
 int main()
 {

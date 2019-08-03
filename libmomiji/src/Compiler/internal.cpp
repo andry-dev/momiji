@@ -4,7 +4,7 @@
 
 namespace momiji::enc
 {
-    void hcf(const momiji::Instruction& instr,
+    void hcf(const momiji::Instruction& /*instr*/,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
@@ -14,7 +14,7 @@ namespace momiji::enc
         opcode.val = 0xFFFF;
     }
 
-    void breakpoint(const momiji::Instruction& instr,
+    void breakpoint(const momiji::Instruction& /*instr*/,
                     OpcodeDescription& opcode,
                     std::array<AdditionalData, 2>& additionalData)
     {

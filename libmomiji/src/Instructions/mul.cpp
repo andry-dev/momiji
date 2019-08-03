@@ -17,17 +17,13 @@ namespace momiji::instr
 
         // Always a data register
         const std::int32_t dstreg = utils::to_val(data.addressingMode[1]);
+        std::int32_t& dst = asl::saccess(sys.cpu.dataRegisters, dstreg).value;
 
-        const std::int32_t dstval = utils::sign_extend<std::int16_t>(
-            sys.cpu.dataRegisters[dstreg].value);
-
-        const std::int32_t res = (dstval * srcval);
-
-        sys.cpu.dataRegisters[dstreg].value = res;
+        dst = utils::sign_extend<std::int16_t>(dst) * srcval;
 
         pc += 2;
-        pc += utils::isImmediate(data, 0);
-        pc += utils::isImmediate(data, 1);
+        pc += std::uint8_t(utils::isImmediate(data, 0));
+        pc += std::uint8_t(utils::isImmediate(data, 1));
 
         return sys;
     }
@@ -40,13 +36,13 @@ namespace momiji::instr
 
         // Always a data register
         const std::int32_t dstreg = utils::to_val(data.addressingMode[1]);
+        std::int32_t& dst = asl::saccess(sys.cpu.dataRegisters, dstreg).value;
 
-        std::int32_t dstval = sys.cpu.dataRegisters[dstreg].value;
-        sys.cpu.dataRegisters[dstreg].value = dstval * srcval;
+        dst = dst * srcval;
 
         pc += 2;
-        pc += utils::isImmediate(data, 0);
-        pc += utils::isImmediate(data, 1);
+        pc += std::uint8_t(utils::isImmediate(data, 0));
+        pc += std::uint8_t(utils::isImmediate(data, 1));
 
         return sys;
     }

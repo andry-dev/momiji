@@ -8,8 +8,8 @@ namespace momiji
 {
     namespace dec
     {
-        DecodedInstruction cmp(ExecutableMemoryView mem, std::uint64_t idx);
-        DecodedInstruction cmpi(ExecutableMemoryView mem, std::uint64_t idx);
-        DecodedInstruction cmpa(ExecutableMemoryView mem, std::uint64_t idx);
+        DecodedInstruction cmp(ExecutableMemoryView mem, std::int64_t idx);
+        DecodedInstruction cmpi(ExecutableMemoryView mem, std::int64_t idx);
+        DecodedInstruction cmpa(ExecutableMemoryView mem, std::int64_t idx);
     } // namespace dec
 } // namespace momiji

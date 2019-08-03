@@ -36,12 +36,6 @@ namespace momiji::details
         return true;
     }
 
-    template <typename T, typename... U>
-    static bool not_eq_all(T& x, U&&... y)
-    {
-        return ((x != y) && ...);
-    }
-
     parser_metadata
     parseMove(std::string_view str, Instruction& instr, LabelInfo&)
     {
@@ -75,6 +69,7 @@ namespace momiji::details
     parseAdd(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
+
         switch (instr.operands[1].operandType)
         {
         case OperandType::AddressRegister:
@@ -87,7 +82,6 @@ namespace momiji::details
 
         default:
             instr.instructionType = InstructionType::Add;
-            break;
         }
 
         switch (instr.operands[0].operandType)
@@ -140,7 +134,13 @@ namespace momiji::details
             case SpecialAddressingMode::Immediate:
                 instr.instructionType = InstructionType::SubI;
                 break;
+
+            default:
+                break;
             }
+            break;
+
+        default:
             break;
         }
 
@@ -238,6 +238,9 @@ namespace momiji::details
             case SpecialAddressingMode::Immediate:
                 instr.instructionType = InstructionType::OrI;
                 break;
+
+            default:
+                break;
             }
             break;
 
@@ -268,6 +271,9 @@ namespace momiji::details
             case SpecialAddressingMode::Immediate:
                 instr.instructionType = InstructionType::AndI;
                 break;
+
+            default:
+                break;
             }
             break;
 
@@ -286,7 +292,7 @@ namespace momiji::details
     }
 
     parser_metadata
-    parseNot(std::string_view str, Instruction& instr, LabelInfo&)
+    parseNot(std::string_view str, Instruction& /*instr*/, LabelInfo&)
     {
         return { false, str, "", {} };
     }
@@ -303,6 +309,9 @@ namespace momiji::details
             {
             case SpecialAddressingMode::Immediate:
                 instr.instructionType = InstructionType::XorI;
+                break;
+
+            default:
                 break;
             }
             break;
@@ -351,7 +360,13 @@ namespace momiji::details
             case SpecialAddressingMode::Immediate:
                 instr.instructionType = InstructionType::CompareI;
                 break;
+
+            default:
+                break;
             }
+            break;
+
+        default:
             break;
         }
 
@@ -373,7 +388,7 @@ namespace momiji::details
     }
 
     parser_metadata
-    parseJmp(std::string_view str, Instruction& instr, LabelInfo& labels)
+    parseJmp(std::string_view str, Instruction& instr, LabelInfo& /*labels*/)
     {
         auto res =
             SeqNext(Whitespace(),
@@ -547,27 +562,28 @@ namespace momiji::details
         return ShiftInstructionParser(instr)(str);
     }
 
-    parser_metadata
-    parseDeclare(std::string_view str, Instruction& instr, LabelInfo& labels)
+    parser_metadata parseDeclare(std::string_view str,
+                                 Instruction& instr,
+                                 LabelInfo& /*labels*/)
     {
         parser_metadata res = (ParseDataType(instr))(str);
 
         instr.instructionType = InstructionType::Declare;
 
-        auto singleOpParser = [](Instruction& instr, int opNum) {
+        auto singleOpParser = [](Instruction& instr, std::uint32_t opNum) {
             return [&instr, opNum](std::string_view str) -> parser_metadata {
                 while (opNum >= instr.operands.size())
                 {
                     instr.operands.emplace_back();
                 }
 
-                auto res = MemoryAddress(instr, opNum);
+                auto ret = MemoryAddress(instr, opNum);
 
-                return res(str);
+                return ret(str);
             };
         };
 
-        for (int i = 0; true; ++i)
+        for (std::uint32_t i = 0; true; ++i)
         {
             auto tryNum = SeqNext(AlwaysTrue(Whitespace()),
                                   singleOpParser(instr, i))(res.rest);
@@ -591,12 +607,14 @@ namespace momiji::details
                 return res;
             }
         }
-
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code-return"
         return res;
+#pragma clang diagnostic pop
     }
 
     parser_metadata
-    parseHcf(std::string_view str, Instruction& instr, LabelInfo& labels)
+    parseHcf(std::string_view str, Instruction& instr, LabelInfo& /*labels*/)
     {
         instr.instructionType = InstructionType::HaltCatchFire;
 

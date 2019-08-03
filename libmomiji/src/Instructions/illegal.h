@@ -9,7 +9,7 @@ namespace momiji
     namespace instr
     {
         inline momiji::System illegal(momiji::System& sys,
-                                      const InstructionData& data)
+                                      const InstructionData& /*data*/)
         {
             std::cout << "ILLEGAL INSTRUCTION\n";
             return sys;

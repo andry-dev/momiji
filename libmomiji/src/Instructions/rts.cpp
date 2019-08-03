@@ -7,7 +7,7 @@
 
 namespace momiji::instr
 {
-    static int handleJsrData(const DecodedInstruction& instr, std::uint32_t pc)
+    static int handleJsrData(const DecodedInstruction& instr)
     {
         switch (instr.data.operandType[0])
         {
@@ -35,12 +35,10 @@ namespace momiji::instr
         default:
             return 0;
         }
-
-        return 0;
     }
 
     momiji::System rts(momiji::System& sys,
-                       const momiji::InstructionData& instr)
+                       const momiji::InstructionData& /*instr*/)
     {
         auto& sp = sys.cpu.addressRegisters[7].value;
         auto& pc = sys.cpu.programCounter.address;
@@ -62,7 +60,7 @@ namespace momiji::instr
         }
         else if (retInstr.exec == instr::jsr)
         {
-            pc += 2 + handleJsrData(retInstr, pc);
+            pc += std::uint32_t(2 + handleJsrData(retInstr));
         }
 
         return sys;
