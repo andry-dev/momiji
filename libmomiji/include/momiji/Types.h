@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace momiji
@@ -71,13 +72,13 @@ namespace momiji
 
     enum class OperandType : std::uint8_t
     {
-        DataRegister         = 0b000,
-        AddressRegister      = 0b001,
-        Address              = 0b010,
-        AddressPost          = 0b011,
-        AddressPre           = 0b100,
-        AddressOffset        = 0b101,
-        AddressIndex         = 0b110,
+        DataRegister         = 0b000, // d*
+        AddressRegister      = 0b001, // a*
+        Address              = 0b010, // (a*)
+        AddressPost          = 0b011, // -(a*)
+        AddressPre           = 0b100, // (a*)+
+        AddressOffset        = 0b101, // num(a*)
+        AddressIndex         = 0b110, // (num, a*, *)
         ProgramCounterOffset = 0b111,
         ProgramCounterIndex  = 0b111,
         AbsoluteShort        = 0b111,

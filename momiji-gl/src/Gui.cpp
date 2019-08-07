@@ -18,6 +18,7 @@
 #include <momiji/Emulator.h>
 #include <momiji/Utils.h>
 
+#include <asl/types>
 #include <cstdio>
 
 void gui()
@@ -301,7 +302,7 @@ void gui()
                 emu.reset();
             }
 
-            static std::string error_string = "";
+            static std::string errorStr = "";
             static std::optional<momiji::ParserError> err;
 
             ImGui::SameLine();
@@ -314,35 +315,57 @@ void gui()
             if (err.has_value())
             {
                 momiji::ParserError& error = err.value();
-                switch (error.errorType)
+
+                using namespace momiji::errors;
+
+                if (errorStr.empty())
                 {
-                case momiji::ParserError::ErrorType::NoInstructionFound:
-                    error_string = "no instruction found.";
-                    break;
+                    // clang-format off
+                    std::visit(asl::overloaded{
+                        [&](const UnknownError&) {
+                            errorStr += "Unknown error.";
+                        },
+                        [&](const NoInstructionFound& par) {
+                            errorStr += "instruction \"" + par.inputString +
+                                        "\" not found.";
 
-                case momiji::ParserError::ErrorType::UnexpectedCharacter:
-                    error_string = "unexpected character.";
-                    break;
+                            if (!par.alternatives.empty())
+                            {
+                                errorStr += "\nAlternatives:\n";
+                                for (const auto& x : par.alternatives)
+                                {
+                                    errorStr += x + '\n';
+                                }
+                            }
+                        },
+                        [&](const NoLabelFound& par) {
+                            errorStr += "label \"" + par.label + "\" not found.";
+                        },
+                        [&](const OperandTypeMismatch&) {
+                            errorStr += "operand type mismatch.";
+                        },
+                        [&](const InvalidRegisterNumber& par) {
+                            errorStr += "Invalid register number " +
+                                        std::to_string(par.input);
+                        },
+                        [&](const UnexpectedCharacter& par) {
+                            errorStr += "Unexpected character '" +
+                                        std::to_string(par.character) + "'.";
+                        },
+                        [&](const MissingCharacter& par) {
+                            errorStr += "Missing a '" +
+                                        std::string{par.character} + "'.";                                      },
+                        [&](const UnknownOperand&) {
+                            errorStr += "Unknown operand, are you sure "
+                                        "the syntax is valid?";
 
-                case momiji::ParserError::ErrorType::WrongInstruction:
-                    error_string = "no such instruction.";
-                    break;
-
-                case momiji::ParserError::ErrorType::WrongOperandType:
-                    error_string = "wrong operand type.";
-                    break;
-
-                case momiji::ParserError::ErrorType::NoLabelFound:
-                    error_string = "no label found.";
-                    break;
-
-                case momiji::ParserError::ErrorType::WrongRegisterNumber:
-                    error_string = "wrong register number.";
-                    break;
+                        }
+                    }, error.errorType);
+                    // clang-format on
                 }
 
                 ImGui::Text(
-                    "Error at line %ld, %s", error.line, error_string.data());
+                    "Error at line %ld, %s", error.line, errorStr.data());
                 ImGui::Text("Around: %.*s",
                             static_cast<int>(error.codeStr.size()),
                             error.codeStr.data());

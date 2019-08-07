@@ -5,6 +5,9 @@
 #include <momiji/Compiler.h>
 #include <momiji/Parser.h>
 
+#include <asl/types>
+#include <variant>
+
 constexpr std::string_view usage =
     "USAGE: momiji-as input_file [output_file]\n"
     "If output_file is not specified, the output file is named after the first "
@@ -33,39 +36,66 @@ int main(int argc, const char** argv)
     {
         using momiji::ParserError;
 
-        const auto error = parsedInstr.error();
+        auto error = parsedInstr.error();
         std::string errorStr =
             "Parsing error at line " + std::to_string(error.line) + ": ";
 
-        switch (error.errorType)
-        {
-        case ParserError::ErrorType::NoInstructionFound:
-            errorStr += "no instruction found.";
-            break;
+        using namespace momiji::errors;
+        // clang-format off
+        std::visit(asl::overloaded {
+            [&](const UnknownError&) {
+                errorStr += "unknown error.";
+            },
+            [&](const NoInstructionFound& par) {
+                errorStr += "instruction \"" + par.inputString +
+                            "\" not found";
 
-        case ParserError::ErrorType::NoLabelFound:
-            errorStr +=
-                "no label found. Are you sure you typed everything correctly?";
-            break;
+                if (!par.alternatives.empty())
+                {
+                    errorStr += "\nAlternatives:\n";
+                    for (const auto& x : par.alternatives)
+                    {
+                        errorStr += x + '\n';
+                    }
+                }
+            },
+            [&](const NoLabelFound& par) {
+                errorStr += "label \"" + par.label + "\" not found.";
+            },
+            [&](const OperandTypeMismatch& par) {
+                errorStr += "operand type " + utils::toString(par.inputOp) +
+                            " is not valid for this instruction.";
 
-        case ParserError::ErrorType::WrongInstruction:
-            errorStr += "the instruction name is wrong.";
-            break;
+                if (!par.acceptedOps.empty())
+                {
+                    errorStr += "\nAccepted operand types: ";
+                    for (std::size_t i = 0; i < par.acceptedOps.size(); ++i)
+                    {
+                        errorStr += utils::toString(par.acceptedOps[i]);
 
-        case ParserError::ErrorType::WrongOperandType:
-            errorStr += "the operand type is not supported for the following "
-                        "instruction.";
-            break;
-
-        case ParserError::ErrorType::WrongRegisterNumber:
-            errorStr += "the register number is wrong (either less than 0 or "
-                        "more than 7).";
-            break;
-
-        case ParserError::ErrorType::UnexpectedCharacter:
-            errorStr += "unexpected character.";
-            break;
-        }
+                        if (i != (par.acceptedOps.size() - 1))
+                        {
+                            errorStr += ", ";
+                        }
+                    }
+                }
+            },
+            [&](const InvalidRegisterNumber& par) {
+                errorStr += "Invalid register number " +
+                            std::to_string(par.input);
+            },
+            [&](const UnexpectedCharacter& par) {
+                errorStr += "Unexpected character '" +
+                            std::string{par.character} + "'.";
+            },
+            [&](const MissingCharacter& par) {
+                errorStr += "Missing a '" +
+                            std::string{par.character} + "'.";
+            },
+            [&](const UnknownOperand&) {
+                errorStr += "Unknown operand, are you sure the syntax is valid?";
+            }}, error.errorType);
+        // clang-format on
 
         errorStr += "\n\tContext: " + error.codeStr + "\n";
 

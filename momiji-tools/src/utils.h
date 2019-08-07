@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <momiji/Memory.h>
+#include <momiji/Types.h>
 
 namespace utils
 {
@@ -67,4 +68,35 @@ namespace utils
         file.close();
     }
 
+    inline std::string toString(momiji::OperandType op)
+    {
+        switch (op)
+        {
+        case momiji::OperandType::DataRegister:
+            return "Data register";
+
+        case momiji::OperandType::AddressRegister:
+            return "Address register";
+
+        case momiji::OperandType::Address:
+            return "Address";
+
+        case momiji::OperandType::AddressPre:
+            return "Address with pre-decrement";
+
+        case momiji::OperandType::AddressPost:
+            return "Address with post-increment";
+
+        case momiji::OperandType::AddressOffset:
+            return "Address with offset";
+
+        case momiji::OperandType::AddressIndex:
+            return "Indexed Address";
+
+        case momiji::OperandType::Immediate:
+            return "Immediate";
+        }
+
+        return "???";
+    }
 } // namespace utils

@@ -158,6 +158,7 @@ namespace momiji::utils
             case SpecialAddressingMode::ProgramCounterOffset:
                 break;
             }
+            break;
         }
 
         return val;
@@ -276,6 +277,7 @@ namespace momiji::utils
                 val = reinterpret_cast<To*>(sys.mem.data() + pc);
                 break;
             }
+            break;
         }
 
         return val;

@@ -966,40 +966,9 @@ namespace momiji
     constexpr auto ShiftInstructionParser(momiji::Instruction& instr)
     {
         return [&instr](std::string_view str) -> parser_metadata {
-            auto isImmediate = [](const Operand& op) -> bool {
-                return (op.operandType == OperandType::Immediate) &&
-                       (op.specialAddressingMode ==
-                        SpecialAddressingMode::Immediate);
-            };
-
             auto tryRegMode = CommonInstructionParser(instr)(str);
             if (tryRegMode.result)
             {
-                if (instr.operands[1].operandType != OperandType::DataRegister)
-                {
-                    errors::OperandTypeMismatch error {
-                        { OperandType::DataRegister },
-                        instr.operands[1].operandType,
-                        1
-                    };
-
-                    tryRegMode.result = false;
-                    tryRegMode.error  = std::move(error);
-                }
-                else if (!isImmediate(instr.operands[0]) &&
-                         instr.operands[0].operandType !=
-                             OperandType::DataRegister)
-                {
-                    errors::OperandTypeMismatch error {
-                        { OperandType::DataRegister, OperandType::Immediate },
-                        instr.operands[0].operandType,
-                        0
-                    };
-
-                    tryRegMode.result = false;
-                    tryRegMode.error  = std::move(error);
-                }
-
                 return tryRegMode;
             }
 

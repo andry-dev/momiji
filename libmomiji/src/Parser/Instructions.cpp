@@ -1,34 +1,74 @@
 #include "Instructions.h"
 
+#include <cstdio>
+
 namespace momiji::details
 {
+    static bool checkRegRange(std::int32_t value)
+    {
+        return (value < 0) || (value > 7);
+    }
+
     static bool isImmediate(const Operand& op)
     {
         return op.operandType == OperandType::Immediate &&
                op.specialAddressingMode == SpecialAddressingMode::Immediate;
     }
 
-    static bool sanitizeRegisters(const Operand& op, parser_metadata& metadata)
+    static void sanitizeRegisters(const Operand& op, parser_metadata& metadata)
     {
-        if ((op.operandType != OperandType::Immediate) &&
-            ((op.value) < 0 || (op.value) > 7))
+        if (!metadata.result)
         {
-            metadata.result = false;
-            metadata.error.errorType =
-                ParserError::ErrorType::WrongRegisterNumber;
-
-            return false;
+            return;
         }
 
-        return true;
+        auto setError = [&](const ParserError::ErrorType& error) {
+            metadata.result = false;
+            metadata.error  = std::move(error);
+        };
+
+        std::int16_t value = 0;
+
+        switch (op.operandType)
+        {
+        case OperandType::DataRegister:
+            [[fallthrough]];
+        case OperandType::AddressRegister:
+            [[fallthrough]];
+        case OperandType::Address:
+        case OperandType::AddressPre:
+        case OperandType::AddressPost:
+            value = std::int16_t(op.value);
+            break;
+
+        case OperandType::AddressOffset:
+        case OperandType::AddressIndex:
+            value = std::int16_t(op.value & 0x0000FFFF);
+            break;
+
+        default:
+            return;
+        }
+
+        if (checkRegRange(value))
+        {
+            setError(errors::InvalidRegisterNumber { value });
+        }
     }
 
     static bool sanitizeImmediate(const Operand& op, parser_metadata& metadata)
     {
+        if (!metadata.result)
+        {
+            return false;
+        }
+
         if (isImmediate(op))
         {
-            metadata.result          = false;
-            metadata.error.errorType = ParserError::ErrorType::WrongOperandType;
+            errors::OperandTypeMismatch error { {}, op.operandType };
+
+            metadata.result = false;
+            metadata.error  = std::move(error);
 
             return false;
         }
@@ -40,6 +80,20 @@ namespace momiji::details
     parseMove(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
+
+        if (isImmediate(instr.operands[1]) ||
+            (instr.operands[1].operandType == OperandType::Address))
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister,
+                                                  OperandType::AddressPost,
+                                                  OperandType::AddressPre,
+                                                  OperandType::AddressIndex,
+                                                  OperandType::AddressOffset },
+                                                instr.operands[1].operandType,
+                                                1 };
+            res.result = false;
+            res.error  = std::move(error);
+        }
 
         for (const auto& op : instr.operands)
         {
@@ -57,6 +111,29 @@ namespace momiji::details
     parseMoveQ(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = ImmediateInstructionParser(instr)(str);
+
+        if (!isImmediate(instr.operands[0]))
+        {
+            errors::OperandTypeMismatch error { { OperandType::Immediate },
+                                                instr.operands[0].operandType,
+                                                0 };
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
+
+        if (instr.operands[1].operandType != OperandType::DataRegister)
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister },
+                                                instr.operands[1].operandType,
+                                                1 };
+
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
 
         sanitizeRegisters(instr.operands[1], res);
 
@@ -157,6 +234,34 @@ namespace momiji::details
     {
         auto res = CommonInstructionParser(instr)(str);
 
+        if (instr.operands[1].operandType != OperandType::DataRegister)
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister },
+                                                instr.operands[1].operandType,
+                                                1 };
+
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
+
+        if (instr.operands[0].operandType == OperandType::Address)
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister,
+                                                  OperandType::AddressPost,
+                                                  OperandType::AddressPre,
+                                                  OperandType::AddressIndex,
+                                                  OperandType::AddressOffset },
+                                                instr.operands[0].operandType,
+                                                0 };
+
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
+
         for (const auto& op : instr.operands)
         {
             sanitizeRegisters(op, res);
@@ -175,6 +280,39 @@ namespace momiji::details
     {
         auto res = CommonInstructionParser(instr)(str);
 
+        if (instr.operands[1].operandType != OperandType::DataRegister)
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister },
+                                                instr.operands[1].operandType,
+                                                1 };
+
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
+
+        if (instr.operands[0].operandType == OperandType::Address)
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister,
+                                                  OperandType::AddressPost,
+                                                  OperandType::AddressPre,
+                                                  OperandType::AddressIndex,
+                                                  OperandType::AddressOffset },
+                                                instr.operands[0].operandType,
+                                                0 };
+
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
+
+        for (const auto& op : instr.operands)
+        {
+            sanitizeRegisters(op, res);
+        }
+
         instr.dataType        = DataType::Word;
         instr.instructionType = InstructionType::UnsignedMul;
 
@@ -185,6 +323,34 @@ namespace momiji::details
     parseDivs(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
+
+        if (instr.operands[1].operandType != OperandType::DataRegister)
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister },
+                                                instr.operands[1].operandType,
+                                                1 };
+
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
+
+        if (instr.operands[0].operandType == OperandType::Address)
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister,
+                                                  OperandType::AddressPost,
+                                                  OperandType::AddressPre,
+                                                  OperandType::AddressIndex,
+                                                  OperandType::AddressOffset },
+                                                instr.operands[0].operandType,
+                                                0 };
+
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
 
         instr.dataType        = DataType::Word;
         instr.instructionType = InstructionType::SignedDiv;
@@ -197,6 +363,34 @@ namespace momiji::details
     {
         auto res = CommonInstructionParser(instr)(str);
 
+        if (instr.operands[1].operandType != OperandType::DataRegister)
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister },
+                                                instr.operands[1].operandType,
+                                                1 };
+
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
+
+        if (instr.operands[0].operandType == OperandType::Address)
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister,
+                                                  OperandType::AddressPost,
+                                                  OperandType::AddressPre,
+                                                  OperandType::AddressIndex,
+                                                  OperandType::AddressOffset },
+                                                instr.operands[0].operandType,
+                                                0 };
+
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
+
         instr.dataType        = DataType::Word;
         instr.instructionType = InstructionType::UnsignedDiv;
 
@@ -208,6 +402,17 @@ namespace momiji::details
     {
         auto res = OneRegisterInstructionParser(instr)(str);
 
+        if (instr.operands[0].operandType != OperandType::DataRegister)
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister },
+                                                instr.operands[0].operandType,
+                                                0 };
+            res.result = false;
+            res.error  = std::move(error);
+        }
+
+        sanitizeRegisters(instr.operands[0], res);
+
         instr.dataType        = DataType::Long;
         instr.instructionType = InstructionType::Swap;
 
@@ -218,6 +423,30 @@ namespace momiji::details
     parseExg(std::string_view str, Instruction& instr, LabelInfo&)
     {
         auto res = CommonInstructionParser(instr)(str);
+
+        auto invalidOp = [&](std::int8_t opNum) -> bool {
+            return (asl::saccess(instr.operands, opNum).operandType !=
+                    OperandType::DataRegister) ||
+                   (asl::saccess(instr.operands, opNum).operandType !=
+                    OperandType::AddressRegister);
+        };
+
+        for (std::int8_t i = 0; i < 2; ++i)
+        {
+            if (invalidOp(i))
+            {
+                errors::OperandTypeMismatch error {
+                    { OperandType::DataRegister, OperandType::AddressRegister },
+                    asl::saccess(instr.operands, i).operandType,
+                    i
+                };
+
+                res.result = false;
+                res.error  = std::move(error);
+
+                return res;
+            }
+        }
 
         instr.dataType        = DataType::Word;
         instr.instructionType = InstructionType::Exchange;
@@ -329,8 +558,8 @@ namespace momiji::details
 
         if (instr.operands[0].operandType != OperandType::DataRegister)
         {
-            res.result          = false;
-            res.error.errorType = ParserError::ErrorType::WrongOperandType;
+            res.result = false;
+            res.error  = errors::OperandTypeMismatch {};
         }
 
         return res;
@@ -339,8 +568,40 @@ namespace momiji::details
     parser_metadata
     parseCmp(std::string_view str, Instruction& instr, LabelInfo&)
     {
-
         auto res = CommonInstructionParser(instr)(str);
+
+        if (!isImmediate(instr.operands[0]) &&
+            (instr.operands[1].operandType != OperandType::DataRegister) &&
+            (instr.operands[1].operandType != OperandType::AddressRegister))
+        {
+            errors::OperandTypeMismatch error {
+                { OperandType::DataRegister, OperandType::AddressRegister },
+                instr.operands[1].operandType,
+                1
+            };
+
+            res.result = false;
+            res.error  = std::move(error);
+            return res;
+        }
+
+        if (isImmediate(instr.operands[0]) &&
+            ((instr.operands[1].operandType == OperandType::AddressRegister) ||
+             isImmediate(instr.operands[1])))
+        {
+            errors::OperandTypeMismatch error { { OperandType::DataRegister,
+                                                  OperandType::Address,
+                                                  OperandType::AddressPre,
+                                                  OperandType::AddressPost,
+                                                  OperandType::AddressOffset,
+                                                  OperandType::AddressIndex },
+                                                instr.operands[1].operandType,
+                                                1 };
+
+            res.result = false;
+            res.error  = std::move(error);
+            return res;
+        }
 
         switch (instr.operands[1].operandType)
         {
@@ -410,14 +671,14 @@ namespace momiji::details
                 break;
 
             default:
-                res.result          = false;
-                res.error.errorType = ParserError::ErrorType::WrongOperandType;
+                res.result = false;
+                res.error  = errors::OperandTypeMismatch {};
             }
             break;
 
         default:
-            res.result          = false;
-            res.error.errorType = ParserError::ErrorType::WrongOperandType;
+            res.result = false;
+            res.error  = errors::OperandTypeMismatch {};
         }
 
         return res;
@@ -521,7 +782,6 @@ namespace momiji::details
     parser_metadata
     parseBne(std::string_view str, Instruction& instr, LabelInfo& labels)
     {
-
         auto res = BranchInstructionParser(instr, labels)(str);
 
         instr.instructionType = InstructionType::BranchCondition;

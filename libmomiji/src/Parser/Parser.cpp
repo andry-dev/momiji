@@ -19,19 +19,11 @@ namespace momiji
 {
     static auto make_parser_error(std::int64_t column,
                                   std::int64_t line,
-                                  ParserError::ErrorType error)
-    {
-        return nonstd::make_unexpected<ParserError>(
-            { line, column, error, {} });
-    }
-
-    static auto make_parser_error(std::int64_t column,
-                                  std::int64_t line,
-                                  ParserError::ErrorType error,
+                                  const ParserError::ErrorType& error,
                                   std::string_view sourceCode)
     {
         return nonstd::make_unexpected<ParserError>(
-            { line, column, error, std::string { sourceCode } });
+            { line, column, std::move(error), std::string { sourceCode } });
     }
 
     static bool isInternal(const Instruction& instr)
@@ -124,7 +116,8 @@ namespace momiji
                 {
                     // We found a label!
                     auto label_hash = utils::hash(try_label.parsed_str);
-                    labels.labels.emplace_back(label_hash, program_counter);
+                    labels.emplace_back(
+                        label_hash, program_counter, try_label.parsed_str);
                     tmp_str              = try_label.rest;
                     auto skip_whitespace = Whitespace()(tmp_str);
                     tmp_str              = skip_whitespace.rest;
@@ -156,11 +149,17 @@ namespace momiji
 
                 if (found_instr == std::end(momiji::mappings))
                 {
+                    auto error        = errors::NoInstructionFound {};
+                    error.inputString = instrword.parsed_str;
+
+                    auto begin = instrword.parsed_str.data();
+                    auto end   = SkipLine()(instrword.rest).parsed_str.data();
+
                     return make_parser_error(
                         0,
                         line_count,
-                        ParserError::ErrorType::NoInstructionFound,
-                        instrword.parsed_str);
+                        error,
+                        std::string_view { begin, std::uint32_t(end - begin) });
                 }
 
                 if (!settings.breakpoints.empty())
@@ -172,23 +171,71 @@ namespace momiji
 
                 if (res.result)
                 {
+                    auto skip_line = SkipLine()(res.rest);
+
+                    const auto begin = instrword.parsed_str.data();
+                    const auto end   = skip_line.rest.data();
+
                     instr.programCounter = program_counter;
+
+                    instr.metadata.sourceLine = line_count;
+
+                    instr.metadata.codeStr = { begin,
+                                               std::size_t(end - begin) };
+
                     instructions.emplace_back(instr);
 
                     handlePCIncrement(instr);
                 }
                 else
                 {
-                    auto begin = instrword.parsed_str.data();
-                    auto end   = res.rest.data();
+                    auto skip_line = SkipLine()(res.rest);
+
+                    const auto begin = instrword.parsed_str.data();
+                    const auto end   = skip_line.rest.data();
+
                     return make_parser_error(
                         0,
                         line_count,
-                        res.error.errorType,
+                        res.error,
                         std::string_view(begin, std::uint32_t(end - begin)));
                 }
 
                 tmp_str = res.rest;
+
+                {
+                    auto skip_whitespace = Whitespace()(tmp_str);
+                    tmp_str              = skip_whitespace.rest;
+                    auto detect_comment  = Comment()(tmp_str);
+                    tmp_str              = detect_comment.rest;
+
+                    // Maybe we have a comment?
+                    if (detect_comment.result)
+                    {
+                        // If so skip the line
+                        ++line_count;
+                        continue;
+                    }
+
+                    // Else we may have a character?
+                    auto detect_any_char = NotEndl()(tmp_str);
+                    if (detect_any_char.result)
+                    {
+                        const auto begin = instrword.parsed_str.data();
+                        const auto end   = detect_any_char.rest.data();
+
+                        errors::UnexpectedCharacter error {
+                            detect_any_char.parsed_str[0]
+                        };
+
+                        return make_parser_error(
+                            0,
+                            line_count,
+                            error,
+                            std::string_view(begin,
+                                             std::uint32_t(end - begin)));
+                    }
+                }
 
                 auto skip_to_end = SkipLine()(tmp_str);
                 tmp_str          = skip_to_end.rest;
@@ -206,12 +253,12 @@ namespace momiji
                         auto found =
                             alg::find_label(labels, std::uint32_t(op.value));
 
-                        if (found == std::end(labels.labels))
+                        if (found == std::end(labels))
                         {
-                            return make_parser_error(
-                                0,
-                                line_count,
-                                ParserError::ErrorType::NoLabelFound);
+                            return make_parser_error(0,
+                                                     x.metadata.sourceLine,
+                                                     errors::NoLabelFound {},
+                                                     x.metadata.codeStr);
                         }
 
                         op.value         = std::int32_t(found->idx);
