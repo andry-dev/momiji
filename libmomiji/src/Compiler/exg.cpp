@@ -6,38 +6,38 @@
 
 namespace momiji::enc
 {
-    void exg(const momiji::Instruction& instr,
+    void exg(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::Exg bits;
 
-        bits.datareg = instr.operands[0].value & 0b111;
-        bits.addreg  = instr.operands[1].value & 0b111;
+        bits.datareg = extractRegister(instr.operands[0]);
+        bits.addreg  = extractRegister(instr.operands[1]);
 
-        if (instr.operands[0].operandType == OperandType::DataRegister &&
-            instr.operands[1].operandType == OperandType::DataRegister)
+        if (matchOperand<operands::DataRegister>(instr.operands[0]) &&
+            matchOperand<operands::DataRegister>(instr.operands[1]))
         {
             bits.mode = 0b01000;
         }
-        else if (instr.operands[0].operandType ==
-                     OperandType::AddressRegister &&
-                 instr.operands[1].operandType == OperandType::AddressRegister)
+        else if (matchOperand<operands::AddressRegister>(instr.operands[0]) &&
+                 matchOperand<operands::AddressRegister>(instr.operands[1]))
         {
             bits.mode = 0b01001;
         }
-        else if (instr.operands[0].operandType == OperandType::DataRegister &&
-                 instr.operands[1].operandType == OperandType::AddressRegister)
+        else if (matchOperand<operands::DataRegister>(instr.operands[0]) &&
+                 matchOperand<operands::AddressRegister>(instr.operands[1]))
         {
             bits.mode = 0b10001;
         }
-        else if (instr.operands[0].operandType ==
-                     OperandType::AddressRegister &&
-                 instr.operands[1].operandType == OperandType::DataRegister)
+        else if (matchOperand<operands::AddressRegister>(instr.operands[0]) &&
+                 matchOperand<operands::DataRegister>(instr.operands[1]))
         {
-            bits.addreg  = instr.operands[0].value & 0b111;
-            bits.datareg = instr.operands[1].value & 0b111;
-            bits.mode    = 0b10001;
+            bits.mode = 0b10001;
+
+            bits.datareg = extractRegister(instr.operands[1]);
+            bits.addreg  = extractRegister(instr.operands[0]);
         }
 
         opcode.val = std::uint16_t((bits.header << 12) | (bits.datareg << 9) |

@@ -5,15 +5,18 @@
 
 namespace momiji::enc
 {
-    void sub(const momiji::Instruction& instr,
+    void sub(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData);
 
-    void suba(const momiji::Instruction& instr,
+    void suba(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData);
 
-    void subi(const momiji::Instruction& instr,
+    void subi(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData);
 

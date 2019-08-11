@@ -6,7 +6,8 @@
 
 namespace momiji::enc
 {
-    void move(const momiji::Instruction& instr,
+    void move(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData);
 

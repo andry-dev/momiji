@@ -5,7 +5,8 @@
 
 namespace momiji::enc
 {
-    void bcc(const momiji::Instruction& instr,
+    void bcc(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData);
 

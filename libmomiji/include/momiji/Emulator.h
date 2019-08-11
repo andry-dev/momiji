@@ -1,12 +1,12 @@
 #pragma once
 
+#include <momiji/Decoder.h>
 #include <momiji/Parser.h>
 #include <momiji/System.h>
+
 #include <optional>
 #include <string>
 #include <vector>
-
-#include <momiji/Decoder.h>
 
 namespace momiji
 {

@@ -13,7 +13,8 @@
 
 namespace momiji::enc
 {
-    void move(const momiji::Instruction& instr,
+    void move(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
@@ -21,20 +22,20 @@ namespace momiji::enc
         bits.header = 0b00;
 
         // This Move requires special handling of sizes.
-        const std::int8_t size =
+        const auto size =
             std::int8_t(move_sizeconv[utils::to_val(instr.dataType)]);
 
         // Byte size
         bits.size = size & 0b011;
 
         // Destination
-        bits.dsttype = utils::to_val(instr.operands[1].operandType);
-        bits.dstmode = getCorrectOpMode(instr, 1);
+        bits.dsttype = getCorrectOpType(instr.operands[1]);
+        bits.dstmode = getCorrectOpMode(instr.operands[1]);
 
-        bits.srctype = utils::to_val(instr.operands[0].operandType);
-        bits.srcmode = getCorrectOpMode(instr, 0);
+        bits.srctype = getCorrectOpType(instr.operands[0]);
+        bits.srcmode = getCorrectOpMode(instr.operands[0]);
 
-        handleAdditionalData(instr, additionalData);
+        handleAdditionalData(instr, labels, additionalData);
 
         opcode.val = std::uint16_t((bits.header << 14) | (bits.size << 12) |
                                    (bits.dstmode << 9) | (bits.dsttype << 6) |

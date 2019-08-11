@@ -29,9 +29,11 @@
 
 namespace momiji
 {
-    ExecutableMemory compile(const momiji::v2::ParsingInfo& parsingInfo)
+    ExecutableMemory compile(const momiji::ParsingInfo& parsingInfo)
     {
         ExecutableMemory memory;
+
+        const auto& labels = parsingInfo.labels;
 
         for (const auto& instr : parsingInfo.instructions)
         {
@@ -42,151 +44,151 @@ namespace momiji
             switch (instr.instructionType)
             {
             case InstructionType::Move:
-                momiji::enc::move(instr, opcode, additional_data);
+                momiji::enc::move(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Add:
-                momiji::enc::add(instr, opcode, additional_data);
+                momiji::enc::add(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::AddA:
-                momiji::enc::adda(instr, opcode, additional_data);
+                momiji::enc::adda(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::AddI:
-                momiji::enc::addi(instr, opcode, additional_data);
+                momiji::enc::addi(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Sub:
-                momiji::enc::sub(instr, opcode, additional_data);
+                momiji::enc::sub(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::SubA:
-                momiji::enc::suba(instr, opcode, additional_data);
+                momiji::enc::suba(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::SubI:
-                momiji::enc::subi(instr, opcode, additional_data);
+                momiji::enc::subi(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::SignedDiv:
-                momiji::enc::divs(instr, opcode, additional_data);
+                momiji::enc::divs(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::UnsignedDiv:
-                momiji::enc::divu(instr, opcode, additional_data);
+                momiji::enc::divu(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::SignedMul:
-                momiji::enc::muls(instr, opcode, additional_data);
+                momiji::enc::muls(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::UnsignedMul:
-                momiji::enc::mulu(instr, opcode, additional_data);
+                momiji::enc::mulu(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Or:
-                momiji::enc::or_instr(instr, opcode, additional_data);
+                momiji::enc::or_instr(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::OrI:
-                momiji::enc::ori(instr, opcode, additional_data);
+                momiji::enc::ori(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::And:
-                momiji::enc::and_instr(instr, opcode, additional_data);
+                momiji::enc::and_instr(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::AndI:
-                momiji::enc::andi(instr, opcode, additional_data);
+                momiji::enc::andi(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Xor:
-                momiji::enc::xor_instr(instr, opcode, additional_data);
+                momiji::enc::xor_instr(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::XorI:
-                momiji::enc::xori(instr, opcode, additional_data);
+                momiji::enc::xori(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Not:
-                momiji::enc::not_instr(instr, opcode, additional_data);
+                momiji::enc::not_instr(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Compare:
-                momiji::enc::cmp(instr, opcode, additional_data);
+                momiji::enc::cmp(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::CompareA:
-                momiji::enc::cmpa(instr, opcode, additional_data);
+                momiji::enc::cmpa(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::CompareI:
-                momiji::enc::cmpi(instr, opcode, additional_data);
+                momiji::enc::cmpi(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Tst:
-                momiji::enc::tst(instr, opcode, additional_data);
+                momiji::enc::tst(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Jmp:
-                momiji::enc::jmp(instr, opcode, additional_data);
+                momiji::enc::jmp(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::JmpSubroutine:
-                momiji::enc::jsr(instr, opcode, additional_data);
+                momiji::enc::jsr(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Branch:
-                momiji::enc::bra(instr, opcode, additional_data);
+                momiji::enc::bra(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::BranchCondition:
-                momiji::enc::bcc(instr, opcode, additional_data);
+                momiji::enc::bcc(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::BranchSubroutine:
-                momiji::enc::bsr(instr, opcode, additional_data);
+                momiji::enc::bsr(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::ReturnSubroutine:
-                momiji::enc::rts(instr, opcode, additional_data);
+                momiji::enc::rts(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Swap:
-                momiji::enc::swap(instr, opcode, additional_data);
+                momiji::enc::swap(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Exchange:
-                momiji::enc::exg(instr, opcode, additional_data);
+                momiji::enc::exg(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::ArithmeticShiftRight:
                 momiji::enc::any_shift<repr::RegAsd, repr::MemAsd>(
-                    instr, opcode, additional_data, 0);
+                    instr, labels, opcode, additional_data, 0);
                 break;
 
             case InstructionType::ArithmeticShiftLeft:
                 momiji::enc::any_shift<repr::RegAsd, repr::MemAsd>(
-                    instr, opcode, additional_data, 1);
+                    instr, labels, opcode, additional_data, 1);
                 break;
 
             case InstructionType::LogicalShiftRight:
                 momiji::enc::any_shift<repr::RegLsd, repr::MemLsd>(
-                    instr, opcode, additional_data, 0);
+                    instr, labels, opcode, additional_data, 0);
                 break;
 
             case InstructionType::LogicalShiftLeft:
                 momiji::enc::any_shift<repr::RegLsd, repr::MemLsd>(
-                    instr, opcode, additional_data, 1);
+                    instr, labels, opcode, additional_data, 1);
                 break;
 
             case InstructionType::HaltCatchFire:
-                momiji::enc::hcf(instr, opcode, additional_data);
+                momiji::enc::hcf(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Breakpoint:
-                momiji::enc::breakpoint(instr, opcode, additional_data);
+                momiji::enc::breakpoint(instr, labels, opcode, additional_data);
                 break;
 
             case InstructionType::Declare:

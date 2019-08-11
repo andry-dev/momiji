@@ -11,6 +11,7 @@ namespace momiji::enc
 {
     template <typename RegRepr, typename MemRepr>
     void any_shift(const ParsedInstruction& instr,
+                   const momiji::LabelInfo& labels,
                    OpcodeDescription& opcode,
                    std::array<AdditionalData, 2>& /*additionalData*/,
                    std::uint8_t dirBit)
@@ -21,18 +22,25 @@ namespace momiji::enc
             RegRepr bits;
 
             bits.direction = dirBit;
-            bits.rotation  = std::uint16_t(instr.operands[0]);
+            bits.rotation  = 0;
 
-            if (instr.operands[0].operandType == OperandType::DataRegister)
-            {
-                bits.rotmode = 1;
-            }
-            else
-            {
-                bits.rotmode = 0;
-            }
+            // clang-format off
+            std::visit(asl::overloaded{
+                [&] (const auto&) { },
 
-            bits.datareg = std::uint16_t(instr.operands[1]);
+                [&] (const operands::DataRegister& reg) {
+                    bits.rotation = reg.reg;
+                    bits.rotmode = 1;
+                },
+                
+                [&] (const operands::Immediate& immediate) {
+                    bits.rotation = momiji::resolveAST(*immediate.value, labels);
+                    bits.rotmode = 0;
+                }
+            }, instr.operands[0]);
+            // clang-format on
+
+            bits.datareg = momiji::extractRegister(instr.operands[1]);
             bits.size    = utils::to_val(instr.dataType) & 0b111;
 
             opcode.val = std::uint16_t(
@@ -47,9 +55,8 @@ namespace momiji::enc
 
             bits.direction = dirBit;
 
-            bits.regtype = utils::to_val(instr.operands[0].operandType);
-            bits.regmode =
-                utils::to_val(instr.operands[0].specialAddressingMode);
+            bits.regtype = getCorrectOpType(instr.operands[0]);
+            bits.regmode = getCorrectOpMode(instr.operands[0]);
 
             opcode.val = std::uint16_t(
                 (bits.header << 9) | (bits.direction << 8) |

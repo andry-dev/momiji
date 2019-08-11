@@ -6,39 +6,42 @@
 
 namespace momiji::enc
 {
-    void and_instr(const momiji::Instruction& instr,
+    void and_instr(const momiji::ParsedInstruction& instr,
+                   const momiji::LabelInfo& labels,
                    OpcodeDescription& opcode,
                    std::array<AdditionalData, 2>& additionalData)
     {
         repr::And bits;
 
         // and.* *, d*
-        if (instr.operands[1].operandType == OperandType::DataRegister)
+        if (matchOperand<operands::DataRegister>(instr.operands[1]))
         {
-            bits.datareg   = (instr.operands[1].value) & 0b111;
+            bits.datareg =
+                std::get<operands::DataRegister>(instr.operands[1]).reg;
             bits.direction = 0;
         }
         // and.* d*, *
         else
         {
-            bits.datareg   = (instr.operands[0].value) & 0b111;
+            bits.datareg =
+                std::get<operands::DataRegister>(instr.operands[0]).reg;
             bits.direction = 1;
         }
 
-        bits.othtype =
-            utils::to_val(instr.operands[bits.direction].operandType);
-        bits.othmode = getCorrectOpMode(instr, bits.direction);
+        bits.othtype = getCorrectOpType(instr.operands[bits.direction]);
+        bits.othmode = getCorrectOpMode(instr.operands[bits.direction]);
 
         bits.size = utils::to_val(instr.dataType) & 0b11;
 
-        handleAdditionalData(instr, additionalData);
+        handleAdditionalData(instr, labels, additionalData);
 
         opcode.val = std::uint16_t((bits.header << 12) | (bits.datareg << 9) |
                                    (bits.direction << 8) | (bits.size << 6) |
                                    (bits.othtype << 3) | (bits.othmode));
     }
 
-    void andi(const momiji::Instruction& instr,
+    void andi(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
@@ -48,12 +51,12 @@ namespace momiji::enc
         bits.size               = size & 0b111;
 
         additionalData[0].cnt = tobyte[size];
-        additionalData[0].val = std::uint32_t(instr.operands[0].value);
+        additionalData[0].val = extractASTValue(instr.operands[0], labels);
 
-        bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
-        bits.dstmode = getCorrectOpMode(instr, 1);
+        bits.dsttype = getCorrectOpType(instr.operands[1]);
+        bits.dstmode = getCorrectOpMode(instr.operands[1]);
 
-        handleAdditionalData(instr, additionalData);
+        handleAdditionalData(instr, labels, additionalData);
 
         opcode.val = std::uint16_t((bits.header << 8) | (bits.size << 6) |
                                    (bits.dsttype << 3) | (bits.dstmode));

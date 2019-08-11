@@ -5,123 +5,15 @@
 
 namespace momiji
 {
-#if 0
-    namespace v1
+    // Transforms the instruction to the bits representing that addressing
+    // mode OR a register
+    std::uint8_t getCorrectOpMode(const momiji::Operand& op)
     {
-        std::uint8_t getCorrectOpMode(const v1::Instruction& instr,
-                                      std::int8_t opNum)
-        {
-            const auto& op = asl::saccess(instr.operands, opNum);
-            switch (op.operandType)
-            {
-            case OperandType::DataRegister:
-                [[fallthrough]];
-            case OperandType::AddressRegister:
-                [[fallthrough]];
-            case OperandType::Address:
-                [[fallthrough]];
-            case OperandType::AddressPost:
-                [[fallthrough]];
-            case OperandType::AddressPre:
-                [[fallthrough]];
-            case OperandType::AddressIndex:
-                [[fallthrough]];
-            case OperandType::AddressOffset:
-                return op.value & 0b111;
+        std::uint8_t val = 0;
 
-            default:
-                return utils::to_val(op.specialAddressingMode);
-            }
-        }
+        namespace ops = momiji::operands;
 
-        void handleAdditionalData(const v1::Instruction& instr,
-                                  std::array<AdditionalData, 2>& additionalData)
-        {
-            Expects(instr.operands.size() <= 2,
-                    "How could you even get more than 2 operands here?");
-
-            auto size = utils::to_val(instr.dataType);
-
-            for (std::int64_t i = 0; i < asl::ssize(instr.operands); ++i)
-            {
-                const auto& op = asl::saccess(instr.operands, i);
-                auto& data     = asl::saccess(additionalData, i);
-
-                switch (op.operandType)
-                {
-                // offset(a*)
-                case OperandType::AddressIndex:
-                    [[fallthrough]];
-                // (offset, a*, X*)
-                case OperandType::AddressOffset:
-                    data.cnt = 2;
-                    data.val = (std::uint32_t(op.value) & 0xFFFF'0000) >> 16;
-                    break;
-
-                case OperandType::Immediate:
-                    switch (op.specialAddressingMode)
-                    {
-                    // #1234
-                    case SpecialAddressingMode::Immediate:
-                        data.cnt = tobyte[size];
-                        data.val = std::uint32_t(op.value);
-                        break;
-
-                    // *.w 1234
-                    case SpecialAddressingMode::AbsoluteShort:
-                        data.cnt = 2;
-                        data.val = std::uint32_t(op.value);
-                        break;
-
-                    // *.l 1234
-                    case SpecialAddressingMode::AbsoluteLong:
-                        data.cnt = 4;
-                        data.val = std::uint32_t(op.value);
-                        break;
-
-                    case SpecialAddressingMode::ProgramCounterOffset:
-                        [[fallthrough]];
-                    case SpecialAddressingMode::ProgramCounterIndex:
-                        // TODO(andry): Implement PC addressing
-                        break;
-                    }
-                    break;
-
-                default:
-                    break;
-                }
-            }
-        }
-
-        bool discriminateShifts(const Instruction& instr)
-        {
-            if ((instr.operands[0].operandType != OperandType::DataRegister) &&
-                ((instr.operands[0].operandType != OperandType::Immediate) &&
-                 (instr.operands[0].specialAddressingMode !=
-                  SpecialAddressingMode::Immediate)))
-            {
-                return false;
-            }
-
-            return true;
-        }
-    } // namespace v1
-#endif
-
-    inline namespace v2
-    {
-        // Transforms the instruction to the bits representing that addressing
-        // mode OR a register
-        std::uint8_t getCorrectOpMode(const v2::ParsedInstruction& instr,
-                                      std::int8_t opNum)
-        {
-            std::uint8_t val = 0;
-
-            const auto& op = instr.operands[opNum];
-
-            namespace ops = v2::operands;
-
-            // clang-format off
+        // clang-format off
             std::visit(asl::overloaded{
                 [&] (const auto& reg) {
                     val = reg.reg & 0b111;
@@ -149,23 +41,138 @@ namespace momiji
                     val = utils::to_val(SpecialAddressingMode::AbsoluteLong);
                 }
             }, op);
+        // clang-format on
+
+        return val & 0b111;
+    }
+
+    std::uint8_t getCorrectOpType(const momiji::Operand& op)
+    {
+        std::uint8_t val = 0;
+
+        namespace ops = momiji::operands;
+
+        // clang-format off
+            std::visit(asl::overloaded{
+                [&] (const ops::DataRegister&) {
+                    val = utils::to_val(OperandType::DataRegister);
+                },
+
+                [&] (const ops::AddressRegister&) {
+                    val = utils::to_val(OperandType::AddressRegister);
+                },
+
+                [&] (const ops::Address&) {
+                    val = utils::to_val(OperandType::Address);
+                },
+
+                [&] (const ops::AddressPre&) {
+                    val = utils::to_val(OperandType::AddressPre);
+                },
+
+                [&] (const ops::AddressPost&) {
+                    val = utils::to_val(OperandType::AddressPost);
+                },
+
+                [&] (const ops::AddressOffset&) {
+                    val = utils::to_val(OperandType::AddressOffset);
+                },
+
+                [&] (const ops::AddressIndex&) {
+                    val = utils::to_val(OperandType::AddressIndex);
+                },
+
+                [&] (const ops::AbsoluteShort&) {
+                    val = utils::to_val(OperandType::AbsoluteShort);
+                },
+
+                [&] (const ops::AbsoluteLong&) {
+                    val = utils::to_val(OperandType::AbsoluteLong);
+                },
+
+                [&] (const ops::Immediate&) {
+                    val = utils::to_val(OperandType::Immediate);
+                },
+
+                [&] (const ops::ProgramCounterOffset&) {
+                    val = utils::to_val(OperandType::ProgramCounterOffset);
+                },
+
+                [&] (const ops::ProgramCounterIndex&) {
+                    val = utils::to_val(OperandType::ProgramCounterIndex);
+                },
+
+            }, op);
+        // clang-format on
+
+        return val & 0b111;
+    }
+
+    void handleAdditionalData(const momiji::ParsedInstruction& instr,
+                              const momiji::LabelInfo& labels,
+                              std::array<AdditionalData, 2>& additionalData)
+    {
+        Expects(instr.operands.size() <= 2,
+                "How could you even get more than 2 operands here?");
+
+        auto size = utils::to_val(instr.dataType);
+
+        for (std::int64_t i = 0; i < asl::ssize(instr.operands); ++i)
+        {
+            const auto& op = asl::saccess(instr.operands, i);
+            auto& data     = asl::saccess(additionalData, i);
+
+            namespace ops = momiji::operands;
+
+            // clang-format off
+                std::visit(asl::overloaded{
+                    [&data] (const auto& reg) {
+                    },
+
+                    [&data, &labels] (const ops::AddressOffset& reg) {
+                        Expects(reg.offset.get(), "Null pointer for address offset")
+
+                        data.cnt = 2;
+                        data.val = momiji::resolveAST(*reg.offset, labels);
+                    },
+
+                    [&data, &labels] (const ops::AddressIndex& reg) {
+                        std::int16_t tmp = 0;
+                        if (reg.offset.get())
+                        {
+                            tmp = momiji::resolveAST(*reg.offset, labels);
+                        }
+
+                        tmp &= 0x00FF;
+
+                        data.cnt = 2;
+                        data.val = (reg.othreg << 12) | tmp;
+                    },
+
+                    [&data, &labels, size] (const ops::Immediate& immediate) {
+                        data.cnt = tobyte[size];
+                        data.val = momiji::resolveAST(*immediate.value, labels);
+                    },
+
+                    [&data, &labels] (const ops::AbsoluteShort& addr) {
+                        data.cnt = 2;
+                        data.val = momiji::resolveAST(*addr.value, labels);
+                    },
+
+                    [&data, &labels] (const ops::AbsoluteLong& addr) {
+                        data.cnt = 4;
+                        data.val = momiji::resolveAST(*addr.value, labels);
+                    }
+                }, op);
             // clang-format on
-
-            return val;
         }
+    }
 
-        void handleAdditionalData(const v2::ParsedInstruction& instr,
-                                  const v2::LabelInfo& labels,
-                                  std::array<AdditionalData, 2>& additionalData)
-        {
-        }
+    bool discriminateShifts(const ParsedInstruction& instr)
+    {
+        const auto& op = instr.operands[0];
 
-        bool discriminateShifts(const ParsedInstruction& instr)
-        {
-            const auto& op = instr.operands[0];
-
-            return matchOperand<operands::DataRegister>(op) ||
-                   matchOperand<operands::Immediate>(op);
-        }
-    } // namespace v2
+        return matchOperand<operands::DataRegister>(op) ||
+               matchOperand<operands::Immediate>(op);
+    }
 } // namespace momiji

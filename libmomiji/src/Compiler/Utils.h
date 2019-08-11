@@ -43,33 +43,14 @@ namespace momiji
         std::uint8_t cnt = 0;
     };
 
-#if 0
-    namespace v1
-    {
+    std::uint8_t getCorrectOpMode(const momiji::Operand& op);
 
-        std::uint8_t getCorrectOpMode(const v1::Instruction& instr,
-                                      std::int8_t op);
+    std::uint8_t getCorrectOpType(const momiji::Operand& op);
 
-        void
-        handleAdditionalData(const v1::Instruction& instr,
-                             std::array<AdditionalData, 2>& additionalData);
+    void handleAdditionalData(const momiji::ParsedInstruction& instr,
+                              const momiji::LabelInfo& labels,
+                              std::array<AdditionalData, 2>& additionalData);
 
-        bool discriminateShifts(const Instruction& instr);
-    } // namespace v1
-#endif
-
-    inline namespace v2
-    {
-
-        std::uint8_t getCorrectOpMode(const v2::ParsedInstruction& instr,
-                                      std::int8_t opNum);
-
-        void
-        handleAdditionalData(const v2::ParsedInstruction& instr,
-                             const v2::LabelInfo& labels,
-                             std::array<AdditionalData, 2>& additionalData);
-
-        bool discriminateShifts(const v2::ParsedInstruction& instr);
-    } // namespace v2
+    bool discriminateShifts(const momiji::ParsedInstruction& instr);
 
 } // namespace momiji

@@ -5,7 +5,8 @@
 
 namespace momiji::enc
 {
-    void not_instr(const momiji::Instruction& instr,
+    void not_instr(const momiji::ParsedInstruction& instr,
+                   const momiji::LabelInfo& labels,
                    OpcodeDescription& opcode,
                    std::array<AdditionalData, 2>& additionalData);
 

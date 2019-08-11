@@ -5,11 +5,13 @@
 
 namespace momiji::enc
 {
-    void jmp(const momiji::Instruction& instr,
+    void jmp(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData);
 
-    void jsr(const momiji::Instruction& instr,
+    void jsr(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData);
 

@@ -5,11 +5,13 @@
 
 namespace momiji::enc
 {
-    void xor_instr(const momiji::Instruction& instr,
+    void xor_instr(const momiji::ParsedInstruction& instr,
+                   const momiji::LabelInfo& labels,
                    OpcodeDescription& opcode,
                    std::array<AdditionalData, 2>& additionalData);
 
-    void xori(const momiji::Instruction& instr,
+    void xori(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData);
 } // namespace momiji::enc

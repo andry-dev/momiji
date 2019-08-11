@@ -6,44 +6,49 @@
 
 namespace momiji::enc
 {
-    void sub(const momiji::Instruction& instr,
+    void sub(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
         repr::Sub bits;
 
-        if (instr.operands[0].operandType == OperandType::DataRegister)
+        if (matchOperand<operands::DataRegister>(instr.operands[0]))
         {
-            bits.datareg   = (instr.operands[0].value & 0b111);
+            bits.datareg =
+                std::get<operands::DataRegister>(instr.operands[0]).reg;
             bits.direction = 1;
         }
         else
         {
-            bits.datareg   = (instr.operands[1].value & 0b111);
+            bits.datareg =
+                std::get<operands::DataRegister>(instr.operands[1]).reg;
             bits.direction = 0;
         }
 
-        bits.othtype =
-            utils::to_val(instr.operands[bits.direction].operandType);
-        bits.othmode = getCorrectOpMode(instr, bits.direction);
+        bits.othtype = getCorrectOpType(instr.operands[bits.direction]);
+        bits.othmode = getCorrectOpMode(instr.operands[bits.direction]);
 
         std::uint8_t size = utils::to_val(instr.dataType);
         bits.size         = size & 0b11;
 
-        handleAdditionalData(instr, additionalData);
+        handleAdditionalData(instr, labels, additionalData);
 
         opcode.val = std::uint16_t((bits.header << 12) | (bits.datareg << 9) |
                                    (bits.direction << 8) | (bits.size << 6) |
                                    (bits.othtype << 3) | (bits.othmode));
     }
 
-    void suba(const momiji::Instruction& instr,
+    void suba(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
         repr::SubA bits;
 
-        bits.addreg = instr.operands[1].value & 0b111;
+        bits.addreg =
+            std::get<operands::AddressRegister>(instr.operands[1]).reg;
+
         switch (instr.dataType)
         {
         case DataType::Byte:
@@ -58,17 +63,18 @@ namespace momiji::enc
             break;
         }
 
-        bits.srctype = utils::to_val(instr.operands[0].operandType) & 0b111;
-        bits.srcmode = getCorrectOpMode(instr, 0);
+        bits.srctype = getCorrectOpType(instr.operands[0]);
+        bits.srcmode = getCorrectOpMode(instr.operands[0]);
 
-        handleAdditionalData(instr, additionalData);
+        handleAdditionalData(instr, labels, additionalData);
 
         opcode.val = std::uint16_t((bits.header << 12) | (bits.addreg << 9) |
                                    (bits.size << 8) | (bits.padding << 6) |
                                    (bits.srctype << 3) | (bits.srcmode));
     }
 
-    void subi(const momiji::Instruction& instr,
+    void subi(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData)
     {
@@ -78,10 +84,10 @@ namespace momiji::enc
 
         bits.size = size & 0b11;
 
-        handleAdditionalData(instr, additionalData);
+        bits.dsttype = getCorrectOpType(instr.operands[1]);
+        bits.dstmode = getCorrectOpMode(instr.operands[1]);
 
-        bits.dsttype = utils::to_val(instr.operands[1].operandType) & 0b111;
-        bits.dstmode = getCorrectOpMode(instr, 1);
+        handleAdditionalData(instr, labels, additionalData);
 
         opcode.val = std::uint16_t((bits.header << 8) | (bits.size << 6) |
                                    (bits.dsttype << 3) | (bits.dstmode));

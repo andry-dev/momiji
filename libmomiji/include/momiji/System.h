@@ -66,12 +66,12 @@ namespace momiji
         StackMemory stack;
     };
 
-    inline ExecutableMemoryView make_memory_view(System& sys)
+    inline momiji::ExecutableMemoryView make_memory_view(System& sys)
     {
         return sys.mem;
     }
 
-    inline ConstExecutableMemoryView make_memory_view(const System& sys)
+    inline momiji::ConstExecutableMemoryView make_memory_view(const System& sys)
     {
         return sys.mem;
     }

@@ -5,11 +5,13 @@
 
 namespace momiji::enc
 {
-    void bra(const momiji::Instruction& instr,
+    void bra(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData);
 
-    void bsr(const momiji::Instruction& instr,
+    void bsr(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData);
 

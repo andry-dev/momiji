@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <momiji/Memory.h>
+#include <momiji/Parser.h>
 #include <momiji/Types.h>
 
 namespace utils
@@ -68,33 +69,45 @@ namespace utils
         file.close();
     }
 
-    inline std::string toString(momiji::OperandType op)
+    inline std::string toString(momiji::ParserOperand op)
     {
         switch (op)
         {
-        case momiji::OperandType::DataRegister:
+        case momiji::ParserOperand::DataRegister:
             return "Data register";
 
-        case momiji::OperandType::AddressRegister:
+        case momiji::ParserOperand::AddressRegister:
             return "Address register";
 
-        case momiji::OperandType::Address:
+        case momiji::ParserOperand::Address:
             return "Address";
 
-        case momiji::OperandType::AddressPre:
+        case momiji::ParserOperand::AddressPre:
             return "Address with pre-decrement";
 
-        case momiji::OperandType::AddressPost:
+        case momiji::ParserOperand::AddressPost:
             return "Address with post-increment";
 
-        case momiji::OperandType::AddressOffset:
+        case momiji::ParserOperand::AddressOffset:
             return "Address with offset";
 
-        case momiji::OperandType::AddressIndex:
+        case momiji::ParserOperand::AddressIndex:
             return "Indexed Address";
 
-        case momiji::OperandType::Immediate:
+        case momiji::ParserOperand::Immediate:
             return "Immediate";
+
+        case momiji::ParserOperand::AbsoluteShort:
+            return "Absolute short";
+
+        case momiji::ParserOperand::AbsoluteLong:
+            return "Absolute long";
+
+        case momiji::ParserOperand::ProgramCounterIndex:
+            return "Indexed PC";
+
+        case momiji::ParserOperand::ProgramCounterOffset:
+            return "PC with offset";
         }
 
         return "???";

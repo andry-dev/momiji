@@ -6,7 +6,8 @@
 
 namespace momiji::enc
 {
-    void tst(const momiji::Instruction& instr,
+    void tst(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>&)
     {
@@ -14,8 +15,8 @@ namespace momiji::enc
         repr::Tst bits;
 
         bits.size    = utils::to_val(instr.dataType);
-        bits.regtype = utils::to_val(instr.operands[0].operandType);
-        bits.regmode = getCorrectOpMode(instr, 0);
+        bits.regtype = getCorrectOpType(instr.operands[0]);
+        bits.regmode = getCorrectOpMode(instr.operands[0]);
 
         opcode.val = std::uint16_t((bits.header << 8) | (bits.size << 6) |
                                    (bits.regmode << 3) | (bits.regtype));

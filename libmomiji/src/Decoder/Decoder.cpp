@@ -42,7 +42,8 @@ namespace momiji
     DecodedInstruction decodeFourthGroup(ExecutableMemoryView mem,
                                          std::int64_t idx);
 
-    DecodedInstruction decode(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction decode(momiji::ExecutableMemoryView mem,
+                              std::int64_t idx)
     {
         // Find by groups
         std::uint16_t mask = 0b11000000'00000000;

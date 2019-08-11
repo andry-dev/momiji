@@ -196,13 +196,15 @@ namespace momiji
         friend class MemoryView<Tag>;
     };
 
-    using ExecutableMemory     = ModifiableMemory<details::ExecutableMemoryTag>;
-    using ExecutableMemoryView = MemoryView<details::ExecutableMemoryTag>;
+    using ExecutableMemory =
+        ModifiableMemory<momiji::details::ExecutableMemoryTag>;
+    using ExecutableMemoryView =
+        MemoryView<momiji::details::ExecutableMemoryTag>;
     using ConstExecutableMemoryView =
-        ConstMemoryView<details::ExecutableMemoryTag>;
+        ConstMemoryView<momiji::details::ExecutableMemoryTag>;
 
-    using StackMemory     = ModifiableMemory<details::StackMemoryTag>;
-    using StackMemoryView = MemoryView<details::StackMemoryTag>;
+    using StackMemory     = ModifiableMemory<momiji::details::StackMemoryTag>;
+    using StackMemoryView = MemoryView<momiji::details::StackMemoryTag>;
 
     // BasicMemory implementation
 

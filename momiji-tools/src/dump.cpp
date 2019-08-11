@@ -1,9 +1,10 @@
 #include "utils.h"
 #include <bitset>
 #include <filesystem>
+#include <string_view>
+
 #include <momiji/Emulator.h>
 #include <momiji/Memory.h>
-#include <string_view>
 
 static void hackyPrintBin(std::uint8_t num)
 {

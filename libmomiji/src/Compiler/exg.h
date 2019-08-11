@@ -5,7 +5,8 @@
 
 namespace momiji::enc
 {
-    void exg(const momiji::Instruction& instr,
+    void exg(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData);
 

@@ -9,15 +9,18 @@
 
 namespace momiji::enc
 {
-    void cmp(const momiji::Instruction& instr,
+    void cmp(const momiji::ParsedInstruction& instr,
+             const momiji::LabelInfo& labels,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData);
 
-    void cmpa(const momiji::Instruction& instr,
+    void cmpa(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData);
 
-    void cmpi(const momiji::Instruction& instr,
+    void cmpi(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData);
 

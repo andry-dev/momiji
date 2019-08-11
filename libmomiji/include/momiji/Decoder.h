@@ -28,7 +28,8 @@ namespace momiji
         DecodedInstructionFn exec;
     };
 
-    DecodedInstruction decode(ExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction decode(momiji::ExecutableMemoryView mem,
+                              std::int64_t idx);
 
     namespace utils
     {

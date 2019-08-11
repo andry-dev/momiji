@@ -5,11 +5,13 @@
 
 namespace momiji::enc
 {
-    void divs(const momiji::Instruction& instr,
+    void divs(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData);
 
-    void divu(const momiji::Instruction& instr,
+    void divu(const momiji::ParsedInstruction& instr,
+              const momiji::LabelInfo& labels,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& additionalData);
 

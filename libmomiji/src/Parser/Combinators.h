@@ -11,8 +11,6 @@
 
 namespace momiji
 {
-    // constexpr auto AsAddress(momiji::Instruction& instr, int opNum);
-
     template <typename First, typename Second>
     constexpr auto Next(First&& first, Second&& second)
     {
@@ -502,597 +500,64 @@ namespace momiji
         };
     }
 
-#if 0
-    namespace v1
+    constexpr auto OperandImmediate(momiji::ParsedInstruction& instr,
+                                    std::uint32_t opNum)
     {
+        return [&instr,
+                opNum](std::string_view str) -> momiji::parser_metadata {
+            constexpr auto inter_dec_parser =
+                SeqNext(Char('#'), GenericDecimal());
 
-        constexpr auto OperandImmediate(momiji::v1::Instruction& instr,
-                                        std::uint32_t opNum)
-        {
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                constexpr auto inter_dec_parser =
-                    SeqNext(Char('#'), GenericDecimal());
+            auto decimal_num =
+                Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
+                    const std::int64_t val =
+                        std::stoll(std::string { parsed_str });
 
-                auto decimal_num =
-                    Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
-                        const std::int64_t val =
-                            std::stoll(std::string { parsed_str });
+                    momiji::operands::Immediate op;
+                    op.value = std::make_unique<momiji::objects::MathASTNode>();
+                    op.value->value =
+                        momiji::objects::Number { std::int32_t(val) };
 
-                        instr.operands[opNum].operandType =
-                            OperandType::Immediate;
-                        instr.operands[opNum].specialAddressingMode =
-                            SpecialAddressingMode::Immediate;
-                        instr.operands[opNum].value = std::int32_t(val);
-                    });
-
-                constexpr auto inter_hex_parser =
-                    SeqNext(Char('#'), GenericHex());
-                auto hex_num =
-                    Map(inter_hex_parser,
-                        [&instr, opNum](std::string_view parsed_str) {
-                            const std::int64_t val = std::stoll(
-                                std::string { parsed_str }, nullptr, 16);
-
-                            instr.operands[opNum].operandType =
-                                OperandType::Immediate;
-                            instr.operands[opNum].specialAddressingMode =
-                                SpecialAddressingMode::Immediate;
-                            instr.operands[opNum].value = std::int32_t(val);
-                        });
-
-                // Example: move.w #arr, a0
-                //          ^ moves the "address" of "arr" in a0
-                constexpr auto inter_imm_label_parser =
-                    SeqNext(Char('#'), Word());
-                auto imm_label = Map(
-                    inter_imm_label_parser, [&instr, opNum](auto parsed_str) {
-                        instr.operands[opNum].operandType =
-                            OperandType::Immediate;
-                        instr.operands[opNum].specialAddressingMode =
-                            SpecialAddressingMode::Immediate;
-                        instr.operands[opNum].value =
-                            std::int32_t(utils::hash(parsed_str));
-                        instr.operands[opNum].labelResolved = false;
-                    });
-
-                return AnyOf(decimal_num, hex_num, imm_label)(str);
-            };
-        }
-
-        constexpr auto AddressRegisterParser(momiji::v1::Instruction& instr,
-                                             std::uint32_t opNum)
-        {
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                constexpr auto inter_parser = SeqNext(Char('a'), DecNumber());
-                auto register_parser = Map(inter_parser, [&](auto parsed_str) {
-                    const auto reg_num = std::stoll(std::string { parsed_str });
-
-                    instr.operands[opNum].operandType =
-                        OperandType::AddressRegister;
-                    instr.operands[opNum].value = std::int32_t(reg_num);
+                    instr.operands[opNum] = std::move(op);
                 });
 
-                return SetError(register_parser,
-                                errors::MissingCharacter { 'a' })(str);
-            };
-        }
+            constexpr auto inter_hex_parser = SeqNext(Char('#'), GenericHex());
+            auto hex_num                    = Map(
+                inter_hex_parser, [&instr, opNum](std::string_view parsed_str) {
+                    const std::int64_t val =
+                        std::stoll(std::string { parsed_str }, nullptr, 16);
 
-        constexpr auto DataRegisterParser(momiji::Instruction& instr,
-                                          std::uint32_t opNum)
-        {
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                constexpr auto inter_parser = SeqNext(Char('d'), DecNumber());
-                auto register_parser =
-                    Map(inter_parser, [&](std::string_view parsed_str) {
-                        const auto reg_num =
-                            std::stoll(std::string { parsed_str });
+                    momiji::operands::Immediate op;
+                    op.value = std::make_unique<momiji::objects::MathASTNode>();
+                    op.value->value =
+                        momiji::objects::Number { std::int32_t(val) };
 
-                        instr.operands[opNum].operandType =
-                            OperandType::DataRegister;
-                        instr.operands[opNum].value = std::int32_t(reg_num);
-                    });
-
-                return register_parser(str);
-            };
-        }
-
-        constexpr auto MemoryAddress(momiji::Instruction& instr,
-                                     std::uint32_t opNum)
-        {
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                constexpr auto inter_dec_parser = GenericDecimal();
-
-                auto dec_mem =
-                    Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
-                        const auto val = std::stoll(std::string { parsed_str });
-
-                        SpecialAddressingMode res_add_mode {};
-
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                            res_add_mode = SpecialAddressingMode::AbsoluteShort;
-                            break;
-
-                        case DataType::Long:
-                            res_add_mode = SpecialAddressingMode::AbsoluteLong;
-                            break;
-                        }
-
-                        instr.operands[opNum].operandType =
-                            OperandType::AbsoluteLong;
-                        instr.operands[opNum].specialAddressingMode =
-                            res_add_mode;
-                        instr.operands[opNum].value = std::int32_t(val);
-                    });
-
-                constexpr auto inter_hex_parser = GenericHex();
-                auto hex_mem =
-                    Map(inter_hex_parser, [&instr, opNum](auto parsed_str) {
-                        const auto val =
-                            std::stoll(std::string { parsed_str }, nullptr, 16);
-
-                        SpecialAddressingMode res_add_mode {};
-
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                            res_add_mode = SpecialAddressingMode::AbsoluteShort;
-                            break;
-
-                        case DataType::Long:
-                            res_add_mode = SpecialAddressingMode::AbsoluteLong;
-                            break;
-                        }
-
-                        instr.operands[opNum].operandType =
-                            OperandType::AbsoluteLong;
-                        instr.operands[opNum].specialAddressingMode =
-                            res_add_mode;
-                        instr.operands[opNum].value = std::int32_t(val);
-                    });
-
-                // Example: move.w arr, a0
-                //          ^ moves the value at address "arr" in a0
-                constexpr auto inter_mem_label_parser = Word();
-                auto label_mem                        = Map(
-                    inter_mem_label_parser, [&instr, opNum](auto parsed_str) {
-                        SpecialAddressingMode res_add_mode {};
-
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                            res_add_mode = SpecialAddressingMode::AbsoluteShort;
-                            break;
-
-                        case DataType::Long:
-                            res_add_mode = SpecialAddressingMode::AbsoluteLong;
-                            break;
-                        }
-
-                        instr.operands[opNum].operandType =
-                            OperandType::AbsoluteLong;
-                        instr.operands[opNum].specialAddressingMode =
-                            res_add_mode;
-                        instr.operands[opNum].value =
-                            std::int32_t(utils::hash(parsed_str));
-                        instr.operands[opNum].labelResolved = false;
-                    });
-
-                return AnyOf(dec_mem, hex_mem, label_mem)(str);
-            };
-        }
-
-        constexpr auto AnyRegister(momiji::Instruction& instr,
-                                   std::uint32_t opNum)
-        {
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                auto register_parser =
-                    AnyOf(DataRegisterParser(instr, opNum),
-                          AddressRegisterParser(instr, opNum));
-
-                return register_parser(str);
-            };
-        }
-
-        constexpr auto AsAddress(momiji::Instruction& instr,
-                                 std::uint32_t opNum)
-        {
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                auto register_parser =
-                    Map(Between(Char('('),
-                                AddressRegisterParser(instr, opNum),
-                                Char(')')),
-                        [&](std::string_view /*parsed_str*/) {
-                            instr.operands[opNum].operandType =
-                                OperandType::Address;
-                        });
-
-                return register_parser(str);
-            };
-        }
-
-        constexpr auto AddressWithDisplacement(momiji::Instruction& instr,
-                                               std::uint32_t opNum)
-        {
-            // num(a*)
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                std::int32_t parsed_displacement = 0;
-
-                auto num_parser =
-                    Map(GenericDecimal(), [&](std::string_view parsed_str) {
-                        parsed_displacement = std::int32_t(
-                            std::stoll(std::string { parsed_str }));
-                    });
-
-                auto reg_parser =
-                    Map(AsAddress(instr, opNum), [&](auto /*parsed_str*/) {
-                        instr.operands[opNum].operandType =
-                            OperandType::AddressOffset;
-                    });
-
-                return Map(SeqNext(num_parser, reg_parser),
-                           [&](auto /*parsed_str*/) {
-                               instr.operands[opNum].value |=
-                                   (parsed_displacement << 16);
-                           })(str);
-            };
-        }
-
-        constexpr auto IndexedAddress(momiji::Instruction& instr,
-                                      std::uint32_t opNum)
-        {
-            // (a*, *)
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                std::int16_t addreg = 0;
-                std::int16_t othreg = 0;
-
-                auto first_reg_parser =
-                    Map(AddressRegisterParser(instr, opNum), [&](auto) {
-                        addreg = std::int16_t(instr.operands[opNum].value);
-                    });
-
-                auto oth_reg_parser = Map(AnyRegister(instr, opNum), [&](auto) {
-                    othreg = std::int16_t(instr.operands[opNum].value);
-                    if (instr.operands[opNum].operandType ==
-                        OperandType::AddressRegister)
-                    {
-                        othreg += 8;
-                    }
+                    instr.operands[opNum] = std::move(op);
                 });
 
-                auto combined_parser = SeqNext(AlwaysTrue(Whitespace()),
-                                               first_reg_parser,
-                                               AlwaysTrue(Whitespace()),
-                                               ErroringChar(','),
-                                               AlwaysTrue(Whitespace()),
-                                               oth_reg_parser);
+            // Example: move.w #arr, a0
+            //          ^ moves the "address" of "arr" in a0
+            constexpr auto inter_imm_label_parser = SeqNext(Char('#'), Word());
+            auto imm_label =
+                Map(inter_imm_label_parser, [&instr, opNum](auto parsed_str) {
+                    const auto hash = utils::hash(parsed_str);
 
-                return Map(
-                    Between(
-                        ErroringChar('('), combined_parser, ErroringChar(')')),
-                    [&](auto) {
-                        instr.operands[opNum].operandType =
-                            OperandType::AddressIndex;
-                        std::int16_t higher = std::int16_t((othreg << 12));
-                        instr.operands[opNum].value = (higher << 16) | addreg;
-                    })(str);
-            };
-        }
+                    momiji::operands::Immediate op;
+                    op.value = std::make_unique<momiji::objects::MathASTNode>();
+                    op.value->value = momiji::objects::Label { hash };
 
-        constexpr auto
-        IndexedAddressWithDisplacement(momiji::Instruction& instr,
-                                       std::uint32_t opNum)
-        {
-            // (num, a*, *)
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                std::int16_t addreg = 0;
-                std::int16_t othreg = 0;
-                std::int16_t offset = 0;
-
-                auto offset_parser =
-                    Map(GenericDecimal(), [&](auto parsed_str) {
-                        offset =
-                            std::int16_t(std::stol(std::string { parsed_str }));
-                    });
-
-                auto first_reg_parser =
-                    Map(AddressRegisterParser(instr, opNum), [&](auto) {
-                        addreg = std::int16_t(instr.operands[opNum].value);
-                    });
-
-                auto oth_reg_parser = Map(AnyRegister(instr, opNum), [&](auto) {
-                    othreg = std::int16_t(instr.operands[opNum].value);
-                    if (instr.operands[opNum].operandType ==
-                        OperandType::AddressRegister)
-                    {
-                        othreg += 8;
-                    }
+                    instr.operands[opNum] = std::move(op);
                 });
 
-                auto combined_parser = SeqNext(AlwaysTrue(Whitespace()),
-                                               offset_parser,
-                                               AlwaysTrue(Whitespace()),
-                                               Char(','),
-                                               AlwaysTrue(Whitespace()),
-                                               first_reg_parser,
-                                               AlwaysTrue(Whitespace()),
-                                               Char(','),
-                                               AlwaysTrue(Whitespace()),
-                                               oth_reg_parser);
+            return AnyOf(decimal_num, hex_num, imm_label)(str);
+        };
+    }
 
-                return Map(
-                    Between(Char('('), combined_parser, Char(')')), [&](auto) {
-                        instr.operands[opNum].operandType =
-                            OperandType::AddressIndex;
-                        std::int16_t higher =
-                            std::int16_t(offset | (othreg << 12));
-                        instr.operands[opNum].value = (higher << 16) | addreg;
-                    })(str);
-            };
-        }
-
-        constexpr auto AddressPreDecr(momiji::Instruction& instr,
-                                      std::uint32_t opNum)
-        {
-            // -(a*)
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                auto combined_parser = SeqNext(Char('-'),
-                                               AlwaysTrue(Whitespace()),
-                                               AsAddress(instr, opNum));
-
-                return Map(combined_parser, [&](auto) {
-                    instr.operands[opNum].operandType = OperandType::AddressPre;
-                })(str);
-            };
-        }
-
-        constexpr auto AddressPostIncr(momiji::Instruction& instr,
-                                       std::uint32_t opNum)
-        {
-            // (a*)+
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                auto combined_parser = SeqNext(AsAddress(instr, opNum),
-                                               AlwaysTrue(Whitespace()),
-                                               Char('+'));
-
-                return Map(combined_parser, [&](auto) {
-                    instr.operands[opNum].operandType =
-                        OperandType::AddressPost;
-                })(str);
-            };
-        }
-
-        constexpr auto AnyOperand(momiji::Instruction& instr,
-                                  std::uint32_t opNum)
-        {
-            return [&instr, opNum](std::string_view str) -> parser_metadata {
-                auto op_parser =
-                    AnyOf(OperandImmediate(instr, opNum),
-                          AnyRegister(instr, opNum),
-                          AddressPreDecr(instr, opNum),
-                          AddressPostIncr(instr, opNum),
-                          AddressWithDisplacement(instr, opNum),
-                          IndexedAddress(instr, opNum),
-                          IndexedAddressWithDisplacement(instr, opNum),
-                          AsAddress(instr, opNum),
-                          MemoryAddress(instr, opNum));
-
-                return SetError(op_parser, errors::UnknownOperand {})(str);
-            };
-        }
-
-        constexpr auto ParseDataType(momiji::Instruction& instr)
-        {
-            return [&instr](std::string_view str) -> parser_metadata {
-                constexpr auto inter_parser =
-                    Next(Char('.'), AnyOf(Char('b'), Char('w'), Char('l')));
-
-                auto DataType_parser =
-                    Map(inter_parser, [&](std::string_view parsed_str) {
-                        switch (parsed_str[0])
-                        {
-                        case 'b':
-                            instr.dataType = DataType::Byte;
-                            break;
-
-                        case 'w':
-                            instr.dataType = DataType::Word;
-                            break;
-
-                        case 'l':
-                            instr.dataType = DataType::Long;
-                            break;
-                        }
-                    });
-
-                return DataType_parser(str);
-            };
-        }
-
-        constexpr auto CommonInstructionParser(momiji::Instruction& instr)
-        {
-            return [&instr](std::string_view str) -> parser_metadata {
-                bool signal_error = false;
-                ParserError::ErrorType error;
-
-                auto parser = SeqNext(
-                    AlwaysTrue(ParseDataType(instr)), // data type is optional
-                    Whitespace(),
-                    AnyOperand(instr, 0),
-                    AlwaysTrue(Whitespace()),
-                    Char(','),
-                    AlwaysTrue(Whitespace()),
-                    AnyOperand(instr, 1));
-
-                auto res = parser(str);
-
-                if (signal_error)
-                {
-                    res.error = std::move(error);
-                }
-
-                return res;
-            };
-        }
-
-        constexpr auto ImmediateInstructionParser(momiji::Instruction& instr)
-        {
-            return [&instr](std::string_view str) -> parser_metadata {
-                auto parser = SeqNext(AlwaysTrue(ParseDataType(instr)),
-                                      Whitespace(),
-                                      OperandImmediate(instr, 0),
-                                      AlwaysTrue(Whitespace()),
-                                      ErroringChar(','),
-                                      AlwaysTrue(Whitespace()),
-                                      AnyOperand(instr, 1));
-
-                return parser(str);
-            };
-        }
-
-        constexpr auto
-        BranchInstructionParser(momiji::Instruction& instr,
-                                const momiji::LabelInfo& /*labels*/)
-        {
-            return [&instr](std::string_view str) -> parser_metadata {
-                auto parser = SeqNext(
-                    Whitespace(),
-                    AnyOf(OperandImmediate(instr, 0), MemoryAddress(instr, 0)));
-
-                errors::OperandTypeMismatch error;
-
-                return SetError(parser, std::move(error))(str);
-            };
-        }
-
-        constexpr auto OneRegisterInstructionParser(momiji::Instruction& instr)
-        {
-            return [&instr](std::string_view str) -> parser_metadata {
-                auto parser = SeqNext(AlwaysTrue(ParseDataType(instr)),
-                                      Whitespace(),
-                                      AnyRegister(instr, 0));
-
-                return parser(str);
-            };
-        }
-
-        constexpr auto ShiftInstructionParser(momiji::Instruction& instr)
-        {
-            return [&instr](std::string_view str) -> parser_metadata {
-                auto isImmediate = [](const Operand& op) -> bool {
-                    return (op.operandType == OperandType::Immediate) &&
-                           (op.specialAddressingMode ==
-                            SpecialAddressingMode::Immediate);
-                };
-
-                auto tryRegMode = CommonInstructionParser(instr)(str);
-                if (tryRegMode.result)
-                {
-                    if (instr.operands[1].operandType !=
-                        OperandType::DataRegister)
-                    {
-                        errors::OperandTypeMismatch error {
-                            { OperandType::DataRegister },
-                            instr.operands[1].operandType,
-                            1
-                        };
-
-                        tryRegMode.result = false;
-                        tryRegMode.error  = std::move(error);
-                    }
-                    else if (!isImmediate(instr.operands[0]) &&
-                             instr.operands[0].operandType !=
-                                 OperandType::DataRegister)
-                    {
-                        errors::OperandTypeMismatch error {
-                            { OperandType::DataRegister,
-                              OperandType::Immediate },
-                            instr.operands[0].operandType,
-                            0
-                        };
-
-                        tryRegMode.result = false;
-                        tryRegMode.error  = std::move(error);
-                    }
-
-                    return tryRegMode;
-                }
-
-                auto tryMemMode = SeqNext(Whitespace(), AnyOperand(instr, 0));
-
-                return tryMemMode(str);
-            };
-        }
-    } // namespace v1
-#endif
-
-    inline namespace v2
+    constexpr auto AddressRegisterParser(momiji::ParsedInstruction& instr,
+                                         std::uint32_t opNum)
     {
-        constexpr auto OperandImmediate(v2::ParsedInstruction& instr,
-                                        std::uint32_t opNum)
-        {
-            return [&instr,
-                    opNum](std::string_view str) -> v2::parser_metadata {
-                constexpr auto inter_dec_parser =
-                    SeqNext(Char('#'), GenericDecimal());
-
-                auto decimal_num =
-                    Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
-                        const std::int64_t val =
-                            std::stoll(std::string { parsed_str });
-
-                        v2::operands::Immediate op;
-                        op.value = std::make_unique<v2::objects::MathASTNode>();
-                        op.value->value =
-                            v2::objects::Number { std::int32_t(val) };
-
-                        instr.operands[opNum] = std::move(op);
-                    });
-
-                constexpr auto inter_hex_parser =
-                    SeqNext(Char('#'), GenericHex());
-                auto hex_num = Map(
-                    inter_hex_parser,
-                    [&instr, opNum](std::string_view parsed_str) {
-                        const std::int64_t val =
-                            std::stoll(std::string { parsed_str }, nullptr, 16);
-
-                        v2::operands::Immediate op;
-                        op.value = std::make_unique<v2::objects::MathASTNode>();
-                        op.value->value =
-                            v2::objects::Number { std::int32_t(val) };
-
-                        instr.operands[opNum] = std::move(op);
-                    });
-
-                // Example: move.w #arr, a0
-                //          ^ moves the "address" of "arr" in a0
-                constexpr auto inter_imm_label_parser =
-                    SeqNext(Char('#'), Word());
-                auto imm_label = Map(
-                    inter_imm_label_parser, [&instr, opNum](auto parsed_str) {
-                        const auto hash = utils::hash(parsed_str);
-
-                        v2::operands::Immediate op;
-                        op.value = std::make_unique<v2::objects::MathASTNode>();
-                        op.value->value = v2::objects::Label { hash };
-
-                        instr.operands[opNum] = std::move(op);
-                    });
-
-                return AnyOf(decimal_num, hex_num, imm_label)(str);
-            };
-        }
-
-        constexpr auto AddressRegisterParser(v2::ParsedInstruction& instr,
-                                             std::uint32_t opNum)
-        {
-            return [&instr,
-                    opNum](std::string_view str) -> v2::parser_metadata {
+        return
+            [&instr, opNum](std::string_view str) -> momiji::parser_metadata {
                 constexpr auto inter_parser = SeqNext(Char('a'), DecNumber());
                 auto register_parser = Map(inter_parser, [&](auto parsed_str) {
                     const auto reg_num = std::stoll(std::string { parsed_str });
@@ -1104,524 +569,509 @@ namespace momiji
                 return SetError(register_parser,
                                 errors::MissingCharacter { 'a' })(str);
             };
-        }
+    }
 
-        constexpr auto DataRegisterParser(v2::ParsedInstruction& instr,
-                                          std::uint32_t opNum)
-        {
-            return [&instr,
-                    opNum](std::string_view str) -> v2::parser_metadata {
-                constexpr auto inter_parser = SeqNext(Char('d'), DecNumber());
+    constexpr auto DataRegisterParser(momiji::ParsedInstruction& instr,
+                                      std::uint32_t opNum)
+    {
+        return [&instr,
+                opNum](std::string_view str) -> momiji::parser_metadata {
+            constexpr auto inter_parser = SeqNext(Char('d'), DecNumber());
+            auto register_parser =
+                Map(inter_parser, [&](std::string_view parsed_str) {
+                    const auto reg_num = std::stoll(std::string { parsed_str });
+
+                    instr.operands[opNum] =
+                        operands::DataRegister { std::int8_t(reg_num) };
+                });
+
+            return register_parser(str);
+        };
+    }
+
+    constexpr auto MemoryAddress(momiji::ParsedInstruction& instr,
+                                 std::uint32_t opNum)
+    {
+        return [&instr,
+                opNum](std::string_view str) -> momiji::parser_metadata {
+            constexpr auto inter_dec_parser = GenericDecimal();
+
+            auto dec_mem =
+                Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
+                    const auto val = std::stoll(std::string { parsed_str });
+
+                    momiji::Operand opType;
+
+                    switch (instr.dataType)
+                    {
+                    case DataType::Byte:
+                    case DataType::Word:
+                    {
+                        momiji::operands::AbsoluteShort tmp;
+                        tmp.value = std::make_unique<objects::MathASTNode>();
+                        tmp.value->value =
+                            momiji::objects::Number { std::int32_t(val) };
+
+                        opType = std::move(tmp);
+                    }
+                    break;
+
+                    case DataType::Long:
+                        momiji::operands::AbsoluteLong tmp;
+                        tmp.value = std::make_unique<objects::MathASTNode>();
+                        tmp.value->value =
+                            momiji::objects::Number { std::int32_t(val) };
+
+                        opType = std::move(tmp);
+                        break;
+                    }
+
+                    instr.operands[opNum] = std::move(opType);
+                });
+
+            constexpr auto inter_hex_parser = GenericHex();
+            auto hex_mem =
+                Map(inter_hex_parser, [&instr, opNum](auto parsed_str) {
+                    const auto val =
+                        std::stoll(std::string { parsed_str }, nullptr, 16);
+
+                    momiji::Operand opType;
+
+                    switch (instr.dataType)
+                    {
+                    case DataType::Byte:
+                    case DataType::Word:
+                    {
+                        momiji::operands::AbsoluteShort tmp;
+                        tmp.value = std::make_unique<objects::MathASTNode>();
+                        tmp.value->value =
+                            momiji::objects::Number { std::int32_t(val) };
+
+                        opType = std::move(tmp);
+                    }
+                    break;
+
+                    case DataType::Long:
+                        momiji::operands::AbsoluteLong tmp;
+                        tmp.value = std::make_unique<objects::MathASTNode>();
+                        tmp.value->value =
+                            momiji::objects::Number { std::int32_t(val) };
+
+                        opType = std::move(tmp);
+                        break;
+                    }
+
+                    instr.operands[opNum] = std::move(opType);
+                });
+
+            // Example: move.w arr, a0
+            //          ^ moves the value at address "arr" in a0
+            constexpr auto inter_mem_label_parser = Word();
+
+            auto label_mem =
+                Map(inter_mem_label_parser, [&instr, opNum](auto parsed_str) {
+                    momiji::Operand opType;
+
+                    switch (instr.dataType)
+                    {
+                    case DataType::Byte:
+                    case DataType::Word:
+                    {
+                        momiji::operands::AbsoluteShort tmp;
+                        tmp.value = std::make_unique<objects::MathASTNode>();
+                        tmp.value->value =
+                            momiji::objects::Label { utils::hash(parsed_str) };
+
+                        opType = std::move(tmp);
+                    }
+                    break;
+
+                    case DataType::Long:
+                        momiji::operands::AbsoluteLong tmp;
+                        tmp.value = std::make_unique<objects::MathASTNode>();
+                        tmp.value->value =
+                            momiji::objects::Label { utils::hash(parsed_str) };
+
+                        opType = std::move(tmp);
+                        break;
+                    }
+
+                    instr.operands[opNum] = std::move(opType);
+                });
+
+            return AnyOf(dec_mem, hex_mem, label_mem)(str);
+        };
+    }
+
+    constexpr auto AnyRegister(momiji::ParsedInstruction& instr,
+                               std::uint32_t opNum)
+    {
+        return [&instr,
+                opNum](std::string_view str) -> momiji::parser_metadata {
+            auto register_parser = AnyOf(DataRegisterParser(instr, opNum),
+                                         AddressRegisterParser(instr, opNum));
+
+            return register_parser(str);
+        };
+    }
+
+    constexpr auto AsAddress(momiji::ParsedInstruction& instr,
+                             std::uint32_t opNum)
+    {
+        return
+            [&instr, opNum](std::string_view str) -> momiji::parser_metadata {
                 auto register_parser =
-                    Map(inter_parser, [&](std::string_view parsed_str) {
-                        const auto reg_num =
-                            std::stoll(std::string { parsed_str });
+                    Map(Between(Char('('),
+                                AddressRegisterParser(instr, opNum),
+                                Char(')')),
+                        [&](std::string_view /*parsed_str*/) {
+                            auto& op = instr.operands[opNum];
 
-                        instr.operands[opNum] =
-                            operands::DataRegister { std::int8_t(reg_num) };
-                    });
+                            momiji::operands::Address tmp;
+                            tmp.reg = extractRegister(op);
+
+                            op = std::move(tmp);
+                        });
 
                 return register_parser(str);
             };
-        }
+    }
 
-        constexpr auto MemoryAddress(v2::ParsedInstruction& instr,
-                                     std::uint32_t opNum)
-        {
-            return [&instr,
-                    opNum](std::string_view str) -> v2::parser_metadata {
-                constexpr auto inter_dec_parser = GenericDecimal();
+    constexpr auto AddressWithDisplacement(momiji::ParsedInstruction& instr,
+                                           std::uint32_t opNum)
+    {
+        // num(a*)
+        return [&instr,
+                opNum](std::string_view str) -> momiji::parser_metadata {
+            std::int32_t parsed_displacement = 0;
 
-                auto dec_mem =
-                    Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
-                        const auto val = std::stoll(std::string { parsed_str });
-
-                        v2::Operand opType;
-
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                        {
-                            v2::operands::AbsoluteShort tmp;
-                            tmp.value =
-                                std::make_unique<objects::MathASTNode>();
-                            tmp.value->value =
-                                v2::objects::Number { std::int32_t(val) };
-
-                            opType = std::move(tmp);
-                        }
-                        break;
-
-                        case DataType::Long:
-                            v2::operands::AbsoluteLong tmp;
-                            tmp.value =
-                                std::make_unique<objects::MathASTNode>();
-                            tmp.value->value =
-                                v2::objects::Number { std::int32_t(val) };
-
-                            opType = std::move(tmp);
-                            break;
-                        }
-
-                        instr.operands[opNum] = std::move(opType);
-                    });
-
-                constexpr auto inter_hex_parser = GenericHex();
-                auto hex_mem =
-                    Map(inter_hex_parser, [&instr, opNum](auto parsed_str) {
-                        const auto val =
-                            std::stoll(std::string { parsed_str }, nullptr, 16);
-
-                        v2::Operand opType;
-
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                        {
-                            v2::operands::AbsoluteShort tmp;
-                            tmp.value =
-                                std::make_unique<objects::MathASTNode>();
-                            tmp.value->value =
-                                v2::objects::Number { std::int32_t(val) };
-
-                            opType = std::move(tmp);
-                        }
-                        break;
-
-                        case DataType::Long:
-                            v2::operands::AbsoluteLong tmp;
-                            tmp.value =
-                                std::make_unique<objects::MathASTNode>();
-                            tmp.value->value =
-                                v2::objects::Number { std::int32_t(val) };
-
-                            opType = std::move(tmp);
-                            break;
-                        }
-
-                        instr.operands[opNum] = std::move(opType);
-                    });
-
-                // Example: move.w arr, a0
-                //          ^ moves the value at address "arr" in a0
-                constexpr auto inter_mem_label_parser = Word();
-
-                auto label_mem = Map(
-                    inter_mem_label_parser, [&instr, opNum](auto parsed_str) {
-                        v2::Operand opType;
-
-                        switch (instr.dataType)
-                        {
-                        case DataType::Byte:
-                        case DataType::Word:
-                        {
-                            v2::operands::AbsoluteShort tmp;
-                            tmp.value =
-                                std::make_unique<objects::MathASTNode>();
-                            tmp.value->value =
-                                v2::objects::Label { utils::hash(parsed_str) };
-
-                            opType = std::move(tmp);
-                        }
-                        break;
-
-                        case DataType::Long:
-                            v2::operands::AbsoluteLong tmp;
-                            tmp.value =
-                                std::make_unique<objects::MathASTNode>();
-                            tmp.value->value =
-                                v2::objects::Label { utils::hash(parsed_str) };
-
-                            opType = std::move(tmp);
-                            break;
-                        }
-
-                        instr.operands[opNum] = std::move(opType);
-                    });
-
-                return AnyOf(dec_mem, hex_mem, label_mem)(str);
-            };
-        }
-
-        constexpr auto AnyRegister(v2::ParsedInstruction& instr,
-                                   std::uint32_t opNum)
-        {
-            return
-                [&instr, opNum](std::string_view str) -> v2::parser_metadata {
-                    auto register_parser =
-                        AnyOf(DataRegisterParser(instr, opNum),
-                              AddressRegisterParser(instr, opNum));
-
-                    return register_parser(str);
-                };
-        }
-
-        constexpr auto AsAddress(v2::ParsedInstruction& instr,
-                                 std::uint32_t opNum)
-        {
-            return
-                [&instr, opNum](std::string_view str) -> v2::parser_metadata {
-                    auto register_parser =
-                        Map(Between(Char('('),
-                                    AddressRegisterParser(instr, opNum),
-                                    Char(')')),
-                            [&](std::string_view /*parsed_str*/) {
-                                auto& op = instr.operands[opNum];
-
-                                v2::operands::Address tmp;
-                                tmp.reg = extractRegister(op);
-
-                                op = std::move(tmp);
-                            });
-
-                    return register_parser(str);
-                };
-        }
-
-        constexpr auto AddressWithDisplacement(v2::ParsedInstruction& instr,
-                                               std::uint32_t opNum)
-        {
-            // num(a*)
-            return [&instr,
-                    opNum](std::string_view str) -> v2::parser_metadata {
-                std::int32_t parsed_displacement = 0;
-
-                auto num_parser =
-                    Map(GenericDecimal(), [&](std::string_view parsed_str) {
-                        parsed_displacement = std::int32_t(
-                            std::stoll(std::string { parsed_str }));
-                    });
-
-                auto reg_parser =
-                    Map(AsAddress(instr, opNum), [&](auto /*parsed_str*/) {
-                        auto& op = instr.operands[opNum];
-
-                        v2::operands::Address tmp;
-                        tmp.reg = extractRegister(op);
-                        op      = std::move(tmp);
-                    });
-
-                return Map(SeqNext(num_parser, reg_parser),
-                           [&](auto /*parsed_str*/) {
-                               auto& op = std::get<v2::operands::Address>(
-                                   instr.operands[opNum]);
-
-                               op.offset =
-                                   std::make_unique<v2::objects::MathASTNode>();
-                               op.offset->value =
-                                   v2::objects::Number { parsed_displacement };
-                           })(str);
-            };
-        }
-
-        constexpr auto IndexedAddress(v2::ParsedInstruction& instr,
-                                      std::uint32_t opNum)
-        {
-            // (a*, *)
-            return [&instr,
-                    opNum](std::string_view str) -> v2::parser_metadata {
-                std::int8_t addreg = 0;
-                std::int8_t othreg = 0;
-
-                auto first_reg_parser =
-                    Map(AddressRegisterParser(instr, opNum), [&](auto) {
-                        addreg = extractRegister(instr.operands[opNum]);
-                    });
-
-                auto oth_reg_parser = Map(AnyRegister(instr, opNum), [&](auto) {
-                    auto& op = instr.operands[opNum];
-                    othreg   = extractRegister(instr.operands[opNum]);
-
-                    if (std::holds_alternative<operands::AddressRegister>(op))
-                    {
-                        othreg += 8;
-                    }
+            auto num_parser =
+                Map(GenericDecimal(), [&](std::string_view parsed_str) {
+                    parsed_displacement =
+                        std::int32_t(std::stoll(std::string { parsed_str }));
                 });
 
-                auto combined_parser = SeqNext(AlwaysTrue(Whitespace()),
-                                               first_reg_parser,
-                                               AlwaysTrue(Whitespace()),
-                                               ErroringChar(','),
-                                               AlwaysTrue(Whitespace()),
-                                               oth_reg_parser);
-
-                return Map(Between(ErroringChar('('),
-                                   combined_parser,
-                                   ErroringChar(')')),
-                           [&](auto) {
-                               v2::operands::AddressIndex tmp;
-                               tmp.reg    = addreg;
-                               tmp.othreg = othreg;
-
-                               instr.operands[opNum] = std::move(tmp);
-                           })(str);
-            };
-        }
-
-        constexpr auto
-        IndexedAddressWithDisplacement(v2::ParsedInstruction& instr,
-                                       std::uint32_t opNum)
-        {
-            // (num, a*, *)
-            return [&instr,
-                    opNum](std::string_view str) -> v2::parser_metadata {
-                std::int8_t addreg = 0;
-                std::int8_t othreg = 0;
-                std::unique_ptr<v2::objects::MathASTNode> offset;
-
-                auto offset_parser =
-                    Map(GenericDecimal(), [&](auto parsed_str) {
-                        const auto val =
-                            std::stoll(std::string { parsed_str }, nullptr, 16);
-
-                        offset = std::make_unique<v2::objects::MathASTNode>();
-                        offset->value =
-                            v2::objects::Number { std::int32_t(val) };
-                    });
-
-                auto first_reg_parser =
-                    Map(AddressRegisterParser(instr, opNum), [&](auto) {
-                        addreg = extractRegister(instr.operands[opNum]);
-                    });
-
-                auto oth_reg_parser = Map(AnyRegister(instr, opNum), [&](auto) {
+            auto reg_parser =
+                Map(AsAddress(instr, opNum), [&](auto /*parsed_str*/) {
                     auto& op = instr.operands[opNum];
-                    othreg   = extractRegister(op);
-                    if (std::holds_alternative<operands::AddressRegister>(op))
-                    {
-                        othreg += 8;
-                    }
+
+                    momiji::operands::Address tmp;
+                    tmp.reg = extractRegister(op);
+                    op      = std::move(tmp);
                 });
 
-                auto combined_parser = SeqNext(AlwaysTrue(Whitespace()),
-                                               offset_parser,
-                                               AlwaysTrue(Whitespace()),
-                                               Char(','),
-                                               AlwaysTrue(Whitespace()),
-                                               first_reg_parser,
-                                               AlwaysTrue(Whitespace()),
-                                               Char(','),
-                                               AlwaysTrue(Whitespace()),
-                                               oth_reg_parser);
+            return Map(SeqNext(num_parser, reg_parser),
+                       [&](auto /*parsed_str*/) {
+                           auto& op = std::get<momiji::operands::AddressOffset>(
+                               instr.operands[opNum]);
 
-                return Map(Between(Char('('), combined_parser, Char(')')),
-                           [&](auto) {
-                               v2::operands::AddressIndex tmp;
+                           op.offset =
+                               std::make_unique<momiji::objects::MathASTNode>();
+                           op.offset->value =
+                               momiji::objects::Number { parsed_displacement };
+                       })(str);
+        };
+    }
 
-                               tmp.reg    = addreg;
-                               tmp.othreg = othreg;
-                               tmp.offset = std::move(offset);
-
-                               instr.operands[opNum] = std::move(tmp);
-                           })(str);
-            };
-        }
-
-        constexpr auto AddressPreDecr(v2::ParsedInstruction& instr,
-                                      std::uint32_t opNum)
-        {
-            // -(a*)
-            return
-                [&instr, opNum](std::string_view str) -> v2::parser_metadata {
-                    auto combined_parser = SeqNext(Char('-'),
-                                                   AlwaysTrue(Whitespace()),
-                                                   AsAddress(instr, opNum));
-
-                    return Map(combined_parser, [&](auto) {
-                        auto& op = instr.operands[opNum];
-
-                        v2::operands::AddressPre tmp;
-
-                        tmp.reg = extractRegister(op);
-
-                        op = tmp;
-                    })(str);
-                };
-        }
-
-        constexpr auto AddressPostIncr(v2::ParsedInstruction& instr,
-                                       std::uint32_t opNum)
-        {
-            // (a*)+
-            return
-                [&instr, opNum](std::string_view str) -> v2::parser_metadata {
-                    auto combined_parser = SeqNext(AsAddress(instr, opNum),
-                                                   AlwaysTrue(Whitespace()),
-                                                   Char('+'));
-
-                    return Map(combined_parser, [&](auto) {
-                        auto& op = instr.operands[opNum];
-
-                        v2::operands::AddressPost tmp;
-
-                        tmp.reg = extractRegister(op);
-
-                        op = tmp;
-                    })(str);
-                };
-        }
-
-        constexpr auto AnyOperand(v2::ParsedInstruction& instr,
+    constexpr auto IndexedAddress(momiji::ParsedInstruction& instr,
                                   std::uint32_t opNum)
-        {
-            return
-                [&instr, opNum](std::string_view str) -> v2::parser_metadata {
-                    auto op_parser =
-                        AnyOf(OperandImmediate(instr, opNum),
-                              AnyRegister(instr, opNum),
-                              AddressPreDecr(instr, opNum),
-                              AddressPostIncr(instr, opNum),
-                              AddressWithDisplacement(instr, opNum),
-                              IndexedAddress(instr, opNum),
-                              IndexedAddressWithDisplacement(instr, opNum),
-                              AsAddress(instr, opNum),
-                              MemoryAddress(instr, opNum));
+    {
+        // (a*, *)
+        return [&instr,
+                opNum](std::string_view str) -> momiji::parser_metadata {
+            std::int8_t addreg = 0;
+            std::int8_t othreg = 0;
 
-                    return SetError(op_parser, errors::UnknownOperand {})(str);
-                };
-        }
+            auto first_reg_parser =
+                Map(AddressRegisterParser(instr, opNum), [&](auto) {
+                    addreg = extractRegister(instr.operands[opNum]);
+                });
 
-        constexpr auto ParseDataType(v2::ParsedInstruction& instr)
-        {
-            return [&instr](std::string_view str) -> v2::parser_metadata {
-                constexpr auto inter_parser =
-                    Next(Char('.'), AnyOf(Char('b'), Char('w'), Char('l')));
+            auto oth_reg_parser = Map(AnyRegister(instr, opNum), [&](auto) {
+                auto& op = instr.operands[opNum];
+                othreg   = extractRegister(instr.operands[opNum]);
 
-                auto DataType_parser =
-                    Map(inter_parser, [&](std::string_view parsed_str) {
-                        switch (parsed_str[0])
-                        {
-                        case 'b':
-                            instr.dataType = DataType::Byte;
-                            break;
-
-                        case 'w':
-                            instr.dataType = DataType::Word;
-                            break;
-
-                        case 'l':
-                            instr.dataType = DataType::Long;
-                            break;
-                        }
-                    });
-
-                return DataType_parser(str);
-            };
-        }
-
-        constexpr auto CommonInstructionParser(v2::ParsedInstruction& instr)
-        {
-            return [&instr](std::string_view str) -> v2::parser_metadata {
-                bool signal_error = false;
-                ParserError::ErrorType error;
-
-                auto parser = SeqNext(
-                    AlwaysTrue(ParseDataType(instr)), // data type is optional
-                    Whitespace(),
-                    v2::AnyOperand(instr, 0),
-                    AlwaysTrue(Whitespace()),
-                    Char(','),
-                    AlwaysTrue(Whitespace()),
-                    v2::AnyOperand(instr, 1));
-
-                auto res = parser(str);
-
-                if (signal_error)
+                if (std::holds_alternative<operands::AddressRegister>(op))
                 {
-                    res.error = std::move(error);
+                    othreg += 8;
+                }
+            });
+
+            auto combined_parser = SeqNext(AlwaysTrue(Whitespace()),
+                                           first_reg_parser,
+                                           AlwaysTrue(Whitespace()),
+                                           ErroringChar(','),
+                                           AlwaysTrue(Whitespace()),
+                                           oth_reg_parser);
+
+            return Map(
+                Between(ErroringChar('('), combined_parser, ErroringChar(')')),
+                [&](auto) {
+                    momiji::operands::AddressIndex tmp;
+                    tmp.reg    = addreg;
+                    tmp.othreg = othreg;
+
+                    instr.operands[opNum] = std::move(tmp);
+                })(str);
+        };
+    }
+
+    constexpr auto
+    IndexedAddressWithDisplacement(momiji::ParsedInstruction& instr,
+                                   std::uint32_t opNum)
+    {
+        // (num, a*, *)
+        return [&instr,
+                opNum](std::string_view str) -> momiji::parser_metadata {
+            std::int8_t addreg = 0;
+            std::int8_t othreg = 0;
+            std::unique_ptr<momiji::objects::MathASTNode> offset;
+
+            auto offset_parser = Map(GenericDecimal(), [&](auto parsed_str) {
+                const auto val =
+                    std::stoll(std::string { parsed_str }, nullptr, 16);
+
+                offset = std::make_unique<momiji::objects::MathASTNode>();
+                offset->value = momiji::objects::Number { std::int32_t(val) };
+            });
+
+            auto first_reg_parser =
+                Map(AddressRegisterParser(instr, opNum), [&](auto) {
+                    addreg = extractRegister(instr.operands[opNum]);
+                });
+
+            auto oth_reg_parser = Map(AnyRegister(instr, opNum), [&](auto) {
+                auto& op = instr.operands[opNum];
+                othreg   = extractRegister(op);
+                if (std::holds_alternative<operands::AddressRegister>(op))
+                {
+                    othreg += 8;
+                }
+            });
+
+            auto combined_parser = SeqNext(AlwaysTrue(Whitespace()),
+                                           offset_parser,
+                                           AlwaysTrue(Whitespace()),
+                                           Char(','),
+                                           AlwaysTrue(Whitespace()),
+                                           first_reg_parser,
+                                           AlwaysTrue(Whitespace()),
+                                           Char(','),
+                                           AlwaysTrue(Whitespace()),
+                                           oth_reg_parser);
+
+            return Map(Between(Char('('), combined_parser, Char(')')),
+                       [&](auto) {
+                           momiji::operands::AddressIndex tmp;
+
+                           tmp.reg    = addreg;
+                           tmp.othreg = othreg;
+                           tmp.offset = std::move(offset);
+
+                           instr.operands[opNum] = std::move(tmp);
+                       })(str);
+        };
+    }
+
+    constexpr auto AddressPreDecr(momiji::ParsedInstruction& instr,
+                                  std::uint32_t opNum)
+    {
+        // -(a*)
+        return [&instr,
+                opNum](std::string_view str) -> momiji::parser_metadata {
+            auto combined_parser = SeqNext(
+                Char('-'), AlwaysTrue(Whitespace()), AsAddress(instr, opNum));
+
+            return Map(combined_parser, [&](auto) {
+                auto& op = instr.operands[opNum];
+
+                momiji::operands::AddressPre tmp;
+
+                tmp.reg = extractRegister(op);
+
+                op = tmp;
+            })(str);
+        };
+    }
+
+    constexpr auto AddressPostIncr(momiji::ParsedInstruction& instr,
+                                   std::uint32_t opNum)
+    {
+        // (a*)+
+        return [&instr,
+                opNum](std::string_view str) -> momiji::parser_metadata {
+            auto combined_parser = SeqNext(
+                AsAddress(instr, opNum), AlwaysTrue(Whitespace()), Char('+'));
+
+            return Map(combined_parser, [&](auto) {
+                auto& op = instr.operands[opNum];
+
+                momiji::operands::AddressPost tmp;
+
+                tmp.reg = extractRegister(op);
+
+                op = tmp;
+            })(str);
+        };
+    }
+
+    constexpr auto AnyOperand(momiji::ParsedInstruction& instr,
+                              std::uint32_t opNum)
+    {
+        return [&instr,
+                opNum](std::string_view str) -> momiji::parser_metadata {
+            auto op_parser = AnyOf(OperandImmediate(instr, opNum),
+                                   AnyRegister(instr, opNum),
+                                   AddressPreDecr(instr, opNum),
+                                   AddressPostIncr(instr, opNum),
+                                   AddressWithDisplacement(instr, opNum),
+                                   IndexedAddress(instr, opNum),
+                                   IndexedAddressWithDisplacement(instr, opNum),
+                                   AsAddress(instr, opNum),
+                                   MemoryAddress(instr, opNum));
+
+            return SetError(op_parser, errors::UnknownOperand {})(str);
+        };
+    }
+
+    constexpr auto ParseDataType(momiji::ParsedInstruction& instr)
+    {
+        return [&instr](std::string_view str) -> momiji::parser_metadata {
+            constexpr auto inter_parser =
+                Next(Char('.'), AnyOf(Char('b'), Char('w'), Char('l')));
+
+            auto DataType_parser =
+                Map(inter_parser, [&](std::string_view parsed_str) {
+                    switch (parsed_str[0])
+                    {
+                    case 'b':
+                        instr.dataType = DataType::Byte;
+                        break;
+
+                    case 'w':
+                        instr.dataType = DataType::Word;
+                        break;
+
+                    case 'l':
+                        instr.dataType = DataType::Long;
+                        break;
+                    }
+                });
+
+            return DataType_parser(str);
+        };
+    }
+
+    constexpr auto CommonInstructionParser(momiji::ParsedInstruction& instr)
+    {
+        return [&instr](std::string_view str) -> momiji::parser_metadata {
+            bool signal_error = false;
+            ParserError::ErrorType error;
+
+            auto parser = SeqNext(
+                AlwaysTrue(ParseDataType(instr)), // data type is optional
+                Whitespace(),
+                momiji::AnyOperand(instr, 0),
+                AlwaysTrue(Whitespace()),
+                Char(','),
+                AlwaysTrue(Whitespace()),
+                momiji::AnyOperand(instr, 1));
+
+            auto res = parser(str);
+
+            if (signal_error)
+            {
+                res.error = std::move(error);
+            }
+
+            return res;
+        };
+    }
+
+    constexpr auto ImmediateInstructionParser(momiji::ParsedInstruction& instr)
+    {
+        return [&instr](std::string_view str) -> momiji::parser_metadata {
+            auto parser = SeqNext(AlwaysTrue(ParseDataType(instr)),
+                                  Whitespace(),
+                                  momiji::OperandImmediate(instr, 0),
+                                  AlwaysTrue(Whitespace()),
+                                  ErroringChar(','),
+                                  AlwaysTrue(Whitespace()),
+                                  momiji::AnyOperand(instr, 1));
+
+            return parser(str);
+        };
+    }
+
+    constexpr auto BranchInstructionParser(momiji::ParsedInstruction& instr)
+    {
+        return [&instr](std::string_view str) -> momiji::parser_metadata {
+            auto parser = SeqNext(Whitespace(),
+                                  AnyOf(momiji::OperandImmediate(instr, 0),
+                                        momiji::MemoryAddress(instr, 0)));
+
+            errors::OperandTypeMismatch error;
+
+            return SetError(parser, std::move(error))(str);
+        };
+    }
+
+    constexpr auto
+    OneRegisterInstructionParser(momiji::ParsedInstruction& instr)
+    {
+        return [&instr](std::string_view str) -> momiji::parser_metadata {
+            auto parser = SeqNext(AlwaysTrue(ParseDataType(instr)),
+                                  Whitespace(),
+                                  momiji::AnyRegister(instr, 0));
+
+            return parser(str);
+        };
+    }
+
+    constexpr auto ShiftInstructionParser(momiji::ParsedInstruction& instr)
+    {
+        return [&instr](std::string_view str) -> momiji::parser_metadata {
+            auto isImmediate = [](const momiji::Operand& op) -> bool {
+                return std::holds_alternative<momiji::operands::Immediate>(op);
+            };
+
+            auto tryRegMode = CommonInstructionParser(instr)(str);
+            if (tryRegMode.result)
+            {
+                if (!std::holds_alternative<operands::DataRegister>(
+                        instr.operands[1]))
+                {
+                    momiji::errors::OperandTypeMismatch error {
+                        { momiji::ParserOperand::DataRegister },
+                        momiji::convertOperand(instr.operands[1]),
+                        1
+                    };
+
+                    tryRegMode.result = false;
+                    tryRegMode.error  = std::move(error);
+                }
+                else if (!isImmediate(instr.operands[0]) &&
+                         !std::holds_alternative<operands::DataRegister>(
+                             instr.operands[0]))
+                {
+                    errors::OperandTypeMismatch error {
+                        { momiji::ParserOperand::DataRegister,
+                          momiji::ParserOperand::Immediate },
+                        momiji::convertOperand(instr.operands[0]),
+                        0
+                    };
+
+                    tryRegMode.result = false;
+                    tryRegMode.error  = std::move(error);
                 }
 
-                return res;
-            };
-        }
+                return tryRegMode;
+            }
 
-        constexpr auto ImmediateInstructionParser(v2::ParsedInstruction& instr)
-        {
-            return [&instr](std::string_view str) -> v2::parser_metadata {
-                auto parser = SeqNext(AlwaysTrue(ParseDataType(instr)),
-                                      Whitespace(),
-                                      v2::OperandImmediate(instr, 0),
-                                      AlwaysTrue(Whitespace()),
-                                      ErroringChar(','),
-                                      AlwaysTrue(Whitespace()),
-                                      v2::AnyOperand(instr, 1));
+            auto tryMemMode =
+                SeqNext(Whitespace(), momiji::AnyOperand(instr, 0));
 
-                return parser(str);
-            };
-        }
-
-        constexpr auto BranchInstructionParser(v2::ParsedInstruction& instr)
-        {
-            return [&instr](std::string_view str) -> v2::parser_metadata {
-                auto parser = SeqNext(Whitespace(),
-                                      AnyOf(v2::OperandImmediate(instr, 0),
-                                            v2::MemoryAddress(instr, 0)));
-
-                errors::OperandTypeMismatch error;
-
-                return SetError(parser, std::move(error))(str);
-            };
-        }
-
-        constexpr auto
-        OneRegisterInstructionParser(v2::ParsedInstruction& instr)
-        {
-            return [&instr](std::string_view str) -> v2::parser_metadata {
-                auto parser = SeqNext(AlwaysTrue(ParseDataType(instr)),
-                                      Whitespace(),
-                                      v2::AnyRegister(instr, 0));
-
-                return parser(str);
-            };
-        }
-
-        constexpr auto ShiftInstructionParser(v2::ParsedInstruction& instr)
-        {
-            return [&instr](std::string_view str) -> v2::parser_metadata {
-                auto isImmediate = [](const v2::Operand& op) -> bool {
-                    return std::holds_alternative<v2::operands::Immediate>(op);
-                };
-
-                auto tryRegMode = CommonInstructionParser(instr)(str);
-                if (tryRegMode.result)
-                {
-                    if (!std::holds_alternative<operands::DataRegister>(
-                            instr.operands[1]))
-                    {
-                        momiji::v2::errors::OperandTypeMismatch error {
-                            { momiji::v2::ParserOperand::DataRegister },
-                            momiji::v2::convertOperand(instr.operands[1]),
-                            1
-                        };
-
-                        tryRegMode.result = false;
-                        tryRegMode.error  = std::move(error);
-                    }
-                    else if (!isImmediate(instr.operands[0]) &&
-                             !std::holds_alternative<operands::DataRegister>(
-                                 instr.operands[0]))
-                    {
-                        errors::OperandTypeMismatch error {
-                            { momiji::v2::ParserOperand::DataRegister,
-                              momiji::v2::ParserOperand::Immediate },
-                            momiji::v2::convertOperand(instr.operands[0]),
-                            0
-                        };
-
-                        tryRegMode.result = false;
-                        tryRegMode.error  = std::move(error);
-                    }
-
-                    return tryRegMode;
-                }
-
-                auto tryMemMode =
-                    SeqNext(Whitespace(), v2::AnyOperand(instr, 0));
-
-                return tryMemMode(str);
-            };
-        }
-    } // namespace v2
+            return tryMemMode(str);
+        };
+    }
 } // namespace momiji
