@@ -12,7 +12,8 @@ target_include_directories(libmomiji PRIVATE SYSTEM include/momiji)
 target_sources(libmomiji
     PRIVATE
 
-    src/Parser/Parser.cpp
+    #src/Parser/Parser.cpp
+    src/Parser/Parser2.cpp
     src/Parser/Instructions.cpp
 
     src/Compiler/Compiler.cpp

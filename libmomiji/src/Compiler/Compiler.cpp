@@ -29,12 +29,11 @@
 
 namespace momiji
 {
-    ExecutableMemory
-    compile(const std::vector<momiji::Instruction>& instructions)
+    ExecutableMemory compile(const momiji::v2::ParsingInfo& parsingInfo)
     {
         ExecutableMemory memory;
 
-        for (const auto& instr : instructions)
+        for (const auto& instr : parsingInfo.instructions)
         {
             OpcodeDescription opcode;
             std::array<AdditionalData, 2> additional_data = { { { 0, 0 },
@@ -196,7 +195,9 @@ namespace momiji
                 case DataType::Byte:
                     for (const auto& x : instr.operands)
                     {
-                        const std::uint8_t val = x.value & 0x0000'00FF;
+                        const std::uint8_t val =
+                            extractASTValue(x, parsingInfo.labels) &
+                            0x0000'00FF;
                         memory.push8(val);
                     }
                     break;
@@ -204,7 +205,9 @@ namespace momiji
                 case DataType::Word:
                     for (const auto& x : instr.operands)
                     {
-                        const std::uint16_t val = x.value & 0x0000'FFFF;
+                        const std::uint16_t val =
+                            extractASTValue(x, parsingInfo.labels) &
+                            0x0000'FFFF;
                         memory.push16(val);
                     }
                     break;
@@ -212,7 +215,8 @@ namespace momiji
                 case DataType::Long:
                     for (const auto& x : instr.operands)
                     {
-                        const std::uint32_t val = std::uint32_t(x.value);
+                        const std::uint32_t val =
+                            extractASTValue(x, parsingInfo.labels);
                         memory.push32(val);
                     }
                     break;

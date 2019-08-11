@@ -5,101 +5,167 @@
 
 namespace momiji
 {
-    std::uint8_t getCorrectOpMode(const momiji::Instruction& instr,
-                                  std::int8_t opNum)
+#if 0
+    namespace v1
     {
-        const auto& op = asl::saccess(instr.operands, opNum);
-        switch (op.operandType)
+        std::uint8_t getCorrectOpMode(const v1::Instruction& instr,
+                                      std::int8_t opNum)
         {
-        case OperandType::DataRegister:
-            [[fallthrough]];
-        case OperandType::AddressRegister:
-            [[fallthrough]];
-        case OperandType::Address:
-            [[fallthrough]];
-        case OperandType::AddressPost:
-            [[fallthrough]];
-        case OperandType::AddressPre:
-            [[fallthrough]];
-        case OperandType::AddressIndex:
-            [[fallthrough]];
-        case OperandType::AddressOffset:
-            return op.value & 0b111;
-
-        default:
-            return utils::to_val(op.specialAddressingMode);
-        }
-    }
-
-    void handleAdditionalData(const momiji::Instruction& instr,
-                              std::array<AdditionalData, 2>& additionalData)
-    {
-        Expects(instr.operands.size() <= 2,
-                "How could you even get more than 2 operands here?");
-
-        auto size = utils::to_val(instr.dataType);
-
-        for (std::int64_t i = 0; i < asl::ssize(instr.operands); ++i)
-        {
-            const auto& op = asl::saccess(instr.operands, i);
-            auto& data     = asl::saccess(additionalData, i);
-
+            const auto& op = asl::saccess(instr.operands, opNum);
             switch (op.operandType)
             {
-            // offset(a*)
+            case OperandType::DataRegister:
+                [[fallthrough]];
+            case OperandType::AddressRegister:
+                [[fallthrough]];
+            case OperandType::Address:
+                [[fallthrough]];
+            case OperandType::AddressPost:
+                [[fallthrough]];
+            case OperandType::AddressPre:
+                [[fallthrough]];
             case OperandType::AddressIndex:
                 [[fallthrough]];
-            // (offset, a*, X*)
             case OperandType::AddressOffset:
-                data.cnt = 2;
-                data.val = (std::uint32_t(op.value) & 0xFFFF'0000) >> 16;
-                break;
-
-            case OperandType::Immediate:
-                switch (op.specialAddressingMode)
-                {
-                // #1234
-                case SpecialAddressingMode::Immediate:
-                    data.cnt = tobyte[size];
-                    data.val = std::uint32_t(op.value);
-                    break;
-
-                // *.w 1234
-                case SpecialAddressingMode::AbsoluteShort:
-                    data.cnt = 2;
-                    data.val = std::uint32_t(op.value);
-                    break;
-
-                // *.l 1234
-                case SpecialAddressingMode::AbsoluteLong:
-                    data.cnt = 4;
-                    data.val = std::uint32_t(op.value);
-                    break;
-
-                case SpecialAddressingMode::ProgramCounterOffset:
-                    [[fallthrough]];
-                case SpecialAddressingMode::ProgramCounterIndex:
-                    // TODO(andry): Implement PC addressing
-                    break;
-                }
-                break;
+                return op.value & 0b111;
 
             default:
-                break;
+                return utils::to_val(op.specialAddressingMode);
             }
         }
-    }
 
-    bool discriminateShifts(const Instruction& instr)
-    {
-        if ((instr.operands[0].operandType != OperandType::DataRegister) &&
-            ((instr.operands[0].operandType != OperandType::Immediate) &&
-             (instr.operands[0].specialAddressingMode !=
-              SpecialAddressingMode::Immediate)))
+        void handleAdditionalData(const v1::Instruction& instr,
+                                  std::array<AdditionalData, 2>& additionalData)
         {
-            return false;
+            Expects(instr.operands.size() <= 2,
+                    "How could you even get more than 2 operands here?");
+
+            auto size = utils::to_val(instr.dataType);
+
+            for (std::int64_t i = 0; i < asl::ssize(instr.operands); ++i)
+            {
+                const auto& op = asl::saccess(instr.operands, i);
+                auto& data     = asl::saccess(additionalData, i);
+
+                switch (op.operandType)
+                {
+                // offset(a*)
+                case OperandType::AddressIndex:
+                    [[fallthrough]];
+                // (offset, a*, X*)
+                case OperandType::AddressOffset:
+                    data.cnt = 2;
+                    data.val = (std::uint32_t(op.value) & 0xFFFF'0000) >> 16;
+                    break;
+
+                case OperandType::Immediate:
+                    switch (op.specialAddressingMode)
+                    {
+                    // #1234
+                    case SpecialAddressingMode::Immediate:
+                        data.cnt = tobyte[size];
+                        data.val = std::uint32_t(op.value);
+                        break;
+
+                    // *.w 1234
+                    case SpecialAddressingMode::AbsoluteShort:
+                        data.cnt = 2;
+                        data.val = std::uint32_t(op.value);
+                        break;
+
+                    // *.l 1234
+                    case SpecialAddressingMode::AbsoluteLong:
+                        data.cnt = 4;
+                        data.val = std::uint32_t(op.value);
+                        break;
+
+                    case SpecialAddressingMode::ProgramCounterOffset:
+                        [[fallthrough]];
+                    case SpecialAddressingMode::ProgramCounterIndex:
+                        // TODO(andry): Implement PC addressing
+                        break;
+                    }
+                    break;
+
+                default:
+                    break;
+                }
+            }
         }
 
-        return true;
-    }
+        bool discriminateShifts(const Instruction& instr)
+        {
+            if ((instr.operands[0].operandType != OperandType::DataRegister) &&
+                ((instr.operands[0].operandType != OperandType::Immediate) &&
+                 (instr.operands[0].specialAddressingMode !=
+                  SpecialAddressingMode::Immediate)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+    } // namespace v1
+#endif
+
+    inline namespace v2
+    {
+        // Transforms the instruction to the bits representing that addressing
+        // mode OR a register
+        std::uint8_t getCorrectOpMode(const v2::ParsedInstruction& instr,
+                                      std::int8_t opNum)
+        {
+            std::uint8_t val = 0;
+
+            const auto& op = instr.operands[opNum];
+
+            namespace ops = v2::operands;
+
+            // clang-format off
+            std::visit(asl::overloaded{
+                [&] (const auto& reg) {
+                    val = reg.reg & 0b111;
+                },
+
+                [&] (const ops::Immediate&) {
+                    val = utils::to_val(SpecialAddressingMode::Immediate);
+                },
+
+                [&] (const ops::ProgramCounterIndex&) {
+                    val = utils::to_val(
+                            SpecialAddressingMode::ProgramCounterIndex);
+                },
+
+                [&] (const ops::ProgramCounterOffset&) {
+                    val = utils::to_val(
+                            SpecialAddressingMode::ProgramCounterOffset);
+                },
+
+                [&] (const ops::AbsoluteShort&) {
+                    val = utils::to_val(SpecialAddressingMode::AbsoluteShort);
+                },
+
+                [&] (const ops::AbsoluteLong&) {
+                    val = utils::to_val(SpecialAddressingMode::AbsoluteLong);
+                }
+            }, op);
+            // clang-format on
+
+            return val;
+        }
+
+        void handleAdditionalData(const v2::ParsedInstruction& instr,
+                                  const v2::LabelInfo& labels,
+                                  std::array<AdditionalData, 2>& additionalData)
+        {
+        }
+
+        bool discriminateShifts(const ParsedInstruction& instr)
+        {
+            const auto& op = instr.operands[0];
+
+            return matchOperand<operands::DataRegister>(op) ||
+                   matchOperand<operands::Immediate>(op);
+        }
+    } // namespace v2
 } // namespace momiji

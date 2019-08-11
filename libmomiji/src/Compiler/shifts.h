@@ -10,7 +10,7 @@
 namespace momiji::enc
 {
     template <typename RegRepr, typename MemRepr>
-    void any_shift(const Instruction& instr,
+    void any_shift(const ParsedInstruction& instr,
                    OpcodeDescription& opcode,
                    std::array<AdditionalData, 2>& /*additionalData*/,
                    std::uint8_t dirBit)
@@ -21,7 +21,7 @@ namespace momiji::enc
             RegRepr bits;
 
             bits.direction = dirBit;
-            bits.rotation  = std::uint16_t(instr.operands[0].value);
+            bits.rotation  = std::uint16_t(instr.operands[0]);
 
             if (instr.operands[0].operandType == OperandType::DataRegister)
             {
@@ -32,7 +32,7 @@ namespace momiji::enc
                 bits.rotmode = 0;
             }
 
-            bits.datareg = std::uint16_t(instr.operands[1].value);
+            bits.datareg = std::uint16_t(instr.operands[1]);
             bits.size    = utils::to_val(instr.dataType) & 0b111;
 
             opcode.val = std::uint16_t(
