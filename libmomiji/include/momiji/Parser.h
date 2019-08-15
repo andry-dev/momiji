@@ -151,14 +151,22 @@ namespace momiji
 
         struct MathASTNode
         {
-            MathASTNode()  = default;
-            ~MathASTNode() = default;
+            MathASTNode() = default;
 
-            MathASTNode(const MathASTNode&) = delete;
-            MathASTNode& operator=(const MathASTNode&) = delete;
+            MathASTNode(Label&& label)
+                : value(std::move(label))
+            {
+            }
 
-            MathASTNode(MathASTNode&&) = default;
-            MathASTNode& operator=(MathASTNode&&) = default;
+            MathASTNode(Number&& num)
+                : value(std::move(num))
+            {
+            }
+
+            MathASTNode(MathOperator&& op)
+                : value(std::move(op))
+            {
+            }
 
             std::variant<Label, Number, MathOperator> value;
         };

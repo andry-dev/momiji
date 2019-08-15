@@ -339,6 +339,7 @@ namespace momiji
         std::int32_t visitNum(const momiji::objects::Number& num,
                               const momiji::LabelInfo&)
         {
+            std::cout << "Found num: " << num.number << "\n";
             return num.number;
         }
 
@@ -365,7 +366,7 @@ namespace momiji
             using namespace momiji::objects;
 
             const auto& left  = *operand.left;
-            const auto& right = *operand.left;
+            const auto& right = *operand.right;
 
             switch (operand.type)
             {

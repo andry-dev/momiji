@@ -9,6 +9,8 @@
 
 #include "Common.h"
 
+#include <iostream>
+
 namespace momiji
 {
     template <typename First, typename Second>
@@ -172,6 +174,21 @@ namespace momiji
             }
 
             return res;
+        };
+    }
+
+    template <typename Parser, typename Fun>
+    constexpr auto MapMathAST(Parser&& parser, Fun&& f)
+    {
+        return [=](std::string_view str) -> parser_metadata {
+            auto res = parser(str);
+
+            if (res.first.result)
+            {
+                f(res.second);
+            }
+
+            return res.first;
         };
     }
 
@@ -472,6 +489,167 @@ namespace momiji
         };
     }
 
+    inline math_parser_metadata MathFactor(std::string_view);
+    inline math_parser_metadata MathExpression(std::string_view);
+
+    inline math_parser_metadata MathFactor(std::string_view str)
+    {
+        auto decimal = GenericDecimal()(str);
+
+        if (decimal.result)
+        {
+            momiji::objects::Number num { std::int32_t(
+                std::stoll(std::string { decimal.parsed_str })) };
+
+            return { decimal, make_node(num) };
+        }
+
+        auto hex = GenericHex()(str);
+
+        if (hex.result)
+        {
+            momiji::objects::Number num { std::int32_t(
+                std::stoll(std::string { hex.parsed_str }, nullptr, 16)) };
+
+            return { hex, make_node(num) };
+        }
+
+        auto label = Word()(str);
+
+        if (label.result)
+        {
+            momiji::objects::Label lbl { utils::hash(label.parsed_str) };
+
+            return { label, make_node(lbl) };
+        }
+
+        std::unique_ptr<momiji::objects::MathASTNode> tryExprNode;
+
+        auto tryExpr = Between(Char('('),
+                               SeqNext(AlwaysTrue(Whitespace()),
+                                       MapMathAST(MathExpression,
+                                                  [&](auto& node) {
+                                                      tryExprNode =
+                                                          std::move(node);
+                                                  }),
+                                       AlwaysTrue(Whitespace())),
+                               Char(')'))(str);
+
+        return { tryExpr, std::move(tryExprNode) };
+    }
+
+    // factor * factor
+    // factor / factor
+    // factor
+    inline math_parser_metadata MathTerm(std::string_view str)
+    {
+        auto factor = MathFactor(str);
+
+        if (!factor.first.result)
+        {
+            return factor;
+        }
+
+        std::unique_ptr<momiji::objects::MathASTNode> rightNode;
+
+        auto matchFn = [&](char op) {
+            return SeqNext(AlwaysTrue(Whitespace()),
+                           Char(op),
+                           AlwaysTrue(Whitespace()),
+                           MapMathAST(MathTerm, [&](auto& node) {
+                               rightNode = std::move(node);
+                           }))(factor.first.rest);
+        };
+
+        auto tryMul = matchFn('*');
+
+        if (tryMul.result)
+        {
+            momiji::objects::MathOperator mulOp;
+            mulOp.left  = std::move(factor.second);
+            mulOp.right = std::move(rightNode);
+            mulOp.type  = momiji::objects::MathOperator::Type::Mul;
+
+            return { tryMul, make_node(mulOp) };
+        }
+
+        auto tryDiv = matchFn('/');
+
+        if (tryDiv.result)
+        {
+            momiji::objects::MathOperator divOp;
+            divOp.left  = std::move(factor.second);
+            divOp.right = std::move(rightNode);
+            divOp.type  = momiji::objects::MathOperator::Type::Div;
+
+            return { tryDiv, make_node(divOp) };
+        }
+
+        return factor;
+    }
+
+    // term + term
+    // term - term
+    // term
+    inline math_parser_metadata MathExpression(std::string_view str)
+    {
+        auto term = MathTerm(str);
+
+        if (!term.first.result)
+        {
+            return term;
+        }
+
+        std::unique_ptr<momiji::objects::MathASTNode> rightNode;
+
+        auto matchFn = [&](char op) {
+            return SeqNext(AlwaysTrue(Whitespace()),
+                           Char(op),
+                           AlwaysTrue(Whitespace()),
+                           MapMathAST(MathExpression, [&](auto& node) {
+                               rightNode = std::move(node);
+                           }))(term.first.rest);
+        };
+
+        auto tryPlus = matchFn('+');
+
+        if (tryPlus.result)
+        {
+            momiji::objects::MathOperator addOp;
+            addOp.left  = std::move(term.second);
+            addOp.right = std::move(rightNode);
+            addOp.type  = momiji::objects::MathOperator::Type::Add;
+
+            return { tryPlus, make_node(addOp) };
+        }
+
+        auto tryMinus = matchFn('-');
+
+        if (tryMinus.result)
+        {
+            momiji::objects::MathOperator subOp;
+            subOp.left  = std::move(term.second);
+            subOp.right = std::move(rightNode);
+            subOp.type  = momiji::objects::MathOperator::Type::Sub;
+
+            return { tryMinus, make_node(subOp) };
+        }
+
+        return term;
+    }
+
+    inline auto
+    MathExpressionMain(std::unique_ptr<momiji::objects::MathASTNode>& output)
+    {
+        return [&](std::string_view str) -> parser_metadata {
+            auto res = MathExpression(str);
+
+            output = std::move(res.second);
+
+            return res.first;
+        };
+    }
+
     constexpr auto SkipLine()
     {
         return [](std::string_view str) -> parser_metadata {
@@ -500,13 +678,14 @@ namespace momiji
         };
     }
 
-    constexpr auto OperandImmediate(momiji::ParsedInstruction& instr,
-                                    std::uint32_t opNum)
+    inline auto OperandImmediate(momiji::ParsedInstruction& instr,
+                                 std::uint32_t opNum)
     {
-        return [&instr,
-                opNum](std::string_view str) -> momiji::parser_metadata {
-            constexpr auto inter_dec_parser =
-                SeqNext(Char('#'), GenericDecimal());
+        return
+            [&instr, opNum](std::string_view str) -> momiji::parser_metadata {
+                constexpr auto inter_dec_parser =
+                    SeqNext(Char('#'), GenericDecimal());
+#if 0
 
             auto decimal_num =
                 Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
@@ -549,8 +728,19 @@ namespace momiji
                     instr.operands[opNum] = std::move(op);
                 });
 
+
             return AnyOf(decimal_num, hex_num, imm_label)(str);
-        };
+#else
+                std::unique_ptr<momiji::objects::MathASTNode> root;
+
+                return Map(SeqNext(Char('#'), MathExpressionMain(root)),
+                           [&](auto&) {
+                               momiji::operands::Immediate op;
+                               op.value              = std::move(root);
+                               instr.operands[opNum] = std::move(op);
+                           })(str);
+#endif
+            };
     }
 
     constexpr auto AddressRegisterParser(momiji::ParsedInstruction& instr,
@@ -589,11 +779,12 @@ namespace momiji
         };
     }
 
-    constexpr auto MemoryAddress(momiji::ParsedInstruction& instr,
-                                 std::uint32_t opNum)
+    inline auto MemoryAddress(momiji::ParsedInstruction& instr,
+                              std::uint32_t opNum)
     {
-        return [&instr,
-                opNum](std::string_view str) -> momiji::parser_metadata {
+        return
+            [&instr, opNum](std::string_view str) -> momiji::parser_metadata {
+#if 0
             constexpr auto inter_dec_parser = GenericDecimal();
 
             auto dec_mem =
@@ -700,7 +891,31 @@ namespace momiji
                 });
 
             return AnyOf(dec_mem, hex_mem, label_mem)(str);
-        };
+#else
+                std::unique_ptr<momiji::objects::MathASTNode> root;
+
+                switch (instr.dataType)
+                {
+                case DataType::Byte:
+                case DataType::Word:
+                    return Map(MathExpressionMain(root), [&](auto&) {
+                        momiji::operands::AbsoluteShort op;
+                        op.value              = std::move(root);
+                        instr.operands[opNum] = std::move(op);
+                    })(str);
+
+                case DataType::Long:
+                    return Map(MathExpressionMain(root), [&](auto&) {
+                        momiji::operands::AbsoluteLong op;
+                        op.value              = std::move(root);
+                        instr.operands[opNum] = std::move(op);
+                    })(str);
+                }
+
+                return { false, str, "", {} };
+
+#endif
+            };
     }
 
     constexpr auto AnyRegister(momiji::ParsedInstruction& instr,
