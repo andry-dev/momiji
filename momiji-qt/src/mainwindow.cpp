@@ -51,7 +51,8 @@ void MainWindow::on_registers_itemChanged(QTableWidgetItem* item)
 
 void MainWindow::parse()
 {
-    auto res = m_emulator.newState(ui->sourceCode->toPlainText().toStdString());
+    std::string str = ui->sourceCode->toPlainText().toStdString();
+    auto res        = m_emulator.newState(str);
 
     if (res.has_value())
     {

@@ -14,3 +14,5 @@ add_executable(momiji-qt
     src/MemoryModel.cpp)
 
 target_link_libraries(momiji-qt PUBLIC Qt5::Widgets Qt5::Core Qt5::Gui libmomiji)
+
+install(TARGETS momiji-qt)

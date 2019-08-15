@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 
+include(CPack)
+
 project(momiji CXX)
 
 option(MOMIJI_BUILD_GL_GUI "Enable OpenGL GUI support (requires tewi)" OFF)

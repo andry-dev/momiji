@@ -147,13 +147,15 @@ namespace momiji
                     error.inputString = instrword.parsed_str;
 
                     auto begin = instrword.parsed_str.data();
-                    auto end   = SkipLine()(instrword.rest).parsed_str.data();
+                    auto end   = SkipLine()(instrword.rest).rest.data();
+
+                    auto diff = end - begin;
 
                     return make_parser_error(
                         0,
                         line_count,
                         error,
-                        std::string_view { begin, std::uint32_t(end - begin) });
+                        std::string_view { begin, std::uint32_t(diff) });
                 }
 
                 if (!settings.breakpoints.empty())
@@ -174,12 +176,12 @@ namespace momiji
 
                     instr.sourceLine = std::int32_t(line_count);
 
+                    handlePCIncrement(instr);
+
                     instructionStr.emplace_back(begin,
                                                 std::size_t(end - begin));
 
                     instructions.emplace_back(std::move(instr));
-
-                    handlePCIncrement(instr);
                 }
                 else
                 {
@@ -299,6 +301,7 @@ namespace momiji
             else
             {
                 program_counter += 2;
+
                 for (const auto& op : instr.operands)
                 {
                     program_counter +=
@@ -339,7 +342,6 @@ namespace momiji
         std::int32_t visitNum(const momiji::objects::Number& num,
                               const momiji::LabelInfo&)
         {
-            std::cout << "Found num: " << num.number << "\n";
             return num.number;
         }
 

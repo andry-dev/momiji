@@ -733,7 +733,9 @@ namespace momiji
 #else
                 std::unique_ptr<momiji::objects::MathASTNode> root;
 
-                return Map(SeqNext(Char('#'), MathExpressionMain(root)),
+                return Map(SeqNext(Char('#'),
+                                   AlwaysTrue(Whitespace()),
+                                   MathExpressionMain(root)),
                            [&](auto&) {
                                momiji::operands::Immediate op;
                                op.value              = std::move(root);

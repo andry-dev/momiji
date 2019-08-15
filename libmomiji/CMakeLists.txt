@@ -3,11 +3,16 @@ cmake_minimum_required(VERSION 3.8)
 add_library(libmomiji)
 target_compile_features(libmomiji PUBLIC cxx_std_17)
 
-target_include_directories(libmomiji PUBLIC SYSTEM
-                           include
-                           external/nonstd)
+target_include_directories(libmomiji SYSTEM PUBLIC
+   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+   $<INSTALL_INTERFACE:include/>
+   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/nonstd>
+   $<INSTALL_INTERFACE:external/nonstd>)
 
-target_include_directories(libmomiji PRIVATE SYSTEM include/momiji)
+target_include_directories(libmomiji
+    SYSTEM
+    PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/momiji>)
 
 target_sources(libmomiji
     PRIVATE
@@ -90,3 +95,17 @@ target_link_libraries(libmomiji PUBLIC asl::asl)
 set_target_properties(libmomiji PROPERTIES
     PREFIX ""
     CXX_EXTENSIONS OFF)
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/momiji
+        TYPE INCLUDE)
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/external/nonstd
+        TYPE INCLUDE)
+
+install(TARGETS libmomiji
+        EXPORT libmomiji-targets)
+
+install(EXPORT libmomiji-targets
+        NAMESPACE momiji::
+        FILE momijiConfig.cmake
+        DESTINATION lib/cmake/momiji)

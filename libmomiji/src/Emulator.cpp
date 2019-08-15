@@ -2,6 +2,7 @@
 
 #include <iterator>
 
+#include <iostream>
 #include <momiji/Compiler.h>
 #include <momiji/Decoder.h>
 

@@ -20,3 +20,6 @@ add_custom_command(TARGET momiji-gl POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_CURRENT_SOURCE_DIR}/postbuild
     $<TARGET_FILE_DIR:momiji-gl>)
+
+install(TARGETS momiji-gl)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/postbuild/res DESTINATION bin/)
