@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.13)
+cmake_policy(SET CMP0069 NEW)
 
 add_executable(momiji-gl src/main.cpp)
 target_compile_features(momiji-gl PRIVATE cxx_std_17)
@@ -15,6 +16,7 @@ endif()
 target_sources(momiji-gl PRIVATE src/Gui.cpp src/Renderer.cpp)
 target_link_libraries(momiji-gl PRIVATE tewi::tewi)
 target_compile_definitions(momiji-gl PRIVATE MOMIJI_INCLUDE_GUI=1 TEWI_STATIC_LIB)
+momiji_set_target_flags(momiji-gl)
 
 add_custom_command(TARGET momiji-gl POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory

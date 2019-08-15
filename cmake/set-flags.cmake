@@ -1,5 +1,15 @@
+include(CheckIPOSupported)
+check_ipo_supported(RESULT MOMIJI_HAVE_IPO)
 
 function(momiji_set_target_flags target)
+    if (MOMIJI_HAVE_IPO)
+        message("[momiji] LTO enabled for ${target}")
+        set_property(TARGET ${target}
+            PROPERTY
+            INTERPROCEDURAL_OPTIMIZATION ON)
+    endif()
+
+
     set(COMMON_GCC_FLAGS "-Wall -Wpedantic -pedantic -Wshadow -Werror")
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GCC")
         target_compile_options(${target} PUBLIC
