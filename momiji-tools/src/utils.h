@@ -112,4 +112,21 @@ namespace utils
 
         return "???";
     }
+
+    inline std::string toString(momiji::DataType op)
+    {
+        switch (op)
+        {
+        case momiji::DataType::Byte:
+            return "Byte";
+
+        case momiji::DataType::Word:
+            return "Word";
+
+        case momiji::DataType::Long:
+            return "Long";
+        }
+
+        return "???";
+    }
 } // namespace utils

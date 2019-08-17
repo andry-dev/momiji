@@ -62,6 +62,24 @@ int main(int argc, const char** argv)
             [&](const NoLabelFound& par) {
                 errorStr += "label \"" + par.label + "\" not found.";
             },
+            [&](const DataTypeMismatch& par) {
+                errorStr += "data type " + utils::toString(par.inputDataType) +
+                            " is not valid for this instruction.";
+
+                if (!par.acceptedDataTypes.empty())
+                {
+                    errorStr += "\nAccepted data types: ";
+                    for (std::size_t i = 0; i < par.acceptedDataTypes.size(); ++i)
+                    {
+                        errorStr += utils::toString(par.acceptedDataTypes[i]);
+
+                        if (i != (par.acceptedDataTypes.size() - 1))
+                        {
+                            errorStr += ", ";
+                        }
+                    }
+                }
+            },
             [&](const OperandTypeMismatch& par) {
                 errorStr += "operand type " + utils::toString(par.inputOp) +
                             " is not valid for this instruction.";

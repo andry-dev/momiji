@@ -192,6 +192,21 @@ namespace momiji
         };
     }
 
+    template <typename Parser, typename Fun>
+    constexpr auto MapResult(Parser&& parser, Fun&& f)
+    {
+        return [=](std::string_view str) -> momiji::parser_metadata {
+            auto res = parser(str);
+
+            if (res.result)
+            {
+                f(res);
+            }
+
+            return res;
+        };
+    }
+
     template <typename Parser, typename Error>
     constexpr auto SetError(Parser&& parser, Error&& error)
     {
@@ -751,12 +766,17 @@ namespace momiji
         return
             [&instr, opNum](std::string_view str) -> momiji::parser_metadata {
                 constexpr auto inter_parser = SeqNext(Char('a'), DecNumber());
-                auto register_parser = Map(inter_parser, [&](auto parsed_str) {
-                    const auto reg_num = std::stoll(std::string { parsed_str });
 
-                    instr.operands[opNum] =
-                        operands::AddressRegister { std::int8_t(reg_num) };
-                });
+                bool rangeValid = true;
+
+                auto register_parser =
+                    MapResult(inter_parser, [&](auto& resultRef) {
+                        const auto reg_num =
+                            std::stoll(std::string { resultRef.parsed_str });
+
+                        instr.operands[opNum] =
+                            operands::AddressRegister { std::int32_t(reg_num) };
+                    });
 
                 return SetError(register_parser,
                                 errors::MissingCharacter { 'a' })(str);
@@ -774,7 +794,7 @@ namespace momiji
                     const auto reg_num = std::stoll(std::string { parsed_str });
 
                     instr.operands[opNum] =
-                        operands::DataRegister { std::int8_t(reg_num) };
+                        operands::DataRegister { std::int32_t(reg_num) };
                 });
 
             return register_parser(str);
@@ -786,114 +806,6 @@ namespace momiji
     {
         return
             [&instr, opNum](std::string_view str) -> momiji::parser_metadata {
-#if 0
-            constexpr auto inter_dec_parser = GenericDecimal();
-
-            auto dec_mem =
-                Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
-                    const auto val = std::stoll(std::string { parsed_str });
-
-                    momiji::Operand opType;
-
-                    switch (instr.dataType)
-                    {
-                    case DataType::Byte:
-                    case DataType::Word:
-                    {
-                        momiji::operands::AbsoluteShort tmp;
-                        tmp.value = std::make_unique<objects::MathASTNode>();
-                        tmp.value->value =
-                            momiji::objects::Number { std::int32_t(val) };
-
-                        opType = std::move(tmp);
-                    }
-                    break;
-
-                    case DataType::Long:
-                        momiji::operands::AbsoluteLong tmp;
-                        tmp.value = std::make_unique<objects::MathASTNode>();
-                        tmp.value->value =
-                            momiji::objects::Number { std::int32_t(val) };
-
-                        opType = std::move(tmp);
-                        break;
-                    }
-
-                    instr.operands[opNum] = std::move(opType);
-                });
-
-            constexpr auto inter_hex_parser = GenericHex();
-            auto hex_mem =
-                Map(inter_hex_parser, [&instr, opNum](auto parsed_str) {
-                    const auto val =
-                        std::stoll(std::string { parsed_str }, nullptr, 16);
-
-                    momiji::Operand opType;
-
-                    switch (instr.dataType)
-                    {
-                    case DataType::Byte:
-                    case DataType::Word:
-                    {
-                        momiji::operands::AbsoluteShort tmp;
-                        tmp.value = std::make_unique<objects::MathASTNode>();
-                        tmp.value->value =
-                            momiji::objects::Number { std::int32_t(val) };
-
-                        opType = std::move(tmp);
-                    }
-                    break;
-
-                    case DataType::Long:
-                        momiji::operands::AbsoluteLong tmp;
-                        tmp.value = std::make_unique<objects::MathASTNode>();
-                        tmp.value->value =
-                            momiji::objects::Number { std::int32_t(val) };
-
-                        opType = std::move(tmp);
-                        break;
-                    }
-
-                    instr.operands[opNum] = std::move(opType);
-                });
-
-            // Example: move.w arr, a0
-            //          ^ moves the value at address "arr" in a0
-            constexpr auto inter_mem_label_parser = Word();
-
-            auto label_mem =
-                Map(inter_mem_label_parser, [&instr, opNum](auto parsed_str) {
-                    momiji::Operand opType;
-
-                    switch (instr.dataType)
-                    {
-                    case DataType::Byte:
-                    case DataType::Word:
-                    {
-                        momiji::operands::AbsoluteShort tmp;
-                        tmp.value = std::make_unique<objects::MathASTNode>();
-                        tmp.value->value =
-                            momiji::objects::Label { utils::hash(parsed_str) };
-
-                        opType = std::move(tmp);
-                    }
-                    break;
-
-                    case DataType::Long:
-                        momiji::operands::AbsoluteLong tmp;
-                        tmp.value = std::make_unique<objects::MathASTNode>();
-                        tmp.value->value =
-                            momiji::objects::Label { utils::hash(parsed_str) };
-
-                        opType = std::move(tmp);
-                        break;
-                    }
-
-                    instr.operands[opNum] = std::move(opType);
-                });
-
-            return AnyOf(dec_mem, hex_mem, label_mem)(str);
-#else
                 std::unique_ptr<momiji::objects::MathASTNode> root;
 
                 switch (instr.dataType)
@@ -915,8 +827,6 @@ namespace momiji
                 }
 
                 return { false, str, "", {} };
-
-#endif
             };
     }
 
@@ -996,8 +906,8 @@ namespace momiji
         // (a*, *)
         return [&instr,
                 opNum](std::string_view str) -> momiji::parser_metadata {
-            std::int8_t addreg = 0;
-            std::int8_t othreg = 0;
+            std::int32_t addreg = 0;
+            std::int32_t othreg = 0;
 
             auto first_reg_parser =
                 Map(AddressRegisterParser(instr, opNum), [&](auto) {
@@ -1040,8 +950,8 @@ namespace momiji
         // (num, a*, *)
         return [&instr,
                 opNum](std::string_view str) -> momiji::parser_metadata {
-            std::int8_t addreg = 0;
-            std::int8_t othreg = 0;
+            std::int32_t addreg = 0;
+            std::int32_t othreg = 0;
             std::unique_ptr<momiji::objects::MathASTNode> offset;
 
             auto offset_parser = Map(GenericDecimal(), [&](auto parsed_str) {

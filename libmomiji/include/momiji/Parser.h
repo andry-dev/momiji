@@ -63,6 +63,12 @@ namespace momiji
             std::int8_t num { 0 };
         };
 
+        struct DataTypeMismatch
+        {
+            std::vector<momiji::DataType> acceptedDataTypes;
+            momiji::DataType inputDataType;
+        };
+
         struct InvalidRegisterNumber
         {
             std::int32_t input;
@@ -102,6 +108,7 @@ namespace momiji
                                        momiji::errors::NoInstructionFound,
                                        momiji::errors::NoLabelFound,
                                        momiji::errors::OperandTypeMismatch,
+                                       momiji::errors::DataTypeMismatch,
                                        momiji::errors::UnexpectedCharacter,
                                        momiji::errors::MissingCharacter,
                                        momiji::errors::UnknownOperand>;
@@ -174,43 +181,48 @@ namespace momiji
 
     namespace operands
     {
+        // While the value can be encoded in 4 bits, error checking would be
+        // harder.
+        // Besides, because of the std::unique_ptr<> we can afford to waste some
+        // bytes anyway.
+
         struct DataRegister
         {
-            std::int8_t reg : 4;
+            std::int32_t reg;
         };
 
         struct AddressRegister
         {
-            std::int8_t reg : 4;
+            std::int32_t reg;
         };
 
         struct Address
         {
             // std::unique_ptr<objects::MathASTNode> offset;
-            std::int8_t reg : 4;
+            std::int32_t reg;
         };
 
         struct AddressPre
         {
-            std::int8_t reg : 4;
+            std::int32_t reg;
         };
 
         struct AddressPost
         {
-            std::int8_t reg : 4;
+            std::int32_t reg;
         };
 
         struct AddressOffset
         {
             std::unique_ptr<objects::MathASTNode> offset;
-            std::int8_t reg : 4;
+            std::int32_t reg;
         };
 
         struct AddressIndex
         {
             std::unique_ptr<objects::MathASTNode> offset;
-            std::int8_t reg : 4;
-            std::int8_t othreg : 4;
+            std::int32_t reg;
+            std::int32_t othreg;
         };
 
         struct Immediate
@@ -369,7 +381,7 @@ namespace momiji
                 }
             }
 
-            std::int8_t val { 0 };
+            std::int32_t val { 0 };
         };
 
         struct ValueVisitor

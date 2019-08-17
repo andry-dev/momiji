@@ -40,6 +40,18 @@ namespace momiji::details
             }
         }
 
+        bool sanitizeAddressDataType(const momiji::ParsedInstruction& instr)
+        {
+            switch (instr.dataType)
+            {
+            case DataType::Byte:
+                return false;
+
+            default:
+                return true;
+            }
+        }
+
         bool sanitizeImmediate(const momiji::Operand& op,
                                momiji::parser_metadata& metadata)
         {
@@ -149,6 +161,19 @@ namespace momiji::details
         {
         case ParserOperand::AddressRegister:
             instr.instructionType = InstructionType::AddA;
+
+            if (!sanitizeAddressDataType(instr))
+            {
+                momiji::errors::DataTypeMismatch error {
+                    { DataType::Word, DataType::Long }, instr.dataType
+                };
+
+                res.result = false;
+                res.error  = std::move(error);
+
+                return res;
+            }
+
             break;
 
         case ParserOperand::Immediate:
@@ -184,6 +209,18 @@ namespace momiji::details
         {
         case ParserOperand::AddressRegister:
             instr.instructionType = InstructionType::SubA;
+
+            if (!sanitizeAddressDataType(instr))
+            {
+                momiji::errors::DataTypeMismatch error {
+                    { DataType::Word, DataType::Long }, instr.dataType
+                };
+
+                res.result = false;
+                res.error  = std::move(error);
+
+                return res;
+            }
             break;
 
         case ParserOperand::Immediate:
@@ -611,6 +648,18 @@ namespace momiji::details
         {
         case momiji::ParserOperand::AddressRegister:
             instr.instructionType = InstructionType::CompareA;
+
+            if (!sanitizeAddressDataType(instr))
+            {
+                momiji::errors::DataTypeMismatch error {
+                    { DataType::Word, DataType::Long }, instr.dataType
+                };
+
+                res.result = false;
+                res.error  = std::move(error);
+
+                return res;
+            }
             break;
 
         default:
@@ -707,8 +756,6 @@ namespace momiji::details
                                      momiji::ParsedInstruction& instr)
     {
         instr.instructionType = InstructionType::ReturnSubroutine;
-        instr.operands[0]     = ops::DataRegister { 0 };
-        instr.operands[1]     = ops::DataRegister { 0 };
 
         return { true, str, "", {} };
     }
@@ -856,6 +903,7 @@ namespace momiji::details
                 return res;
             }
         }
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code-return"
         return res;
@@ -867,8 +915,7 @@ namespace momiji::details
     {
         instr.instructionType = InstructionType::HaltCatchFire;
 
-        instr.operands[0] = ops::Immediate {};
-        instr.operands[1] = ops::DataRegister { 0 };
+        instr.operands.resize(0);
 
         instr.dataType = DataType::Word;
 

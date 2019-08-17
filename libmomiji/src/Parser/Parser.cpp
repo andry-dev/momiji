@@ -68,6 +68,90 @@ namespace momiji
 
             return 0;
         }
+
+        std::int32_t visitNum(const momiji::objects::Number& num);
+        std::int32_t visitLabel(const momiji::objects::Label& label);
+        std::int32_t visitOp(const momiji::objects::MathOperator& operand);
+
+        std::int32_t visitNum(const momiji::objects::Number& num,
+                              const momiji::LabelInfo&)
+        {
+            return num.number;
+        }
+
+        std::int32_t visitLabel(const momiji::objects::Label& currlabel,
+                                const momiji::LabelInfo& labels)
+        {
+            auto res = std::find_if(std::begin(labels),
+                                    std::end(labels),
+                                    [&](const momiji::Label& label) {
+                                        return label.nameHash == currlabel.hash;
+                                    });
+
+            if (res == std::end(labels))
+            {
+                return 0;
+            }
+
+            return std::int32_t(res->idx);
+        }
+
+        std::int32_t visitOp(const momiji::objects::MathOperator& operand,
+                             const momiji::LabelInfo& labels)
+        {
+            using namespace momiji::objects;
+
+            const auto& left  = *operand.left;
+            const auto& right = *operand.right;
+
+            switch (operand.type)
+            {
+            case MathOperator::Type::Add:
+                return resolveAST(left, labels) + resolveAST(right, labels);
+
+            case MathOperator::Type::Sub:
+                return resolveAST(left, labels) - resolveAST(right, labels);
+
+            case MathOperator::Type::Mul:
+                return resolveAST(left, labels) * resolveAST(right, labels);
+
+            case MathOperator::Type::Div:
+                return resolveAST(left, labels) / resolveAST(right, labels);
+            }
+
+            return 1;
+        }
+
+        bool checkLabelsInAST(const momiji::objects::MathASTNode& node,
+                              const momiji::LabelInfo& labels)
+        {
+            if (std::holds_alternative<objects::Label>(node.value))
+            {
+                auto& label = std::get<objects::Label>(node.value);
+                auto res =
+                    std::find_if(std::begin(labels),
+                                 std::end(labels),
+                                 [&](const momiji::Label& foundLabel) {
+                                     return label.hash == foundLabel.nameHash;
+                                 });
+
+                if (res == std::end(labels))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            if (std::holds_alternative<objects::MathOperator>(node.value))
+            {
+                auto& op = std::get<objects::MathOperator>(node.value);
+                return checkLabelsInAST(*op.left, labels) &&
+                       checkLabelsInAST(*op.right, labels);
+            }
+
+            return true;
+        }
     } // namespace
 
     struct Parser
@@ -238,6 +322,38 @@ namespace momiji
                 ++line_count;
             }
 
+            for (std::int32_t i; i < asl::ssize(instructions); ++i)
+            {
+                bool error = false;
+
+                for (const auto& op : instructions[i].operands)
+                {
+                    using opType = decltype(op);
+                    constexpr auto hasValue =
+                        details::has_value_var<opType>::value;
+
+                    // clang-format off
+                    std::visit(asl::overloaded{
+                        [&] (const auto& op) {
+                            if constexpr (hasValue)
+                            {
+                                error = !checkLabelsInAST(*op.value, labels);
+                            }
+                        }
+                    }, op);
+                    // clang-format on
+
+                    if (error)
+                    {
+                        errors::NoLabelFound error;
+                        return make_parser_error(0,
+                                                 instructions[i].sourceLine,
+                                                 error,
+                                                 instructionStr[i]);
+                    }
+                }
+            }
+
             return momiji::ParsingInfo { std::move(instructions),
                                          std::move(labels) };
         }
@@ -258,6 +374,7 @@ namespace momiji
                 momiji::ParsedInstruction breakpoint;
                 breakpoint.instructionType = InstructionType::Breakpoint;
                 instructions.emplace_back(std::move(breakpoint));
+                instructionStr.emplace_back("<BREAKPOINT>");
 
                 program_counter += 4;
             }
@@ -283,6 +400,7 @@ namespace momiji
                 }
             }
             else if (isInternal(instr))
+
             {
                 program_counter += 4;
             }
@@ -332,62 +450,6 @@ namespace momiji
         momiji::Parser parser { str, settings };
         return parser.run();
     }
-
-    namespace
-    {
-        std::int32_t visitNum(const momiji::objects::Number& num);
-        std::int32_t visitLabel(const momiji::objects::Label& label);
-        std::int32_t visitOp(const momiji::objects::MathOperator& operand);
-
-        std::int32_t visitNum(const momiji::objects::Number& num,
-                              const momiji::LabelInfo&)
-        {
-            return num.number;
-        }
-
-        std::int32_t visitLabel(const momiji::objects::Label& currlabel,
-                                const momiji::LabelInfo& labels)
-        {
-            auto res = std::find_if(std::begin(labels),
-                                    std::end(labels),
-                                    [&](const momiji::Label& label) {
-                                        return label.nameHash == currlabel.hash;
-                                    });
-
-            if (res == std::end(labels))
-            {
-                return 0;
-            }
-
-            return std::int32_t(res->idx);
-        }
-
-        std::int32_t visitOp(const momiji::objects::MathOperator& operand,
-                             const momiji::LabelInfo& labels)
-        {
-            using namespace momiji::objects;
-
-            const auto& left  = *operand.left;
-            const auto& right = *operand.right;
-
-            switch (operand.type)
-            {
-            case MathOperator::Type::Add:
-                return resolveAST(left, labels) + resolveAST(right, labels);
-
-            case MathOperator::Type::Sub:
-                return resolveAST(left, labels) - resolveAST(right, labels);
-
-            case MathOperator::Type::Mul:
-                return resolveAST(left, labels) * resolveAST(right, labels);
-
-            case MathOperator::Type::Div:
-                return resolveAST(left, labels) / resolveAST(right, labels);
-            }
-
-            return 1;
-        }
-    } // namespace
 
     std::int32_t resolveAST(const momiji::objects::MathASTNode& node,
                             const momiji::LabelInfo& labels)

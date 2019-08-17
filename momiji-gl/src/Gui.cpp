@@ -341,6 +341,9 @@ void gui()
                         [&](const NoLabelFound& par) {
                             errorStr += "label \"" + par.label + "\" not found.";
                         },
+                        [&](const DataTypeMismatch&) {
+                            errorStr += "data type mismatch.";
+                        },
                         [&](const OperandTypeMismatch&) {
                             errorStr += "operand type mismatch.";
                         },

@@ -5,4 +5,5 @@ clang-tidy-issues
 CMakeLists.txt.user
 CMakeSettings.json
 .vs/
+.ideais/
 .idea/
