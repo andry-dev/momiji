@@ -32,6 +32,9 @@ int main(int argc, const char** argv)
     std::string sourceCode = utils::readFile(args[0]);
 
     auto parsedInstr = momiji::parse(sourceCode);
+
+    std::printf("bbbb\n");
+
     if (!parsedInstr)
     {
         using momiji::ParserError;
@@ -46,6 +49,7 @@ int main(int argc, const char** argv)
             [&](const UnknownError&) {
                 errorStr += "unknown error.";
             },
+
             [&](const NoInstructionFound& par) {
                 errorStr += "instruction \"" + par.inputString +
                             "\" not found";
@@ -59,9 +63,11 @@ int main(int argc, const char** argv)
                     }
                 }
             },
+
             [&](const NoLabelFound& par) {
                 errorStr += "label \"" + par.label + "\" not found.";
             },
+
             [&](const DataTypeMismatch& par) {
                 errorStr += "data type " + utils::toString(par.inputDataType) +
                             " is not valid for this instruction.";
@@ -80,6 +86,7 @@ int main(int argc, const char** argv)
                     }
                 }
             },
+
             [&](const OperandTypeMismatch& par) {
                 errorStr += "operand type " + utils::toString(par.inputOp) +
                             " is not valid for this instruction.";
@@ -98,18 +105,22 @@ int main(int argc, const char** argv)
                     }
                 }
             },
+
             [&](const InvalidRegisterNumber& par) {
                 errorStr += "Invalid register number " +
                             std::to_string(par.input);
             },
+
             [&](const UnexpectedCharacter& par) {
                 errorStr += "Unexpected character '" +
                             std::string{par.character} + "'.";
             },
+
             [&](const MissingCharacter& par) {
                 errorStr += "Missing a '" +
                             std::string{par.character} + "'.";
             },
+
             [&](const UnknownOperand&) {
                 errorStr += "Unknown operand, are you sure the syntax is valid?";
             }}, error.errorType);

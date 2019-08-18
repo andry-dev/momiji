@@ -10,7 +10,6 @@ namespace momiji
 {
     namespace
     {
-
         auto make_parser_error(std::int64_t column,
                                std::int64_t line,
                                const ParserError::ErrorType& error,
@@ -322,7 +321,7 @@ namespace momiji
                 ++line_count;
             }
 
-            for (std::int32_t i; i < asl::ssize(instructions); ++i)
+            for (std::int32_t i = 0; i < asl::ssize(instructions); ++i)
             {
                 bool error = false;
 
@@ -400,7 +399,6 @@ namespace momiji
                 }
             }
             else if (isInternal(instr))
-
             {
                 program_counter += 4;
             }
@@ -528,7 +526,7 @@ namespace momiji
         return res;
     }
 
-    std::int8_t extractRegister(const Operand& operand)
+    std::int32_t extractRegister(const Operand& operand)
     {
         momiji::details::RegVisitor visitor;
         std::visit(visitor, operand);

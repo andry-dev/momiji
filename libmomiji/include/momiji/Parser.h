@@ -15,7 +15,6 @@
 
 namespace momiji
 {
-
     struct System;
     struct Breakpoint
     {
@@ -240,6 +239,8 @@ namespace momiji
             std::unique_ptr<objects::MathASTNode> value;
         };
 
+        // TODO(andry): Implement these
+
         struct ProgramCounterOffset
         {
         };
@@ -322,7 +323,7 @@ namespace momiji
     std::int32_t resolveAST(const objects::MathASTNode& node,
                             const momiji::LabelInfo& labels);
 
-    std::int8_t extractRegister(const Operand& operand);
+    std::int32_t extractRegister(const Operand& operand);
     std::int32_t extractASTValue(const Operand& operand,
                                  const LabelInfo& labels);
 

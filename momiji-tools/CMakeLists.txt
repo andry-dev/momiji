@@ -9,6 +9,6 @@ endfunction()
 
 new_tool(momiji-dump src/dump.cpp)
 new_tool(momiji-as src/assembler.cpp)
-#new_tool(momiji-exec src/exec.cpp)
+new_tool(momiji-diff src/diff.cpp)
 
-install(TARGETS momiji-dump momiji-as)
+install(TARGETS momiji-dump momiji-as momiji-diff)

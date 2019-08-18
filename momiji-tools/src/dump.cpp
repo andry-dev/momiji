@@ -97,7 +97,7 @@ int main(int argc, const char** argv)
         std::printf("a%d: 0x%.8x %d\n", i, val, val);
     }
 
-    std::printf("\n--- Status register ---\n");
+    std::printf("\n--- Status registers ---\n");
     std::printf("N: %d ", state.cpu.statusRegister.negative);
     std::printf("\tZ: %d ", state.cpu.statusRegister.zero);
     std::printf("\tV: %d ", state.cpu.statusRegister.overflow);
