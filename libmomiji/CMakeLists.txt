@@ -97,6 +97,11 @@ set_target_properties(libmomiji PROPERTIES
     PREFIX ""
     CXX_EXTENSIONS OFF)
 
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    include(CTest)
+    add_subdirectory(tests)
+endif()
+
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/momiji
         TYPE INCLUDE)
 
