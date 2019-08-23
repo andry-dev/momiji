@@ -8,7 +8,7 @@
 
 constexpr std::string_view usage =
     "USAGE: momiji-diff file1 file2\n"
-    "Returns the diff of two program execution traces.\n";
+    "Returns the diff of two programs executions.\n";
 
 int main(int argc, const char** argv)
 {
