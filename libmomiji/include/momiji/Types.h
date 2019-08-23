@@ -68,6 +68,9 @@ namespace momiji
         HaltCatchFire, // hcf
         Breakpoint,
         Declare, // dc.*
+
+        CodeMarker, // ".section code" or similiar
+        DataMarker, // ".section data" or similiar
     };
 
     enum class OperandType : std::uint8_t
