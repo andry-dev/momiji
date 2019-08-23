@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "Directives.h"
 #include "Instructions.h"
 
 #include <momiji/Utils.h>
@@ -13,6 +14,12 @@ namespace momiji
     {
         std::uint32_t mapping;
         momiji::details::parserfn_t execfn;
+    };
+
+    constexpr std::array<MappingType, 1> directiveMappings = {
+        { { utils::hash("section"), momiji::details::parseSection }
+
+        }
     };
 
     constexpr std::array<MappingType, 42> mappings = {

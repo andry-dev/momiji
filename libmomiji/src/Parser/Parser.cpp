@@ -200,6 +200,11 @@ namespace momiji
                     tmp_str              = skip_whitespace.rest;
                 }
 
+                // This is a decent time to check for breakpoints
+                {
+                    handleBreakpoints();
+                }
+
                 // Maybe we have an instruction?
                 auto instrword = Word()(tmp_str);
                 tmp_str        = instrword.rest;
@@ -214,7 +219,7 @@ namespace momiji
                     continue;
                 }
 
-                auto str_hash = momiji::utils::hash(instrword.parsed_str);
+                const auto str_hash = momiji::utils::hash(instrword.parsed_str);
 
                 // Check for a matching instruction
                 auto found_instr =
@@ -239,11 +244,6 @@ namespace momiji
                         line_count,
                         error,
                         std::string_view { begin, std::uint32_t(diff) });
-                }
-
-                if (!settings.breakpoints.empty())
-                {
-                    handleBreakpoints();
                 }
 
                 auto res = found_instr->execfn(tmp_str, instr);
@@ -378,6 +378,48 @@ namespace momiji
                 program_counter += 4;
             }
         }
+
+        /*
+        bool tryParseDirective(momiji::ParsedInstruction& instr,
+                               std::string_view tmp_str)
+        {
+            auto directiveword = ParseDirective()(tmp_str);
+            tmp_str            = directiveword.rest;
+
+            if (!directiveword.result)
+            {
+                return false;
+            }
+
+            const auto str_hash = utils::hash(directiveword.parsed_str);
+
+            const auto found_mapping =
+                std::find_if(std::begin(directiveMappings),
+                             std::end(directiveMappings),
+                             [this, str_hash](const MappingType& hash) {
+                                 return hash.mapping == str_hash;
+                             });
+
+            if (found_mapping == std::end(directiveMappings))
+            {
+                return false;
+            }
+
+            const auto res = found_mapping->execfn(tmp_str, instr);
+
+            if (!res.result)
+            {
+                return false;
+            }
+
+            instr.programCounter = program_counter;
+            instr.sourceLine     = line_count;
+
+            instructions.emplace_back(instr);
+
+            return true;
+        }
+        */
 
         void handlePCIncrement(momiji::ParsedInstruction& instr)
         {

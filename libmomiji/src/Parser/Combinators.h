@@ -693,6 +693,13 @@ namespace momiji
         };
     }
 
+    constexpr auto ParseDirective()
+    {
+        return [](std::string_view str) -> parser_metadata {
+            return SeqNext(Char('.'), Word())(str);
+        };
+    }
+
     inline auto OperandImmediate(momiji::ParsedInstruction& instr,
                                  std::uint32_t opNum)
     {

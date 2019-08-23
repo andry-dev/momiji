@@ -19,8 +19,8 @@ target_sources(libmomiji
     PRIVATE
 
     src/Parser/Parser.cpp
-    #src/Parser/Parser2.cpp
     src/Parser/Instructions.cpp
+    src/Parser/Directives.cpp
 
     src/Compiler/Compiler.cpp
     src/Compiler/move.cpp
