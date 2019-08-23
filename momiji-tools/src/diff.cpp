@@ -74,11 +74,11 @@ int main(int argc, const char** argv)
 
         if (lower1 != lower2 || higher1 != higher2)
         {
-            std::printf("%p: %.2x %.2x \t %p: %.2x %.2x",
+            std::printf("%p: %.2x %.2x \t %p: %.2x %.2x\n",
                         (memview1.begin() + i),
                         higher1,
                         lower1,
-                        (memview1.begin() + j),
+                        (memview2.begin() + j),
                         higher2,
                         lower2);
         }
