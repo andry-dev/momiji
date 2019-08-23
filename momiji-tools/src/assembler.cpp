@@ -75,15 +75,7 @@ int main(int argc, const char** argv)
                 if (!par.acceptedDataTypes.empty())
                 {
                     errorStr += "\nAccepted data types: ";
-                    for (std::size_t i = 0; i < par.acceptedDataTypes.size(); ++i)
-                    {
-                        errorStr += utils::toString(par.acceptedDataTypes[i]);
-
-                        if (i != (par.acceptedDataTypes.size() - 1))
-                        {
-                            errorStr += ", ";
-                        }
-                    }
+                    errorStr += utils::contToString(par.acceptedDataTypes);
                 }
             },
 
@@ -94,15 +86,7 @@ int main(int argc, const char** argv)
                 if (!par.acceptedOps.empty())
                 {
                     errorStr += "\nAccepted operand types: ";
-                    for (std::size_t i = 0; i < par.acceptedOps.size(); ++i)
-                    {
-                        errorStr += utils::toString(par.acceptedOps[i]);
-
-                        if (i != (par.acceptedOps.size() - 1))
-                        {
-                            errorStr += ", ";
-                        }
-                    }
+                    errorStr += utils::contToString(par.acceptedOps);
                 }
             },
 

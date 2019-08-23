@@ -81,15 +81,32 @@ namespace momiji::details
     {
         auto res = momiji::CommonInstructionParser(instr)(str);
 
+        if (matchOp<ops::AddressRegister>(instr.operands[1]) &&
+            !sanitizeAddressDataType(instr))
+        {
+            momiji::errors::DataTypeMismatch error { { momiji::DataType::Word,
+                                                       momiji::DataType::Long },
+                                                     instr.dataType };
+
+            res.result = false;
+            res.error  = std::move(error);
+
+            return res;
+        }
+
         if (matchOp<ops::Immediate>(instr.operands[1]) ||
             matchOp<ops::Address>(instr.operands[1]))
         {
             momiji::errors::OperandTypeMismatch error {
-                { momiji::ParserOperand::DataRegister,
-                  momiji::ParserOperand::AddressPost,
-                  momiji::ParserOperand::AddressPre,
-                  momiji::ParserOperand::AddressIndex,
-                  momiji::ParserOperand::AddressOffset },
+                {
+                    momiji::ParserOperand::DataRegister,
+                    momiji::ParserOperand::AddressPost,
+                    momiji::ParserOperand::AddressPre,
+                    momiji::ParserOperand::AddressIndex,
+                    momiji::ParserOperand::AddressOffset,
+                    momiji::ParserOperand::AbsoluteShort,
+                    momiji::ParserOperand::AbsoluteLong,
+                },
                 momiji::convertOperand(instr.operands[1]),
                 1
             };

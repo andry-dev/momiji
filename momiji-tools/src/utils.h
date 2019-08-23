@@ -129,4 +129,22 @@ namespace utils
 
         return "???";
     }
+
+    template <typename Container>
+    std::string contToString(const Container& cont)
+    {
+        std::string res {};
+
+        for (std::size_t i = 0; i < cont.size(); ++i)
+        {
+            res += toString(cont[i]);
+
+            if (i != (cont.size() - 1))
+            {
+                res += ", ";
+            }
+        }
+
+        return res;
+    }
 } // namespace utils

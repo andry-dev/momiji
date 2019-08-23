@@ -21,6 +21,88 @@
 #include <asl/types>
 #include <cstdio>
 
+namespace
+{
+    std::string toString(momiji::ParserOperand op)
+    {
+        switch (op)
+        {
+        case momiji::ParserOperand::DataRegister:
+            return "Data register";
+
+        case momiji::ParserOperand::AddressRegister:
+            return "Address register";
+
+        case momiji::ParserOperand::Address:
+            return "Address";
+
+        case momiji::ParserOperand::AddressPre:
+            return "Address with pre-decrement";
+
+        case momiji::ParserOperand::AddressPost:
+            return "Address with post-increment";
+
+        case momiji::ParserOperand::AddressOffset:
+            return "Address with offset";
+
+        case momiji::ParserOperand::AddressIndex:
+            return "Indexed Address";
+
+        case momiji::ParserOperand::Immediate:
+            return "Immediate";
+
+        case momiji::ParserOperand::AbsoluteShort:
+            return "Absolute short";
+
+        case momiji::ParserOperand::AbsoluteLong:
+            return "Absolute long";
+
+        case momiji::ParserOperand::ProgramCounterIndex:
+            return "Indexed PC";
+
+        case momiji::ParserOperand::ProgramCounterOffset:
+            return "PC with offset";
+        }
+
+        return "???";
+    }
+
+    std::string toString(momiji::DataType op)
+    {
+        switch (op)
+        {
+        case momiji::DataType::Byte:
+            return "Byte";
+
+        case momiji::DataType::Word:
+            return "Word";
+
+        case momiji::DataType::Long:
+            return "Long";
+        }
+
+        return "???";
+    }
+} // namespace
+
+template <typename Container>
+std::string contToString(const Container& cont)
+{
+    std::string res {};
+
+    for (std::size_t i = 0; i < cont.size(); ++i)
+    {
+        res += toString(cont[i]);
+
+        if (i != (cont.size() - 1))
+        {
+            res += ", ";
+        }
+    }
+
+    return res;
+}
+
 void gui()
 {
     using def_tag = tewi::API::OpenGLTag;
@@ -325,6 +407,7 @@ void gui()
                         [&](const UnknownError&) {
                             errorStr += "Unknown error.";
                         },
+
                         [&](const NoInstructionFound& par) {
                             errorStr += "instruction \"" + par.inputString +
                                         "\" not found.";
@@ -338,32 +421,56 @@ void gui()
                                 }
                             }
                         },
+
                         [&](const NoLabelFound& par) {
-                            errorStr += "label \"" + par.label + "\" not found.";
+                            errorStr += "label \"" + par.label +
+                                        "\" not found.";
                         },
-                        [&](const DataTypeMismatch&) {
-                            errorStr += "data type mismatch.";
+
+                        [&](const DataTypeMismatch& par) {
+                            errorStr += "data type " +
+                                        toString(par.inputDataType) +
+                                        " is not valid for this instruction.";
+
+                            if (!par.acceptedDataTypes.empty())
+                            {
+                                errorStr += "\nAccepted data types: ";
+                                errorStr += contToString(par.acceptedDataTypes);
+                            }
                         },
-                        [&](const OperandTypeMismatch&) {
-                            errorStr += "operand type mismatch.";
+
+                        [&](const OperandTypeMismatch& par) {
+                            errorStr += "operand type " + toString(par.inputOp)
+                                        + " is not valid for this instruction.";
+
+                            if (!par.acceptedOps.empty())
+                            {
+                                errorStr += "\nAccepted operands: ";
+                                errorStr += contToString(par.acceptedOps);
+                            }
                         },
+
                         [&](const InvalidRegisterNumber& par) {
                             errorStr += "Invalid register number " +
                                         std::to_string(par.input);
                         },
+
                         [&](const UnexpectedCharacter& par) {
                             errorStr += "Unexpected character '" +
                                         std::to_string(par.character) + "'.";
                         },
+
                         [&](const MissingCharacter& par) {
                             errorStr += "Missing a '" +
                                         std::string{par.character} + "'.";                                      },
+
                         [&](const UnknownOperand&) {
                             errorStr += "Unknown operand, are you sure "
                                         "the syntax is valid?";
 
                         }
                     }, error.errorType);
+
                     // clang-format on
                 }
 
