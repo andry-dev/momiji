@@ -6,6 +6,6 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction bra(ExecutableMemoryView mem, std::int64_t idx);
-    DecodedInstruction bsr(ExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction bra(ConstExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction bsr(ConstExecutableMemoryView mem, std::int64_t idx);
 } // namespace momiji::dec

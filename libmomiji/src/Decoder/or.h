@@ -6,7 +6,8 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction or_instr(ExecutableMemoryView mem, std::int64_t idx);
-    DecodedInstruction ori(ExecutableMemoryView mem, std::int64_t idx);
-    DecodedInstruction ora(ExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction or_instr(ConstExecutableMemoryView mem,
+                                std::int64_t idx);
+    DecodedInstruction ori(ConstExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction ora(ConstExecutableMemoryView mem, std::int64_t idx);
 } // namespace momiji::dec

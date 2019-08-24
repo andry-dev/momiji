@@ -8,8 +8,9 @@ namespace momiji
 {
     namespace dec
     {
-        DecodedInstruction and_instr(ExecutableMemoryView mem,
+        DecodedInstruction and_instr(ConstExecutableMemoryView mem,
                                      std::int64_t idx);
-        DecodedInstruction andi(ExecutableMemoryView mem, std::int64_t idx);
+        DecodedInstruction andi(ConstExecutableMemoryView mem,
+                                std::int64_t idx);
     } // namespace dec
 } // namespace momiji

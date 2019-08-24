@@ -4,6 +4,6 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction mem_rod(ExecutableMemoryView mem, std::int64_t idx);
-    DecodedInstruction reg_rod(ExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction mem_rod(ConstExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction reg_rod(ConstExecutableMemoryView mem, std::int64_t idx);
 } // namespace momiji::dec

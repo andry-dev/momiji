@@ -236,6 +236,10 @@ namespace momiji
             case InstructionType::Nop:
                 [[fallthrough]];
             case InstructionType::Illegal:
+                [[fallthrough]];
+            case InstructionType::CodeMarker:
+                [[fallthrough]];
+            case InstructionType::DataMarker:
                 /* default: */
                 std::cerr << utils::to_val(instr.instructionType)
                           << ": Instruction not implemented yet\n";

@@ -6,6 +6,6 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction move(ExecutableMemoryView mem, std::int64_t idx);
-    DecodedInstruction moveq(ExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction move(ConstExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction moveq(ConstExecutableMemoryView mem, std::int64_t idx);
 } // namespace momiji::dec

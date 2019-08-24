@@ -33,16 +33,16 @@ namespace momiji
     {
     }
 
-    DecodedInstruction decodeFirstGroup(ExecutableMemoryView mem,
+    DecodedInstruction decodeFirstGroup(ConstExecutableMemoryView mem,
                                         std::int64_t idx);
-    DecodedInstruction decodeSecondGroup(ExecutableMemoryView mem,
+    DecodedInstruction decodeSecondGroup(ConstExecutableMemoryView mem,
                                          std::int64_t idx);
-    DecodedInstruction decodeThirdGroup(ExecutableMemoryView mem,
+    DecodedInstruction decodeThirdGroup(ConstExecutableMemoryView mem,
                                         std::int64_t idx);
-    DecodedInstruction decodeFourthGroup(ExecutableMemoryView mem,
+    DecodedInstruction decodeFourthGroup(ConstExecutableMemoryView mem,
                                          std::int64_t idx);
 
-    DecodedInstruction decode(momiji::ExecutableMemoryView mem,
+    DecodedInstruction decode(momiji::ConstExecutableMemoryView mem,
                               std::int64_t idx)
     {
         // Find by groups
@@ -68,7 +68,7 @@ namespace momiji
         return {};
     }
 
-    DecodedInstruction decodeFirstGroup(ExecutableMemoryView mem,
+    DecodedInstruction decodeFirstGroup(ConstExecutableMemoryView mem,
                                         std::int64_t idx)
     {
         constexpr std::uint16_t firstmask  = 0b11110000'00000000;
@@ -107,7 +107,7 @@ namespace momiji
         return {};
     }
 
-    DecodedInstruction decodeSecondGroup(ExecutableMemoryView mem,
+    DecodedInstruction decodeSecondGroup(ConstExecutableMemoryView mem,
                                          std::int64_t idx)
     {
         constexpr std::uint16_t firstmask  = 0b11110000'00000000;
@@ -189,7 +189,7 @@ namespace momiji
         return {};
     }
 
-    DecodedInstruction decodeThirdGroup(ExecutableMemoryView mem,
+    DecodedInstruction decodeThirdGroup(ConstExecutableMemoryView mem,
                                         std::int64_t idx)
     {
         constexpr std::uint16_t firstmask = 0b11110000'11000000;
@@ -243,7 +243,7 @@ namespace momiji
         return {};
     }
 
-    DecodedInstruction decodeFourthGroup(ExecutableMemoryView mem,
+    DecodedInstruction decodeFourthGroup(ConstExecutableMemoryView mem,
                                          std::int64_t idx)
     {
         // Momiji specific control code!

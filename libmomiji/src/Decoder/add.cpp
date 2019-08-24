@@ -6,7 +6,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction add(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction add(ConstExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -44,12 +44,12 @@ namespace momiji::dec
         ret.exec = instr::add;
 
         ret.string = "add" + dataTypeToString(ret.data.size) + " " +
-                     commonStringConverter(ret.data, mem, idx);
+            commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
 
-    DecodedInstruction adda(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction adda(ConstExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -74,12 +74,12 @@ namespace momiji::dec
         ret.exec = instr::adda;
 
         ret.string = "adda" + dataTypeToString(ret.data.size) + " " +
-                     commonStringConverter(ret.data, mem, idx);
+            commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
 
-    DecodedInstruction addi(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction addi(ConstExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -101,7 +101,7 @@ namespace momiji::dec
             static_cast<SpecialAddressingMode>(repr.dstmode);
 
         ret.string = "addi" + dataTypeToString(ret.data.size) + " " +
-                     commonStringConverter(ret.data, mem, idx);
+            commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }

@@ -6,7 +6,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction swap(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction swap(ConstExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 

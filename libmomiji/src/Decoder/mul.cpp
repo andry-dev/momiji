@@ -7,7 +7,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction muls(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction muls(ConstExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -36,7 +36,7 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction mulu(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction mulu(ConstExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 

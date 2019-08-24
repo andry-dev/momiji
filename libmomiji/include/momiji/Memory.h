@@ -140,6 +140,7 @@ namespace momiji
             m_data = span;
         }
 
+        /*
         MemoryView(ConstMemoryView<Tag> mem)
         {
             std::uint8_t* begin = const_cast<std::uint8_t*>(mem.m_data.data());
@@ -150,6 +151,7 @@ namespace momiji
             stackMarker      = mem.stackMarker;
             staticMarker     = mem.staticMarker;
         }
+        */
 
         MemoryView(NullMemoryView)
         {
@@ -184,6 +186,15 @@ namespace momiji
     {
       public:
         ConstMemoryView(const ModifiableMemory<Tag>& mem)
+        {
+            m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
+
+            executableMarker = mem.executableMarker;
+            stackMarker      = mem.stackMarker;
+            staticMarker     = mem.staticMarker;
+        }
+
+        ConstMemoryView(const MemoryView<Tag>& mem)
         {
             m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
 

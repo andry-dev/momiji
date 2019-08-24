@@ -6,6 +6,6 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction jmp(ExecutableMemoryView mem, std::int64_t idx);
-    DecodedInstruction jsr(ExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction jmp(ConstExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction jsr(ConstExecutableMemoryView mem, std::int64_t idx);
 } // namespace momiji::dec

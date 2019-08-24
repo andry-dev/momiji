@@ -4,6 +4,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction not_instr(ExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction not_instr(ConstExecutableMemoryView mem,
+                                 std::int64_t idx);
 
 }

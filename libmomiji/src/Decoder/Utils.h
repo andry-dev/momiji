@@ -43,7 +43,7 @@ namespace momiji
 
     inline std::string opToString(const InstructionData& instr,
                                   std::int8_t opNum,
-                                  ExecutableMemoryView mem,
+                                  ConstExecutableMemoryView mem,
                                   std::int64_t idx)
     {
         const std::int32_t opmode =
@@ -151,7 +151,7 @@ namespace momiji
     }
 
     inline std::string commonStringConverter(const InstructionData& instr,
-                                             ExecutableMemoryView mem,
+                                             ConstExecutableMemoryView mem,
                                              std::int64_t idx)
     {
         return opToString(instr, 0, mem, idx) + ", " +

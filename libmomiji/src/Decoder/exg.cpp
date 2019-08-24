@@ -5,7 +5,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction exg(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction exg(ConstExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 

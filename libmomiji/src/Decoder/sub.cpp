@@ -6,7 +6,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction sub(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction sub(ConstExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -51,7 +51,7 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction suba(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction suba(ConstExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 
@@ -80,7 +80,7 @@ namespace momiji::dec
         return ret;
     }
 
-    DecodedInstruction subi(ExecutableMemoryView mem, std::int64_t idx)
+    DecodedInstruction subi(ConstExecutableMemoryView mem, std::int64_t idx)
     {
         DecodedInstruction ret;
 

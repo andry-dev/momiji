@@ -4,6 +4,8 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction mem_roxd(ExecutableMemoryView mem, std::int64_t idx);
-    DecodedInstruction reg_roxd(ExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction mem_roxd(ConstExecutableMemoryView mem,
+                                std::int64_t idx);
+    DecodedInstruction reg_roxd(ConstExecutableMemoryView mem,
+                                std::int64_t idx);
 } // namespace momiji::dec

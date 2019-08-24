@@ -5,7 +5,7 @@
 
 namespace momiji::dec
 {
-    DecodedInstruction sub(ExecutableMemoryView mem, std::int64_t idx);
-    DecodedInstruction suba(ExecutableMemoryView mem, std::int64_t idx);
-    DecodedInstruction subi(ExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction sub(ConstExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction suba(ConstExecutableMemoryView mem, std::int64_t idx);
+    DecodedInstruction subi(ConstExecutableMemoryView mem, std::int64_t idx);
 } // namespace momiji::dec
