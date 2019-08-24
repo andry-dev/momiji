@@ -7,3 +7,5 @@ CMakeSettings.json
 .vs/
 .ideais/
 .idea/
+.clangd/
+.ccls-cache/
