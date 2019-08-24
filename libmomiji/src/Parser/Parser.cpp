@@ -201,6 +201,7 @@ namespace momiji
                 }
 
                 // This is a decent time to check for breakpoints
+                if (!settings.breakpoints.empty())
                 {
                     handleBreakpoints();
                 }
