@@ -328,14 +328,11 @@ namespace momiji
 
                 for (const auto& op : instructions[i].operands)
                 {
-                    using opType = decltype(op);
-                    constexpr auto hasValue =
-                        details::has_value_var<opType>::value;
-
                     // clang-format off
                     std::visit(asl::overloaded{
                         [&] (const auto& op) {
-                            if constexpr (hasValue)
+                            if constexpr (
+                                    details::has_value_var<decltype(op)>::value)
                             {
                                 error = !checkLabelsInAST(*op.value, labels);
                             }
