@@ -32,7 +32,7 @@ namespace momiji::details
                 metadata.error  = std::move(error);
             };
 
-            std::int8_t regval = momiji::extractRegister(operand);
+            std::int32_t regval = momiji::extractRegister(operand);
 
             if (checkRegRange(regval))
             {
