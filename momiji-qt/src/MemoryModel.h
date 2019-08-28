@@ -38,7 +38,7 @@ class MemoryModel final : public QAbstractTableModel
     QVariant getExecData(const QModelIndex& index, int role) const;
     QVariant getStackData(const QModelIndex& index, int role) const;
 
-    momiji::ExecutableMemoryView m_memory;
+    momiji::ConstExecutableMemoryView m_memory;
     std::uint32_t m_stackPointer;
     std::uint32_t m_programCounter;
     MemoryType m_type;
