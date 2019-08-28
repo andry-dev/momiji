@@ -2,9 +2,173 @@
 #include "ui_mainwindow.h"
 
 #include "MemoryModel.h"
+#include <asl/types>
 #include <iostream>
 
+#include <momiji/Parser.h>
+
 const QColor g_highlightColor { 61, 174, 233 };
+
+namespace
+{
+    inline QString toString(momiji::ParserOperand op)
+    {
+        switch (op)
+        {
+        case momiji::ParserOperand::DataRegister:
+            return "Data register";
+
+        case momiji::ParserOperand::AddressRegister:
+            return "Address register";
+
+        case momiji::ParserOperand::Address:
+            return "Address";
+
+        case momiji::ParserOperand::AddressPre:
+            return "Address with pre-decrement";
+
+        case momiji::ParserOperand::AddressPost:
+            return "Address with post-increment";
+
+        case momiji::ParserOperand::AddressOffset:
+            return "Address with offset";
+
+        case momiji::ParserOperand::AddressIndex:
+            return "Indexed Address";
+
+        case momiji::ParserOperand::Immediate:
+            return "Immediate";
+
+        case momiji::ParserOperand::AbsoluteShort:
+            return "Absolute short";
+
+        case momiji::ParserOperand::AbsoluteLong:
+            return "Absolute long";
+
+        case momiji::ParserOperand::ProgramCounterIndex:
+            return "Indexed PC";
+
+        case momiji::ParserOperand::ProgramCounterOffset:
+            return "PC with offset";
+        }
+
+        return "???";
+    }
+
+    inline QString toString(momiji::DataType op)
+    {
+        switch (op)
+        {
+        case momiji::DataType::Byte:
+            return "Byte";
+
+        case momiji::DataType::Word:
+            return "Word";
+
+        case momiji::DataType::Long:
+            return "Long";
+        }
+
+        return "???";
+    }
+
+    template <typename Container>
+    QString contToString(const Container& cont)
+    {
+        QString res {};
+
+        for (std::size_t i = 0; i < cont.size(); ++i)
+        {
+            res += toString(cont[i]);
+
+            if (i != (cont.size() - 1))
+            {
+                res += ", ";
+            }
+        }
+
+        return res;
+    }
+
+    QString errorToString(const momiji::ParserError::ErrorType& error)
+    {
+        QString res {};
+
+        using momiji::ParserError;
+        using namespace momiji::errors;
+
+        // clang-format off
+        std::visit(asl::overloaded {
+            [&](const UnknownError&) {
+                res = "unknown error.";
+            },
+
+            [&](const NoInstructionFound& par) {
+                res = "instruction \"" +
+                      QString::fromStdString(par.inputString) +
+                      "\" not found";
+
+                if (!par.alternatives.empty())
+                {
+                    res += "\nAlternatives:\n";
+                    for (const auto& x : par.alternatives)
+                    {
+                        res += QString::fromStdString(x) + '\n';
+                    }
+                }
+            },
+
+            [&](const NoLabelFound& par) {
+                res = "label \"" + QString::fromStdString(par.label) +
+                       "\" not found.";
+            },
+
+            [&](const DataTypeMismatch& par) {
+                res = "data type " +
+                       toString(par.inputDataType) +
+                       " is not valid for this instruction.";
+
+                if (!par.acceptedDataTypes.empty())
+                {
+                    res += "\nAccepted data types: ";
+                    res += contToString(par.acceptedDataTypes);
+                }
+            },
+
+            [&](const OperandTypeMismatch& par) {
+                res = "operand type " + toString(par.inputOp) +
+                      " is not valid for this instruction.";
+
+                if (!par.acceptedOps.empty())
+                {
+                    res += "\nAccepted operand types: ";
+                    res += contToString(par.acceptedOps);
+                }
+            },
+
+            [&](const InvalidRegisterNumber& par) {
+                res = "Invalid register number " +
+                      QString::number(par.input);
+            },
+
+            [&](const UnexpectedCharacter& par) {
+                res = "Unexpected character '" +
+                      QString{par.character} + "'.";
+            },
+
+            [&](const MissingCharacter& par) {
+                res = "Missing a '" +
+                      QString{par.character} + "'.";
+            },
+
+            [&](const UnknownOperand&) {
+                res = "Unknown operand, are you sure the syntax is valid?";
+            }}, error);
+        // clang-format on
+
+        return res;
+    }
+} // namespace
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -30,6 +194,8 @@ MainWindow::MainWindow(QWidget* parent)
     {
         m_addressRegisters[i] = registers.item(int(i + 8), 1);
     }
+
+    ui->dockParserOutput->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -56,15 +222,21 @@ void MainWindow::parse()
 
     if (res.has_value())
     {
-        ui->statusBar->showMessage("Error around line " +
-                                   QString::number((*res).line) + ": " +
-                                   QString::fromStdString((*res).codeStr));
+        const auto& error = *res;
+        ui->dockParserOutput->setVisible(true);
+        ui->textParserOutput->setText(
+            "Error around line " + QString::number(error.line) + ": " +
+            errorToString(error.errorType) +
+            "\n\n\nContext: " + QString::fromStdString(error.codeStr));
+
+        ui->statusBar->showMessage("Build error");
 
         return;
     }
     else
     {
-        ui->statusBar->showMessage("Build OK");
+        ui->dockParserOutput->setVisible(false);
+        ui->statusBar->showMessage("Build completed successfully");
         updateEmuValues();
     }
 }
