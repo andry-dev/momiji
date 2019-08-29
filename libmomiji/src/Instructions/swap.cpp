@@ -2,10 +2,14 @@
 
 #include "./Utils.h"
 
+#include <asl/detect_features>
+
 namespace momiji::instr
 {
+#ifdef ASL_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
 
     momiji::System swap(momiji::System& sys, const InstructionData& instr)
     {
@@ -23,6 +27,8 @@ namespace momiji::instr
 
         return sys;
     }
+#ifdef ASL_CLANG
 #pragma clang diagnostic pop
+#endif
 
 } // namespace momiji::instr

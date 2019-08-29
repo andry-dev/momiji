@@ -921,10 +921,12 @@ namespace momiji::details
             }
         }
 
+#ifdef ASL_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code-return"
         return res;
 #pragma clang diagnostic pop
+#endif
     }
 
     momiji::parser_metadata parseHcf(std::string_view str,

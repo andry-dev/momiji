@@ -6,10 +6,14 @@
 #include <Memory.h>
 #include <System.h>
 
+#include <asl/detect_features>
+
 namespace momiji::utils
 {
+#ifdef ASL_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
 
     inline std::int32_t readImmediateFromPC(ExecutableMemoryView base,
                                             std::uint32_t pc,
@@ -283,5 +287,7 @@ namespace momiji::utils
         return val;
     }
 
+#ifdef ASL_CLANG
 #pragma clang diagnostic pop
+#endif
 } // namespace momiji::utils

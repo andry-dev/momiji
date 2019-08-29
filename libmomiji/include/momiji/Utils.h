@@ -7,6 +7,7 @@
 #include <string_view>
 #include <type_traits>
 
+#include <asl/detect_features>
 #include <momiji/Decoder.h>
 
 namespace momiji::utils
@@ -83,8 +84,10 @@ namespace momiji::utils
         return 0;
     }
 
+#ifdef ASL_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
 
     template <>
     constexpr std::int32_t sign_extend<std::int8_t>(std::int32_t val)
@@ -114,7 +117,9 @@ namespace momiji::utils
         return ret;
     }
 
+#ifdef ASL_CLANG
 #pragma clang diagnostic pop
+#endif
 
     constexpr std::int64_t make_kb(std::int64_t n)
     {

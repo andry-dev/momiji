@@ -8,11 +8,14 @@
 #include <vector>
 
 #include <gsl/assert>
+#include <asl/detect_features>
 
 namespace momiji
 {
+#ifdef ASL_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
 
     namespace details
     {
@@ -414,6 +417,8 @@ namespace momiji
         m_data.pop_back();
     }
 
+#ifdef ASL_CLANG
 #pragma clang diagnostic pop
+#endif
 
 } // namespace momiji
