@@ -18,3 +18,11 @@ target_link_libraries(momiji-qt PUBLIC Qt5::Widgets Qt5::Core Qt5::Gui libmomiji
 momiji_set_target_flags(momiji-qt)
 
 install(TARGETS momiji-qt)
+
+include(cmake/DeployQt.cmake)
+if (WIN32)
+    windeployqt(momiji-qt)
+elseif(APPLE)
+    macdeployqt(momiji-qt)
+endif()
+
