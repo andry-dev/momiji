@@ -107,7 +107,21 @@ int main(int argc, const char** argv)
 
             [&](const UnknownOperand&) {
                 errorStr += "Unknown operand, are you sure the syntax is valid?";
-            }}, error.errorType);
+            },
+
+            [&](const UnexpectedSectionContent& par) {
+                switch (par.section)
+                {
+                case momiji::ParserSection::Code:
+                    errorStr += "Unexpected variable definition in code section";
+                    break;
+
+                case momiji::ParserSection::Data:
+                    errorStr += "Unexpected executable instruction in data section";
+                    break;
+                }
+            }
+        }, error.errorType);
         // clang-format on
 
         errorStr += "\n\tContext: " + error.codeStr + "\n";

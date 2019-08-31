@@ -163,7 +163,22 @@ namespace
 
             [&](const UnknownOperand&) {
                 res = "Unknown operand, are you sure the syntax is valid?";
-            }}, error);
+            },
+
+            [&](const UnexpectedSectionContent& par) {
+                switch (par.section)
+                {
+                case momiji::ParserSection::Code:
+                    res = "Unexpected variable definition in code section";
+                    break;
+
+                case momiji::ParserSection::Data:
+                    res = "Unexpected executable instruction in data section";
+                    break;
+                }
+            }
+
+        }, error);
         // clang-format on
 
         return res;

@@ -42,6 +42,12 @@ namespace momiji
         ProgramCounterIndex
     };
 
+    enum class ParserSection : std::int8_t
+    {
+        Code,
+        Data
+    };
+
     namespace errors
     {
         struct NoLabelFound
@@ -90,6 +96,11 @@ namespace momiji
         struct UnknownError
         {
         };
+
+        struct UnexpectedSectionContent
+        {
+            ParserSection section;
+        };
     } // namespace errors
 
     namespace warnings
@@ -102,15 +113,17 @@ namespace momiji
         std::int64_t line { 0 };
         std::int64_t column { 0 };
 
-        using ErrorType = std::variant<momiji::errors::UnknownError,
-                                       momiji::errors::InvalidRegisterNumber,
-                                       momiji::errors::NoInstructionFound,
-                                       momiji::errors::NoLabelFound,
-                                       momiji::errors::OperandTypeMismatch,
-                                       momiji::errors::DataTypeMismatch,
-                                       momiji::errors::UnexpectedCharacter,
-                                       momiji::errors::MissingCharacter,
-                                       momiji::errors::UnknownOperand>;
+        using ErrorType =
+            std::variant<momiji::errors::UnknownError,
+                         momiji::errors::InvalidRegisterNumber,
+                         momiji::errors::NoInstructionFound,
+                         momiji::errors::NoLabelFound,
+                         momiji::errors::OperandTypeMismatch,
+                         momiji::errors::DataTypeMismatch,
+                         momiji::errors::UnexpectedCharacter,
+                         momiji::errors::MissingCharacter,
+                         momiji::errors::UnknownOperand,
+                         momiji::errors::UnexpectedSectionContent>;
 
         ErrorType errorType { momiji::errors::UnknownError {} };
         std::string codeStr;

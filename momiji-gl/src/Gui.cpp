@@ -462,12 +462,27 @@ void gui()
 
                         [&](const MissingCharacter& par) {
                             errorStr += "Missing a '" +
-                                        std::string{par.character} + "'.";                                      },
+                                        std::string{par.character} + "'.";
+                        },
 
                         [&](const UnknownOperand&) {
                             errorStr += "Unknown operand, are you sure "
                                         "the syntax is valid?";
+                        },
 
+                        [&](const UnexpectedSectionContent& par) {
+                            switch (par.section)
+                            {
+                            case momiji::ParserSection::Code:
+                                errorStr += "Unexpected variable definition "
+                                            "in code section";
+                                break;
+
+                            case momiji::ParserSection::Data:
+                                errorStr += "Unexpected executable instruction "
+                                            "in data section";
+                                break;
+                            }
                         }
                     }, error.errorType);
 
