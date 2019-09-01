@@ -9,8 +9,6 @@
 
 #include "Common.h"
 
-#include <iostream>
-
 namespace momiji
 {
     template <typename First, typename Second>
@@ -31,22 +29,53 @@ namespace momiji
     constexpr auto SeqNext(Ts&&... parsers)
     {
         return [=](std::string_view str) -> parser_metadata {
-            bool notdone = true;
+            bool done = false;
 
             parser_metadata res = { false, str, "", {} };
 
             (
                 [&]() /*constexpr*/ {
-                    if (!notdone)
+                    if (done)
                     {
                         return;
                     }
 
-                    res     = parsers(str);
-                    notdone = res.result;
-                    str     = res.rest;
+                    res  = parsers(str);
+                    done = !res.result;
+                    str  = res.rest;
                 }(),
                 ...);
+
+            return res;
+        };
+    }
+
+    template <typename... Ts>
+    constexpr auto AllSeqNext(Ts&&... parsers)
+    {
+        return [=](std::string_view str) -> parser_metadata {
+            auto savedStr = str;
+            bool done     = false;
+
+            std::int32_t idx = 0;
+
+            parser_metadata res = { false, str, "", {} };
+
+            (
+                [&]() /*constexpr*/ {
+                    if (done)
+                    {
+                        return;
+                    }
+
+                    res  = parsers(str);
+                    done = !res.result;
+                    str  = res.rest;
+                    idx += res.parsed_str.size();
+                }(),
+                ...);
+
+            res.parsed_str = savedStr.substr(0, idx);
 
             return res;
         };
@@ -696,7 +725,14 @@ namespace momiji
     constexpr auto ParseDirective()
     {
         return [](std::string_view str) -> parser_metadata {
-            return SeqNext(Char('.'), Word())(str);
+            return AllSeqNext(Char('.'), Word())(str);
+        };
+    }
+
+    constexpr auto InstructionWord()
+    {
+        return [](std::string_view str) -> parser_metadata {
+            return AnyOf(Word(), ParseDirective())(str);
         };
     }
 

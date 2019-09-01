@@ -1,4 +1,5 @@
 #include <momiji/Parser.h>
+#include <momiji/Types.h>
 
 #include "./Utils.h"
 #include "Combinators.h"
@@ -19,22 +20,72 @@ namespace momiji
                 { line, column, std::move(error), std::string { sourceCode } });
         }
 
-        bool isInternal(const momiji::ParsedInstruction& instr)
+        constexpr bool isInternal(momiji::InstructionType instr) noexcept
         {
-            return instr.instructionType == InstructionType::Breakpoint ||
-                   instr.instructionType == InstructionType::HaltCatchFire;
+            return instr == InstructionType::Breakpoint ||
+                   instr == InstructionType::HaltCatchFire;
         }
 
-        bool isBranchInstr(const momiji::ParsedInstruction& instr)
+        constexpr bool isDirective(momiji::InstructionType instr) noexcept
         {
-            return (instr.instructionType == InstructionType::Branch) ||
-                   (instr.instructionType ==
-                    InstructionType::BranchCondition) ||
-                   (instr.instructionType == InstructionType::BranchSubroutine);
+            return instr == InstructionType::DataMarker ||
+                   instr == InstructionType::CodeMarker;
         }
 
-        int requiresImmediateData(const momiji::Operand& op,
-                                  momiji::DataType dataType)
+        constexpr bool isBranchInstr(momiji::InstructionType instr) noexcept
+        {
+            return (instr == InstructionType::Branch) ||
+                   (instr == InstructionType::BranchCondition) ||
+                   (instr == InstructionType::BranchSubroutine);
+        }
+
+        constexpr bool isSection(momiji::InstructionType instr) noexcept
+        {
+            return instr == InstructionType::CodeMarker ||
+                   instr == InstructionType::DataMarker;
+        }
+
+        constexpr std::optional<ParserSection>
+        convSection(momiji::InstructionType instr) noexcept
+        {
+            switch (instr)
+            {
+            case InstructionType::DataMarker:
+                return ParserSection::Data;
+
+            case InstructionType::CodeMarker:
+                return ParserSection::Code;
+
+            default:
+                return std::nullopt;
+            }
+        }
+
+        constexpr bool checkSections(ParserSection sectionType,
+                                     InstructionType instr) noexcept
+        {
+            if (isSection(instr))
+            {
+                return true;
+            }
+
+            if (sectionType == ParserSection::Code &&
+                instr == InstructionType::Declare)
+            {
+                return false;
+            }
+
+            if (sectionType == ParserSection::Data &&
+                instr != InstructionType::Declare)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        constexpr int requiresImmediateData(const momiji::Operand& op,
+                                            momiji::DataType dataType) noexcept
         {
             if (std::holds_alternative<momiji::operands::Immediate>(op))
             {
@@ -207,7 +258,7 @@ namespace momiji
                 }
 
                 // Maybe we have an instruction?
-                auto instrword = Word()(tmp_str);
+                auto instrword = InstructionWord()(tmp_str);
                 tmp_str        = instrword.rest;
 
                 // If we don't find an instruction, we just skip the
@@ -259,6 +310,23 @@ namespace momiji
                     instr.programCounter = std::int32_t(program_counter);
 
                     instr.sourceLine = std::int32_t(line_count);
+
+                    if (isSection(instr.instructionType))
+                    {
+                        currentSection = convSection(instr.instructionType);
+                    }
+
+                    if (currentSection &&
+                        !checkSections(*currentSection, instr.instructionType))
+                    {
+                        errors::UnexpectedSectionContent error;
+                        error.section = *currentSection;
+                        return make_parser_error(
+                            0,
+                            line_count,
+                            error,
+                            std::string_view(begin, std::size_t(end - begin)));
+                    }
 
                     handlePCIncrement(instr);
 
@@ -322,6 +390,7 @@ namespace momiji
                 ++line_count;
             }
 
+            // Sanitize labels
             for (std::int32_t i = 0; i < asl::ssize(instructions); ++i)
             {
                 bool error = false;
@@ -377,48 +446,6 @@ namespace momiji
             }
         }
 
-        /*
-        bool tryParseDirective(momiji::ParsedInstruction& instr,
-                               std::string_view tmp_str)
-        {
-            auto directiveword = ParseDirective()(tmp_str);
-            tmp_str            = directiveword.rest;
-
-            if (!directiveword.result)
-            {
-                return false;
-            }
-
-            const auto str_hash = utils::hash(directiveword.parsed_str);
-
-            const auto found_mapping =
-                std::find_if(std::begin(directiveMappings),
-                             std::end(directiveMappings),
-                             [this, str_hash](const MappingType& hash) {
-                                 return hash.mapping == str_hash;
-                             });
-
-            if (found_mapping == std::end(directiveMappings))
-            {
-                return false;
-            }
-
-            const auto res = found_mapping->execfn(tmp_str, instr);
-
-            if (!res.result)
-            {
-                return false;
-            }
-
-            instr.programCounter = program_counter;
-            instr.sourceLine     = line_count;
-
-            instructions.emplace_back(instr);
-
-            return true;
-        }
-        */
-
         void handlePCIncrement(momiji::ParsedInstruction& instr)
         {
             if (instr.instructionType == InstructionType::Declare)
@@ -438,11 +465,16 @@ namespace momiji
                     break;
                 }
             }
-            else if (isInternal(instr))
+            else if (isInternal(instr.instructionType))
             {
                 program_counter += 4;
             }
-            else if (isBranchInstr(instr))
+            else if (isDirective(instr.instructionType))
+            {
+                // Intentionally left blank
+                // Directives should not increase the program counter
+            }
+            else if (isBranchInstr(instr.instructionType))
             {
 #ifdef LIBMOMIJI_CORRECT_BRA_IMPL
                 program_counter += 2;
@@ -466,15 +498,19 @@ namespace momiji
             }
         }
 
-        std::int64_t line_count { 1 };
-        std::int64_t program_counter { 0 };
-        std::string_view str;
         std::vector<momiji::ParsedInstruction> instructions;
         std::vector<std::string_view> instructionStr;
         LabelInfo labels;
-        bool parsing_error { false };
+
+        std::string_view str;
+
+        std::int64_t line_count { 1 };
+        std::int64_t program_counter { 0 };
+
         ParserError last_error;
         ParserSettings settings;
+        std::optional<ParserSection> currentSection { std::nullopt };
+        bool parsing_error { false };
     };
 
     momiji::ParsingResult parse(const std::string& str)
