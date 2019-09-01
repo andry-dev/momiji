@@ -241,8 +241,9 @@ namespace momiji
                 [[fallthrough]];
             case InstructionType::DataMarker:
                 /* default: */
-                std::cerr << utils::to_val(instr.instructionType)
-                          << ": Instruction not implemented yet\n";
+
+                // Ignore these instructions for now
+                continue;
             }
 
             memory.push16(opcode.val);
