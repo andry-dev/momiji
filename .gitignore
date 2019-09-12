@@ -2,7 +2,8 @@ build/
 build32/
 compile_commands.json
 clang-tidy-issues
-CMakeLists.txt.user
+CMakeLists.txt.user*
+Session.vim
 CMakeSettings.json
 .vs/
 .ideais/
