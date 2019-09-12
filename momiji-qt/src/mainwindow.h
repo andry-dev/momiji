@@ -9,6 +9,8 @@
 
 #include "MemoryModel.h"
 
+#include "helpwindow.h"
+
 namespace Ui
 {
     class MainWindow;
@@ -41,10 +43,13 @@ class MainWindow : public QMainWindow
 
     void parse();
 
+    momiji::Emulator m_emulator;
+
     Ui::MainWindow* ui;
     MemoryModel* m_memoryModel;
     MemoryModel* m_stackModel;
-    momiji::Emulator m_emulator;
+    HelpWindow* m_helpWindow;
+
     std::array<QTableWidgetItem*, 8> m_dataRegisters;
     std::array<QTableWidgetItem*, 8> m_addressRegisters;
 };

@@ -16,40 +16,40 @@ namespace
         switch (op)
         {
         case momiji::ParserOperand::DataRegister:
-            return "Data register";
+            return MainWindow::tr("Data register");
 
         case momiji::ParserOperand::AddressRegister:
-            return "Address register";
+            return MainWindow::tr("Address register");
 
         case momiji::ParserOperand::Address:
-            return "Address";
+            return MainWindow::tr("Address");
 
         case momiji::ParserOperand::AddressPre:
-            return "Address with pre-decrement";
+            return MainWindow::tr("Address with pre-decrement");
 
         case momiji::ParserOperand::AddressPost:
-            return "Address with post-increment";
+            return MainWindow::tr("Address with post-increment");
 
         case momiji::ParserOperand::AddressOffset:
-            return "Address with offset";
+            return MainWindow::tr("Address with offset");
 
         case momiji::ParserOperand::AddressIndex:
-            return "Indexed Address";
+            return MainWindow::tr("Indexed Address");
 
         case momiji::ParserOperand::Immediate:
-            return "Immediate";
+            return MainWindow::tr("Immediate");
 
         case momiji::ParserOperand::AbsoluteShort:
-            return "Absolute short";
+            return MainWindow::tr("Absolute short");
 
         case momiji::ParserOperand::AbsoluteLong:
-            return "Absolute long";
+            return MainWindow::tr("Absolute long");
 
         case momiji::ParserOperand::ProgramCounterIndex:
-            return "Indexed PC";
+            return MainWindow::tr("Indexed PC");
 
         case momiji::ParserOperand::ProgramCounterOffset:
-            return "PC with offset";
+            return MainWindow::tr("PC with offset");
         }
 
         return "???";
@@ -60,13 +60,13 @@ namespace
         switch (op)
         {
         case momiji::DataType::Byte:
-            return "Byte";
+            return MainWindow::tr("Byte");
 
         case momiji::DataType::Word:
-            return "Word";
+            return MainWindow::tr("Word");
 
         case momiji::DataType::Long:
-            return "Long";
+            return MainWindow::tr("Long");
         }
 
         return "???";
@@ -100,13 +100,13 @@ namespace
         // clang-format off
         std::visit(asl::overloaded {
             [&](const UnknownError&) {
-                res = "unknown error.";
+                res = MainWindow::tr("unknown error.");
             },
 
             [&](const NoInstructionFound& par) {
-                res = "instruction \"" +
+                res = MainWindow::tr("Instruction \"") +
                       QString::fromStdString(par.inputString) +
-                      "\" not found";
+                      MainWindow::tr("\" not found");
 
                 if (!par.alternatives.empty())
                 {
@@ -119,61 +119,63 @@ namespace
             },
 
             [&](const NoLabelFound& par) {
-                res = "label \"" + QString::fromStdString(par.label) +
-                       "\" not found.";
+                res = MainWindow::tr("Label \"") +
+                      QString::fromStdString(par.label) +
+                      MainWindow::tr("\" not found.");
             },
 
             [&](const DataTypeMismatch& par) {
-                res = "data type " +
-                       toString(par.inputDataType) +
-                       " is not valid for this instruction.";
+                res = MainWindow::tr("Data type ") +
+                      toString(par.inputDataType) +
+                      MainWindow::tr(" is not valid for this instruction.");
 
                 if (!par.acceptedDataTypes.empty())
                 {
-                    res += "\nAccepted data types: ";
+                    res += MainWindow::tr("\nAccepted data types: ");
                     res += contToString(par.acceptedDataTypes);
                 }
             },
 
             [&](const OperandTypeMismatch& par) {
-                res = "operand type " + toString(par.inputOp) +
-                      " is not valid for this instruction.";
+                res = MainWindow::tr("Operand type ") +
+                      toString(par.inputOp) +
+                      MainWindow::tr(" is not valid for this instruction.");
 
                 if (!par.acceptedOps.empty())
                 {
-                    res += "\nAccepted operand types: ";
+                    res += MainWindow::tr("\nAccepted operand types: ");
                     res += contToString(par.acceptedOps);
                 }
             },
 
             [&](const InvalidRegisterNumber& par) {
-                res = "Invalid register number " +
+                res = MainWindow::tr("Invalid register number ") +
                       QString::number(par.input);
             },
 
             [&](const UnexpectedCharacter& par) {
-                res = "Unexpected character '" +
+                res = MainWindow::tr("Unexpected character '") +
                       QString{par.character} + "'.";
             },
 
             [&](const MissingCharacter& par) {
-                res = "Missing a '" +
+                res = MainWindow::tr("Missing a '") +
                       QString{par.character} + "'.";
             },
 
             [&](const UnknownOperand&) {
-                res = "Unknown operand, are you sure the syntax is valid?";
+                res = MainWindow::tr("Unknown operand, are you sure the syntax is valid?");
             },
 
             [&](const UnexpectedSectionContent& par) {
                 switch (par.section)
                 {
                 case momiji::ParserSection::Code:
-                    res = "Unexpected variable definition in code section";
+                    res = MainWindow::tr("Unexpected variable definition in code section");
                     break;
 
                 case momiji::ParserSection::Data:
-                    res = "Unexpected executable instruction in data section";
+                    res = MainWindow::tr("Unexpected executable instruction in data section");
                     break;
                 }
             }
@@ -190,6 +192,7 @@ MainWindow::MainWindow(QWidget* parent)
     , ui(new Ui::MainWindow)
     , m_memoryModel(new MemoryModel(MemoryType::Executable))
     , m_stackModel(new MemoryModel(MemoryType::Stack))
+    , m_helpWindow(new HelpWindow)
 {
     ui->setupUi(this);
 
@@ -197,6 +200,8 @@ MainWindow::MainWindow(QWidget* parent)
     ui->tblMemView->horizontalHeader()->setStretchLastSection(true);
     ui->tblStackView->setModel(m_stackModel);
     ui->tblStackView->horizontalHeader()->setStretchLastSection(true);
+
+    m_helpWindow->show();
 
     auto& registers = *ui->registers;
 
@@ -240,18 +245,20 @@ void MainWindow::parse()
         const auto& error = *res;
         ui->dockParserOutput->setVisible(true);
         ui->textParserOutput->setText(
-            "Error around line " + QString::number(error.line) + ": " +
-            errorToString(error.errorType) +
-            "\n\n\nContext: " + QString::fromStdString(error.codeStr));
+            MainWindow::tr("Error around line ") + QString::number(error.line) +
+            MainWindow::tr(": ") + errorToString(error.errorType) +
+            MainWindow::tr("\n\n\nContext: ") +
+            QString::fromStdString(error.codeStr));
 
-        ui->statusBar->showMessage("Build error");
+        ui->statusBar->showMessage(MainWindow::tr("Build error"));
 
         return;
     }
     else
     {
         ui->dockParserOutput->setVisible(false);
-        ui->statusBar->showMessage("Build completed successfully");
+        ui->statusBar->showMessage(
+            MainWindow::tr("Build completed successfully"));
         updateEmuValues();
     }
 }

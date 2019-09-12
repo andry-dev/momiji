@@ -6,15 +6,31 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 
-find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
+find_package(Qt5
+    COMPONENTS
+    Widgets
+    Core
+    Gui
+    LinguistTools
+    REQUIRED)
+
+qt5_create_translation(QmFiles
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    res/translations/momijiqt_it.ts)
 
 add_executable(momiji-qt
     src/main.cpp
     src/mainwindow.cpp
     src/mainwindow.ui
-    src/MemoryModel.cpp)
+    src/MemoryModel.cpp
+    ${QmFiles})
 
-target_link_libraries(momiji-qt PUBLIC Qt5::Widgets Qt5::Core Qt5::Gui libmomiji)
+target_link_libraries(momiji-qt PUBLIC
+    Qt5::Widgets
+    Qt5::Core
+    Qt5::Gui
+    libmomiji)
+
 momiji_set_target_flags(momiji-qt)
 
 install(TARGETS momiji-qt)

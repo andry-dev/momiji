@@ -181,13 +181,13 @@ MemoryModel::headerData(int column, Qt::Orientation orientation, int role) const
     switch (column)
     {
     case 0:
-        return QString { "Address" };
+        return QString { tr("Address") };
 
     case 1:
-        return QString { "Value" };
+        return QString { tr("Value") };
 
     case 2:
-        return QString { "Code" };
+        return QString { tr("Code") };
 
     default:
         return {};
