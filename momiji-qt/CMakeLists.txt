@@ -23,6 +23,8 @@ add_executable(momiji-qt
     src/mainwindow.cpp
     src/mainwindow.ui
     src/MemoryModel.cpp
+    src/helpwindow.cpp
+    src/helpwindow.ui
     ${QmFiles})
 
 target_link_libraries(momiji-qt PUBLIC
