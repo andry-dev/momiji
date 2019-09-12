@@ -11,7 +11,7 @@ namespace momiji::dec
 
         repr::Bra bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.displacement = (val & 0b00000000'11111111);
 
@@ -23,7 +23,7 @@ namespace momiji::dec
 
         if (displ == 0)
         {
-            displ = std::int16_t(mem.read16(idx + 2));
+            displ = std::int16_t(*mem.read16(idx + 2));
         }
 
         ret.string = "bra " + std::to_string(displ);
@@ -37,7 +37,7 @@ namespace momiji::dec
 
         repr::Bsr bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.displacement = (val & 0b00000000'11111111);
 
@@ -49,7 +49,7 @@ namespace momiji::dec
 
         if (displ == 0)
         {
-            displ = std::int16_t(mem.read16(idx + 2));
+            displ = std::int16_t(*mem.read16(idx + 2));
         }
 
         ret.string = "bsr " + std::to_string(displ);

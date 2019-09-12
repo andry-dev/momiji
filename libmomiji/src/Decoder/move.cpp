@@ -13,7 +13,7 @@ namespace momiji::dec
     {
         DecodedInstruction ret;
 
-        std::uint16_t val = mem.read16(idx);
+        std::uint16_t val = *mem.read16(idx);
 
         repr::Move repr;
 

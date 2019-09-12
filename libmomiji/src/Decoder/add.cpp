@@ -12,7 +12,7 @@ namespace momiji::dec
 
         repr::Add bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.datareg   = (val & 0b00001110'00000000) >> 9;
         bits.direction = (val & 0b00000001'00000000) >> 8;
@@ -44,7 +44,7 @@ namespace momiji::dec
         ret.exec = instr::add;
 
         ret.string = "add" + dataTypeToString(ret.data.size) + " " +
-            commonStringConverter(ret.data, mem, idx);
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
@@ -55,7 +55,7 @@ namespace momiji::dec
 
         repr::AddA bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.addreg  = (val & 0b00001110'00000000) >> 9;
         bits.size    = (val & 0b00000001'00000000) >> 8;
@@ -74,7 +74,7 @@ namespace momiji::dec
         ret.exec = instr::adda;
 
         ret.string = "adda" + dataTypeToString(ret.data.size) + " " +
-            commonStringConverter(ret.data, mem, idx);
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }
@@ -85,7 +85,7 @@ namespace momiji::dec
 
         repr::AddI repr;
 
-        std::uint16_t val = mem.read16(idx);
+        std::uint16_t val = *mem.read16(idx);
 
         repr.size    = (val & 0b00000000'11000000) >> 6;
         repr.dsttype = (val & 0b0000000'00111000) >> 3;
@@ -101,7 +101,7 @@ namespace momiji::dec
             static_cast<SpecialAddressingMode>(repr.dstmode);
 
         ret.string = "addi" + dataTypeToString(ret.data.size) + " " +
-            commonStringConverter(ret.data, mem, idx);
+                     commonStringConverter(ret.data, mem, idx);
 
         return ret;
     }

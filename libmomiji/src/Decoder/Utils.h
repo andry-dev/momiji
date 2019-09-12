@@ -70,19 +70,18 @@ namespace momiji
 
         case OperandType::AddressOffset:
         {
-            std::uint16_t offset =
-                mem.read16(idx + utils::resolveOp1Size(instr, opNum));
+            auto offset = mem.read16(idx + utils::resolveOp1Size(instr, opNum));
 
-            return std::to_string(offset) + "(a" + std::to_string(opmode) + ")";
+            return std::to_string(*offset) + "(a" + std::to_string(opmode) +
+                   ")";
         }
 
         case OperandType::AddressIndex:
         {
-            std::uint16_t imm =
-                mem.read16(idx + utils::resolveOp1Size(instr, opNum));
+            auto imm = mem.read16(idx + utils::resolveOp1Size(instr, opNum));
 
-            const auto reg    = std::uint8_t((imm & 0xF000) >> 12);
-            const auto offset = std::uint8_t((imm & 0x00FF));
+            const auto reg    = std::uint8_t((*imm & 0xF000) >> 12);
+            const auto offset = std::uint8_t((*imm & 0x00FF));
 
             std::string ret = "(" + std::to_string(offset) + ", a" +
                               std::to_string(opmode) + ", ";
@@ -110,16 +109,16 @@ namespace momiji
                     [[fallthrough]];
                 case 2:
                 {
-                    std::uint16_t val =
+                    auto val =
                         mem.read16(idx + utils::resolveOp1Size(instr, opNum));
-                    return "#" + std::to_string(val);
+                    return "#" + std::to_string(*val);
                 }
 
                 case 4:
                 {
-                    std::uint32_t val =
+                    auto val =
                         mem.read32(idx + utils::resolveOp1Size(instr, opNum));
-                    return "#" + std::to_string(val);
+                    return "#" + std::to_string(*val);
                 }
                 }
             }
@@ -127,18 +126,18 @@ namespace momiji
 
             case SpecialAddressingMode::AbsoluteShort:
             {
-                std::uint16_t addr =
+                auto addr =
                     mem.read16(idx + utils::resolveOp1Size(instr, opNum));
 
-                return std::to_string(addr);
+                return std::to_string(*addr);
             }
 
             case SpecialAddressingMode::AbsoluteLong:
             {
-                std::uint32_t addr =
+                auto addr =
                     mem.read32(idx + utils::resolveOp1Size(instr, opNum));
 
-                return std::to_string(addr);
+                return std::to_string(*addr);
             }
 
             default:

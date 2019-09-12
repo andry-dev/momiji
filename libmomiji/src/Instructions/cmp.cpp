@@ -143,19 +143,19 @@ namespace momiji::instr
         switch (instr.size)
         {
         case 1:
-            srcval = memview.read8(pc + 2);
+            srcval = *memview.read8(pc + 2);
             srcval = utils::sign_extend<std::int8_t>(srcval);
             dstreg = utils::sign_extend<std::int8_t>(dstreg);
             break;
 
         case 2:
-            srcval = memview.read16(pc + 2);
+            srcval = *memview.read16(pc + 2);
             srcval = utils::sign_extend<std::int16_t>(srcval);
             dstreg = utils::sign_extend<std::int16_t>(dstreg);
             break;
 
         case 4:
-            srcval = std::int32_t(memview.read32(pc + 2));
+            srcval = std::int32_t(*memview.read32(pc + 2));
             break;
         }
 

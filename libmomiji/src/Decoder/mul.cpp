@@ -13,7 +13,7 @@ namespace momiji::dec
 
         repr::MulS bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.datareg = (val & 0b00001110'00000000) >> 9;
         bits.srctype = (val & 0b00000000'00111000) >> 3;
@@ -42,7 +42,7 @@ namespace momiji::dec
 
         repr::MulU bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.datareg = (val & 0b00001110'00000000) >> 9;
         bits.srctype = (val & 0b00000000'00111000) >> 3;

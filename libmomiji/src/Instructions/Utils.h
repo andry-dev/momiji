@@ -22,13 +22,22 @@ namespace momiji::utils
         switch (size)
         {
         case 1:
-            return std::int32_t(base.read8(pc + 3));
+        {
+            const auto val = base.read8(pc + 3);
+            return std::int32_t(val.value_or(0));
+        }
 
         case 2:
-            return std::int32_t(base.read16(pc + 2));
+        {
+            const auto val = base.read16(pc + 2);
+            return std::int32_t(val.value_or(0));
+        }
 
         case 4:
-            return std::int32_t(base.read32(pc + 2));
+        {
+            const auto val = base.read32(pc + 2);
+            return std::int32_t(val.value_or(0));
+        }
         }
 
         return 0;
@@ -43,18 +52,23 @@ namespace momiji::utils
         case 1:
         {
             const auto correct_offset = utils::sign_extend<std::int8_t>(offset);
-            return std::int32_t(base.read8(correct_offset));
+            const auto val            = base.read8(correct_offset);
+            return std::int32_t(val.value_or(0));
         }
 
         case 2:
         {
             const auto correct_offset =
                 utils::sign_extend<std::int16_t>(offset);
-            return std::int32_t(base.read16(correct_offset));
+            const auto val = base.read16(correct_offset);
+            return std::int32_t(val.value_or(0));
         }
 
         case 4:
-            return std::int32_t(base.read32(offset));
+        {
+            const auto val = base.read32(offset);
+            return std::int32_t(val.value_or(0));
+        }
         }
 
         return 0;

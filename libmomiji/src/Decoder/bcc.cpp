@@ -11,7 +11,7 @@ namespace momiji::dec
 
         repr::Bcc bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.condition    = (val & 0b00001111'00000000) >> 8;
         bits.displacement = (val & 0b00000000'11111111);
@@ -71,7 +71,7 @@ namespace momiji::dec
 
             if (tmp == 0)
             {
-                tmp = std::int16_t(mem.read16(idx + 2));
+                tmp = std::int16_t(*mem.read16(idx + 2));
             }
 
             return tmp;

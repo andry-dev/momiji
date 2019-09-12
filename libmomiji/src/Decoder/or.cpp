@@ -13,7 +13,7 @@ namespace momiji::dec
 
         repr::Or bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.datareg   = (val & 0b00001110'00000000) >> 9;
         bits.direction = (val & 0b00000001'00000000) >> 8;
@@ -58,7 +58,7 @@ namespace momiji::dec
 
         repr::OrI bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.size    = (val & 0b00000000'11000000) >> 6;
         bits.dsttype = (val & 0b00000000'00111000) >> 3;

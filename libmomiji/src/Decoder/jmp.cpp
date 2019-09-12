@@ -13,7 +13,7 @@ namespace momiji::dec
 
         repr::Jmp bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.regtype = (val & 0b00000000'00111000) >> 3;
         bits.regmode = (val & 0b00000000'00000111);
@@ -35,7 +35,7 @@ namespace momiji::dec
 
         repr::Jsr bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.regtype = (val & 0b00000000'00111000) >> 3;
         bits.regmode = (val & 0b00000000'00000111);

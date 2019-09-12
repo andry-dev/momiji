@@ -7,8 +7,10 @@
 #include <stack>
 #include <vector>
 
-#include <gsl/assert>
 #include <asl/detect_features>
+#include <gsl/assert>
+
+#include <optional>
 
 namespace momiji
 {
@@ -48,7 +50,7 @@ namespace momiji
     template <typename Container>
     class BasicMemory
     {
-      public:
+    public:
         BasicMemory() = default;
 
         BasicMemory(const BasicMemory& oth) = default;
@@ -57,30 +59,40 @@ namespace momiji
         BasicMemory& operator=(const BasicMemory& oth) = default;
         BasicMemory& operator=(BasicMemory&& oth) = default;
 
-        std::uint32_t read32(std::int64_t offset) const;
-        std::uint16_t read16(std::int64_t offset) const;
-        std::uint8_t read8(std::int64_t offset) const;
+        [[nodiscard]] std::optional<std::uint32_t>
+        read32(std::int64_t offset) const noexcept;
+
+        [[nodiscard]] std::optional<std::uint16_t>
+        read16(std::int64_t offset) const noexcept;
+
+        [[nodiscard]] std::optional<std::uint8_t>
+        read8(std::int64_t offset) const noexcept;
 
         template <typename T>
-        void write32(T val, std::int64_t offset) = delete;
-        void write32(std::uint32_t val, std::int64_t offset);
+        [[nodiscard]] bool write32(T val,
+                                   std::int64_t offset) noexcept = delete;
+        [[nodiscard]] bool write32(std::uint32_t val,
+                                   std::int64_t offset) noexcept;
 
         template <typename T>
-        void write16(T val, std::int64_t offset) = delete;
-        void write16(std::uint16_t val, std::int64_t offset);
+        [[nodiscard]] bool write16(T val,
+                                   std::int64_t offset) noexcept = delete;
+        [[nodiscard]] bool write16(std::uint16_t val,
+                                   std::int64_t offset) noexcept;
 
         template <typename T>
-        void write8(T val, std::int64_t offset) = delete;
-        void write8(std::uint8_t val, std::int64_t offset);
+        [[nodiscard]] bool write8(T val, std::int64_t offset) noexcept = delete;
+        [[nodiscard]] bool write8(std::uint8_t val,
+                                  std::int64_t offset) noexcept;
 
-        auto begin() const;
-        auto end() const;
+        auto begin() const noexcept;
+        auto end() const noexcept;
 
-        auto size() const;
+        auto size() const noexcept;
 
-        auto empty() const;
+        auto empty() const noexcept;
 
-        auto data();
+        auto data() noexcept;
 
         Container& underlying();
 
@@ -88,7 +100,7 @@ namespace momiji
         MemoryMarker<details::StackMemoryTag> stackMarker {};
         MemoryMarker<details::StaticMemoryTag> staticMarker {};
 
-      protected:
+    protected:
         BasicMemory(std::int64_t size);
         Container m_data;
     };
@@ -96,7 +108,7 @@ namespace momiji
     template <typename Tag>
     class ModifiableMemory final : public BasicMemory<std::vector<std::uint8_t>>
     {
-      public:
+    public:
         ModifiableMemory() = default;
         ModifiableMemory(std::int64_t size);
 
@@ -116,7 +128,7 @@ namespace momiji
         void pop16();
         void pop8();
 
-      private:
+    private:
         friend class MemoryView<Tag>;
         friend class ConstMemoryView<Tag>;
     };
@@ -128,7 +140,7 @@ namespace momiji
     template <typename Tag>
     class MemoryView final : public BasicMemory<gsl::span<std::uint8_t>>
     {
-      public:
+    public:
         MemoryView(ModifiableMemory<Tag>& mem)
         {
             m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
@@ -179,7 +191,7 @@ namespace momiji
             return *this;
         }
 
-      private:
+    private:
         friend class ConstMemoryView<Tag>;
     };
 
@@ -187,7 +199,7 @@ namespace momiji
     class ConstMemoryView final
         : public BasicMemory<gsl::span<const std::uint8_t>>
     {
-      public:
+    public:
         ConstMemoryView(const ModifiableMemory<Tag>& mem)
         {
             m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
@@ -206,7 +218,7 @@ namespace momiji
             staticMarker     = mem.staticMarker;
         }
 
-      private:
+    private:
         friend class MemoryView<Tag>;
     };
 
@@ -230,31 +242,31 @@ namespace momiji
     }
 
     template <typename Container>
-    auto BasicMemory<Container>::begin() const
+    auto BasicMemory<Container>::begin() const noexcept
     {
         return m_data.begin();
     }
 
     template <typename Container>
-    auto BasicMemory<Container>::end() const
+    auto BasicMemory<Container>::end() const noexcept
     {
         return m_data.end();
     }
 
     template <typename Container>
-    auto BasicMemory<Container>::size() const
+    auto BasicMemory<Container>::size() const noexcept
     {
         return m_data.size();
     }
 
     template <typename Container>
-    auto BasicMemory<Container>::empty() const
+    auto BasicMemory<Container>::empty() const noexcept
     {
         return m_data.empty();
     }
 
     template <typename Container>
-    auto BasicMemory<Container>::data()
+    auto BasicMemory<Container>::data() noexcept
     {
         return m_data.data();
     }
@@ -266,11 +278,12 @@ namespace momiji
     }
 
     template <typename Container>
-    std::uint32_t BasicMemory<Container>::read32(std::int64_t offset) const
+    [[nodiscard]] std::optional<std::uint32_t>
+    BasicMemory<Container>::read32(std::int64_t offset) const noexcept
     {
-        if (offset >= asl::ssize(m_data))
+        if ((offset + 3) >= asl::ssize(m_data) || offset < 0)
         {
-            return 0;
+            return std::nullopt;
         }
 
         return std::uint32_t((m_data[offset]) | (m_data[offset + 1] << 8) |
@@ -279,33 +292,37 @@ namespace momiji
     }
 
     template <typename Container>
-    std::uint16_t BasicMemory<Container>::read16(std::int64_t offset) const
+    [[nodiscard]] std::optional<std::uint16_t>
+    BasicMemory<Container>::read16(std::int64_t offset) const noexcept
     {
-        if (offset >= asl::ssize(m_data))
+        if ((offset + 1) >= asl::ssize(m_data) || offset < 0)
         {
-            return 0;
+            return std::nullopt;
         }
 
         return std::uint16_t((m_data[offset]) | (m_data[offset + 1] << 8));
     }
 
     template <typename Container>
-    std::uint8_t BasicMemory<Container>::read8(std::int64_t offset) const
+    [[nodiscard]] std::optional<std::uint8_t>
+    BasicMemory<Container>::read8(std::int64_t offset) const noexcept
     {
-        if (offset >= asl::ssize(m_data))
+        if (offset >= asl::ssize(m_data) || offset < 0)
         {
-            return 0;
+            return std::nullopt;
         }
 
         return m_data[offset];
     }
 
     template <typename Container>
-    void BasicMemory<Container>::write32(std::uint32_t val, std::int64_t offset)
+    [[nodiscard]] bool
+    BasicMemory<Container>::write32(std::uint32_t val,
+                                    std::int64_t offset) noexcept
     {
-        if (offset >= asl::ssize(m_data))
+        if ((offset + 3) >= asl::ssize(m_data) || offset < 0)
         {
-            return;
+            return false;
         }
 
         const std::uint8_t first  = (val & 0x000000FF);
@@ -317,14 +334,18 @@ namespace momiji
         m_data[offset + 1] = second;
         m_data[offset + 2] = third;
         m_data[offset + 3] = fourth;
+
+        return true;
     }
 
     template <typename Container>
-    void BasicMemory<Container>::write16(std::uint16_t val, std::int64_t offset)
+    [[nodiscard]] bool
+    BasicMemory<Container>::write16(std::uint16_t val,
+                                    std::int64_t offset) noexcept
     {
-        if (offset >= asl::ssize(m_data))
+        if ((offset + 1) >= asl::ssize(m_data) || offset < 0)
         {
-            return;
+            return false;
         }
 
         const std::uint8_t first  = (val & 0x00FF);
@@ -332,17 +353,23 @@ namespace momiji
 
         m_data[offset]     = first;
         m_data[offset + 1] = second;
+
+        return true;
     }
 
     template <typename Container>
-    void BasicMemory<Container>::write8(std::uint8_t val, std::int64_t offset)
+    [[nodiscard]] bool
+    BasicMemory<Container>::write8(std::uint8_t val,
+                                   std::int64_t offset) noexcept
     {
-        if (offset >= asl::ssize(m_data.size))
+        if (offset >= asl::ssize(m_data.size) || offset < 0)
         {
-            return;
+            return false;
         }
 
         m_data[offset] = val;
+
+        return true;
     }
 
     // ModifiableMemory

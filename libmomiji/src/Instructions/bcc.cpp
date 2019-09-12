@@ -16,7 +16,7 @@ namespace momiji::instr
         {
             skipTwoBytes = true;
 
-            offset = std::int16_t(sys.mem.read16(pc + 2));
+            offset = std::int16_t(*sys.mem.read16(pc + 2));
         }
 
         const auto& statReg = sys.cpu.statusRegister;

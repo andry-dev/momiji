@@ -13,7 +13,7 @@ namespace momiji::dec
 
         repr::Tst bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.size    = (val & 0b00000000'11000000) >> 6;
         bits.regmode = (val & 0b00000000'00111000) >> 3;

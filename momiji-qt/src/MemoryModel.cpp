@@ -83,11 +83,11 @@ QVariant MemoryModel::getExecData(const QModelIndex& index, int role) const
 
     case 1:
     {
-        std::uint8_t higher = m_memory.read8(std::uint64_t(begin));
+        std::uint8_t higher = m_memory.read8(std::uint64_t(begin)).value_or(0);
         std::uint8_t lower  = 0;
         if ((begin + 1) < end)
         {
-            lower = m_memory.read8(std::uint64_t(begin + 1));
+            lower = m_memory.read8(std::uint64_t(begin + 1)).value_or(0);
         }
 
         return { QString::number(higher, 16) + " " +
@@ -124,11 +124,11 @@ QVariant MemoryModel::getStackData(const QModelIndex& index, int role) const
 
     case 1:
     {
-        std::uint8_t higher = m_memory.read8(std::uint64_t(end));
+        std::uint8_t higher = m_memory.read8(std::uint64_t(end)).value_or(0);
         std::uint8_t lower  = 0;
         if ((end - 1) >= begin)
         {
-            lower = m_memory.read8(std::uint64_t(end - 1));
+            lower = m_memory.read8(std::uint64_t(end - 1)).value_or(0);
         }
 
         return { QString::number(higher, 16) + " " +

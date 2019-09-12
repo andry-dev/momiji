@@ -9,7 +9,7 @@ namespace momiji::dec
     {
         DecodedInstruction ret;
 
-        const std::uint16_t controlcode = mem.read16(idx + 2);
+        const std::uint16_t controlcode = *mem.read16(idx + 2);
 
         switch (controlcode)
         {

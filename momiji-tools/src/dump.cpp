@@ -67,13 +67,16 @@ int main(int argc, const char** argv)
          i < memview.executableMarker.end;
          i += 2)
     {
-        std::uint8_t lower  = memview.read8(i);
-        std::uint8_t higher = 0;
+        const std::uint8_t lower  = memview.read8(i).value_or(0);
+        const std::uint8_t higher = memview.read8(i + 1).value_or(0);
 
+        // Maybe unneeded now?
+        /*
         if ((i + 1) < std::int64_t(memview.size()))
         {
-            higher = memview.read8(i + 1);
+            higher = memview.read8(i + 1).value_or(0);
         }
+        */
 
         std::printf("%p: %.2x %.2x ", (memview.begin() + i), higher, lower);
         hackyPrintBin(higher);

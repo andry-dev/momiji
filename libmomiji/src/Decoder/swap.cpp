@@ -10,7 +10,7 @@ namespace momiji::dec
     {
         DecodedInstruction ret;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         repr::Swap bits;
         bits.datareg = (val & 0b00000000'00000111);

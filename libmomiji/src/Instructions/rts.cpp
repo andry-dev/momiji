@@ -43,7 +43,7 @@ namespace momiji::instr
         auto& sp = sys.cpu.addressRegisters[7].value;
         auto& pc = sys.cpu.programCounter.address;
 
-        pc = sys.mem.read32(sp);
+        pc = *sys.mem.read32(sp);
         sp += 4;
 
         auto retInstr = momiji::decode(sys.mem, pc);

@@ -14,7 +14,7 @@ namespace momiji::instr
 
         if (offset == 0)
         {
-            offset = std::int16_t(memview.read16(pc + 2));
+            offset = std::int16_t(*memview.read16(pc + 2));
         }
 
         auto& signed_pc = reinterpret_cast<std::int32_t&>(pc);
@@ -30,13 +30,18 @@ namespace momiji::instr
 
         sp -= 4;
 
-        sys.mem.write32(pc, sp);
+        const auto writeRes = sys.mem.write32(pc, sp);
+
+        if (!writeRes)
+        {
+            // Do something with this
+        }
 
         std::int16_t offset = utils::to_val(data.operandType[0]);
 
         if (offset == 0)
         {
-            offset = std::int16_t(sys.mem.read16(pc + 2));
+            offset = std::int16_t(*sys.mem.read16(pc + 2));
         }
 
         auto& signed_pc = reinterpret_cast<std::int32_t&>(pc);

@@ -69,7 +69,7 @@ namespace momiji::dec
     {
         DecodedInstruction ret;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         typename ShiftType::MemRepr bits;
 
@@ -105,7 +105,7 @@ namespace momiji::dec
     {
         DecodedInstruction ret;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         typename ShiftType::RegRepr bits;
 

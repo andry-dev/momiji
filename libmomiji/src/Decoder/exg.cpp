@@ -11,7 +11,7 @@ namespace momiji::dec
 
         repr::Exg bits;
 
-        const std::uint16_t val = mem.read16(idx);
+        const std::uint16_t val = *mem.read16(idx);
 
         bits.mode    = (val & 0b00000000'11111000) >> 3;
         bits.datareg = (val & 0b00001110'00000000) >> 9;
