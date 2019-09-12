@@ -932,13 +932,18 @@ namespace momiji
 
             return Map(SeqNext(num_parser, reg_parser),
                        [&](auto /*parsed_str*/) {
-                           auto& op = std::get<momiji::operands::AddressOffset>(
+                           auto& op = std::get<momiji::operands::Address>(
                                instr.operands[opNum]);
 
-                           op.offset =
+                           momiji::operands::AddressOffset tmp;
+                           tmp.reg = op.reg;
+
+                           tmp.offset =
                                std::make_unique<momiji::objects::MathASTNode>();
-                           op.offset->value =
+                           tmp.offset->value =
                                momiji::objects::Number { parsed_displacement };
+
+                           instr.operands[opNum] = std::move(tmp);
                        })(str);
         };
     }
