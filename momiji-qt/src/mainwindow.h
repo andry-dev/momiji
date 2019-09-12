@@ -20,11 +20,11 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-  public:
+public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-  private slots:
+private slots:
     void on_sourceCode_textChanged();
 
     void on_registers_itemChanged(QTableWidgetItem* item);
@@ -37,7 +37,7 @@ class MainWindow : public QMainWindow
 
     void on_actionParse_triggered();
 
-  private:
+private:
     void updateEmuValues();
     void updateRegisters();
 

@@ -13,7 +13,7 @@ enum class MemoryType
 class MemoryModel final : public QAbstractTableModel
 {
     Q_OBJECT
-  public:
+public:
     MemoryModel(MemoryType type);
     virtual ~MemoryModel() = default;
 
@@ -30,11 +30,11 @@ class MemoryModel final : public QAbstractTableModel
                         Qt::Orientation orientation,
                         int role) const override;
 
-  signals:
+signals:
 
-  public slots:
+public slots:
 
-  private:
+private:
     QVariant getExecData(const QModelIndex& index, int role) const;
     QVariant getStackData(const QModelIndex& index, int role) const;
 

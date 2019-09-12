@@ -425,7 +425,7 @@ namespace momiji
                                          std::move(labels) };
         }
 
-      private:
+    private:
         void handleBreakpoints()
         {
             // Check if we should insert a breakpoint

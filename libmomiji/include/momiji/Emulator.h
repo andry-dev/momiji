@@ -49,7 +49,7 @@ namespace momiji
 
     struct Emulator
     {
-      private:
+    private:
         std::vector<momiji::System> m_systemStates;
         EmulatorSettings m_settings;
 
@@ -63,7 +63,7 @@ namespace momiji
         bool stepHandleMem(always_retain_states_tag, DecodedInstruction& instr);
         bool stepHandleMem(never_retain_states_tag, DecodedInstruction& instr);
 
-      public:
+    public:
         Emulator();
         Emulator(EmulatorSettings);
 

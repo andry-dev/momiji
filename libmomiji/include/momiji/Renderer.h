@@ -43,7 +43,7 @@ namespace momiji
 
         tewi::ShaderProgram<tewi::API::OpenGLTag> createShaderProgram();
 
-      private:
+    private:
         GLuint m_VAO;
         GLuint m_VBO;
         std::unique_ptr<tewi::IndexBuffer<tewi::API::OpenGLTag>> m_IBO;

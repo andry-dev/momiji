@@ -13,11 +13,11 @@ class HelpWindow : public QWidget
 {
     Q_OBJECT
 
-  public:
+public:
     explicit HelpWindow(QWidget* parent = nullptr);
     ~HelpWindow();
 
-  private:
+private:
     Ui::HelpWindow* ui;
 };
 
