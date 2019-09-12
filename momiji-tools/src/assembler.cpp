@@ -33,8 +33,6 @@ int main(int argc, const char** argv)
 
     auto parsedInstr = momiji::parse(sourceCode);
 
-    std::printf("bbbb\n");
-
     if (!parsedInstr)
     {
         using momiji::ParserError;

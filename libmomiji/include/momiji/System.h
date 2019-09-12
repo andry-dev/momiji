@@ -32,7 +32,7 @@ namespace momiji
         {
         }
 
-        std::uint8_t extend : 1;   // E
+        std::uint8_t extend : 1;   // E / X
         std::uint8_t negative : 1; // N
         std::uint8_t zero : 1;     // Z
         std::uint8_t overflow : 1; // V

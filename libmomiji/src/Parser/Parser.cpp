@@ -6,6 +6,7 @@
 #include "Common.h"
 #include "Mappings.h"
 #include <momiji/Utils.h>
+#include <optional>
 
 namespace momiji
 {
