@@ -29,19 +29,21 @@ namespace momiji::enc
                 [&] (const auto&) { },
 
                 [&] (const operands::DataRegister& reg) {
-                    bits.rotation = reg.reg;
+                    bits.rotation = std::uint16_t(reg.reg);
                     bits.rotmode = 1;
                 },
-                
+
                 [&] (const operands::Immediate& immediate) {
-                    bits.rotation = momiji::resolveAST(*immediate.value, labels);
+                    bits.rotation = std::uint16_t(
+                            momiji::resolveAST(*immediate.value, labels));
                     bits.rotmode = 0;
                 }
             }, instr.operands[0]);
             // clang-format on
 
-            bits.datareg = momiji::extractRegister(instr.operands[1]);
-            bits.size    = utils::to_val(instr.dataType) & 0b111;
+            bits.datareg =
+                std::uint16_t(momiji::extractRegister(instr.operands[1]));
+            bits.size = utils::to_val(instr.dataType) & 0b111;
 
             opcode.val = std::uint16_t(
                 (bits.header << 12) | (bits.rotation << 9) |

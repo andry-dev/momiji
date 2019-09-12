@@ -8,14 +8,15 @@
 namespace momiji::enc
 {
     void xor_instr(const momiji::ParsedInstruction& instr,
-                   const momiji::LabelInfo& labels,
+                   const momiji::LabelInfo& /*labels*/,
                    OpcodeDescription& opcode,
                    std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::Xor bits;
 
         // eor.* d*, *
-        bits.datareg = std::get<operands::DataRegister>(instr.operands[0]).reg;
+        bits.datareg = std::uint16_t(
+            std::get<operands::DataRegister>(instr.operands[0]).reg);
 
         bits.othtype = getCorrectOpType(instr.operands[1]);
         bits.othmode = getCorrectOpMode(instr.operands[1]);
@@ -38,7 +39,8 @@ namespace momiji::enc
         bits.size               = size & 0b111;
 
         additionalData[0].cnt = tobyte[size];
-        additionalData[0].val = extractASTValue(instr.operands[0], labels);
+        additionalData[0].val =
+            std::uint32_t(extractASTValue(instr.operands[0], labels));
 
         bits.dsttype = getCorrectOpType(instr.operands[1]);
         bits.dstmode = getCorrectOpMode(instr.operands[1]);

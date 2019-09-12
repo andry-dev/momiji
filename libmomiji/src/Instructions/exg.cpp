@@ -3,6 +3,7 @@
 #include "./Utils.h"
 
 #include <asl/detect_features>
+#include <asl/types>
 
 namespace momiji::instr
 {
@@ -14,8 +15,8 @@ namespace momiji::instr
     {
         auto& pc = sys.cpu.programCounter.address;
 
-        std::int32_t* srcreg     = nullptr;
-        const std::int8_t srcval = utils::to_val(instr.addressingMode[0]);
+        std::int32_t* srcreg = nullptr;
+        const auto srcval    = utils::to_val(instr.addressingMode[0]);
 
         switch (instr.operandType[0])
         {
@@ -38,11 +39,11 @@ namespace momiji::instr
         switch (instr.operandType[1])
         {
         case OperandType::DataRegister:
-            dstreg = &sys.cpu.dataRegisters[dstval].value;
+            dstreg = &asl::saccess(sys.cpu.dataRegisters, dstval).value;
             break;
 
         case OperandType::AddressRegister:
-            dstreg = &sys.cpu.addressRegisters[dstval].value;
+            dstreg = &asl::saccess(sys.cpu.addressRegisters, dstval).value;
             break;
 
         default:
@@ -53,8 +54,8 @@ namespace momiji::instr
         std::swap(*srcreg, *dstreg);
 
         pc += 2;
-        pc += utils::isImmediate(instr, 0);
-        pc += utils::isImmediate(instr, 1);
+        pc += std::uint32_t(utils::isImmediate(instr, 0));
+        pc += std::uint32_t(utils::isImmediate(instr, 1));
 
         return sys;
     }

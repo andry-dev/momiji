@@ -1,3 +1,4 @@
+#include <asl/types>
 #pragma once
 
 #include <Utils.h>
@@ -149,7 +150,7 @@ namespace momiji::utils
         break;
 
         case OperandType::Immediate:
-            switch (instr.addressingMode[op])
+            switch (asl::saccess(instr.addressingMode, op))
             {
             case SpecialAddressingMode::Immediate:
                 val = readImmediateFromPC(sys.mem, pc, instr.size);
@@ -231,7 +232,9 @@ namespace momiji::utils
         // offset(a*)
         case OperandType::AddressOffset:
             tmp = readImmediateFromPC(
-                sys.mem, pc + resolveOp1Size(instr, op), sizeof(To));
+                sys.mem,
+                pc + std::uint32_t(resolveOp1Size(instr, op)),
+                sizeof(To));
 
             tmp += asl::saccess(sys.cpu.addressRegisters, regnum).value;
             val = reinterpret_cast<To*>(sys.mem.data() + tmp);
@@ -241,7 +244,9 @@ namespace momiji::utils
         case OperandType::AddressIndex:
         {
             tmp = readImmediateFromPC(
-                sys.mem, pc + resolveOp1Size(instr, op), sizeof(To));
+                sys.mem,
+                pc + std::uint32_t(resolveOp1Size(instr, op)),
+                sizeof(To));
 
             const auto newreg = std::int8_t((tmp & 0xF000) >> 12);
             const auto index  = std::int8_t(tmp & 0x00FF);
@@ -264,12 +269,12 @@ namespace momiji::utils
         break;
 
         case OperandType::Immediate:
-            switch (instr.addressingMode[op])
+            switch (asl::saccess(instr.addressingMode, op))
             {
             case SpecialAddressingMode::AbsoluteShort:
             {
                 tmp = readImmediateFromPC(
-                    sys.mem, pc + resolveOp1Size(instr, op), 2);
+                    sys.mem, pc + std::uint32_t(resolveOp1Size(instr, op)), 2);
 
                 tmp = utils::sign_extend<std::int16_t>(tmp);
                 val = reinterpret_cast<To*>(sys.mem.data() + tmp);
@@ -279,7 +284,7 @@ namespace momiji::utils
             case SpecialAddressingMode::AbsoluteLong:
             {
                 tmp = readImmediateFromPC(
-                    sys.mem, pc + resolveOp1Size(instr, op), 4);
+                    sys.mem, pc + std::uint32_t(resolveOp1Size(instr, op)), 4);
 
                 val = reinterpret_cast<To*>(sys.mem.data() + tmp);
             }

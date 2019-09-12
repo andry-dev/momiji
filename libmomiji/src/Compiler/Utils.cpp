@@ -126,42 +126,48 @@ namespace momiji
 
             // clang-format off
                 std::visit(asl::overloaded{
-                    [&data] (const auto& reg) {
+                    [] (const auto& /*reg*/) {
                     },
 
                     [&data, &labels] (const ops::AddressOffset& reg) {
-                        Expects(reg.offset.get(), "Null pointer for address offset")
+                        Expects(reg.offset.get(),
+                                "Null pointer for address offset")
 
                         data.cnt = 2;
-                        data.val = momiji::resolveAST(*reg.offset, labels);
+                        data.val = std::uint32_t(
+                                momiji::resolveAST(*reg.offset, labels));
                     },
 
                     [&data, &labels] (const ops::AddressIndex& reg) {
                         std::int16_t tmp = 0;
                         if (reg.offset.get())
                         {
-                            tmp = momiji::resolveAST(*reg.offset, labels);
+                            tmp = std::int16_t(
+                                    momiji::resolveAST(*reg.offset, labels));
                         }
 
                         tmp &= 0x00FF;
 
                         data.cnt = 2;
-                        data.val = (reg.othreg << 12) | tmp;
+                        data.val = std::uint32_t((reg.othreg << 12) | tmp);
                     },
 
                     [&data, &labels, size] (const ops::Immediate& immediate) {
                         data.cnt = tobyte[size];
-                        data.val = momiji::resolveAST(*immediate.value, labels);
+                        data.val = std::uint32_t(
+                                momiji::resolveAST(*immediate.value, labels));
                     },
 
                     [&data, &labels] (const ops::AbsoluteShort& addr) {
                         data.cnt = 2;
-                        data.val = momiji::resolveAST(*addr.value, labels);
+                        data.val = std::uint32_t(
+                                momiji::resolveAST(*addr.value, labels));
                     },
 
                     [&data, &labels] (const ops::AbsoluteLong& addr) {
                         data.cnt = 4;
-                        data.val = momiji::resolveAST(*addr.value, labels);
+                        data.val = std::uint32_t(
+                                momiji::resolveAST(*addr.value, labels));
                     }
                 }, op);
             // clang-format on

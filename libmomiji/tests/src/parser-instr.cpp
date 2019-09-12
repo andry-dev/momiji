@@ -1,6 +1,8 @@
 #include "./testing.h"
 #include <momiji/Parser.h>
 
+int testAdd();
+
 int testAdd()
 {
     auto res = momiji::parse("add.w #123, d0");

@@ -13,7 +13,8 @@ namespace momiji::enc
     {
         repr::DivS bits;
 
-        bits.datareg = std::get<operands::DataRegister>(instr.operands[1]).reg;
+        bits.datareg = std::uint16_t(
+            std::get<operands::DataRegister>(instr.operands[1]).reg);
 
         bits.srctype = getCorrectOpType(instr.operands[0]);
         bits.srcmode = getCorrectOpMode(instr.operands[0]);
@@ -32,7 +33,8 @@ namespace momiji::enc
     {
         repr::DivS bits;
 
-        bits.datareg = std::get<operands::DataRegister>(instr.operands[1]).reg;
+        bits.datareg = std::uint16_t(
+            std::get<operands::DataRegister>(instr.operands[1]).reg);
 
         bits.srctype = getCorrectOpMode(instr.operands[0]);
         bits.srcmode = getCorrectOpMode(instr.operands[0]);

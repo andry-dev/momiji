@@ -5,7 +5,7 @@
 namespace momiji::enc
 {
     void hcf(const momiji::ParsedInstruction& /*instr*/,
-             const momiji::LabelInfo& labels,
+             const momiji::LabelInfo& /*labels*/,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& additionalData)
     {
@@ -16,7 +16,7 @@ namespace momiji::enc
     }
 
     void breakpoint(const momiji::ParsedInstruction& /*instr*/,
-                    const momiji::LabelInfo& labels,
+                    const momiji::LabelInfo& /*labels*/,
                     OpcodeDescription& opcode,
                     std::array<AdditionalData, 2>& additionalData)
     {

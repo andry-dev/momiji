@@ -20,7 +20,7 @@ namespace momiji::enc
         if (matchOperand<operands::AbsoluteShort>(op) ||
             matchOperand<operands::AbsoluteLong>(op))
         {
-            additionalData[0].val = extractASTValue(op, labels);
+            additionalData[0].val = std::uint32_t(extractASTValue(op, labels));
             additionalData[0].cnt = 4;
         }
 
@@ -29,7 +29,7 @@ namespace momiji::enc
     }
 
     void jsr(const momiji::ParsedInstruction& instr,
-             const momiji::LabelInfo& labels,
+             const momiji::LabelInfo& /*labels*/,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& /*additionalData*/)
     {

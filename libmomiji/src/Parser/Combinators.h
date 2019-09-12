@@ -75,7 +75,7 @@ namespace momiji
                 }(),
                 ...);
 
-            res.parsed_str = savedStr.substr(0, idx);
+            res.parsed_str = savedStr.substr(0, std::size_t(idx));
 
             return res;
         };
@@ -741,54 +741,6 @@ namespace momiji
     {
         return
             [&instr, opNum](std::string_view str) -> momiji::parser_metadata {
-                constexpr auto inter_dec_parser =
-                    SeqNext(Char('#'), GenericDecimal());
-#if 0
-
-            auto decimal_num =
-                Map(inter_dec_parser, [&instr, opNum](auto parsed_str) {
-                    const std::int64_t val =
-                        std::stoll(std::string { parsed_str });
-
-                    momiji::operands::Immediate op;
-                    op.value = std::make_unique<momiji::objects::MathASTNode>();
-                    op.value->value =
-                        momiji::objects::Number { std::int32_t(val) };
-
-                    instr.operands[opNum] = std::move(op);
-                });
-
-            constexpr auto inter_hex_parser = SeqNext(Char('#'), GenericHex());
-            auto hex_num                    = Map(
-                inter_hex_parser, [&instr, opNum](std::string_view parsed_str) {
-                    const std::int64_t val =
-                        std::stoll(std::string { parsed_str }, nullptr, 16);
-
-                    momiji::operands::Immediate op;
-                    op.value = std::make_unique<momiji::objects::MathASTNode>();
-                    op.value->value =
-                        momiji::objects::Number { std::int32_t(val) };
-
-                    instr.operands[opNum] = std::move(op);
-                });
-
-            // Example: move.w #arr, a0
-            //          ^ moves the "address" of "arr" in a0
-            constexpr auto inter_imm_label_parser = SeqNext(Char('#'), Word());
-            auto imm_label =
-                Map(inter_imm_label_parser, [&instr, opNum](auto parsed_str) {
-                    const auto hash = utils::hash(parsed_str);
-
-                    momiji::operands::Immediate op;
-                    op.value = std::make_unique<momiji::objects::MathASTNode>();
-                    op.value->value = momiji::objects::Label { hash };
-
-                    instr.operands[opNum] = std::move(op);
-                });
-
-
-            return AnyOf(decimal_num, hex_num, imm_label)(str);
-#else
                 std::unique_ptr<momiji::objects::MathASTNode> root;
 
                 return Map(SeqNext(Char('#'),
@@ -799,7 +751,6 @@ namespace momiji
                                op.value              = std::move(root);
                                instr.operands[opNum] = std::move(op);
                            })(str);
-#endif
             };
     }
 
@@ -809,8 +760,6 @@ namespace momiji
         return
             [&instr, opNum](std::string_view str) -> momiji::parser_metadata {
                 constexpr auto inter_parser = SeqNext(Char('a'), DecNumber());
-
-                bool rangeValid = true;
 
                 auto register_parser =
                     MapResult(inter_parser, [&](auto& resultRef) {

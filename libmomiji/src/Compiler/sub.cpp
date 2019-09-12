@@ -15,14 +15,14 @@ namespace momiji::enc
 
         if (matchOperand<operands::DataRegister>(instr.operands[0]))
         {
-            bits.datareg =
-                std::get<operands::DataRegister>(instr.operands[0]).reg;
+            bits.datareg = std::uint16_t(
+                std::get<operands::DataRegister>(instr.operands[0]).reg);
             bits.direction = 1;
         }
         else
         {
-            bits.datareg =
-                std::get<operands::DataRegister>(instr.operands[1]).reg;
+            bits.datareg = std::uint16_t(
+                std::get<operands::DataRegister>(instr.operands[1]).reg);
             bits.direction = 0;
         }
 
@@ -46,8 +46,8 @@ namespace momiji::enc
     {
         repr::SubA bits;
 
-        bits.addreg =
-            std::get<operands::AddressRegister>(instr.operands[1]).reg;
+        bits.addreg = std::uint16_t(
+            std::get<operands::AddressRegister>(instr.operands[1]).reg);
 
         switch (instr.dataType)
         {

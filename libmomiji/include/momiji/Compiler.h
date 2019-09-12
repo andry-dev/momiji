@@ -10,5 +10,6 @@ namespace momiji
         std::int32_t programStart = 0;
     };
 
-    ExecutableMemory compile(const momiji::ParsingInfo& instructions);
+    ExecutableMemory compile(const momiji::ParsingInfo& instructions,
+                             CompilerSettings settings = {});
 } // namespace momiji

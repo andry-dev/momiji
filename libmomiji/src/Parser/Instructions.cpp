@@ -491,7 +491,7 @@ namespace momiji::details
         auto res = CommonInstructionParser(instr)(str);
 
         auto invalidOp = [&](std::int8_t opNum) -> bool {
-            const auto& op = instr.operands[opNum];
+            const auto& op = asl::saccess(instr.operands, opNum);
 
             return !matchOp<ops::DataRegister>(op) ||
                    !matchOp<ops::AddressRegister>(op);
@@ -504,7 +504,7 @@ namespace momiji::details
                 momiji::errors::OperandTypeMismatch error {
                     { momiji::ParserOperand::DataRegister,
                       momiji::ParserOperand::AddressRegister },
-                    momiji::convertOperand(instr.operands[i]),
+                    momiji::convertOperand(asl::saccess(instr.operands, i)),
                     i
                 };
 
@@ -719,7 +719,7 @@ namespace momiji::details
         instr.instructionType = InstructionType::Jmp;
 
         const auto& op1 = instr.operands[0];
-        const auto& op2 = instr.operands[1];
+        // const auto& op2 = instr.operands[1];
 
         switch (convertOperand(op1))
         {

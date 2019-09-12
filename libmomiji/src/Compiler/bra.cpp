@@ -32,7 +32,7 @@ namespace momiji::enc
 #else
         bits.displacement = 0;
 
-        additionalData[0].val = displacement;
+        additionalData[0].val = std::uint32_t(displacement);
         additionalData[0].cnt = 2;
 #endif
 
@@ -65,7 +65,7 @@ namespace momiji::enc
 #else
         bits.displacement     = 0;
 
-        additionalData[0].val = displacement;
+        additionalData[0].val = std::uint32_t(displacement);
         additionalData[0].cnt = 2;
 #endif
 

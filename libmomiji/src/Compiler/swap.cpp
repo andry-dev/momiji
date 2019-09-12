@@ -6,13 +6,13 @@
 namespace momiji::enc
 {
     void swap(const momiji::ParsedInstruction& instr,
-              const momiji::LabelInfo& labels,
+              const momiji::LabelInfo& /*labels*/,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::Swap bits;
 
-        bits.datareg = extractRegister(instr.operands[0]);
+        bits.datareg = std::uint16_t(extractRegister(instr.operands[0]));
 
         opcode.val = std::uint16_t((bits.header << 3) | (bits.datareg));
     }

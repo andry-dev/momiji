@@ -16,15 +16,15 @@ namespace momiji::enc
         // or.* *, d*
         if (matchOperand<operands::DataRegister>(instr.operands[1]))
         {
-            bits.datareg =
-                std::get<operands::DataRegister>(instr.operands[1]).reg;
+            bits.datareg = std::uint16_t(
+                std::get<operands::DataRegister>(instr.operands[1]).reg);
             bits.direction = 0;
         }
         // or.* d*, *
         else
         {
-            bits.datareg =
-                std::get<operands::DataRegister>(instr.operands[0]).reg;
+            bits.datareg = std::uint16_t(
+                std::get<operands::DataRegister>(instr.operands[0]).reg);
             bits.direction = 1;
         }
 
@@ -51,7 +51,8 @@ namespace momiji::enc
         bits.size               = size & 0b111;
 
         additionalData[0].cnt = tobyte[size];
-        additionalData[0].val = extractASTValue(instr.operands[0], labels);
+        additionalData[0].val =
+            std::uint32_t(extractASTValue(instr.operands[0], labels));
 
         bits.dsttype = getCorrectOpType(instr.operands[1]);
         bits.dstmode = getCorrectOpMode(instr.operands[1]);

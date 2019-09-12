@@ -120,10 +120,6 @@ namespace momiji
             return 0;
         }
 
-        std::int32_t visitNum(const momiji::objects::Number& num);
-        std::int32_t visitLabel(const momiji::objects::Label& label);
-        std::int32_t visitOp(const momiji::objects::MathOperator& operand);
-
         std::int32_t visitNum(const momiji::objects::Number& num,
                               const momiji::LabelInfo&)
         {
@@ -396,7 +392,7 @@ namespace momiji
             {
                 bool error = false;
 
-                for (const auto& op : instructions[i].operands)
+                for (const auto& op : asl::saccess(instructions, i).operands)
                 {
                     // clang-format off
                     std::visit(asl::overloaded{
@@ -413,10 +409,11 @@ namespace momiji
                     if (error)
                     {
                         errors::NoLabelFound error;
-                        return make_parser_error(0,
-                                                 instructions[i].sourceLine,
-                                                 error,
-                                                 instructionStr[i]);
+                        return make_parser_error(
+                            0,
+                            asl::saccess(instructions, i).sourceLine,
+                            error,
+                            asl::saccess(instructionStr, i));
                     }
                 }
             }

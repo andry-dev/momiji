@@ -7,7 +7,7 @@
 namespace momiji::enc
 {
     void tst(const momiji::ParsedInstruction& instr,
-             const momiji::LabelInfo& labels,
+             const momiji::LabelInfo& /*labels*/,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>&)
     {

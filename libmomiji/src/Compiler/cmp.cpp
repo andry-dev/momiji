@@ -7,13 +7,14 @@
 namespace momiji::enc
 {
     void cmp(const momiji::ParsedInstruction& instr,
-             const momiji::LabelInfo& labels,
+             const momiji::LabelInfo& /*labels*/,
              OpcodeDescription& opcode,
              std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::Cmp bits;
 
-        bits.datareg = std::get<operands::DataRegister>(instr.operands[1]).reg;
+        bits.datareg = std::uint16_t(
+            std::get<operands::DataRegister>(instr.operands[1]).reg);
         bits.size    = utils::to_val(instr.dataType) & 0b11;
         bits.srctype = getCorrectOpType(instr.operands[0]);
         bits.srcmode = getCorrectOpMode(instr.operands[0]);
@@ -24,14 +25,14 @@ namespace momiji::enc
     }
 
     void cmpa(const momiji::ParsedInstruction& instr,
-              const momiji::LabelInfo& labels,
+              const momiji::LabelInfo& /*labels*/,
               OpcodeDescription& opcode,
               std::array<AdditionalData, 2>& /*additionalData*/)
     {
         repr::CmpA bits;
 
-        bits.addreg =
-            std::get<operands::AddressRegister>(instr.operands[1]).reg;
+        bits.addreg = std::uint16_t(
+            std::get<operands::AddressRegister>(instr.operands[1]).reg);
 
         switch (instr.dataType)
         {
@@ -68,7 +69,8 @@ namespace momiji::enc
         bits.size = size & 0b11;
 
         additionalData[0].cnt = tobyte[size];
-        additionalData[0].val = extractASTValue(instr.operands[0], labels);
+        additionalData[0].val =
+            std::uint32_t(extractASTValue(instr.operands[0], labels));
 
         bits.dsttype = getCorrectOpType(instr.operands[1]);
         bits.dstmode = getCorrectOpMode(instr.operands[1]);

@@ -29,7 +29,8 @@
 
 namespace momiji
 {
-    ExecutableMemory compile(const momiji::ParsingInfo& parsingInfo)
+    ExecutableMemory compile(const momiji::ParsingInfo& parsingInfo,
+                             CompilerSettings /*settings*/)
     {
         ExecutableMemory memory;
 
@@ -217,8 +218,8 @@ namespace momiji
                 case DataType::Long:
                     for (const auto& x : instr.operands)
                     {
-                        const std::uint32_t val =
-                            extractASTValue(x, parsingInfo.labels);
+                        const auto val = std::uint32_t(
+                            extractASTValue(x, parsingInfo.labels));
                         memory.push32(val);
                     }
                     break;
