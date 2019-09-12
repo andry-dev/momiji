@@ -37,6 +37,13 @@ namespace momiji::instr
         break;
         }
 
+        auto& statusReg = sys.cpu.statusRegister;
+
+        statusReg.negative = srcval < 0;
+        statusReg.zero     = srcval == 0;
+        statusReg.overflow = 0;
+        statusReg.carry    = 0;
+
         pc += 2;
 
         pc += std::uint8_t(utils::isImmediate(data, 0));

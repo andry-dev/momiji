@@ -15,6 +15,8 @@ namespace momiji::instr
 
         std::int32_t srcval = utils::readOperandVal(sys, data, 0);
 
+        auto& statusReg = sys.cpu.statusRegister;
+
         switch (data.size)
         {
         case 1:
@@ -38,6 +40,9 @@ namespace momiji::instr
         }
         break;
         }
+
+        statusReg.carry  = 0;
+        statusReg.extend = statusReg.carry;
 
         pc += 2;
         pc += std::uint8_t(utils::isImmediate(data, 0));
