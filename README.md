@@ -65,7 +65,7 @@ cd build
 cmake .. -DMOMIJI_BUILD_GL_GUI=1
 ```
 
-## `momij-qt`
+## `momiji-qt`
 
 You obviously need Qt5.
 
@@ -74,7 +74,7 @@ cd build
 cmake .. -DMOMIJI_BUILD_QT_GUI=1
 ```
 
-## momiji-tools
+## `momiji-tools`
 
 Since these are simple CLI tools you don't need anything special (apart from `libmomiji`, obviously).
 
