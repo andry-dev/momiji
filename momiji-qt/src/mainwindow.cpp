@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "MemoryModel.h"
+
 #include <asl/types>
 #include <iostream>
 
@@ -201,8 +202,6 @@ MainWindow::MainWindow(QWidget* parent)
     ui->tblStackView->setModel(m_stackModel);
     ui->tblStackView->horizontalHeader()->setStretchLastSection(true);
 
-    m_helpWindow->show();
-
     auto& registers = *ui->registers;
 
     for (std::size_t i = 0; i < m_dataRegisters.size(); ++i)
@@ -227,12 +226,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_sourceCode_textChanged()
 {
-    parse();
+    // parse();
 }
 
-void MainWindow::on_registers_itemChanged(QTableWidgetItem* item)
+void MainWindow::on_registers_itemChanged(QTableWidgetItem* /*item*/)
 {
-    int reg = item->row();
+    // int reg = item->row();
 }
 
 void MainWindow::parse()
@@ -287,10 +286,20 @@ void MainWindow::updateEmuValues()
     const auto pc       = lastSys.cpu.programCounter.address;
     const auto sp       = lastSys.cpu.addressRegisters[7].value;
 
-    m_memoryModel->setMemory(lastSys.mem, pc, sp);
-    m_stackModel->setMemory(lastSys.mem, pc, sp);
+    m_memoryModel->setMemory(lastSys.mem, pc, std::uint32_t(sp));
+    m_stackModel->setMemory(lastSys.mem, pc, std::uint32_t(sp));
 
     updateRegisters();
+}
+
+void MainWindow::on_actionBuild_triggered()
+{
+    parse();
+}
+
+void MainWindow::on_actionExecute_triggered()
+{
+    // Execute code
 }
 
 void MainWindow::on_actionStep_triggered()
@@ -316,7 +325,7 @@ void MainWindow::on_actionReset_triggered()
     updateEmuValues();
 }
 
-void MainWindow::on_actionParse_triggered()
+void MainWindow::on_actionManual_triggered()
 {
-    parse();
+    m_helpWindow->show();
 }

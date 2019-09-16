@@ -71,46 +71,14 @@
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
+   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1">
+    <property name="spacing">
+     <number>6</number>
+    </property>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="rightMargin">
-       <number>4</number>
-      </property>
-      <item>
-       <widget class="QTextEdit" name="sourceCode">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="documentTitle">
-         <string>Source code</string>
-        </property>
-        <property name="acceptRichText">
-         <bool>false</bool>
-        </property>
-        <property name="placeholderText">
-         <string>Your code here</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QTableWidget" name="registers">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
+     <widget class="QTextEdit" name="sourceCode">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -118,6 +86,40 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="documentTitle">
+       <string>Source code</string>
+      </property>
+      <property name="acceptRichText">
+       <bool>false</bool>
+      </property>
+      <property name="placeholderText">
+       <string>Your code here</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTableWidget" name="registers">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>225</width>
         <height>0</height>
        </size>
       </property>
@@ -188,7 +190,7 @@
        <bool>false</bool>
       </attribute>
       <attribute name="verticalHeaderDefaultSectionSize">
-       <number>23</number>
+       <number>29</number>
       </attribute>
       <attribute name="verticalHeaderHighlightSections">
        <bool>true</bool>
@@ -456,7 +458,7 @@
      <x>0</x>
      <y>0</y>
      <width>1073</width>
-     <height>24</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -474,14 +476,24 @@
     <property name="title">
      <string>Build</string>
     </property>
-    <addaction name="actionParse"/>
+    <addaction name="actionBuild"/>
+    <addaction name="separator"/>
+    <addaction name="actionExecute"/>
     <addaction name="actionStep"/>
     <addaction name="actionRollback"/>
     <addaction name="actionReset"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionManual"/>
+    <addaction name="actionAbout"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
    <addaction name="menuView"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QDockWidget" name="dockMemDump">
    <property name="maximumSize">
@@ -552,13 +564,21 @@
    <property name="accessibleName">
     <string>Tool Bar</string>
    </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="movable">
+    <bool>true</bool>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionParse"/>
+   <addaction name="actionBuild"/>
+   <addaction name="separator"/>
+   <addaction name="actionExecute"/>
    <addaction name="actionStep"/>
    <addaction name="actionRollback"/>
    <addaction name="actionReset"/>
@@ -609,27 +629,85 @@
    </property>
   </action>
   <action name="actionStep">
+   <property name="icon">
+    <iconset resource="../res/resources.qrc">
+     <normaloff>:/icons/icon_step.ico</normaloff>:/icons/icon_step.ico</iconset>
+   </property>
    <property name="text">
     <string>Step</string>
    </property>
+   <property name="shortcut">
+    <string>F3</string>
+   </property>
   </action>
   <action name="actionRollback">
+   <property name="icon">
+    <iconset resource="../res/resources.qrc">
+     <normaloff>:/icons/icon_rollback.ico</normaloff>:/icons/icon_rollback.ico</iconset>
+   </property>
    <property name="text">
     <string>Rollback</string>
    </property>
+   <property name="shortcut">
+    <string>F4</string>
+   </property>
   </action>
   <action name="actionReset">
+   <property name="icon">
+    <iconset resource="../res/resources.qrc">
+     <normaloff>:/icons/icon_reset.ico</normaloff>:/icons/icon_reset.ico</iconset>
+   </property>
    <property name="text">
     <string>Reset</string>
    </property>
   </action>
-  <action name="actionParse">
+  <action name="actionBuild">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../res/resources.qrc">
+     <normaloff>:/icons/icon_compile.ico</normaloff>:/icons/icon_compile.ico</iconset>
+   </property>
    <property name="text">
-    <string>Parse</string>
+    <string>Build</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="actionManual">
+   <property name="text">
+    <string>Show help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionExecute">
+   <property name="icon">
+    <iconset resource="../res/resources.qrc">
+     <normaloff>:/icons/icon_execute.ico</normaloff>:/icons/icon_execute.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Execute</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+   <property name="shortcutVisibleInContextMenu">
+    <bool>true</bool>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../res/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

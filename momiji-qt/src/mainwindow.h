@@ -29,13 +29,17 @@ private slots:
 
     void on_registers_itemChanged(QTableWidgetItem* item);
 
+    void on_actionBuild_triggered();
+
+    void on_actionExecute_triggered();
+
     void on_actionStep_triggered();
 
     void on_actionRollback_triggered();
 
     void on_actionReset_triggered();
 
-    void on_actionParse_triggered();
+    void on_actionManual_triggered();
 
 private:
     void updateEmuValues();
