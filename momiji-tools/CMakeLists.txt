@@ -11,4 +11,13 @@ new_tool(momiji-dump src/dump.cpp)
 new_tool(momiji-as src/assembler.cpp)
 new_tool(momiji-diff src/diff.cpp)
 
-install(TARGETS momiji-dump momiji-as momiji-diff)
+
+if (WIN32)
+    install(TARGETS momiji-dump momiji-as momiji-diff
+            DESTINATION momiji-tools
+            COMPONENT tools)
+
+elseif (UNIX AND NOT APPLE)
+    install(TARGETS momiji-dump momiji-as momiji-diff
+            COMPONENT tools)
+endif()

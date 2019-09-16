@@ -1,6 +1,18 @@
 [requires]
 tewi/0.1@andry/dev
 asl/0.1@andry/dev
+#qt/5.13.1@bincrafters/stable
 
 [generators]
 cmake_find_package
+cmake_paths
+
+#[options]
+#qt:openssl=False
+#qt:with_glib=False
+#qt:with_sqlite3=False
+#qt:with_mysql=False
+#qt:with_pq=False
+#qt:with_odbc=False
+#qt:qttools=True
+#qt:qttranslations=True

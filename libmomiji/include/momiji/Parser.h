@@ -291,8 +291,6 @@ namespace momiji
         std::int32_t sourceLine;
     };
 
-    static_assert(sizeof(momiji::ParsedInstruction) == 40);
-
     struct Label
     {
         Label(std::uint32_t nameHash, std::int64_t idx, std::string_view string)
@@ -315,8 +313,6 @@ namespace momiji
         std::int64_t idx { 0 };
         std::uint32_t nameHash { 0 };
     };
-
-    static_assert(sizeof(momiji::Label) == 48);
 
     using LabelInfo = std::vector<momiji::Label>;
 

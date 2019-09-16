@@ -1,16 +1,15 @@
 cmake_minimum_required(VERSION 3.13)
 cmake_policy(SET CMP0069 NEW)
 
-include(CPack)
-
 project(momiji CXX)
 
 option(MOMIJI_BUILD_GL_GUI "Enable OpenGL GUI support (requires tewi)" OFF)
 option(MOMIJI_BUILD_QT_GUI "Enable Qt GUI support" OFF)
 option(MOMIJI_BUILD_TOOLS "Build CLI tools" OFF)
+option(MOMIJI_ENABLE_LTO "Enable LTO for all the modules" ON)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_BINARY_DIR})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
 
 include(cmake/set-flags.cmake)
 
@@ -27,4 +26,43 @@ endif()
 
 if (MOMIJI_BUILD_TOOLS)
     add_subdirectory(momiji-tools)
+endif()
+
+
+# Packaging options
+set(CPACK_GENERATOR "7Z")
+
+if (WIN32)
+    list(APPEND CPACK_GENERATOR "NSIS")
+elseif (APPLE)
+    list(APPEND CPACK_GENERATOR "DragNDrop")
+endif()
+
+include(CPack)
+include(CPackComponent)
+
+cpack_add_component(libmomiji
+    DISPLAY_NAME "Main library (static)"
+    REQUIRED
+)
+
+if (MOMIJI_BUILD_TOOLS)
+    cpack_add_component(tools
+        DISPLAY_NAME "CLI tools for Momiji"
+        DEPENDS libmomiji
+    )
+endif()
+
+if (MOMIJI_BUILD_GL_GUI)
+    cpack_add_component(gl
+        DISPLAY_NAME "OpenGL GUI for Momiji"
+        DEPENDS libmomiji
+    )
+endif()
+
+if (MOMIJI_BUILD_QT_GUI)
+    cpack_add_component(qt
+        DISPLAY_NAME "Qt5 GUI for Momiji"
+        DEPENDS libmomiji
+    )
 endif()

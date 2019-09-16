@@ -5,13 +5,7 @@ add_executable(momiji-gl src/main.cpp)
 target_compile_features(momiji-gl PRIVATE cxx_std_17)
 target_link_libraries(momiji-gl PRIVATE libmomiji)
 
-find_package(tewi QUIET)
-
-if (NOT TARGET tewi::tewi)
-    message(STATUS "[momiji] Using local tewi repo")
-    add_subdirectory(external/tewi)
-    add_library(tewi::tewi ALIAS tewi)
-endif()
+find_package(tewi REQUIRED)
 
 target_sources(momiji-gl PRIVATE src/Gui.cpp src/Renderer.cpp)
 target_link_libraries(momiji-gl PRIVATE tewi::tewi)
@@ -23,5 +17,23 @@ add_custom_command(TARGET momiji-gl POST_BUILD
     ${CMAKE_CURRENT_SOURCE_DIR}/postbuild
     $<TARGET_FILE_DIR:momiji-gl>)
 
-install(TARGETS momiji-gl)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/postbuild/res DESTINATION bin/)
+if (WIN32)
+    install(TARGETS momiji-gl
+            DESTINATION momiji-gl
+            COMPONENT gl)
+
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/postbuild/res
+            DESTINATION  momiji-gl/)
+elseif(APPLE)
+    macdeployqt(momiji-gl)
+
+    install(TARGETS momiji-gl
+            COMPONENT gl)
+
+    # ?
+elseif(UNIX AND NOT APPLE) # Linux
+    install(TARGETS momiji-gl
+            COMPONENT gl)
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/postbuild/res
+            DESTINATION  share/momiji-gl/)
+endif()
