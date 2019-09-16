@@ -1,0 +1,81 @@
+name: Build
+
+on: [push]
+
+jobs:
+    build-linux:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                modules: [lib, cli, qt, gl, all]
+
+        steps:
+            - uses: actions/checkout@v1
+            - name: Run build
+              run: |
+                  docker pull 4ndrydev/momiji:latest
+                  docker run -v $(pwd):/src --rm 4ndrydev/momiji:latest \
+                    /src/ci/linux-x64/build.sh ${{ matrix.modules }}
+
+    build-windows:
+        runs-on: windows-latest
+
+        strategy:
+            matrix:
+                modules: [lib, cli, qt, gl, all]
+
+        steps:
+            - name: Remove choco's CPack
+              run:
+                  del C:\ProgramData\Chocolatey\bin\cpack.exe
+            - name: Install conan
+              run: pip3 install conan
+            - uses: actions/checkout@v1
+            - name: Run build
+              run: |
+                  ./ci/win-x64/build.sh ${{ matrix.modules }}
+              shell: bash
+            - name: Package
+              run: |
+                  ./ci/win-x64/package.sh ${{ matrix.modules }}
+              shell: bash
+            - uses: actions/upload-artifact@master
+              name: Upload build dir
+              with:
+                  name: momiji-${{ matrix.modules }}-win64-builddir
+                  path: build/
+
+    build-osx:
+        runs-on: macOS-latest
+
+        strategy:
+            matrix:
+                modules: [lib, qt]
+
+        steps:
+            - name: Install conan
+              run: pip3 install conan
+            - name: Install clang
+              run: |
+                  brew update
+                  brew install llvm
+            - uses: actions/checkout@v1
+            - name: Run build
+              run: |
+                  ./ci/osx/build.sh ${{ matrix.modules }}
+            - name: Package
+              run: |
+                  ./ci/osx/package.sh ${{ matrix.modules }}
+            - uses: actions/upload-artifact@master
+              name: Upload 7Z artifact
+              with:
+                  name: momiji-${{ matrix.modules }}-osx-7z
+                  path: build/momiji-0.1.1-Darwin.7z
+              continue-on-error: true
+            - uses: actions/upload-artifact@master
+              name: Upload DMG artifact
+              with:
+                  name: momiji-${{ matrix.modules }}-osx-dmg
+                  path: build/momiji-0.1.1-Darwin.dmg
+              continue-on-error: true

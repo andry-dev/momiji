@@ -49,10 +49,55 @@ function(windeployqt target)
                 --no-compiler-runtime
                 --no-angle
                 --no-opengl-sw
+                $<$<CONFIG:Release>:--release>
+                $<$<CONFIG:Debug>:--debug>
                 \"$<TARGET_FILE:${target}>\"
         COMMENT "Deploying Qt..."
     )
 
+
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS
+        ${CMAKE_CURRENT_BINARY_DIR}/Qt5Core.dll
+        ${CMAKE_CURRENT_BINARY_DIR}/Qt5Gui.dll
+        ${CMAKE_CURRENT_BINARY_DIR}/Qt5Svg.dll
+        ${CMAKE_CURRENT_BINARY_DIR}/Qt5Widgets.dll
+    )
+
+
+    if (MSYS)
+        get_filename_component(msys_path ${CMAKE_CXX_COMPILER} PATH)
+        set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS
+            ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+            ${msys_path}/libbz2-1.dll
+            ${msys_path}/libdouble-conversion.dll
+            ${msys_path}/libfreetype-6.dll
+            ${msys_path}/libgcc_s_seh-1.dll
+            ${msys_path}/libglib-2.0-0.dll
+            ${msys_path}/libgraphite2.dll
+            ${msys_path}/libharfbuzz-0.dll
+            ${msys_path}/libiconv-2.dll
+            ${msys_path}/libicudt64.dll
+            ${msys_path}/libicudtdd64.dll
+            ${msys_path}/libicuin64.dll
+            ${msys_path}/libicuindd64.dll
+            ${msys_path}/libicuio64.dll
+            ${msys_path}/libicuiodd64.dll
+            ${msys_path}/libicutest64.dll
+            ${msys_path}/libicutestdd64.dll
+            ${msys_path}/libicutu64.dll
+            ${msys_path}/libicutudd64.dll
+            ${msys_path}/libicuuc64.dll
+            ${msys_path}/libicuucdd64.dll
+            ${msys_path}/libintl-8.dll
+            ${msys_path}/libpcre-1.dll
+            ${msys_path}/libpcre2-16-0.dll
+            ${msys_path}/libpng16-16.dll
+            ${msys_path}/libstdc++-6.dll
+            ${msys_path}/libwinpthread-1.dll
+            ${msys_path}/zlib1.dll
+        )
+        message(STATUS "Runtime libs: ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}")
+    endif()
     # windeployqt doesn't work correctly with the system runtime libraries,
     # so we fall back to one of CMake's own modules for copying them over
 

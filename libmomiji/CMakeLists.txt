@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.13)
 cmake_policy(SET CMP0069 NEW)
 
+project(libmomiji)
+
 add_library(libmomiji)
 target_compile_features(libmomiji PUBLIC cxx_std_17)
 
@@ -84,13 +86,7 @@ target_sources(libmomiji
 
 momiji_set_target_flags(libmomiji)
 
-find_package(asl)
-
-if (NOT TARGET asl::asl)
-	message(STATUS "[momiji] Using local asl repo")
-	add_subdirectory(external/asl)
-	add_library(asl::asl ALIAS asl)
-endif()
+find_package(asl REQUIRED)
 
 target_link_libraries(libmomiji PUBLIC asl::asl)
 set_target_properties(libmomiji PROPERTIES
@@ -108,8 +104,9 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/momiji
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/external/nonstd
         TYPE INCLUDE)
 
-install(TARGETS libmomiji
-        EXPORT libmomiji-targets)
+install(TARGETS libmomiji ${libmomiji_additional_exports}
+        EXPORT libmomiji-targets
+        COMPONENT libmomiji)
 
 install(EXPORT libmomiji-targets
         NAMESPACE momiji::

@@ -335,13 +335,8 @@ void gui()
                     momiji::DecodedInstruction instr =
                         momiji::decode(memview, i);
 
-                    std::uint8_t lower  = memview.read8(i);
-                    std::uint8_t higher = 0;
-
-                    if ((i + 1) < end)
-                    {
-                        higher = memview.read8(i + 1);
-                    }
+                    std::uint8_t lower  = memview.read8(i).value_or(0);
+                    std::uint8_t higher = memview.read8(i + 1).value_or(0);
 
                     auto pcadd   = memview.begin() + pc;
                     auto curradd = memview.begin() + i;
@@ -624,12 +619,12 @@ void gui()
                      i >= maxStackLength;
                      i -= 2)
                 {
-                    std::uint8_t lower  = memview.read8(i);
+                    std::uint8_t lower  = memview.read8(i).value_or(0);
                     std::uint8_t higher = 0;
 
                     if ((i - 1) >= maxStackLength)
                     {
-                        higher = memview.read8(i - 1);
+                        higher = *memview.read8(i - 1);
                     }
 
                     auto pcadd   = memview.begin() + sp;
