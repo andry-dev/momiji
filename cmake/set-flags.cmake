@@ -32,7 +32,9 @@ function(momiji_set_target_flags target)
             #-Wno-sign-conversion
             #-Wno-conversion
             -Wno-exit-time-destructors
+            -Wno-global-constructors
             -Wno-format-pedantic
+            -Wno-redundant-parens
             -ferror-limit=5
             )
     endif()
