@@ -15,7 +15,7 @@ class MemoryModel final : public QAbstractTableModel
     Q_OBJECT
 public:
     MemoryModel(MemoryType type);
-    virtual ~MemoryModel() = default;
+    virtual ~MemoryModel() override = default;
 
     void setMemory(momiji::ConstExecutableMemoryView mem,
                    std::uint32_t pc,

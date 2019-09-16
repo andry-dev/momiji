@@ -29,7 +29,7 @@ void MemoryModel::setMemory(momiji::ConstExecutableMemoryView mem,
     emit layoutChanged();
 }
 
-int MemoryModel::rowCount(const QModelIndex& parent) const
+int MemoryModel::rowCount(const QModelIndex& /*parent*/) const
 {
     std::int64_t begin = 0;
     std::int64_t end   = 0;
@@ -47,10 +47,10 @@ int MemoryModel::rowCount(const QModelIndex& parent) const
         break;
     }
 
-    return (end - begin) / 2;
+    return int(end - begin) / 2;
 }
 
-int MemoryModel::columnCount(const QModelIndex& parent) const
+int MemoryModel::columnCount(const QModelIndex& /*parent*/) const
 {
     switch (m_type)
     {
@@ -83,11 +83,11 @@ QVariant MemoryModel::getExecData(const QModelIndex& index, int role) const
 
     case 1:
     {
-        std::uint8_t higher = m_memory.read8(std::uint64_t(begin)).value_or(0);
+        std::uint8_t higher = m_memory.read8(std::int64_t(begin)).value_or(0);
         std::uint8_t lower  = 0;
         if ((begin + 1) < end)
         {
-            lower = m_memory.read8(std::uint64_t(begin + 1)).value_or(0);
+            lower = m_memory.read8(std::int64_t(begin + 1)).value_or(0);
         }
 
         return { QString::number(higher, 16) + " " +
@@ -96,8 +96,7 @@ QVariant MemoryModel::getExecData(const QModelIndex& index, int role) const
 
     case 2:
     {
-        const auto decodedInstr =
-            momiji::decode(m_memory, std::uint64_t(begin));
+        const auto decodedInstr = momiji::decode(m_memory, std::int64_t(begin));
         return { QString::fromStdString(decodedInstr.string) };
     }
     }
@@ -124,11 +123,11 @@ QVariant MemoryModel::getStackData(const QModelIndex& index, int role) const
 
     case 1:
     {
-        std::uint8_t higher = m_memory.read8(std::uint64_t(end)).value_or(0);
+        std::uint8_t higher = m_memory.read8(std::int64_t(end)).value_or(0);
         std::uint8_t lower  = 0;
         if ((end - 1) >= begin)
         {
-            lower = m_memory.read8(std::uint64_t(end - 1)).value_or(0);
+            lower = m_memory.read8(std::int64_t(end - 1)).value_or(0);
         }
 
         return { QString::number(higher, 16) + " " +
@@ -165,7 +164,7 @@ QVariant MemoryModel::data(const QModelIndex& index, int role) const
     return {};
 }
 
-Qt::ItemFlags MemoryModel::flags(const QModelIndex& index) const
+Qt::ItemFlags MemoryModel::flags(const QModelIndex& /*index*/) const
 {
     return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
