@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="qrc:/help/style.css" />
+    </head>
+
+    <body>
+        <div class="content">
+            <h1>Naming</h1>
+
+            <p>This page describes the naming for the stuff in the emulator and
+            this manual</p>
+
+            <h2>Data types</h2>
+            <table>
+                <tr>
+                    <td>Byte</td>
+                    <td>8 bits</td>
+                </tr>
+                <tr>
+                    <td>Word/Short</td>
+                    <td>16 bits</td>
+                </tr>
+                <tr>
+                    <td>Long</td>
+                    <td>32 bits</td>
+                </tr>
+            </table>
+
+            <h2>About expressions</h2>
+
+
+            <h2>Addressing modes</h2>
+            <p><b>Notation:</b> an '*' means any number between 0 and 7<br/>
+            <b>Notation:</b> two '*' means any data or address register<br/>
+            <b>Notation:</b> an "&lt;EXPR&gt;" means any integer expression with label resolution</p>
+
+            <br/>
+
+            <table>
+                <tr>
+                    <td>Data register</td>
+                    <td>Anything in the form of <b>d*</b></td>
+                </tr>
+                <tr>
+                    <td>Address register</td>
+                    <td>Anything in the form of <b>a*</b></td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>Anything in the form of <b>(a*)</b></td>
+                </tr>
+                <tr>
+                    <td>Address with Pre-decrement</td>
+                    <td>Anything in the form of <b>-(a*)</b></td>
+                </tr>
+                <tr>
+                    <td>Address with Post-increment</td>
+                    <td>Anything in the form of <b>(a*)+</b></td>
+                </tr>
+                <tr>
+                    <td>Address with Offset/Displacement</td>
+                    <td>Anything in the form of <b>&lt;EXPR&gt;(a*)</b></td>
+                </tr>
+                <tr>
+                    <td>Address with Index</td>
+                    <td>Anything in the form of <b>(&lt;EXPR&gt;, a*, **)</b> or <b>(a*, **)</b></td>
+                </tr>
+                <tr>
+                    <td>Absolute Short</td>
+                    <td>Any <b>&lt;EXPR&gt;</b> which can fit a Word</td>
+                </tr>
+                <tr>
+                    <td>Absolute Long</td>
+                    <td>Any <b>&lt;EXPR&gt;</b> which can fit a Long</td>
+                </tr>
+                <tr>
+                    <td>Immediate</td>
+                    <td>Any <b>#&lt;EXPR&gt;</b></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

@@ -1,4 +1,17 @@
 <RCC>
-    <qresource prefix="/styles"/>
-    <qresource prefix="/icons"/>
+    <qresource prefix="/">
+        <file>icons/icon_compile.ico</file>
+        <file>icons/icon_execute.ico</file>
+        <file>icons/icon_step.ico</file>
+        <file>icons/icon_rollback.ico</file>
+        <file>icons/icon_reset.ico</file>
+
+        <file>help/style.css</file>
+
+        <file>help/index_en_US.html</file>
+        <file>help/index_it_IT.html</file>
+
+        <file>help/move_en_US.html</file>
+        <file>help/move_it_IT.html</file>
+    </qresource>
 </RCC>

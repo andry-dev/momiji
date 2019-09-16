@@ -14,6 +14,9 @@ find_package(Qt5
     LinguistTools
     REQUIRED)
 
+qt5_add_resources(RCCFiles
+    res/resources.qrc)
+
 qt5_create_translation(QmFiles
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     res/translations/momijiqt_it.ts)
@@ -25,6 +28,7 @@ add_executable(momiji-qt
     src/MemoryModel.cpp
     src/helpwindow.cpp
     src/helpwindow.ui
+    ${RCCFiles}
     ${QmFiles})
 
 target_link_libraries(momiji-qt PUBLIC

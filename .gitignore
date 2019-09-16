@@ -10,3 +10,5 @@ CMakeSettings.json
 .idea/
 .clangd/
 .ccls-cache/
+
+momiji-qt/**/*.*~

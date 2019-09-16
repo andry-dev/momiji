@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="qrc:/help/style.css" />
+    </head>
+
+    <body>
+        <div class="content">
+            <h1>MOVE</h1>
+
+            <h2>Synopsis</h2>
+            <pre><code>move.* SRC, DST</code></pre>
+            <p>DST = SRC<p>
+
+            <h2>Description</h2>
+            <p>Copies data from <b>SRC</b> to <b>DST</b>.</p>
+
+            <h2>Supported data types</h2>
+            <p>Byte, Word and Long if DST is not an address register.</p>
+            <p>Word and Long if DST is an address register.</p>
+
+            <h2>Equivalent C code</h2>
+            <pre><code>x = y;</code></pre>
+
+            <h2>Status register modifications</h2>
+            <ul>
+                <li>Overflow - 0</li>
+                <li>Carry - 0</li>
+                <li>Negative - Set if SRC is less than 0</li>
+                <li>Zero - Set if SRC is equal to 0</li>
+            </ul>
+        </div>
+    </body>
+</html>
