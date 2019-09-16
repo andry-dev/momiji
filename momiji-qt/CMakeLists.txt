@@ -39,7 +39,14 @@ target_link_libraries(momiji-qt PUBLIC
 
 momiji_set_target_flags(momiji-qt)
 
-install(TARGETS momiji-qt)
+add_custom_command(TARGET momiji-qt POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+        ${CMAKE_CURRENT_BINARY_DIR}/translations
+
+    COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_CURRENT_BINARY_DIR}/momijiqt_it.qm
+        ${CMAKE_CURRENT_BINARY_DIR}/translations)
+
 
 include(cmake/DeployQt.cmake)
 if (WIN32)
@@ -47,4 +54,9 @@ if (WIN32)
 elseif(APPLE)
     macdeployqt(momiji-qt)
 endif()
+
+install(TARGETS momiji-qt)
+
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/translations
+        DESTINATION  share/momiji-qt/)
 
