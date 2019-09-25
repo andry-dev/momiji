@@ -24,7 +24,7 @@ namespace momiji::utils
         {
         case 1:
         {
-            const auto val = base.read8(pc + 3);
+            const auto val = base.read8(pc + 2);
             return std::int32_t(val.value_or(0));
         }
 
