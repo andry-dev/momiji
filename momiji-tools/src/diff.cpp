@@ -56,22 +56,22 @@ int main(int argc, const char** argv)
          i < memview1.executableMarker.end && j < memview2.executableMarker.end;
          ++i, ++j)
     {
-        auto lower1  = memview1.read8(i).value_or(0);
-        auto higher1 = 0;
+        auto higher1 = memview1.read8(i).value_or(0);
+        auto lower1  = 0;
 
-        auto lower2  = memview2.read8(j).value_or(0);
-        auto higher2 = 0;
+        auto higher2 = memview2.read8(j).value_or(0);
+        auto lower2  = 0;
 
         if ((i + 1) < memview1.executableMarker.end)
         {
             const auto res = memview1.read8(i + 1);
-            higher1        = res.value_or(0);
+            lower1         = res.value_or(0);
         }
 
         if ((j + 1) < memview2.executableMarker.end)
         {
             const auto res = memview2.read8(j + 1);
-            higher2        = res.value_or(0);
+            lower2         = res.value_or(0);
         }
 
         if (lower1 != lower2 || higher1 != higher2)

@@ -335,8 +335,8 @@ void gui()
                     momiji::DecodedInstruction instr =
                         momiji::decode(memview, i);
 
-                    std::uint8_t lower  = memview.read8(i).value_or(0);
-                    std::uint8_t higher = memview.read8(i + 1).value_or(0);
+                    std::uint8_t higher = memview.read8(i).value_or(0);
+                    std::uint8_t lower  = memview.read8(i + 1).value_or(0);
 
                     auto pcadd   = memview.begin() + pc;
                     auto curradd = memview.begin() + i;
