@@ -13,6 +13,20 @@ set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
 
 include(cmake/set-flags.cmake)
 
+find_package(Git)
+
+execute_process(COMMAND
+    ${GIT_EXECUTABLE} describe --always --dirty
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    OUTPUT_VARIABLE MOMIJI_GIT_SHA1
+    ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+execute_process(COMMAND
+    ${GIT_EXECUTABLE} rev-list --count HEAD
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    OUTPUT_VARIABLE MOMIJI_GIT_REV
+    ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+
 # The library
 add_subdirectory(libmomiji)
 

@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "aboutdialog.h"
 #include "ui_mainwindow.h"
 
 #include "MemoryModel.h"
@@ -193,7 +194,8 @@ MainWindow::MainWindow(QWidget* parent)
     , ui(new Ui::MainWindow)
     , m_memoryModel(new MemoryModel(MemoryType::Executable))
     , m_stackModel(new MemoryModel(MemoryType::Stack))
-    , m_helpWindow(new HelpWindow)
+    , m_helpWindow(std::make_unique<HelpWindow>())
+    , m_aboutDialog(std::make_unique<AboutDialog>())
 {
     ui->setupUi(this);
 
@@ -300,6 +302,10 @@ void MainWindow::on_actionBuild_triggered()
 void MainWindow::on_actionExecute_triggered()
 {
     // Execute code
+    while (m_emulator.step())
+    {
+        updateEmuValues();
+    }
 }
 
 void MainWindow::on_actionStep_triggered()
@@ -328,4 +334,13 @@ void MainWindow::on_actionReset_triggered()
 void MainWindow::on_actionManual_triggered()
 {
     m_helpWindow->show();
+}
+
+void MainWindow::on_actionRetain_system_states_triggered()
+{
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    m_aboutDialog->show();
 }
