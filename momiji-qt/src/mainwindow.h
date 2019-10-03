@@ -4,12 +4,14 @@
 #include <QMainWindow>
 #include <QTableWidgetItem>
 #include <array>
+#include <memory>
 
 #include <momiji/Emulator.h>
 
 #include "MemoryModel.h"
 
 #include "helpwindow.h"
+#include "aboutdialog.h"
 
 namespace Ui
 {
@@ -41,6 +43,10 @@ private slots:
 
     void on_actionManual_triggered();
 
+    void on_actionRetain_system_states_triggered();
+
+    void on_actionAbout_triggered();
+
 private:
     void updateEmuValues();
     void updateRegisters();
@@ -52,7 +58,8 @@ private:
     Ui::MainWindow* ui;
     MemoryModel* m_memoryModel;
     MemoryModel* m_stackModel;
-    HelpWindow* m_helpWindow;
+    std::unique_ptr<HelpWindow> m_helpWindow;
+    std::unique_ptr<AboutDialog> m_aboutDialog;
 
     std::array<QTableWidgetItem*, 8> m_dataRegisters;
     std::array<QTableWidgetItem*, 8> m_addressRegisters;
