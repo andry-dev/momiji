@@ -19,7 +19,9 @@ mkdir -p build
 cd build
 conan install --generator ${conan_def_generator} ${asl_package_name}
 
-export cmake_args=" -G Ninja -DCMAKE_BUILD_TYPE=Release "
+export cmake_args=" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr "
 export build_command="ninja"
 
 ./../ci/linux-x64/build-${1:-lib}.sh
+
+./../ci/linux-x64/package.sh ${1:-lib}

@@ -12,11 +12,27 @@ jobs:
 
         steps:
             - uses: actions/checkout@v1
-            - name: Run build
+            - name: Run build and package
               run: |
                   docker pull 4ndrydev/momiji:latest
-                  docker run -v $(pwd):/src --rm 4ndrydev/momiji:latest \
+                  docker run --name build \
+                    -v $(pwd):/src \
+                    --cap-add SYS_ADMIN \
+                    --device /dev/fuse \
+                    --security-opt apparmor:unconfined \
+                    4ndrydev/momiji:latest \
                     /src/ci/linux-x64/build.sh ${{ matrix.modules }}
+                    #- name: Package
+                    #  run: |
+                    #      docker start build
+                    #      docker exec build \
+                    #        /src/ci/linux-x64/package.sh ${{ matrix.modules }}
+            - uses: actions/upload-artifact@master
+              name: Upload build dir
+              with:
+                  name: momiji-${{ matrix.modules }}-linux-builddir
+                  path: build/
+                  continue-on-error: true
 
     build-windows:
         runs-on: windows-latest

@@ -28,6 +28,9 @@ if (MOMIJI_BUILD_TOOLS)
     add_subdirectory(momiji-tools)
 endif()
 
+if (UNIX AND NOT APPLE)
+    include(cmake/linux-install.cmake)
+endif()
 
 # Packaging options
 set(CPACK_GENERATOR "7Z")

@@ -12,6 +12,7 @@ RUN apt-get -y update && \
                          ninja-build qtbase5-dev qtbase5-dev-tools \
                          qttools5-dev qttools5-dev-tools \
                          libglfw3-dev python3-pip python3-setuptools \
+                         imagemagick wget libfuse2 file gpg qt5-default \
     && rm -rf /var/lib/apt/lists/*
 
 

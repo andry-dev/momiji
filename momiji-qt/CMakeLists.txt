@@ -26,6 +26,8 @@ add_executable(momiji-qt MACOSX_BUNDLE
     src/MemoryModel.cpp
     src/helpwindow.cpp
     src/helpwindow.ui
+    src/aboutdialog.cpp
+    src/aboutdialog.ui
     ${RCCFiles}
     ${QmFiles})
 
@@ -75,7 +77,7 @@ elseif (UNIX AND NOT APPLE) # Linux
 
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/translations
             DESTINATION  share/momiji-qt/)
+
+    install(FILES deploy/momiji-qt.desktop
+            DESTINATION share/applications)
 endif()
-
-
-

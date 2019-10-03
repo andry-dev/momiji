@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Momiji Diff
+Comment=Diff two m68k executables' traces
+Exec=momiji-diff
+Icon=momiji
+Terminal=true
+Categories=Development;

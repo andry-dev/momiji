@@ -36,4 +36,7 @@ elseif(UNIX AND NOT APPLE) # Linux
             COMPONENT gl)
     install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/postbuild/res
             DESTINATION  share/momiji-gl/)
+
+    install(FILES deploy/momiji-gl.desktop
+            DESTINATION share/applications)
 endif()
