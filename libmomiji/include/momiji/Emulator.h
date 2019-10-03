@@ -78,4 +78,13 @@ namespace momiji
 
         void loadNewSettings(EmulatorSettings);
     };
+
+    template <typename F>
+    void continueEmulatorExecution(Emulator& emu, F&& fun)
+    {
+        while (emu.step())
+        {
+            fun();
+        }
+    }
 } // namespace momiji
