@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Momiji GL
+Comment=Basic m68k emulator (OpenGL GUI)
+Exec=momiji-gl
+Icon=momiji
+Terminal=false
+Categories=Development;

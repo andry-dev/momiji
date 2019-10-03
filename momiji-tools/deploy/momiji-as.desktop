@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Momiji Assembler
+Comment=Basic m68k assembler
+Exec=momiji-as
+Icon=momiji
+Terminal=true
+Categories=Development;

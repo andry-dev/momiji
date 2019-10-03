@@ -9,6 +9,8 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
+    app.setWindowIcon(QIcon(":/icons/program.ico"));
+
     QTranslator qtTranslator;
     qtTranslator.load("qt_" + QLocale::system().name(),
                       QLibraryInfo::location(QLibraryInfo::TranslationsPath));

@@ -20,4 +20,10 @@ if (WIN32)
 elseif (UNIX AND NOT APPLE)
     install(TARGETS momiji-dump momiji-as momiji-diff
             COMPONENT tools)
+
+    install(FILES
+            deploy/momiji-as.desktop
+            deploy/momiji-dump.desktop
+            deploy/momiji-diff.desktop
+            DESTINATION share/applications)
 endif()

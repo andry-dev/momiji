@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Momiji Dump
+Comment=Dump m68k executables' memory
+Exec=momiji-dump
+Icon=momiji
+Terminal=true
+Categories=Development;

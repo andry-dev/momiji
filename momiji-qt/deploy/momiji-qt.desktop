@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Momiji Qt
+Comment=Basic m68k emulator (Qt GUI)
+Exec=momiji-qt
+Icon=momiji
+Terminal=false
+Categories=Development;
