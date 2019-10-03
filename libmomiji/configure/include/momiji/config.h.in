@@ -1,0 +1,30 @@
+#pragma once
+
+#include <string_view>
+
+namespace momiji
+{
+    struct LibVer
+    {
+        int major;
+        int minor;
+        int patch;
+
+        std::string_view commitHash;
+        std::string_view branchRev;
+    };
+
+    constexpr LibVer version = {
+        @libmomiji_VERSION_MAJOR@,
+        @libmomiji_VERSION_MINOR@,
+        @libmomiji_VERSION_PATCH@,
+        "@MOMIJI_GIT_SHA1@",
+        "@MOMIJI_GIT_REV@"
+    };
+
+    constexpr std::string_view versionStr =
+        "@libmomiji_VERSION_MAJOR@."
+        "@libmomiji_VERSION_MINOR@."
+        "@libmomiji_VERSION_PATCH@-"
+        "r@MOMIJI_GIT_REV@ (@MOMIJI_GIT_SHA1@)";
+}
