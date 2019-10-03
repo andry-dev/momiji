@@ -45,6 +45,6 @@ function(momiji_set_target_flags target)
             -Wno-redundant-parens
             -Wno-used-but-marked-unused
             -ferror-limit=5
-            )
+        )
     endif()
 endfunction()
