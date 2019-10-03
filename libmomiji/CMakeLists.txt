@@ -3,14 +3,21 @@ cmake_policy(SET CMP0069 NEW)
 
 project(libmomiji)
 
+set(libmomiji_VERSION_MAJOR 0)
+set(libmomiji_VERSION_MINOR 1)
+set(libmomiji_VERSION_PATCH 1)
+
 add_library(libmomiji)
 target_compile_features(libmomiji PUBLIC cxx_std_17)
+
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/configure/include/momiji/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/include/momiji/config.h" @ONLY)
 
 target_include_directories(libmomiji SYSTEM PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
    $<INSTALL_INTERFACE:include/>
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/nonstd>
-   $<INSTALL_INTERFACE:external/nonstd>)
+   $<INSTALL_INTERFACE:external/nonstd>
+   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/>)
 
 target_include_directories(libmomiji
     SYSTEM
