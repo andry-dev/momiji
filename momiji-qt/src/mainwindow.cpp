@@ -334,6 +334,8 @@ void MainWindow::on_actionReset_triggered()
 void MainWindow::on_actionManual_triggered()
 {
     m_helpWindow->show();
+    m_helpWindow->activateWindow();
+    m_helpWindow->raise();
 }
 
 void MainWindow::on_actionRetain_system_states_triggered()
@@ -343,4 +345,6 @@ void MainWindow::on_actionRetain_system_states_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
     m_aboutDialog->show();
+    m_aboutDialog->activateWindow();
+    m_aboutDialog->raise();
 }
