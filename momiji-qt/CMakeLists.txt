@@ -19,7 +19,8 @@ qt5_create_translation(QmFiles
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     res/translations/momijiqt_it.ts)
 
-add_executable(momiji-qt MACOSX_BUNDLE
+add_executable(momiji-qt
+    MACOSX_BUNDLE WIN32
     src/main.cpp
     src/mainwindow.cpp
     src/mainwindow.ui

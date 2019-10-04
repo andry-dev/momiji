@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 cmake_policy(SET CMP0069 NEW)
 
-add_executable(momiji-gl src/main.cpp)
+add_executable(momiji-gl WIN32 src/main.cpp)
 target_compile_features(momiji-gl PRIVATE cxx_std_17)
 target_link_libraries(momiji-gl PRIVATE libmomiji)
 
