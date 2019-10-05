@@ -77,6 +77,7 @@ namespace momiji
         bool reset();
 
         void loadNewSettings(EmulatorSettings);
+        [[nodiscard]] EmulatorSettings getSettings() const noexcept;
     };
 
     template <typename F>

@@ -213,6 +213,11 @@ namespace momiji
         m_settings = settings;
     }
 
+    [[nodiscard]] EmulatorSettings Emulator::getSettings() const noexcept
+    {
+        return m_settings;
+    }
+
     void continueEmulatorExecution(Emulator& emu) noexcept
     {
         while (emu.step())
