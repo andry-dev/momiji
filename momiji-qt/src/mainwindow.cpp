@@ -7,6 +7,7 @@
 #include <asl/types>
 #include <iostream>
 
+#include <momiji/Emulator.h>
 #include <momiji/Parser.h>
 
 const QColor g_highlightColor { 61, 174, 233 };
@@ -302,10 +303,9 @@ void MainWindow::on_actionBuild_triggered()
 void MainWindow::on_actionExecute_triggered()
 {
     // Execute code
-    while (m_emulator.step())
-    {
-        updateEmuValues();
-    }
+    momiji::continueEmulatorExecution(m_emulator);
+
+    updateEmuValues();
 }
 
 void MainWindow::on_actionStep_triggered()
@@ -340,6 +340,19 @@ void MainWindow::on_actionManual_triggered()
 
 void MainWindow::on_actionRetain_system_states_triggered()
 {
+    auto settings = m_emulator.getSettings();
+
+    if (ui->actionRetain_system_states->isChecked())
+    {
+        settings.retainStates = momiji::EmulatorSettings::RetainStates::Always;
+    }
+    else
+    {
+        settings.retainStates = momiji::EmulatorSettings::RetainStates::Never;
+    }
+
+    m_emulator.loadNewSettings(settings);
+    updateEmuValues();
 }
 
 void MainWindow::on_actionAbout_triggered()
