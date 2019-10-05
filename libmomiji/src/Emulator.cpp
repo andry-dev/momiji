@@ -24,7 +24,7 @@ namespace momiji
 
     Emulator::Emulator(EmulatorSettings settings)
         : m_systemStates(1)
-        , m_settings(settings)
+        , m_settings(std::move(settings))
     {
     }
 
@@ -47,7 +47,7 @@ namespace momiji
         {
             auto mem = momiji::compile(*res);
 
-            if (m_settings.stackSize & 0b1)
+            if ((m_settings.stackSize & 0b1) != 0)
             {
                 ++m_settings.stackSize;
             }
@@ -79,7 +79,7 @@ namespace momiji
         lastSys.mem  = std::move(binary);
         auto& mem    = lastSys.mem;
 
-        if (m_settings.stackSize & 0b1)
+        if ((m_settings.stackSize & 0b1) != 0)
         {
             ++m_settings.stackSize;
         }
@@ -116,9 +116,9 @@ namespace momiji
             ExecutableMemoryView memview = lastSys.mem;
             const auto pc                = lastSys.cpu.programCounter.address;
 
-            auto pcadd = memview.begin() + pc;
+            auto pcadd = memview.underlying() + pc;
 
-            if (pcadd > memview.begin())
+            if (pcadd > memview.underlying())
             {
                 --lastSys.cpu.programCounter.address;
 
@@ -165,7 +165,7 @@ namespace momiji
         return false;
     }
 
-    bool Emulator::stepHandleMem(never_retain_states_tag,
+    bool Emulator::stepHandleMem(never_retain_states_tag /*unused*/,
                                  DecodedInstruction& instr)
     {
         auto& lastSys = m_systemStates.back();
@@ -177,7 +177,7 @@ namespace momiji
         return true;
     }
 
-    bool Emulator::stepHandleMem(always_retain_states_tag,
+    bool Emulator::stepHandleMem(always_retain_states_tag /*unused*/,
                                  DecodedInstruction& instr)
     {
         auto& lastSys = m_systemStates.back();
@@ -211,5 +211,12 @@ namespace momiji
         reset();
 
         m_settings = settings;
+    }
+
+    void continueEmulatorExecution(Emulator& emu) noexcept
+    {
+        while (emu.step())
+        {
+        }
     }
 } // namespace momiji

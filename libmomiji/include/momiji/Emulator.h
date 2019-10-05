@@ -67,7 +67,7 @@ namespace momiji
         Emulator();
         Emulator(EmulatorSettings);
 
-        const std::vector<momiji::System>& getStates() const;
+        [[nodiscard]] const std::vector<momiji::System>& getStates() const;
 
         std::optional<momiji::ParserError> newState(const std::string& str);
         void newState(momiji::ExecutableMemory binary);
@@ -80,11 +80,13 @@ namespace momiji
     };
 
     template <typename F>
-    void continueEmulatorExecution(Emulator& emu, F&& fun)
+    void continueEmulatorExecution(Emulator& emu, F&& fun) noexcept
     {
         while (emu.step())
         {
             fun();
         }
     }
+
+    void continueEmulatorExecution(Emulator& emu) noexcept;
 } // namespace momiji
