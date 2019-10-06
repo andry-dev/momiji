@@ -38,6 +38,12 @@ target_link_libraries(momiji-qt PUBLIC
     Qt5::Gui
     libmomiji)
 
+if (WIN32)
+    target_link_libraries(momiji-qt PUBLIC
+        Qt5::WinMain
+    )
+endif()
+
 momiji_set_target_flags(momiji-qt)
 
 add_custom_command(TARGET momiji-qt POST_BUILD

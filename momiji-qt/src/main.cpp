@@ -5,6 +5,8 @@
 #include <qcoreapplication.h>
 #include <qlocale.h>
 
+#include <asl/detect_features>
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
