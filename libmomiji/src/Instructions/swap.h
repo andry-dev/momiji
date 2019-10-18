@@ -1,5 +1,6 @@
 #pragma once
 
+#include <momiji/Decoder.h>
 #include <momiji/System.h>
 
 namespace momiji::instr
