@@ -46,10 +46,8 @@ namespace momiji
                 {
                     return 2;
                 }
-                else
-                {
-                    return 4;
-                }
+
+                return 4;
             }
 
             if ((op == OperandType::Immediate) &&

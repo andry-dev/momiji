@@ -53,11 +53,13 @@ namespace momiji
     public:
         BasicMemory() = default;
 
-        BasicMemory(const BasicMemory& oth) = default;
-        BasicMemory(BasicMemory&& oth)      = default;
+        BasicMemory(const BasicMemory& oth)     = default;
+        BasicMemory(BasicMemory&& oth) noexcept = default;
 
         BasicMemory& operator=(const BasicMemory& oth) = default;
-        BasicMemory& operator=(BasicMemory&& oth) = default;
+        BasicMemory& operator=(BasicMemory&& oth) noexcept = default;
+
+        ~BasicMemory() = default;
 
         [[nodiscard]] std::optional<std::uint32_t>
         read32(std::int64_t offset) const noexcept;
@@ -85,16 +87,16 @@ namespace momiji
         [[nodiscard]] bool write8(std::uint8_t val,
                                   std::int64_t offset) noexcept;
 
-        auto begin() const noexcept;
-        auto end() const noexcept;
+        [[nodiscard]] auto begin() const noexcept;
+        [[nodiscard]] auto end() const noexcept;
 
-        auto size() const noexcept;
+        [[nodiscard]] auto size() const noexcept;
 
-        auto empty() const noexcept;
+        [[nodiscard]] auto empty() const noexcept;
 
-        auto data() noexcept;
+        [[nodiscard]] auto data() noexcept;
 
-        Container& underlying();
+        [[nodiscard]] Container& underlying();
 
         MemoryMarker<details::ExecutableMemoryTag> executableMarker {};
         MemoryMarker<details::StackMemoryTag> stackMarker {};
@@ -168,7 +170,7 @@ namespace momiji
         }
         */
 
-        MemoryView(NullMemoryView)
+        MemoryView(NullMemoryView /*unused*/)
         {
             m_data = { gsl::null_span {} };
         }
@@ -185,7 +187,7 @@ namespace momiji
         template <typename T>
         MemoryView& operator=(T&& oth)
         {
-            MemoryView newMem { std::move(oth) };
+            MemoryView newMem { std::forward<T>(oth) };
             std::swap(*this, newMem);
 
             return *this;
@@ -242,37 +244,37 @@ namespace momiji
     }
 
     template <typename Container>
-    auto BasicMemory<Container>::begin() const noexcept
+    [[nodiscard]] auto BasicMemory<Container>::begin() const noexcept
     {
         return m_data.begin();
     }
 
     template <typename Container>
-    auto BasicMemory<Container>::end() const noexcept
+    [[nodiscard]] auto BasicMemory<Container>::end() const noexcept
     {
         return m_data.end();
     }
 
     template <typename Container>
-    auto BasicMemory<Container>::size() const noexcept
+    [[nodiscard]] auto BasicMemory<Container>::size() const noexcept
     {
         return m_data.size();
     }
 
     template <typename Container>
-    auto BasicMemory<Container>::empty() const noexcept
+    [[nodiscard]] auto BasicMemory<Container>::empty() const noexcept
     {
         return m_data.empty();
     }
 
     template <typename Container>
-    auto BasicMemory<Container>::data() noexcept
+    [[nodiscard]] auto BasicMemory<Container>::data() noexcept
     {
         return m_data.data();
     }
 
     template <typename Container>
-    Container& BasicMemory<Container>::underlying()
+    [[nodiscard]] Container& BasicMemory<Container>::underlying()
     {
         return m_data;
     }

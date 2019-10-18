@@ -74,7 +74,7 @@ namespace momiji::utils
     }
 
     template <typename To>
-    constexpr std::int32_t sign_extend(std::int32_t)
+    constexpr std::int32_t sign_extend(std::int32_t /*disabled*/)
     {
         static_assert(details::deleted_type<To>::value,
                       "\nWrong type passed to sign_extend."
@@ -91,8 +91,8 @@ namespace momiji::utils
     template <>
     constexpr std::int32_t sign_extend<std::int8_t>(std::int32_t val)
     {
-        std::int32_t ret  = val & 0x000000FF;
-        std::uint8_t sign = std::uint8_t(ret & 0x000000FF);
+        std::int32_t ret = val & 0x000000FF;
+        auto sign        = std::uint8_t(ret & 0x000000FF);
 
         if ((sign & 0b10000000) != 0)
         {
@@ -105,8 +105,8 @@ namespace momiji::utils
     template <>
     constexpr std::int32_t sign_extend<std::int16_t>(std::int32_t val)
     {
-        std::int32_t ret  = val & 0x0000FFFF;
-        std::uint8_t sign = std::uint8_t((ret & 0x0000FF00) >> 8);
+        std::int32_t ret = val & 0x0000FFFF;
+        auto sign        = std::uint8_t((ret & 0x0000FF00) >> 8);
 
         if ((sign & 0b10000000) != 0)
         {
