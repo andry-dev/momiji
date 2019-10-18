@@ -8,7 +8,6 @@
 #include <type_traits>
 
 #include <asl/detect_features>
-#include <momiji/Decoder.h>
 
 namespace momiji::utils
 {

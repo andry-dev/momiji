@@ -10,6 +10,33 @@
 
 namespace momiji
 {
+    namespace traps
+    {
+        struct InvalidMemoryRead
+        {
+            std::int32_t address;
+        };
+
+        struct InvalidMemoryWrite
+        {
+            std::int32_t address;
+            std::int32_t value;
+        };
+
+        struct DivisionByZero
+        {
+        };
+
+        struct IllegalInstruction
+        {
+        };
+    } // namespace traps
+
+    using TrapType = std::variant<traps::InvalidMemoryRead,
+                                  traps::InvalidMemoryWrite,
+                                  traps::DivisionByZero,
+                                  traps::IllegalInstruction>;
+
     template <typename IntType>
     struct Register
     {
@@ -63,7 +90,7 @@ namespace momiji
     {
         Cpu cpu;
         ExecutableMemory mem;
-        StackMemory stack;
+        std::optional<TrapType> trap;
     };
 
     inline momiji::ExecutableMemoryView make_memory_view(System& sys)
