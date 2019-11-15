@@ -18,7 +18,7 @@ namespace momiji
                                std::string_view sourceCode)
         {
             return nonstd::make_unexpected<ParserError>(
-                { line, column, std::move(error), std::string { sourceCode } });
+                { line, column, error, std::string { sourceCode } });
         }
 
         constexpr bool isInternal(momiji::InstructionType instr) noexcept
@@ -121,7 +121,7 @@ namespace momiji
         }
 
         std::int32_t visitNum(const momiji::objects::Number& num,
-                              const momiji::LabelInfo&)
+                              const momiji::LabelInfo& /*unused*/)
         {
             return num.number;
         }
@@ -182,12 +182,7 @@ namespace momiji
                                      return label.hash == foundLabel.nameHash;
                                  });
 
-                if (res == std::end(labels))
-                {
-                    return false;
-                }
-
-                return true;
+                return res != std::end(labels);
             }
 
             if (std::holds_alternative<objects::MathOperator>(node.value))
@@ -211,7 +206,7 @@ namespace momiji
 
         Parser(std::string_view str, ParserSettings settings)
             : str(str)
-            , settings(settings)
+            , settings(std::move(settings))
         {
         }
 
@@ -558,7 +553,7 @@ namespace momiji
             [&](const ops::Address&) {
                 res = ParserOperand::Address;
             },
-            
+
             [&](const ops::AddressPre&) {
                 res = ParserOperand::AddressPre;
             },
