@@ -7,6 +7,8 @@ option(MOMIJI_BUILD_GL_GUI "Enable OpenGL GUI support (requires tewi)" OFF)
 option(MOMIJI_BUILD_QT_GUI "Enable Qt GUI support" OFF)
 option(MOMIJI_BUILD_TOOLS "Build CLI tools" OFF)
 option(MOMIJI_ENABLE_LTO "Enable LTO for all the modules" ON)
+option(MOMIJI_USE_ASAN "Compile with AddressSanitizer" OFF)
+option(MOMIJI_USE_UBSAN "Compile with UndefinedBehaviourSanitizer" OFF)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
