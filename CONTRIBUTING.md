@@ -15,7 +15,7 @@ I don't really care who you are and what you do in your life; for me everything 
  3. Accept constructive criticism.
 
 Failure to accept the previous rules _will_ result in a project-wide ban --- that's absolute.
-You're an adult, not a children: you should know better.
+You're an adult, not a child: you should know better.
 
 ## How should I submit a bug report?
 
