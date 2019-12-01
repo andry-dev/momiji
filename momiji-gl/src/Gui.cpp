@@ -135,14 +135,14 @@ void gui()
 
     std::string str;
 
-    tewi::Sprite<def_tag> background { glm::vec2 { 0.0f, 0.0f },
+    tewi::Sprite<def_tag> background { glm::vec2 { 0.0F, 0.0F },
                                        "res/bgimage.png" };
 
     momiji::renderer<def_tag> renderer {};
 
     auto shader = renderer.createShaderProgram();
 
-    auto proj     = glm::ortho(0.0f, 1024.0f, 0.0f, 768.0f);
+    auto proj     = glm::ortho(0.0F, 1024.0F, 0.0F, 768.0F);
     glm::mat4 MVP = proj;
 
     while (!win.isClosed())
@@ -180,7 +180,7 @@ void gui()
                     ImGui::Text("sign_extend<i8>");
                     ImGui::SameLine();
                     static std::int32_t ext8 = 0;
-                    ImGui::PushItemWidth(70.0f);
+                    ImGui::PushItemWidth(70.0F);
                     ImGui::InputInt("##1",
                                     &ext8,
                                     0,
@@ -196,7 +196,7 @@ void gui()
                     ImGui::Text("sign_extend<i16>");
                     ImGui::SameLine();
                     static std::int32_t ext16 = 0;
-                    ImGui::PushItemWidth(70.0f);
+                    ImGui::PushItemWidth(70.0F);
                     ImGui::InputInt("##2",
                                     &ext16,
                                     0,
@@ -212,7 +212,7 @@ void gui()
                     ImGui::Text("10 -> 16");
                     ImGui::SameLine();
                     static std::int32_t num10 = 0;
-                    ImGui::PushItemWidth(70.0f);
+                    ImGui::PushItemWidth(70.0F);
                     ImGui::InputInt("##n10",
                                     &num10,
                                     0,
@@ -227,7 +227,7 @@ void gui()
                     ImGui::Text("16 -> 10");
                     ImGui::SameLine();
                     static std::int32_t num16 = 0;
-                    ImGui::PushItemWidth(70.0f);
+                    ImGui::PushItemWidth(70.0F);
                     ImGui::InputInt("##n16",
                                     &num16,
                                     0,
@@ -379,7 +379,7 @@ void gui()
                 emu.reset();
             }
 
-            static std::string errorStr = "";
+            static std::string errorStr {};
             static std::optional<momiji::ParserError> err;
 
             ImGui::SameLine();
@@ -399,7 +399,7 @@ void gui()
                 {
                     // clang-format off
                     std::visit(asl::overloaded{
-                        [&](const UnknownError&) {
+                        [&](const UnknownError& /* unused */) {
                             errorStr += "Unknown error.";
                         },
 
@@ -460,7 +460,7 @@ void gui()
                                         std::string{par.character} + "'.";
                         },
 
-                        [&](const UnknownOperand&) {
+                        [&](const UnknownOperand& /* unused */) {
                             errorStr += "Unknown operand, are you sure "
                                         "the syntax is valid?";
                         },
@@ -539,14 +539,14 @@ void gui()
                 ImGui::PushID(&reg);
                 ImGui::Text("a%ld", i);
                 ImGui::SameLine();
-                ImGui::PushItemWidth(70.0f);
+                ImGui::PushItemWidth(70.0F);
                 ImGui::InputInt("##", &tmp, 0, 0, flags);
                 ImGui::PopItemWidth();
                 ImGui::PopID();
             }
             ImGui::EndGroup();
 
-            ImGui::SameLine(ImGui::GetCursorPosX() + 100.0f);
+            ImGui::SameLine(ImGui::GetCursorPosX() + 100.0F);
 
             ImGui::BeginGroup();
             ImGui::Text("Data");
@@ -557,7 +557,7 @@ void gui()
                 ImGui::PushID(&reg);
                 ImGui::Text("d%ld", i);
                 ImGui::SameLine();
-                ImGui::PushItemWidth(70.0f);
+                ImGui::PushItemWidth(70.0F);
                 ImGui::InputInt("##", &tmp, 0, 0, flags);
                 ImGui::PopItemWidth();
                 ImGui::PopID();
@@ -568,7 +568,7 @@ void gui()
             ImGui::BeginGroup();
             ImGui::Text("PC");
             ImGui::SameLine();
-            ImGui::PushItemWidth(70.0f);
+            ImGui::PushItemWidth(70.0F);
             ImGui::InputInt(
                 "##pc", reinterpret_cast<std::int32_t*>(pc), 0, 0, flags);
 

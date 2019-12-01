@@ -102,7 +102,7 @@ namespace
 
         // clang-format off
         std::visit(asl::overloaded {
-            [&](const UnknownError&) {
+            [&](const UnknownError& /* unused */) {
                 res = MainWindow::tr("unknown error.");
             },
 
@@ -166,7 +166,7 @@ namespace
                       QString{par.character} + "'.";
             },
 
-            [&](const UnknownOperand&) {
+            [&](const UnknownOperand& /* unused */) {
                 res = MainWindow::tr("Unknown operand, are you sure the syntax is valid?");
             },
 
@@ -256,13 +256,10 @@ void MainWindow::parse()
 
         return;
     }
-    else
-    {
-        ui->dockParserOutput->setVisible(false);
-        ui->statusBar->showMessage(
-            MainWindow::tr("Build completed successfully"));
-        updateEmuValues();
-    }
+
+    ui->dockParserOutput->setVisible(false);
+    ui->statusBar->showMessage(MainWindow::tr("Build completed successfully"));
+    updateEmuValues();
 }
 
 void MainWindow::updateRegisters()
