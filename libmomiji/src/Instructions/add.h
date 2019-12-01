@@ -5,7 +5,7 @@
 
 namespace momiji::instr
 {
-    momiji::System add(momiji::System& sys, const InstructionData& instr);
-    momiji::System addi(momiji::System& sys, const InstructionData& instr);
-    momiji::System adda(momiji::System& sys, const InstructionData& instr);
+    momiji::System add(momiji::System& sys, const InstructionData& data);
+    momiji::System addi(momiji::System& sys, const InstructionData& data);
+    momiji::System adda(momiji::System& sys, const InstructionData& data);
 } // namespace momiji::instr
