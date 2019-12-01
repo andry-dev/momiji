@@ -7,6 +7,24 @@
 
 namespace momiji
 {
+    // Success:
+    //     Parsing was successful parsed_str is populated
+    //
+    // Failure:
+    //     Minor error attributed to the wrong parser being used; the working
+    //     parser should be discarded
+    //
+    // FatalError:
+    //     The correct parser was invoked, but something wasn't right in the
+    //     input string so it should error out with the correct contextual
+    //     information
+    enum class IntermediateParserResult : std::int8_t
+    {
+        Success,
+        Failure,
+        FatalError,
+    };
+
     struct parser_metadata
     {
         bool result;

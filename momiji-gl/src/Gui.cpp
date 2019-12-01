@@ -322,7 +322,7 @@ void gui()
                 auto& lastSys = states.back();
 
                 momiji::ConstExecutableMemoryView memview = lastSys.mem;
-                const auto pc = lastSys.cpu.programCounter.address;
+                const auto pc = lastSys.cpu.programCounter;
 
                 const auto begin =
                     std::uint32_t(memview.executableMarker.begin);
@@ -338,7 +338,7 @@ void gui()
                     std::uint8_t higher = memview.read8(i).value_or(0);
                     std::uint8_t lower  = memview.read8(i + 1).value_or(0);
 
-                    auto pcadd   = memview.begin() + pc;
+                    auto pcadd   = memview.begin() + pc.raw();
                     auto curradd = memview.begin() + i;
 
                     ImGui::TextUnformatted(pcadd == curradd ? "=>" : "  ");
@@ -508,11 +508,11 @@ void gui()
                          ImGuiWindowFlags_AlwaysAutoResize |
                              ImGuiWindowFlags_NoResize);
 
-            static bool hexDump      = false;
-            static bool allowEditing = false;
+            static bool hexDump = false;
+            // static bool allowEditing = false;
 
             ImGui::Checkbox("Hex", &hexDump);
-            ImGui::Checkbox("Allow editing", &allowEditing);
+            // ImGui::Checkbox("Allow editing", &allowEditing);
             ImGui::Separator();
             ImGui::NewLine();
 
@@ -527,10 +527,7 @@ void gui()
                 flags |= ImGuiInputTextFlags_CharsHexadecimal;
             }
 
-            if (!allowEditing)
-            {
-                flags |= ImGuiInputTextFlags_ReadOnly;
-            }
+            flags |= ImGuiInputTextFlags_ReadOnly;
 
             ImGui::BeginGroup();
             ImGui::Text("Address");
@@ -538,12 +535,12 @@ void gui()
                  ++i)
             {
                 auto& reg = asl::saccess(last.cpu.addressRegisters, i);
+                auto tmp  = reg.raw();
                 ImGui::PushID(&reg);
                 ImGui::Text("a%ld", i);
                 ImGui::SameLine();
                 ImGui::PushItemWidth(70.0f);
-                ImGui::InputInt(
-                    "##", const_cast<int*>(&reg.value), 0, 0, flags);
+                ImGui::InputInt("##", &tmp, 0, 0, flags);
                 ImGui::PopItemWidth();
                 ImGui::PopID();
             }
@@ -556,34 +553,31 @@ void gui()
             for (asl::isize i = 0; i < asl::ssize(last.cpu.dataRegisters); ++i)
             {
                 auto& reg = asl::saccess(last.cpu.dataRegisters, i);
+                auto tmp  = reg.raw();
                 ImGui::PushID(&reg);
                 ImGui::Text("d%ld", i);
                 ImGui::SameLine();
                 ImGui::PushItemWidth(70.0f);
-                ImGui::InputInt(
-                    "##", const_cast<int*>(&reg.value), 0, 0, flags);
+                ImGui::InputInt("##", &tmp, 0, 0, flags);
                 ImGui::PopItemWidth();
                 ImGui::PopID();
             }
             ImGui::EndGroup();
 
+            auto pc = last.cpu.programCounter.raw();
             ImGui::BeginGroup();
             ImGui::Text("PC");
             ImGui::SameLine();
             ImGui::PushItemWidth(70.0f);
-            ImGui::InputInt("##pc",
-                            const_cast<int*>(reinterpret_cast<const int*>(
-                                &last.cpu.programCounter.address)),
-                            0,
-                            0,
-                            flags);
+            ImGui::InputInt(
+                "##pc", reinterpret_cast<std::int32_t*>(pc), 0, 0, flags);
 
             if (!last.mem.empty())
             {
                 const auto memview = momiji::make_memory_view(last);
-                const auto pc      = last.cpu.programCounter.address;
+                const auto pc      = last.cpu.programCounter;
                 const auto addr =
-                    reinterpret_cast<std::uint64_t>(memview.begin() + pc);
+                    reinterpret_cast<std::uint64_t>(memview.begin() + pc.raw());
                 ImGui::SameLine();
                 ImGui::Text("%lx", addr);
             }
@@ -610,7 +604,7 @@ void gui()
                 const auto& lastSys = states.back();
 
                 const momiji::ConstExecutableMemoryView memview = lastSys.mem;
-                const auto sp = lastSys.cpu.addressRegisters[7].value;
+                const auto sp = lastSys.cpu.addressRegisters[7];
 
                 const auto maxStackLength =
                     memview.size() - emuSettings.stackSize;
@@ -627,7 +621,7 @@ void gui()
                         higher = *memview.read8(i - 1);
                     }
 
-                    auto pcadd   = memview.begin() + sp;
+                    auto pcadd   = memview.begin() + sp.raw();
                     auto curradd = memview.begin() + i;
 
                     ImGui::TextUnformatted(pcadd == curradd ? "=>" : "  ");

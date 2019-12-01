@@ -6,7 +6,7 @@ namespace momiji::instr
 {
     momiji::System tst(momiji::System& sys, const InstructionData& instr)
     {
-        auto& pc         = sys.cpu.programCounter.address;
+        auto& pc         = sys.cpu.programCounter;
         std::int32_t val = utils::readOperandVal(sys, instr, 0);
 
         sys.cpu.statusRegister.negative = (val < 0) ? 0b1 : 0b0;

@@ -89,14 +89,14 @@ int main(int argc, const char** argv)
 
     for (std::uint32_t i = 0; i < state.cpu.dataRegisters.size(); ++i)
     {
-        const auto val = state.cpu.dataRegisters[i].value;
+        const auto val = state.cpu.dataRegisters[i].raw();
         std::printf("d%d: 0x%.8x %d\n", i, val, val);
     }
 
     std::printf("\n--- Address registers ---\n");
     for (std::uint32_t i = 0; i < state.cpu.addressRegisters.size(); ++i)
     {
-        const auto val = state.cpu.addressRegisters[i].value;
+        const auto val = state.cpu.addressRegisters[i].raw();
         std::printf("a%d: 0x%.8x %d\n", i, val, val);
     }
 
