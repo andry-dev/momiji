@@ -315,7 +315,7 @@ void MainWindow::on_actionStep_triggered()
 
 void MainWindow::on_actionRollback_triggered()
 {
-    if (m_emulator.rollbackSys())
+    if (m_emulator.rollback())
     {
         updateEmuValues();
     }

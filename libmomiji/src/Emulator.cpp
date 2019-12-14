@@ -96,33 +96,12 @@ namespace momiji
         m_systemStates.emplace_back(std::move(lastSys));
     }
 
-    bool Emulator::rollbackSys()
+    bool Emulator::rollback()
     {
         if (m_systemStates.size() > 1)
         {
             m_systemStates.pop_back();
             return true;
-        }
-
-        return false;
-    }
-
-    bool Emulator::rollback()
-    {
-        if (m_systemStates.size() > 1)
-        {
-            auto& lastSys                = m_systemStates.back();
-            ExecutableMemoryView memview = lastSys.mem;
-            const auto pc                = lastSys.cpu.programCounter.raw();
-
-            auto pcadd = memview.underlying() + pc;
-
-            if (pcadd > memview.underlying())
-            {
-                --lastSys.cpu.programCounter;
-
-                return true;
-            }
         }
 
         return false;
