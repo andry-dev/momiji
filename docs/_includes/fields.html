@@ -1,0 +1,26 @@
+{% if page.fields %}
+    <h3 id="fields">Member fields</h3>
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Notes</th>
+            <th>Default value</th>
+        </tr>
+
+        {% for type in page.fields %}
+            <tr>
+                <td>{{ type[0] }}</td>
+                <td>{{ type[1].type | markdownify }}</td>
+                {% if type[1].description %}
+                    <td>
+                        {{ type[1].description | markdownify }}
+                    </td>
+                {% endif %}
+                {% if type[1].default %}
+                    <td>{{ type[1].default | markdownify }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}

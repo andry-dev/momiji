@@ -1,0 +1,18 @@
+---
+layout: default
+---
+
+{% include common-layout.html %}
+
+<h2>Values</h2>
+
+<table>
+    {% for val in page.values %}
+        <tr>
+            <td>{{ val.name }}</td>
+            <td>{{ val.description | markdownify }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{{ content }}

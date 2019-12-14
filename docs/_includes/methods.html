@@ -1,0 +1,48 @@
+{% include family.html %}
+
+{% assign methods = siblings | where_exp:"p","p.layout == 'method'" | sort: 'title' %}
+
+
+{% if methods.size > 0 %}
+<h3 id="methods">Methods</h3>
+
+<table>
+    {% for method in methods %}
+        {% if method.ctor %}
+            <tr>
+                <td><a href="{{ method.url }}">(constructor)</a></td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+
+    {% for method in methods %}
+        {% if method.dtor %}
+            <tr>
+                <td><a href="{{ method.url }}">(destructor)</a></td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+
+    {% for method in methods %}
+        {% if method.ctor or method.dtor %}
+            {% continue %}
+        {% endif %}
+
+        <tr>
+            <td>
+                <a href="{{ method.url }}">{{ method.title | escape }}</a>
+            </td>
+            <td>
+                {% if method.brief %}
+                    {{ method.brief | markdownify }}
+                {% elsif method.description %}
+                    {{ method.description | markdownify }}
+                {% else %}
+                    {{ '__MISSING__' | markdownify }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endif %}
