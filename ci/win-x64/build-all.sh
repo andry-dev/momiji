@@ -12,7 +12,7 @@ conan install ..
 ../ci/win-x64/setup-qt.sh
 
 # I'm missing some paths here
-export Qt5_DIR=C:/Qt/Qt5.13.1/5.13.1/msvc2017_64/lib/cmake/Qt5
+export Qt5_DIR=C:/Qt/5.13.1/msvc2017_64/lib/cmake/Qt5
 
 cmake .. ${cmake_args} \
     -DMOMIJI_BUILD_TOOLS=1 \
