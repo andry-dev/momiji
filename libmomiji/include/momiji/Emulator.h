@@ -71,7 +71,6 @@ namespace momiji
 
         std::optional<momiji::ParserError> newState(const std::string& str);
         void newState(momiji::ExecutableMemory binary);
-        bool rollbackSys();
         bool rollback();
         bool step();
         bool reset();

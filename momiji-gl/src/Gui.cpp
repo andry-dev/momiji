@@ -370,7 +370,7 @@ void gui()
             ImGui::SameLine();
             if (ImGui::Button("Rollback"))
             {
-                emu.rollbackSys();
+                emu.rollback();
             }
 
             ImGui::SameLine();
