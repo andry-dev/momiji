@@ -11,8 +11,12 @@ RUN apt-get -y update && \
                          libxkbcommon-dev libxkbcommon-x11-dev \
                          ninja-build qtbase5-dev qtbase5-dev-tools \
                          qttools5-dev qttools5-dev-tools \
+                         libqt5svg5 \
                          libglfw3-dev python3-pip python3-setuptools \
                          imagemagick wget libfuse2 file gpg qt5-default \
+                         inkscape qt5-style-plugins \
+                         qt5-xdgdesktopportal-platformtheme \
+                         qt5-gtk-platformtheme \
     && rm -rf /var/lib/apt/lists/*
 
 
