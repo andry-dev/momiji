@@ -1,0 +1,26 @@
+---
+layout: enum
+title: momiji::RetainStates
+in-header: "<momiji/Emulator.h>"
+description: |
+    Policy to determine if the emulator should maintain previous system states 
+    when stepping through the assembled code.
+brief: |
+    Policy to determine if the emulator should maintain previous system states 
+    when stepping through the assembled code.
+declaration: "enum class RetainStates : std::int8_t"
+values:
+    - name: Always
+      description: |
+        Tells the emulator to always create new copies of the system states
+        for each instruction execution.
+    - name: Never
+      description: |
+        Tells the emulator to never keep track of the various system states.
+        In this mode, each instruction modifies the same
+        [`momiji::System`](/userapi/System), doing a
+        [`rollback()`](/userapi/Emulator/m_rollback) is equivalent to resetting
+        the emulator ([`reset()`](/userapi/Emulator/m_reset)).
+
+        Parsing a new source code in this mode will also reset the emulator.
+---

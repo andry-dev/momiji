@@ -10,5 +10,8 @@ CMakeSettings.json
 .idea/
 .clangd/
 .ccls-cache/
+docs/.jekyll-cache
+docs/.bundle/
+docs/_site/
 
 momiji-qt/**/*.*~

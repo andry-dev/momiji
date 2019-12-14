@@ -1,0 +1,19 @@
+---
+layout: default
+---
+
+<h1>{{ page.title | escape }}</h1>
+
+{% if page.in-header %}
+<p>Defined in header <code>{{ page.in-header | escape }}</code></p>
+{% else %}
+<p class="missing-alert">MISSING HEADER</p>
+{% endif %}
+
+{{ page.brief | markdownify }}
+
+<br/>
+
+{% include overloads.html %}
+
+{{content}}
