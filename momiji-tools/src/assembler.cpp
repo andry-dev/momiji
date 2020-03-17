@@ -23,7 +23,7 @@ int main(int argc, const char** argv)
 
     auto args = utils::convArgs(argc, argv);
 
-    if (args.size() < 1 || args.size() > 2)
+    if (args.empty() || args.size() > 2)
     {
         std::cout << usage;
         return 1;
@@ -44,7 +44,7 @@ int main(int argc, const char** argv)
         using namespace momiji::errors;
         // clang-format off
         std::visit(asl::overloaded {
-            [&](const UnknownError&) {
+            [&](const UnknownError& /* unused */) {
                 errorStr += "unknown error.";
             },
 
@@ -103,7 +103,7 @@ int main(int argc, const char** argv)
                             std::string{par.character} + "'.";
             },
 
-            [&](const UnknownOperand&) {
+            [&](const UnknownOperand& /* unused */) {
                 errorStr += "Unknown operand, are you sure the syntax is valid?";
             },
 

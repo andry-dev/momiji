@@ -102,7 +102,7 @@ namespace
 
         // clang-format off
         std::visit(asl::overloaded {
-            [&](const UnknownError&) {
+            [&](const UnknownError& /* unused */) {
                 res = MainWindow::tr("unknown error.");
             },
 
@@ -166,7 +166,7 @@ namespace
                       QString{par.character} + "'.";
             },
 
-            [&](const UnknownOperand&) {
+            [&](const UnknownOperand& /* unused */) {
                 res = MainWindow::tr("Unknown operand, are you sure the syntax is valid?");
             },
 
@@ -256,13 +256,10 @@ void MainWindow::parse()
 
         return;
     }
-    else
-    {
-        ui->dockParserOutput->setVisible(false);
-        ui->statusBar->showMessage(
-            MainWindow::tr("Build completed successfully"));
-        updateEmuValues();
-    }
+
+    ui->dockParserOutput->setVisible(false);
+    ui->statusBar->showMessage(MainWindow::tr("Build completed successfully"));
+    updateEmuValues();
 }
 
 void MainWindow::updateRegisters()
@@ -270,27 +267,27 @@ void MainWindow::updateRegisters()
     const auto& states  = m_emulator.getStates();
     const auto& lastSys = states.back();
 
-    const auto pc = lastSys.cpu.programCounter.address;
+    const auto pc = lastSys.cpu.programCounter;
 
     for (std::size_t i = 0; i < lastSys.cpu.dataRegisters.size(); ++i)
     {
-        auto& datareg = lastSys.cpu.dataRegisters[i].value;
-        auto& addreg  = lastSys.cpu.addressRegisters[i].value;
-        m_dataRegisters[i]->setText(QString::number(datareg));
-        m_addressRegisters[i]->setText(QString::number(addreg));
+        auto& datareg = lastSys.cpu.dataRegisters[i];
+        auto& addreg  = lastSys.cpu.addressRegisters[i];
+        m_dataRegisters[i]->setText(QString::number(datareg.raw()));
+        m_addressRegisters[i]->setText(QString::number(addreg.raw()));
     }
 
-    ui->registers->item(16, 1)->setText(QString::number(pc));
+    ui->registers->item(16, 1)->setText(QString::number(pc.raw()));
 }
 
 void MainWindow::updateEmuValues()
 {
     const auto& lastSys = m_emulator.getStates().back();
-    const auto pc       = lastSys.cpu.programCounter.address;
-    const auto sp       = lastSys.cpu.addressRegisters[7].value;
+    const auto pc       = lastSys.cpu.programCounter;
+    const auto sp       = lastSys.cpu.addressRegisters[7];
 
-    m_memoryModel->setMemory(lastSys.mem, pc, std::uint32_t(sp));
-    m_stackModel->setMemory(lastSys.mem, pc, std::uint32_t(sp));
+    m_memoryModel->setMemory(lastSys.mem, pc.raw(), std::uint32_t(sp.raw()));
+    m_stackModel->setMemory(lastSys.mem, pc.raw(), std::uint32_t(sp.raw()));
 
     updateRegisters();
 }
@@ -318,7 +315,7 @@ void MainWindow::on_actionStep_triggered()
 
 void MainWindow::on_actionRollback_triggered()
 {
-    if (m_emulator.rollbackSys())
+    if (m_emulator.rollback())
     {
         updateEmuValues();
     }

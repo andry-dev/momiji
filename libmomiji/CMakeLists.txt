@@ -4,13 +4,15 @@ cmake_policy(SET CMP0069 NEW)
 project(libmomiji)
 
 set(libmomiji_VERSION_MAJOR 0)
-set(libmomiji_VERSION_MINOR 1)
+set(libmomiji_VERSION_MINOR 2)
 set(libmomiji_VERSION_PATCH 1)
 
 add_library(libmomiji)
 target_compile_features(libmomiji PUBLIC cxx_std_17)
 
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/configure/include/momiji/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/include/momiji/config.h" @ONLY)
+configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/configure/include/momiji/config.h.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/include/momiji/config.h" @ONLY)
 
 target_include_directories(libmomiji SYSTEM PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -100,7 +102,7 @@ set_target_properties(libmomiji PROPERTIES
     PREFIX ""
     CXX_EXTENSIONS OFF)
 
-if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+if (MOMIJI_BUILD_TESTS)
     include(CTest)
     add_subdirectory(tests)
 endif()

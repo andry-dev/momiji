@@ -63,7 +63,7 @@ namespace momiji
             auto lastSys = m_systemStates.back();
             lastSys.mem  = std::move(mem);
 
-            lastSys.cpu.addressRegisters[7].value =
+            lastSys.cpu.addressRegisters[7] =
                 std::int32_t(lastSys.mem.size() - 2);
             m_systemStates.emplace_back(std::move(lastSys));
 
@@ -91,39 +91,17 @@ namespace momiji
         mem.stackMarker.end   = mem.stackMarker.begin + m_settings.stackSize;
 
         mem.underlying().resize(std::size_t(mem.stackMarker.end), 0);
-        lastSys.cpu.addressRegisters[7].value =
-            std::int32_t(lastSys.mem.size() - 2);
+        lastSys.cpu.addressRegisters[7] = std::int32_t(lastSys.mem.size() - 2);
 
         m_systemStates.emplace_back(std::move(lastSys));
-    }
-
-    bool Emulator::rollbackSys()
-    {
-        if (m_systemStates.size() > 1)
-        {
-            m_systemStates.pop_back();
-            return true;
-        }
-
-        return false;
     }
 
     bool Emulator::rollback()
     {
         if (m_systemStates.size() > 1)
         {
-            auto& lastSys                = m_systemStates.back();
-            ExecutableMemoryView memview = lastSys.mem;
-            const auto pc                = lastSys.cpu.programCounter.address;
-
-            auto pcadd = memview.underlying() + pc;
-
-            if (pcadd > memview.underlying())
-            {
-                --lastSys.cpu.programCounter.address;
-
-                return true;
-            }
+            m_systemStates.pop_back();
+            return true;
         }
 
         return false;
@@ -138,7 +116,7 @@ namespace momiji
             return false;
         }
 
-        const auto pc = lastSys.cpu.programCounter.address;
+        const auto pc = lastSys.cpu.programCounter.raw();
         auto memview  = momiji::make_memory_view(lastSys);
 
         auto pcadd = memview.executableMarker.begin + pc;

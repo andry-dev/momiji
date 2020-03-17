@@ -18,10 +18,10 @@ function(momiji_set_target_flags target)
         ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${OUTPUT_DIRECTORY}"
     )
 
-    set(COMMON_GCC_FLAGS "-Wall -Wpedantic -pedantic -Wshadow -Werror")
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GCC")
         target_compile_options(${target} PUBLIC
-            -Wall -Wpedantic -pedantic -Werror)
+            -Wall -Wpedantic -pedantic -Werror
+        )
 
     elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
         target_compile_options(${target} PUBLIC
@@ -46,5 +46,31 @@ function(momiji_set_target_flags target)
             -Wno-used-but-marked-unused
             -ferror-limit=5
         )
+    endif()
+
+    if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GCC" OR
+        ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+
+        if (MOMIJI_USE_ASAN)
+            message("[momiji] Enabled AddressSanitizer for ${target}")
+            target_compile_options(${target} PUBLIC
+                -fsanitize=address
+            )
+
+            target_link_options(${target} PUBLIC
+                -fsanitize=address
+            )
+        endif()
+
+        if (MOMIJI_USE_UBSAN)
+            message("[momiji] Enabled UndefinedBehaviourSanitizer for ${target}")
+            target_compile_options(${target} PUBLIC
+                -fsanitize=undefined
+            )
+
+            target_link_options(${target} PUBLIC
+                -fsanitize=undefined
+            )
+        endif()
     endif()
 endfunction()

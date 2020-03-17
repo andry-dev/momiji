@@ -90,8 +90,8 @@ int main(int argc, const char** argv)
 
     for (std::uint32_t i = 0; i < state1.cpu.dataRegisters.size(); ++i)
     {
-        const auto val1 = state1.cpu.dataRegisters[i].value;
-        const auto val2 = state2.cpu.dataRegisters[i].value;
+        const auto val1 = state1.cpu.dataRegisters[i].raw();
+        const auto val2 = state2.cpu.dataRegisters[i].raw();
 
         if (val1 != val2)
         {
@@ -104,8 +104,8 @@ int main(int argc, const char** argv)
 
     for (std::uint32_t i = 0; i < state1.cpu.addressRegisters.size(); ++i)
     {
-        const auto val1 = state1.cpu.addressRegisters[i].value;
-        const auto val2 = state2.cpu.addressRegisters[i].value;
+        const auto val1 = state1.cpu.addressRegisters[i].raw();
+        const auto val2 = state2.cpu.addressRegisters[i].raw();
 
         if (val1 != val2)
         {

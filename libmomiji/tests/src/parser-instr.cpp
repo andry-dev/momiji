@@ -20,5 +20,5 @@ int testAdd()
 
 int main()
 {
-    return !testAdd();
+    return static_cast<int>(!testAdd());
 }

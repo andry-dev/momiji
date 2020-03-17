@@ -1,5 +1,7 @@
 set makeprg=./build.sh
 
+set ts=4 sts=4 sw=4 expandtab
+
 command! RunGL :Dispatch! ./rungl.sh
 command! RunQt :Dispatch! ./runqt.sh
 

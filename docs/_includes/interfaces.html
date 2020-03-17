@@ -1,0 +1,27 @@
+{% include family.html %}
+
+{% assign interfaces = siblings | where_exp:"p","p.layout == 'interface'" | sort: 'title' %}
+
+{% if interfaces.size > 0 %}
+<h3 id="interfaces">Interfaces</h3>
+
+<table>
+    {% for int in interfaces %}
+    <tr>
+        <td>
+            <a href="{{ int.url }}">{{ int.title | escape }}</a>
+        </td>
+        <td>
+            {% if int.brief %}
+                {{ int.brief | markdownify }}
+            {% elsif int.description %}
+                {{ int.description | markdownify }}
+            {% else %}
+                {{ '__MISSING__' | markdownify }}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}

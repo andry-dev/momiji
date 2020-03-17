@@ -1,0 +1,24 @@
+{% include family.html %}
+
+{% assign enums = siblings | where_exp:"p","p.layout == 'enum'" %}
+
+{% if enums.size > 0 %}
+<h3 id="enums">Enums</h3>
+<table>
+    {% for x in enums %}
+        <tr>
+            <td><a href="{{ x.url }}">{{ x.title | escape }}</a></td>
+
+            <td>
+                {% if x.brief %}
+                    {{ x.brief | markdownify}}
+                {% elsif x.description %}
+                    {{ x.description | markdownify}}
+                {% else %}
+                    {{ '_No details given_' | markdownify}}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}

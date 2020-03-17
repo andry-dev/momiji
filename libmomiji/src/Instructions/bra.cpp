@@ -8,16 +8,18 @@ namespace momiji::instr
     {
         std::int16_t offset = utils::to_val(data.operandType[0]);
 
-        auto& pc = (sys.cpu.programCounter.address);
+        auto& pc = sys.cpu.programCounter;
 
         auto memview = momiji::make_memory_view(sys);
 
         if (offset == 0)
         {
-            offset = std::int16_t(*memview.read16(pc + 2));
+            const auto nextloc = pc + 2;
+
+            offset = std::int16_t(*memview.read16(nextloc.raw()));
         }
 
-        auto& signed_pc = reinterpret_cast<std::int32_t&>(pc);
+        auto& signed_pc = *pc.as<std::int32_t>();
         signed_pc += std::int32_t(offset);
 
         return sys;
@@ -25,12 +27,12 @@ namespace momiji::instr
 
     momiji::System bsr(momiji::System& sys, const InstructionData& data)
     {
-        auto& pc = sys.cpu.programCounter.address;
-        auto& sp = sys.cpu.addressRegisters[7].value;
+        auto& pc = sys.cpu.programCounter;
+        auto& sp = sys.cpu.addressRegisters[7];
 
         sp -= 4;
 
-        const auto writeRes = sys.mem.write32(pc, sp);
+        const auto writeRes = sys.mem.write32(pc.raw(), sp.raw());
 
         if (!writeRes)
         {
@@ -41,10 +43,12 @@ namespace momiji::instr
 
         if (offset == 0)
         {
-            offset = std::int16_t(*sys.mem.read16(pc + 2));
+            const auto nextloc = pc + 2;
+
+            offset = std::int16_t(*sys.mem.read16(nextloc.raw()));
         }
 
-        auto& signed_pc = reinterpret_cast<std::int32_t&>(pc);
+        auto& signed_pc = *pc.as<std::int32_t>();
 
         signed_pc += std::int32_t(offset);
 

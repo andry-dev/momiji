@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <momiji/Parser.h>
+#include <optional>
 #include <vector>
 
 #include <momiji/Memory.h>
@@ -37,16 +38,348 @@ namespace momiji
                                   traps::DivisionByZero,
                                   traps::IllegalInstruction>;
 
-    template <typename IntType>
+    template <typename IntType, typename PhantomTag>
     struct Register
     {
-        IntType value;
-
         using value_type = IntType;
+
+        Register()                = default;
+        ~Register()               = default;
+        Register(const Register&) = default;
+        Register& operator=(const Register&) = default;
+        Register(Register&&) noexcept        = default;
+        Register& operator=(Register&&) noexcept = default;
+
+        Register(IntType val)
+            : value(val)
+        {
+        }
+
+        [[nodiscard]] value_type raw() const
+        {
+            return value;
+        }
+
+        Register& operator=(IntType oth)
+        {
+            value = oth;
+            return *this;
+        }
+
+        Register& operator++()
+        {
+            ++value;
+
+            return *this;
+        }
+
+        Register operator++(int)
+        {
+            Register tmp { *this };
+
+            operator++();
+
+            return tmp;
+        }
+
+        Register& operator--()
+        {
+            --value;
+
+            return *this;
+        }
+
+        Register operator--(int)
+        {
+            Register tmp { *this };
+
+            operator--();
+
+            return tmp;
+        }
+
+        Register& operator+=(Register rhs)
+        {
+            value += rhs.value;
+
+            return *this;
+        }
+
+        template <typename U>
+        Register& operator+=(U rhs)
+        {
+            value += rhs;
+
+            return *this;
+        }
+
+        Register& operator-=(Register rhs)
+        {
+            value -= rhs.value;
+
+            return *this;
+        }
+
+        template <typename U>
+        Register& operator-=(U rhs)
+        {
+            value -= rhs;
+
+            return *this;
+        }
+
+        Register& operator*=(Register rhs)
+        {
+            value *= rhs.value;
+
+            return *this;
+        }
+
+        template <typename U>
+        Register& operator*=(U rhs)
+        {
+            value *= rhs;
+
+            return *this;
+        }
+
+        Register& operator&=(Register rhs)
+        {
+            value &= rhs.value;
+
+            return *this;
+        }
+
+        template <typename U>
+        Register& operator&=(U rhs)
+        {
+            value &= rhs;
+
+            return *this;
+        }
+
+        Register& operator|=(Register rhs)
+        {
+            value |= rhs.value;
+
+            return *this;
+        }
+
+        template <typename U>
+        Register& operator|=(U rhs)
+        {
+            value |= rhs;
+
+            return *this;
+        }
+
+        Register& operator^=(Register rhs)
+        {
+            value ^= rhs.value;
+
+            return *this;
+        }
+
+        template <typename U>
+        Register& operator^=(U rhs)
+        {
+            value ^= rhs;
+
+            return *this;
+        }
+
+        Register& operator>>=(Register rhs)
+        {
+            value >>= rhs.value;
+
+            return *this;
+        }
+
+        template <typename U>
+        Register& operator>>=(U rhs)
+        {
+            value >>= rhs;
+
+            return *this;
+        }
+
+        Register& operator<<=(Register rhs)
+        {
+            value <<= rhs.value;
+
+            return *this;
+        }
+
+        template <typename U>
+        Register& operator<<=(U rhs)
+        {
+            value <<= rhs;
+
+            return *this;
+        }
+
+        friend Register operator+(Register lhs, Register rhs)
+        {
+            lhs.value += rhs.value;
+
+            return lhs;
+        }
+
+        template <typename U>
+        friend Register operator+(Register lhs, U rhs)
+        {
+            lhs.value += rhs;
+
+            return lhs;
+        }
+
+        friend Register operator-(Register lhs, Register rhs)
+        {
+            lhs.value -= rhs.value;
+
+            return lhs;
+        }
+
+        template <typename U>
+        friend Register operator-(Register lhs, U rhs)
+        {
+            lhs.value -= rhs;
+
+            return lhs;
+        }
+
+        friend Register operator*(Register lhs, Register rhs)
+        {
+            lhs.value *= rhs.value;
+
+            return lhs;
+        }
+
+        template <typename U>
+        friend Register operator*(Register lhs, U rhs)
+        {
+            lhs.value *= rhs;
+
+            return lhs;
+        }
+
+        friend std::optional<Register> operator/(Register lhs, Register rhs)
+        {
+            if (rhs.value == 0)
+            {
+                return std::nullopt;
+            }
+
+            lhs.value /= rhs.value;
+
+            return lhs;
+        }
+
+        template <typename U>
+        friend std::optional<Register> operator/(Register lhs, U rhs)
+        {
+            if (rhs == 0)
+            {
+                return std::nullopt;
+            }
+
+            lhs.value /= rhs;
+
+            return lhs;
+        }
+
+        friend Register operator&(Register lhs, Register rhs)
+        {
+            lhs.value &= rhs.value;
+
+            return lhs;
+        }
+
+        template <typename U>
+        friend Register operator&(Register lhs, U rhs)
+        {
+            lhs.value &= rhs;
+
+            return lhs;
+        }
+
+        friend Register operator|(Register lhs, Register rhs)
+        {
+            lhs.value |= rhs.value;
+
+            return lhs;
+        }
+
+        template <typename U>
+        friend Register operator|(Register lhs, U rhs)
+        {
+            lhs.value |= rhs;
+
+            return lhs;
+        }
+
+        friend Register operator^(Register lhs, Register rhs)
+        {
+            lhs.value ^= rhs.value;
+
+            return lhs;
+        }
+
+        template <typename U>
+        friend Register operator^(Register lhs, U rhs)
+        {
+            lhs.value ^= rhs;
+
+            return lhs;
+        }
+
+        friend Register operator<<(Register lhs, Register rhs)
+        {
+            lhs.value <<= rhs.value;
+
+            return lhs;
+        }
+
+        template <typename U>
+        friend Register operator<<(Register lhs, U rhs)
+        {
+            lhs.value <<= rhs;
+
+            return lhs;
+        }
+        friend Register operator>>(Register lhs, Register rhs)
+        {
+            lhs.value >>= rhs.value;
+
+            return lhs;
+        }
+
+        template <typename U>
+        friend Register operator>>(Register lhs, U rhs)
+        {
+            lhs.value >>= rhs;
+
+            return lhs;
+        }
+
+        template <typename To>
+        [[nodiscard]] To* as()
+        {
+            return reinterpret_cast<To*>(&value);
+        }
+
+        [[nodiscard]] value_type* ptr()
+        {
+            return &value;
+        }
+
+    private:
+        value_type value;
     };
 
-    using DataRegister    = Register<std::int32_t>;
-    using AddressRegister = Register<std::int32_t>;
+    using DataRegister    = Register<std::int32_t, struct DataRegisterTag>;
+    using AddressRegister = Register<std::int32_t, struct AddressRegisterTag>;
+    using ProgramCounter  = Register<std::uint32_t, struct ProgramCounterTag>;
 
     struct StatusRegister
     {
@@ -64,11 +397,6 @@ namespace momiji
         std::uint8_t zero : 1;     // Z
         std::uint8_t overflow : 1; // V
         std::uint8_t carry : 1;    // C
-    };
-
-    struct ProgramCounter
-    {
-        std::uint32_t address;
     };
 
     struct Cpu

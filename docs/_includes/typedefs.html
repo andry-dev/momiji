@@ -1,0 +1,19 @@
+{% if page.typedefs %}
+<h3 id="typedefs">Typedefs</h3>
+
+<table>
+    <tr>
+        <th>Type</th>
+        <th>Definition</th>
+        <th>Notes</th>
+    </tr>
+
+    {% for type in page.typedefs %}
+        <tr>
+            <td>{{ type[0] }}</td>
+            <td>{{ type[1].definition | markdownify }}</td>
+            <td>{{ type[1].description | markdownify }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}

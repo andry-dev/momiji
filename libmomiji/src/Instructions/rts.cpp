@@ -40,13 +40,13 @@ namespace momiji::instr
     momiji::System rts(momiji::System& sys,
                        const momiji::InstructionData& /*instr*/)
     {
-        auto& sp = sys.cpu.addressRegisters[7].value;
-        auto& pc = sys.cpu.programCounter.address;
+        auto& sp = sys.cpu.addressRegisters[7];
+        auto& pc = sys.cpu.programCounter;
 
-        pc = *sys.mem.read32(sp);
+        pc = *sys.mem.read32(sp.raw());
         sp += 4;
 
-        auto retInstr = momiji::decode(sys.mem, pc);
+        auto retInstr = momiji::decode(sys.mem, pc.raw());
 
         if (retInstr.exec == instr::bsr)
         {

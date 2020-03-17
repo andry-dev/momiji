@@ -13,7 +13,7 @@ namespace momiji::instr
 #endif
     momiji::System exg(momiji::System& sys, const InstructionData& instr)
     {
-        auto& pc = sys.cpu.programCounter.address;
+        auto& pc = sys.cpu.programCounter;
 
         std::int32_t* srcreg = nullptr;
         const auto srcval    = utils::to_val(instr.addressingMode[0]);
@@ -21,11 +21,11 @@ namespace momiji::instr
         switch (instr.operandType[0])
         {
         case OperandType::DataRegister:
-            srcreg = &sys.cpu.dataRegisters[srcval].value;
+            srcreg = sys.cpu.dataRegisters[srcval].ptr();
             break;
 
         case OperandType::AddressRegister:
-            srcreg = &sys.cpu.addressRegisters[srcval].value;
+            srcreg = sys.cpu.addressRegisters[srcval].ptr();
             break;
 
         default:
@@ -39,11 +39,11 @@ namespace momiji::instr
         switch (instr.operandType[1])
         {
         case OperandType::DataRegister:
-            dstreg = &asl::saccess(sys.cpu.dataRegisters, dstval).value;
+            dstreg = asl::saccess(sys.cpu.dataRegisters, dstval).ptr();
             break;
 
         case OperandType::AddressRegister:
-            dstreg = &asl::saccess(sys.cpu.addressRegisters, dstval).value;
+            dstreg = asl::saccess(sys.cpu.addressRegisters, dstval).ptr();
             break;
 
         default:

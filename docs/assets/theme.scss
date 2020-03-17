@@ -1,0 +1,160 @@
+---
+---
+
+body {
+    background-color: #EEE;
+    font-size: 1.2em;
+    font-family: Helvetica, "Segoe UI", Verdana, Arial, sans-serif;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 20% 75%;
+    grid-gap: 5%;
+    max-width: 85vw;
+    margin: 5vh auto;
+}
+
+h1, h2, h3 {
+}
+
+h3 ~ h3, h2 ~ h2 {
+    margin-top: 5em;
+}
+
+header {
+    grid-column: 1;
+    /* padding: 0.5em; */
+    position: sticky;
+    top: 0;
+
+
+    /* background-color: #999; */
+
+}
+
+footer {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#logo {
+    width: 50%;
+}
+
+section {
+    grid-column: 2;
+    grid-row: 1;
+
+    /* background-color: #888; */
+    color: #000;
+}
+
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#top-link {
+    position: fixed;
+    bottom: 5vh;
+    right: 5vh;
+
+    background-color: #DDD;
+    border: 6px solid #DDD;
+
+    font-size: 1em;
+}
+
+a {
+    color: #339;
+}
+
+a:visited {
+    color: #115;
+}
+
+a:hover {
+    color: #339;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td {
+    width: 20%;
+    padding: 5px;
+}
+
+tr {
+    border-bottom: 2px solid #222;
+}
+
+pre code {
+    display: inline-block;
+    border: 5px solid #FFFFD7;
+    background-color: #FFFFD7;
+}
+
+code {
+    border: 3px solid #FFFFD7;
+    background-color: #FFFFD7;
+}
+
+.missing-alert {
+    color: #FF0000;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.warning-box {
+    border: 3px solid #DD0000;
+}
+
+.warning {
+    color: #DD0000;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.info {
+    color: #3333FF;
+}
+
+.info-box {
+    border: 3px solid #3333FF;
+}
+
+fieldset ~ fieldset {
+    margin-top: 3%;
+}
+
+ol.overload-desc > li {
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+
+table.overload-table tr td {
+    width: 100%;
+}
+
+@media screen and (max-width: 50em) {
+    .main {
+        display: block;
+        margin: 1vh 1vw;
+        max-width: 100vw;
+    }
+
+    #logo {
+        width: 25%;
+    }
+
+    #top-link {
+        bottom: 1vh;
+        right: 1vh;
+    }
+}

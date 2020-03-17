@@ -6,7 +6,8 @@ function(momiji_linux_generate_icons size)
     add_custom_command(
         OUTPUT ${PROJECT_BINARY_DIR}/gen_icons/program_${size}.png
         COMMAND
-        convert program.png -resize ${size}x${size} ${PROJECT_BINARY_DIR}/gen_icons/program_${size}.png
+        #convert logo.svg -background none -size ${size}x${size} ${PROJECT_BINARY_DIR}/gen_icons/program_${size}.png
+        inkscape -z -e ${PROJECT_BINARY_DIR}/gen_icons/program_${size}.png -w ${size} -h ${size} logo.svg
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data
         VERBATIM
         COMMENT "Creating image at size ${size}"
@@ -20,17 +21,12 @@ function(momiji_linux_generate_icons size)
 endfunction()
 
 function(momiji_linux_install_icons size)
+    momiji_linux_generate_icons(${size})
+
     install(FILES ${PROJECT_BINARY_DIR}/gen_icons/program_${size}.png
             DESTINATION share/icons/hicolor/${size}x${size}/apps
             RENAME momiji.png)
 endfunction()
-
-momiji_linux_generate_icons(48)
-momiji_linux_generate_icons(64)
-momiji_linux_generate_icons(96)
-momiji_linux_generate_icons(128)
-momiji_linux_generate_icons(256)
-momiji_linux_generate_icons(512)
 
 momiji_linux_install_icons(48)
 momiji_linux_install_icons(64)
@@ -38,3 +34,4 @@ momiji_linux_install_icons(96)
 momiji_linux_install_icons(128)
 momiji_linux_install_icons(256)
 momiji_linux_install_icons(512)
+momiji_linux_install_icons(1024)

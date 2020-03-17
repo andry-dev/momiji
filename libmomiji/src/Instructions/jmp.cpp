@@ -7,30 +7,27 @@ namespace momiji::instr
     static std::uint32_t handleAddressResolution(momiji::System& sys,
                                                  const InstructionData& instr)
     {
-        const auto& pc             = sys.cpu.programCounter.address;
+        const auto& pc             = sys.cpu.programCounter;
         const std::uint32_t regnum = utils::to_val(instr.addressingMode[0]);
 
         switch (instr.operandType[0])
         {
         // (a*)
-        case OperandType::Address:
-        {
-            return std::uint32_t(sys.cpu.addressRegisters[regnum].value);
+        case OperandType::Address: {
+            return std::uint32_t(sys.cpu.addressRegisters[regnum].raw());
         }
 
         // offset(a*)
-        case OperandType::AddressOffset:
-        {
+        case OperandType::AddressOffset: {
             const std::int32_t displacement =
                 utils::readImmediateFromPC(sys.mem, pc, 2);
 
-            return std::uint32_t(sys.cpu.addressRegisters[regnum].value +
+            return std::uint32_t(sys.cpu.addressRegisters[regnum].raw() +
                                  displacement);
         }
 
         // (offset, a*, **)
-        case OperandType::AddressIndex:
-        {
+        case OperandType::AddressIndex: {
             const std::int32_t immData =
                 utils::readImmediateFromPC(sys.mem, pc, 2);
 
@@ -41,15 +38,15 @@ namespace momiji::instr
 
             if (newreg < 8)
             {
-                index = asl::saccess(sys.cpu.dataRegisters, newreg).value;
+                index = asl::saccess(sys.cpu.dataRegisters, newreg).raw();
             }
             else
             {
                 index =
-                    asl::saccess(sys.cpu.addressRegisters, newreg - 8).value;
+                    asl::saccess(sys.cpu.addressRegisters, newreg - 8).raw();
             }
 
-            return std::uint32_t(sys.cpu.addressRegisters[regnum].value +
+            return std::uint32_t(sys.cpu.addressRegisters[regnum].raw() +
                                  index + displacement);
         }
 
@@ -76,27 +73,27 @@ namespace momiji::instr
             break;
         }
 
-        return sys.cpu.programCounter.address;
+        return sys.cpu.programCounter.raw();
     }
 
     momiji::System jmp(momiji::System& sys, const InstructionData& data)
     {
-        sys.cpu.programCounter.address = handleAddressResolution(sys, data);
+        sys.cpu.programCounter = handleAddressResolution(sys, data);
 
         return sys;
     }
 
     momiji::System jsr(momiji::System& sys, const InstructionData& data)
     {
-        auto& sp = sys.cpu.addressRegisters[7].value;
-        auto& pc = sys.cpu.programCounter.address;
+        auto& sp = sys.cpu.addressRegisters[7];
+        auto& pc = sys.cpu.programCounter;
 
         sp -= 4;
 
-        std::uint32_t* retaddr =
-            reinterpret_cast<std::uint32_t*>(sys.mem.data() + sp);
+        auto retaddr =
+            reinterpret_cast<std::uint32_t*>(sys.mem.data() + sp.raw());
 
-        *retaddr = pc;
+        *retaddr = pc.raw();
 
         pc = handleAddressResolution(sys, data);
 

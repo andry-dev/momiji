@@ -1,0 +1,59 @@
+
+<div>
+    <header>
+        <span id="top"></span>
+        <div class="centered">
+            <img id="logo" src="/assets/logo.svg" />
+        </div>
+        <h1><a href="/" id="header-title">{{ site.name }}</a></h1>
+        <p>{{ site.description }}</p>
+
+        <a href="/about">About</a>
+        <a href="https://github.com/andry-dev/momiji">Source code</a>
+
+
+        {% include family.html %}
+        {% assign components = siblings | where_exp:"p","p.layout == 'library'" | sort: 'title' %}
+        {% assign classes = siblings | where_exp:"p","p.layout == 'class'" | sort: 'title' %}
+        {% assign funs = siblings | where_exp:"p","p.layout == 'function'" | sort: 'title' %}
+        {% assign methods = siblings | where_exp:"p","p.layout == 'method'" | sort: 'title' %}
+        {% assign enums = siblings | where_exp:"p","p.layout == 'enum'" | sort: 'title' %}
+        {% assign interfaces = siblings | where_exp:"p","p.layout == 'interface'" | sort: 'title' %}
+
+        <h3>Table of contents</h3>
+        <ul>
+            {% for item in page.toc %}
+            <li><a href="#{{ item | slugify }}">{{ item }}</a></li>
+            {% endfor %}
+
+            {% if components.size > 0 %}
+            <li><a href="#components">Components</a></li>
+            {% endif %}
+
+            {% if interfaces.size > 0 %}
+            <li><a href="#interfaces">Interfaces</a></li>
+            {% endif %}
+
+            {% if classes.size > 0 %}
+                <li><a href="#classes">Classes</a></li>
+            {% endif %}
+
+            {% if funs.size > 0 %}
+                <li><a href="#free-funs">Free functions</a></li>
+            {% endif %}
+
+            {% if enums.size > 0 %}
+            <li><a href="#enums">Enums</a></li>
+            {% endif %}
+
+            {% if page.fields %}
+            <li><a href="#fields">Fields</a></li>
+            {% endif %}
+
+            {% if page.typedefs %}
+            <li><a href="#typedefs">Typedefs</a></li>
+            {% endif %}
+        </ul>
+
+    </header>
+</div>

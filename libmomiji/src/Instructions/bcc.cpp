@@ -1,14 +1,16 @@
 #include "bcc.h"
 
 #include "./Utils.h"
+#include <System.h>
 
 namespace momiji::instr
 {
     momiji::System bcc(momiji::System& sys, const InstructionData& data)
     {
-        const auto pc        = sys.cpu.programCounter.address;
+        const auto pc        = sys.cpu.programCounter;
         const auto condition = utils::to_val(data.operandType[0]);
-        std::int16_t offset  = utils::to_val(data.operandType[1]);
+
+        ProgramCounter::value_type offset = utils::to_val(data.operandType[1]);
 
         bool skipTwoBytes = false;
 
@@ -16,13 +18,15 @@ namespace momiji::instr
         {
             skipTwoBytes = true;
 
-            offset = std::int16_t(*sys.mem.read16(pc + 2));
+            const auto nextloc = pc + 2;
+
+            offset = *sys.mem.read16(nextloc.raw());
         }
 
         const auto& statReg = sys.cpu.statusRegister;
 
         const auto normalIncrement = [&]() {
-            sys.cpu.programCounter.address += skipTwoBytes ? 4 : 2;
+            sys.cpu.programCounter += skipTwoBytes ? 4 : 2;
         };
 
         bool shouldBranch = false;
@@ -86,7 +90,7 @@ namespace momiji::instr
 
         if (shouldBranch)
         {
-            sys.cpu.programCounter.address += std::uint32_t(offset);
+            sys.cpu.programCounter += offset;
         }
         else
         {
