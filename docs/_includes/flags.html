@@ -1,0 +1,34 @@
+{% if page.flags contains 'unstable-api' %}
+
+<fieldset class="warning-box">
+    <legend class="warning">UNSTABLE API</legend>
+
+    <label>The following component and its children doesn't have a stable API, this means that in the future the API will change unexpectedly. <strong>This also implies that the ABI is unstable.</strong></label>
+</fieldset>
+
+{% endif %}
+
+{% if page.flags contains 'unstable-abi' %}
+
+<fieldset class="warning-box">
+    <legend class="warning">UNSTABLE ABI</legend>
+
+    <label>The following component doesn't have a stable ABI, this means that after every library update you <em>must</em> rebuild you application against the new version of the library.</label>
+</fieldset>
+
+{% endif %}
+
+{% if page.flags contains 'incomplete' %}
+<fieldset class="info-box">
+    <legend class="info">Incomplete information ahead!</legend>
+
+    <label>The information provided in this section is missing, incomplete or incorrect. Please don't rely on it for the time being.</label>
+</fieldset>
+{% endif %}
+
+{% if page.flags contains 'bad-name' %}
+<fieldset class="info-box">
+    <legend class="info">Naming things is hard</legend>
+    <label>The name of this component is confusing, conflicts with other (un)related concepts or is plain just bad, so it will be changed in the near future.<label>
+</fieldset>
+{% endif %}

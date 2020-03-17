@@ -108,7 +108,8 @@ namespace momiji
     };
 
     template <typename Tag>
-    class ModifiableMemory final : public BasicMemory<std::vector<std::uint8_t>>
+    class ModifiableMemory final
+        : private BasicMemory<std::vector<std::uint8_t>>
     {
     public:
         ModifiableMemory() = default;
@@ -139,8 +140,9 @@ namespace momiji
     {
     };
 
+    // TODO(andry): Bad name
     template <typename Tag>
-    class MemoryView final : public BasicMemory<gsl::span<std::uint8_t>>
+    class MemoryView final : private BasicMemory<gsl::span<std::uint8_t>>
     {
     public:
         MemoryView(ModifiableMemory<Tag>& mem)
@@ -156,19 +158,6 @@ namespace momiji
         {
             m_data = span;
         }
-
-        /*
-        MemoryView(ConstMemoryView<Tag> mem)
-        {
-            std::uint8_t* begin = const_cast<std::uint8_t*>(mem.m_data.data());
-
-            m_data = { begin, asl::ssize(mem.m_data) };
-
-            executableMarker = mem.executableMarker;
-            stackMarker      = mem.stackMarker;
-            staticMarker     = mem.staticMarker;
-        }
-        */
 
         MemoryView(NullMemoryView /*unused*/)
         {
@@ -199,7 +188,7 @@ namespace momiji
 
     template <typename Tag>
     class ConstMemoryView final
-        : public BasicMemory<gsl::span<const std::uint8_t>>
+        : private BasicMemory<gsl::span<const std::uint8_t>>
     {
     public:
         ConstMemoryView(const ModifiableMemory<Tag>& mem)

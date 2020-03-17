@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <string>
-#include <vector>
 
 namespace momiji
 {
@@ -73,6 +72,7 @@ namespace momiji
         DataMarker, // ".section data" or similiar
     };
 
+    // TODO(andry): The name is bad
     enum class OperandType : std::uint8_t
     {
         DataRegister         = 0b000, // d*
@@ -89,6 +89,7 @@ namespace momiji
         Immediate            = 0b111,
     };
 
+    // TODO(andry): The name is bad
     enum class DataType : std::uint8_t
     {
         Byte = 0b00, // 8
@@ -105,6 +106,7 @@ namespace momiji
         Immediate            = 0b100,
     };
 
+    // TODO(andry): The name is bad
     enum class BranchConditions : std::uint8_t
     {
         True        = 0b0000,
@@ -124,6 +126,4 @@ namespace momiji
         GreaterThan = 0b1110,
         LessEq      = 0b1111,
     };
-
-    using MemoryType = std::vector<std::uint16_t>;
 } // namespace momiji

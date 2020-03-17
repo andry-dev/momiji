@@ -20,4 +20,7 @@ overloads:
               name: settings
               description: The settings for the parser
         return: A result type representing either the parsed code or an error
+
+flags:
+    - unstable-abi
 ---

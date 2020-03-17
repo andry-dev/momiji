@@ -13,4 +13,7 @@ overloads:
               type: 'const momiji::Operand&'
               description: The Operand to convert
         return: The ParserOperand which corresponds to the type of the Operand
+
+flags:
+    - bad-name
 ---

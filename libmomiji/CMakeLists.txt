@@ -102,7 +102,7 @@ set_target_properties(libmomiji PROPERTIES
     PREFIX ""
     CXX_EXTENSIONS OFF)
 
-if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+if (MOMIJI_BUILD_TESTS)
     include(CTest)
     add_subdirectory(tests)
 endif()

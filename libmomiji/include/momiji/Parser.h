@@ -26,6 +26,7 @@ namespace momiji
         gsl::span<Breakpoint> breakpoints;
     };
 
+    // TODO(andry): The name is bad and not obvious.
     enum class ParserOperand : std::int8_t
     {
         DataRegister,
@@ -173,12 +174,12 @@ namespace momiji
             MathASTNode() = default;
 
             MathASTNode(Label&& label)
-                : value(std::move(label))
+                : value(label)
             {
             }
 
             MathASTNode(Number&& num)
-                : value(std::move(num))
+                : value(num)
             {
             }
 
@@ -263,6 +264,7 @@ namespace momiji
         };
     } // namespace operands
 
+    // TODO(andry): The name is bad
     using Operand = std::variant<operands::DataRegister,
                                  operands::AddressRegister,
                                  operands::Address,
@@ -316,6 +318,7 @@ namespace momiji
 
     using LabelInfo = std::vector<momiji::Label>;
 
+    // TODO(andry): The name is bad
     struct ParsingInfo
     {
         std::vector<momiji::ParsedInstruction> instructions;
@@ -329,6 +332,10 @@ namespace momiji
     momiji::ParsingResult parse(const std::string& str,
                                 ParserSettings settings);
 
+    std::optional<momiji::ParserError>
+    sanitizeParsingInfo(const ParsingInfo& parsingInfo);
+
+    // TODO(andry): The name is bad
     std::int32_t resolveAST(const objects::MathASTNode& node,
                             const momiji::LabelInfo& labels);
 

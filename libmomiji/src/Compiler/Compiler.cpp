@@ -253,8 +253,7 @@ namespace momiji
             {
                 switch (data.cnt)
                 {
-                case 1:
-                {
+                case 1: {
                     // Adding 1 byte to align to 16-bit
                     const std::uint16_t val = 0 | data.arr8[0];
                     memory.push16(val);

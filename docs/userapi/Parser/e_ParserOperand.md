@@ -21,6 +21,9 @@ values:
     - name: AbsoluteLong
     - name: ProgramCounterOffset
     - name: ProgramCounterIndex
+
+flags:
+    - bad-name
 ---
 
 ### Remarks
