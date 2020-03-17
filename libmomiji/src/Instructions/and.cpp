@@ -8,7 +8,7 @@ namespace momiji::instr
 {
     momiji::System and_instr(momiji::System& sys, const InstructionData& data)
     {
-        auto& pc = sys.cpu.programCounter.address;
+        auto& pc = sys.cpu.programCounter;
 
         const std::int32_t srcval = utils::readOperandVal(sys, data, 0);
 

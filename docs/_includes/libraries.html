@@ -1,0 +1,20 @@
+{% include family.html %}
+
+{% assign libraries = siblings | where_exp:"p","p.layout == 'library'" | sort: 'title' %}
+
+{% if libraries.size > 0 %}
+<h3 id="components">Components</h3>
+
+<table>
+    {% for lib in libraries %}
+    <tr>
+        <td><a href="{{ lib.url }}">{{ lib.title }}</a></td>
+        {% if lib.brief %}
+        <td>{{ lib.brief }}</td>
+        {% else %}
+        <td><p class="missing-alert">MISSING DESCRIPTION</p></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}

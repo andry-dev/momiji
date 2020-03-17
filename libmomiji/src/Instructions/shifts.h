@@ -13,7 +13,7 @@ namespace momiji::instr
             template <typename T>
             static void compute(T& reg, std::int8_t count, std::int32_t mask)
             {
-                const std::int32_t msb = (reg & mask);
+                const auto msb = (reg & mask);
                 reg >>= count;
                 reg |= msb;
             }
@@ -67,7 +67,7 @@ namespace momiji::instr
             }
         }();
 
-        auto& pc = sys.cpu.programCounter.address;
+        auto& pc = sys.cpu.programCounter;
         pc += 2;
 
         if (instr.operandType[1] == OperandType::Address)
@@ -78,7 +78,7 @@ namespace momiji::instr
             auto& dstref = *dst;
             ShiftType::compute(dstref, 1, mask);
 
-            pc += std::uint32_t(utils::isImmediate(instr, 0));
+            pc += std::uint8_t(utils::isImmediate(instr, 0));
         }
         else
         {
@@ -89,7 +89,7 @@ namespace momiji::instr
             const auto dstreg =
                 std::int32_t(utils::to_val(instr.addressingMode[1]));
 
-            auto& dst = asl::saccess(sys.cpu.dataRegisters, dstreg).value;
+            auto& dst = asl::saccess(sys.cpu.dataRegisters, dstreg);
 
             if (instr.operandType[0] == OperandType::Immediate)
             {
@@ -98,7 +98,7 @@ namespace momiji::instr
             else
             {
                 const auto reg = asl::saccess(sys.cpu.dataRegisters, src);
-                ShiftType::compute(dst, reg.value % 64, mask);
+                ShiftType::compute(dst, reg.raw() % 64, mask);
             }
         }
 

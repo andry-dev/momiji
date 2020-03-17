@@ -1,7 +1,7 @@
-#include <asl/types>
 #pragma once
 
 #include <Utils.h>
+#include <asl/types>
 
 #include <Decoder.h>
 #include <Memory.h>
@@ -17,23 +17,25 @@ namespace momiji::utils
 #endif
 
     inline std::int32_t readImmediateFromPC(ExecutableMemoryView base,
-                                            std::uint32_t pc,
+                                            ProgramCounter pc,
                                             std::int16_t size)
     {
+        const auto nextloc = pc + 2;
+
         switch (size)
         {
         case 1: {
-            const auto val = base.read8(pc + 2);
+            const auto val = base.read8(nextloc.raw());
             return std::int32_t(val.value_or(0));
         }
 
         case 2: {
-            const auto val = base.read16(pc + 2);
+            const auto val = base.read16(nextloc.raw());
             return std::int32_t(val.value_or(0));
         }
 
         case 4: {
-            const auto val = base.read32(pc + 2);
+            const auto val = base.read32(nextloc.raw());
             return std::int32_t(val.value_or(0));
         }
         }
@@ -75,52 +77,52 @@ namespace momiji::utils
     {
         const auto regnum =
             utils::to_val(asl::saccess(instr.addressingMode, op));
-        const auto pc    = sys.cpu.programCounter.address;
+        const auto pc    = sys.cpu.programCounter;
         std::int32_t val = 0;
 
         switch (asl::saccess(instr.operandType, op))
         {
         // d*
         case OperandType::DataRegister:
-            val = asl::saccess(sys.cpu.dataRegisters, regnum).value;
+            val = asl::saccess(sys.cpu.dataRegisters, regnum).raw();
             break;
 
         // a*
         case OperandType::AddressRegister:
-            val = asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            val = asl::saccess(sys.cpu.addressRegisters, regnum).raw();
             break;
 
         // (a*)
         case OperandType::Address:
-            val = asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            val = asl::saccess(sys.cpu.addressRegisters, regnum).raw();
             val = readFromMemory(sys.mem, val, instr.size);
             break;
 
         // -(a*)
         case OperandType::AddressPre:
-            sys.cpu.addressRegisters[regnum].value -= instr.size;
-            val = asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            sys.cpu.addressRegisters[regnum] -= instr.size;
+            val = asl::saccess(sys.cpu.addressRegisters, regnum).raw();
             val = readFromMemory(sys.mem, val, instr.size);
             break;
 
         // (a*)+
         case OperandType::AddressPost:
-            val = asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            val = asl::saccess(sys.cpu.addressRegisters, regnum).raw();
             val = readFromMemory(sys.mem, val, instr.size);
-            sys.cpu.addressRegisters[regnum].value += instr.size;
+            sys.cpu.addressRegisters[regnum] += instr.size;
             break;
 
         // index(a*)
         case OperandType::AddressOffset:
             val = readImmediateFromPC(sys.mem, pc, 2);
-            val += asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            val += asl::saccess(sys.cpu.addressRegisters, regnum).raw();
 
             val = readFromMemory(sys.mem, val, instr.size);
             break;
 
         // (index, a*, d*)
         case OperandType::AddressIndex: {
-            val = asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            val = asl::saccess(sys.cpu.addressRegisters, regnum).raw();
 
             const std::int32_t tmp = readImmediateFromPC(sys.mem, pc, 2);
 
@@ -129,11 +131,11 @@ namespace momiji::utils
 
             if (newreg < 8) // Data register [0, 7]
             {
-                val += asl::saccess(sys.cpu.dataRegisters, newreg).value;
+                val += asl::saccess(sys.cpu.dataRegisters, newreg).raw();
             }
             else // Address register [8, 15]
             {
-                val += asl::saccess(sys.cpu.addressRegisters, newreg - 8).value;
+                val += asl::saccess(sys.cpu.addressRegisters, newreg - 8).raw();
             }
 
             val += index;
@@ -181,74 +183,68 @@ namespace momiji::utils
         const auto regnum =
             utils::to_val(asl::saccess(instr.addressingMode, op));
 
-        const auto pc    = sys.cpu.programCounter.address;
-        std::int32_t tmp = 0;
-        To* val          = nullptr;
+        const ProgramCounter pc = sys.cpu.programCounter;
+        std::int32_t tmp        = 0;
+        To* val                 = nullptr;
 
         switch (asl::saccess(instr.operandType, op))
         {
         // d*
         case OperandType::DataRegister:
-            val = reinterpret_cast<To*>(
-                &asl::saccess(sys.cpu.dataRegisters, regnum).value);
+            val = asl::saccess(sys.cpu.dataRegisters, regnum).as<To>();
             break;
 
         // a*
         case OperandType::AddressRegister:
-            val = reinterpret_cast<To*>(
-                &asl::saccess(sys.cpu.addressRegisters, regnum).value);
+            val = asl::saccess(sys.cpu.addressRegisters, regnum).as<To>();
             break;
 
         // (a*)
         case OperandType::Address:
-            tmp = asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            tmp = asl::saccess(sys.cpu.addressRegisters, regnum).raw();
             val = reinterpret_cast<To*>(sys.mem.data() + tmp);
             break;
 
         // -(a*)
         case OperandType::AddressPre:
-            asl::saccess(sys.cpu.addressRegisters, regnum).value -= instr.size;
-            tmp = asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            asl::saccess(sys.cpu.addressRegisters, regnum) -= instr.size;
+            tmp = asl::saccess(sys.cpu.addressRegisters, regnum).raw();
             val = reinterpret_cast<To*>(sys.mem.data() + tmp);
             break;
 
         // (a*)+
         case OperandType::AddressPost:
-            tmp = asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            tmp = asl::saccess(sys.cpu.addressRegisters, regnum).raw();
             val = reinterpret_cast<To*>(sys.mem.data() + tmp);
-            asl::saccess(sys.cpu.addressRegisters, regnum).value += instr.size;
+            asl::saccess(sys.cpu.addressRegisters, regnum) += instr.size;
             break;
 
         // offset(a*)
         case OperandType::AddressOffset:
             tmp = readImmediateFromPC(
-                sys.mem,
-                pc + std::uint32_t(resolveOp1Size(instr, op)),
-                sizeof(To));
+                sys.mem, pc + resolveOp1Size(instr, op), sizeof(To));
 
-            tmp += asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            tmp += asl::saccess(sys.cpu.addressRegisters, regnum).raw();
             val = reinterpret_cast<To*>(sys.mem.data() + tmp);
             break;
 
         // (offset, a*, **)
         case OperandType::AddressIndex: {
             tmp = readImmediateFromPC(
-                sys.mem,
-                pc + std::uint32_t(resolveOp1Size(instr, op)),
-                sizeof(To));
+                sys.mem, pc + resolveOp1Size(instr, op), sizeof(To));
 
             const auto newreg = std::int8_t((tmp & 0xF000) >> 12);
             const auto index  = std::int8_t(tmp & 0x00FF);
 
-            tmp = asl::saccess(sys.cpu.addressRegisters, regnum).value;
+            tmp = asl::saccess(sys.cpu.addressRegisters, regnum).raw();
 
             if (newreg < 8) // Data register [0, 7]
             {
-                tmp += asl::saccess(sys.cpu.dataRegisters, newreg).value;
+                tmp += asl::saccess(sys.cpu.dataRegisters, newreg).raw();
             }
             else // Address register [8, 15]
             {
-                tmp += asl::saccess(sys.cpu.addressRegisters, newreg - 8).value;
+                tmp += asl::saccess(sys.cpu.addressRegisters, newreg - 8).raw();
             }
 
             tmp += index;
@@ -262,7 +258,7 @@ namespace momiji::utils
             {
             case SpecialAddressingMode::AbsoluteShort: {
                 tmp = readImmediateFromPC(
-                    sys.mem, pc + std::uint32_t(resolveOp1Size(instr, op)), 2);
+                    sys.mem, pc + resolveOp1Size(instr, op), 2);
 
                 tmp = utils::sign_extend<std::int16_t>(tmp);
                 val = reinterpret_cast<To*>(sys.mem.data() + tmp);
@@ -271,20 +267,18 @@ namespace momiji::utils
 
             case SpecialAddressingMode::AbsoluteLong: {
                 tmp = readImmediateFromPC(
-                    sys.mem, pc + std::uint32_t(resolveOp1Size(instr, op)), 4);
+                    sys.mem, pc + resolveOp1Size(instr, op), 4);
 
                 val = reinterpret_cast<To*>(sys.mem.data() + tmp);
             }
             break;
 
             case SpecialAddressingMode::ProgramCounterIndex:
-                break;
-
             case SpecialAddressingMode::ProgramCounterOffset:
                 break;
 
             case SpecialAddressingMode::Immediate:
-                val = reinterpret_cast<To*>(sys.mem.data() + pc);
+                val = reinterpret_cast<To*>(sys.mem.data() + pc.raw());
                 break;
             }
             break;

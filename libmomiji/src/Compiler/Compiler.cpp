@@ -249,24 +249,23 @@ namespace momiji
 
             memory.push16(opcode.val);
 
-            for (std::uint32_t i = 0; i < additional_data.size(); ++i)
+            for (const auto& data : additional_data)
             {
-                switch (additional_data[i].cnt)
+                switch (data.cnt)
                 {
-                case 1:
-                {
+                case 1: {
                     // Adding 1 byte to align to 16-bit
-                    const std::uint16_t val = 0 | additional_data[i].arr8[0];
+                    const std::uint16_t val = 0 | data.arr8[0];
                     memory.push16(val);
                 }
                 break;
 
                 case 2:
-                    memory.push16(additional_data[i].arr16[0]);
+                    memory.push16(data.arr16[0]);
                     break;
 
                 case 4:
-                    memory.push32(additional_data[i].val);
+                    memory.push32(data.val);
                     break;
                 }
             }

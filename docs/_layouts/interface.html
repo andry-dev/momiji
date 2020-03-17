@@ -1,0 +1,21 @@
+---
+layout: default
+---
+
+{% if page.title %}
+<h1>Interface {{ page.title | escape }} </h1>
+{% else %}
+<h1 class="missing-alert">MISSING TITLE</h1>
+{% endif %}
+
+{% if page.description %}
+{{ page.description | markdownify }}
+{% else %}
+<p class="missing-alert">MISSING DESCRIPTION</p>
+{% endif %}
+
+{% include methods.html %}
+
+{% include fields.html %}
+
+{{ content }}

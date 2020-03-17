@@ -18,7 +18,7 @@ namespace momiji
                                std::string_view sourceCode)
         {
             return nonstd::make_unexpected<ParserError>(
-                { line, column, std::move(error), std::string { sourceCode } });
+                { line, column, error, std::string { sourceCode } });
         }
 
         constexpr bool isInternal(momiji::InstructionType instr) noexcept
@@ -121,7 +121,7 @@ namespace momiji
         }
 
         std::int32_t visitNum(const momiji::objects::Number& num,
-                              const momiji::LabelInfo&)
+                              const momiji::LabelInfo& /*unused*/)
         {
             return num.number;
         }
@@ -182,12 +182,7 @@ namespace momiji
                                      return label.hash == foundLabel.nameHash;
                                  });
 
-                if (res == std::end(labels))
-                {
-                    return false;
-                }
-
-                return true;
+                return res != std::end(labels);
             }
 
             if (std::holds_alternative<objects::MathOperator>(node.value))
@@ -211,7 +206,7 @@ namespace momiji
 
         Parser(std::string_view str, ParserSettings settings)
             : str(str)
-            , settings(settings)
+            , settings(std::move(settings))
         {
         }
 
@@ -547,51 +542,51 @@ namespace momiji
 
         // clang-format off
         std::visit(asl::overloaded {
-            [&](const ops::DataRegister&) {
+            [&](const ops::DataRegister& /* unused */) {
                 res = ParserOperand::DataRegister;
             },
 
-            [&](const ops::AddressRegister&) {
+            [&](const ops::AddressRegister& /* unused */) {
                 res = ParserOperand::AddressRegister;
             },
 
-            [&](const ops::Address&) {
+            [&](const ops::Address& /* unused */) {
                 res = ParserOperand::Address;
             },
-            
-            [&](const ops::AddressPre&) {
+
+            [&](const ops::AddressPre& /* unused */) {
                 res = ParserOperand::AddressPre;
             },
 
-            [&](const ops::AddressPost&) {
+            [&](const ops::AddressPost& /* unused */) {
                 res = ParserOperand::AddressPost;
             },
 
-            [&](const ops::AddressOffset&) {
+            [&](const ops::AddressOffset& /* unused */) {
                 res = ParserOperand::AddressOffset;
             },
 
-            [&](const ops::AddressIndex&) {
+            [&](const ops::AddressIndex& /* unused */) {
                 res = ParserOperand::AddressIndex;
             },
 
-            [&](const ops::Immediate&) {
+            [&](const ops::Immediate& /* unused */) {
                 res = ParserOperand::Immediate;
             },
 
-            [&](const ops::AbsoluteShort&) {
+            [&](const ops::AbsoluteShort& /* unused */) {
                 res = ParserOperand::AbsoluteShort;
             },
 
-            [&](const ops::AbsoluteLong&) {
+            [&](const ops::AbsoluteLong& /* unused */) {
                 res = ParserOperand::AbsoluteLong;
             },
 
-            [&](const ops::ProgramCounterOffset&) {
+            [&](const ops::ProgramCounterOffset& /* unused */) {
                 res = ParserOperand::ProgramCounterOffset;
             },
 
-            [&](const ops::ProgramCounterIndex&) {
+            [&](const ops::ProgramCounterIndex& /* unused */) {
                 res = ParserOperand::ProgramCounterIndex;
             },
         }, operand);

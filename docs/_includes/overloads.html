@@ -1,0 +1,61 @@
+{% if page.overloads %}
+
+<table class="overload-table">
+{% for ent in page.overloads %}
+    <tr>
+        <td><code>{{ ent[0] }}</code></td>
+        <td>({{ forloop.index }})</td>
+    </tr>
+{% endfor %}
+</table>
+
+{{ page.description }}
+
+<ol class="overload-desc">
+{% for ent in page.overloads %}
+    <li>
+        {% if ent[1].description %}
+            {{ ent[1].description }}
+            {% if ent[1].arguments or ent[1].return %}
+                <br/>
+            {% endif %}
+        {% endif %}
+        {% if ent[1].arguments or ent[1].template-arguments %}
+        <b>Parameters:</b>
+        <ul>
+            {% for arg in ent[1].template-arguments %}
+            <li>
+                {% if arg.name %}
+                [T] <code>{{ arg.name | escape }}</code>
+                {% else %}
+                <p class="missing-alert">MISSING NAME</p>
+                {% endif %}
+                {% if arg.description %}
+                : {{ arg.description }}
+                {% endif %}
+            </li>
+            {% endfor %}
+
+            {% for arg in ent[1].arguments %}
+            <li>
+                <code>{{arg.type | escape}}
+                {% if (arg.name != "") and (arg.unnamed == false) %}
+                {{arg.name | escape}}</code>
+                {% else %}
+                </code><i>unnamed</i>
+                {% endif %}
+                {% if arg.description and (arg.description != "__OPTIONAL__") %}
+                : {{arg.description}}
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if ent[1].return and (ent[1].return != "__OPTIONAL__") %}
+        <b>Returns:</b> {{ ent[1].return | escape }}
+        {% endif %}
+    </li>
+{% endfor %}
+</ol>
+
+{% endif %}

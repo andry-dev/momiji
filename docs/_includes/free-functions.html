@@ -1,0 +1,27 @@
+{% include family.html %}
+
+{% assign funcs = siblings | where_exp:"p","p.layout == 'function'" | sort: 'title' %}
+
+{% if funcs.size > 0 %}
+<h3 id="free-funs">Free functions</h3>
+
+<table>
+    {% for fun in funcs %}
+    <tr>
+        <td>
+            <a href="{{ fun.url }}">{{ fun.title | escape }}</a>
+        </td>
+        <td>
+            {% if fun.brief %}
+                {{ fun.brief | markdownify }}
+            {% elsif fun.description %}
+                {{ fun.description | markdownify }}
+            {% else %}
+            <p class="missing-alert">MISSING DESCRIPTION</p>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}

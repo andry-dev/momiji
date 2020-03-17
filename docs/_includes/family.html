@@ -1,0 +1,11 @@
+{% assign siblings = '' | split: '' %}
+{% for p in site.pages %}
+    {% if p.dir contains page.dir and p.url != page.url %}
+        {% assign short_url = p.url | remove_first: page.url%}
+        {% assign split_url = short_url | split: '/' %}
+        {% if split_url.size != 1 %}
+            {% continue %}
+        {% endif %}
+        {% assign siblings = siblings | push: p %}
+    {% endif %}
+{% endfor %}

@@ -11,7 +11,7 @@ namespace momiji::instr
         // For data and address registers the value is already stored
         std::int32_t srcval = utils::readOperandVal(sys, data, 0);
 
-        auto& pc = sys.cpu.programCounter.address;
+        auto& pc = sys.cpu.programCounter;
 
         switch (data.size)
         {

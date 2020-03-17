@@ -9,7 +9,7 @@ namespace momiji::instr
 {
     momiji::System or_instr(momiji::System& sys, const InstructionData& data)
     {
-        auto& pc          = sys.cpu.programCounter.address;
+        auto& pc          = sys.cpu.programCounter;
         const auto srcval = utils::readOperandVal(sys, data, 0);
 
         switch (data.size)

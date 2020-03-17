@@ -1,5 +1,5 @@
 ---
-Checks:          '-*,modernize-*,misc-*,cppcoreguidelines-*,bugprone-*,performance-*,readability-*,clang-diagnostic-*,clang-analyzer-*,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cppcoreguidelines-pro-type-union-access,-performance-unnecessary-value-param,-cppcoreguidelines-pro-bounds-constant-array-index,-misc-non-private-member-variables-in-classes,-cppcoreguidelines-pro-type-member-init,-modernize-use-trailing-return-type,-readability-static-accessed-through-instance'
+Checks:          '-*,modernize-*,misc-*,cppcoreguidelines-*,bugprone-*,performance-*,readability-*,clang-diagnostic-*,clang-analyzer-*,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cppcoreguidelines-pro-type-union-access,-performance-unnecessary-value-param,-cppcoreguidelines-pro-bounds-constant-array-index,-misc-non-private-member-variables-in-classes,-cppcoreguidelines-pro-type-member-init,-modernize-use-trailing-return-type,-readability-static-accessed-through-instance,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-type-vararg,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-pro-type-reinterpret-cast'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
