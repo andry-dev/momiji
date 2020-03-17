@@ -45,8 +45,8 @@ toc:
     - ASTs
 ---
 
-This component is probably the biggest in the library. It allows the user to
-introspect most of the useful stuff generated during parsing.
+This component allows the user to parse and analyze a string with valid m68k
+source code.
 
 ### Basic usage example
 

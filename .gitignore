@@ -10,6 +10,8 @@ CMakeSettings.json
 .idea/
 .clangd/
 .ccls-cache/
+.undodir/
+*/.undodir/
 docs/.jekyll-cache
 docs/.bundle/
 docs/_site/

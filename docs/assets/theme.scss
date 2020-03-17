@@ -111,6 +111,28 @@ code {
     font-weight: bold;
 }
 
+.warning-box {
+    border: 3px solid #DD0000;
+}
+
+.warning {
+    color: #DD0000;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.info {
+    color: #3333FF;
+}
+
+.info-box {
+    border: 3px solid #3333FF;
+}
+
+fieldset ~ fieldset {
+    margin-top: 3%;
+}
+
 ol.overload-desc > li {
     margin-top: 3%;
     margin-bottom: 3%;
