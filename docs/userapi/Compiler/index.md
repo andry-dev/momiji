@@ -10,13 +10,13 @@ toc:
     - 'Basic usage example'
 ---
 
-This component allows the user to compile the output of the parser ([`momiji::ParsingInfo`](/userapi/Parser/ParsingInfo)) to an emulator-specific binary file.
+This component allows the user to compile the output of the parser ([`momiji::ParsingInfo`]({{ '/userapi/Parser/ParsingInfo' | relative_url }})) to an emulator-specific binary file.
 
 
 The binary file generated is a blob of executable memory and, if needed, a data
 section is included for variable declarations.
 Both of these sections are delimited by markers, please refer to
-[`momiji::Memory`](/userapi/Memory) for more information about them.
+[`momiji::Memory`]({{ '/userapi/Memory' | relative_url }}) for more information about them.
 
 The generated executable does not contain any metadata about where each of the
 sections begin and end, that functionality will be added soon.

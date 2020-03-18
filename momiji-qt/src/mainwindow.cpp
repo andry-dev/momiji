@@ -10,8 +10,6 @@
 #include <momiji/Emulator.h>
 #include <momiji/Parser.h>
 
-const QColor g_highlightColor { 61, 174, 233 };
-
 namespace
 {
     inline QString toString(momiji::ParserOperand op)

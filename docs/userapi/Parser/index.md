@@ -90,7 +90,7 @@ state.
 
 You can manipulate the `momiji::ParsingInfo` struct to do any sort of fun stuff
 (injecting instructions?) but, ultimately, the most useful thing you can do with
-it is passing it to the [Compiler](/userapi/Compiler) to compile the
+it is passing it to the [Compiler]({{ '/userapi/Compiler' | relative_url }}) to compile the
 instructions and get an executable.
 
 ### Handling errors

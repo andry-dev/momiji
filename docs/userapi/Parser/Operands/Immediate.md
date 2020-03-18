@@ -14,4 +14,4 @@ fields:
 ---
 
 'X' is any compile-time expression, see
-[AST objects](/userapi/Parser/Objects) for some examples.
+[AST objects]({{ '/userapi/Parser/Objects' | relative_url }}) for some examples.

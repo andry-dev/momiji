@@ -9,7 +9,7 @@
     {% for fun in funcs %}
     <tr>
         <td>
-            <a href="{{ fun.url }}">{{ fun.title | escape }}</a>
+            <a href="{{ fun.url | relative_url }}">{{ fun.title | escape }}</a>
         </td>
         <td>
             {% if fun.brief %}

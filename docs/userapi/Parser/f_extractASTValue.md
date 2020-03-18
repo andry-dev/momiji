@@ -19,8 +19,8 @@ overloads:
             The register value in the operand if it is a RegOperand, zero
             otherwise.
 ---
-This function takes any [Operand](../Operand): if it is a
-[ASTOperand](ASTOperand) then it will resolve the AST and return the computed
+This function takes any [Operand]({{ '/userapi/Parser/Operand' | relative_url }}): if it is a
+[ASTOperand]({{ 'ASTOperand' | relative_url }}) then it will resolve the AST and return the computed
 value, else it will return zero.
 
 This is mostly useful in generic code, otherwise one should have to switch on
