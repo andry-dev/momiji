@@ -18,9 +18,9 @@ values:
       description: |
         Tells the emulator to never keep track of the various system states.
         In this mode, each instruction modifies the same
-        [`momiji::System`](/userapi/System), doing a
-        [`rollback()`](/userapi/Emulator/m_rollback) is equivalent to resetting
-        the emulator ([`reset()`](/userapi/Emulator/m_reset)).
+        [`momiji::System`]({{ '/userapi/System' | relative_url }}), doing a
+        [`rollback()`]({{ '/userapi/Emulator/m_rollback' | relative_url }}) is equivalent to resetting
+        the emulator ([`reset()`]({{ '/userapi/Emulator/m_reset)' | relative_url }}).
 
         Parsing a new source code in this mode will also reset the emulator.
 ---

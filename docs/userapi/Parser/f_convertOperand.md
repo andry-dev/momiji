@@ -3,8 +3,8 @@ layout: function
 title: momiji::convertOperand
 in-header: <momiji/Parser.h>
 brief: |
-    Converts a [`momiji::Operand`](/userapi/Parser#typedefs) to a
-    [`momiji::ParserOperand`](/userapi/Parser/e_ParserOperand)
+    Converts a [`momiji::Operand`]({{ '/userapi/Parser#typedefs' | relative_url }}) to a
+    [`momiji::ParserOperand`]({{ '/userapi/Parser/e_ParserOperand' | relative_url }})
 
 overloads:
     'momiji::ParserOperand convertOperand(const momiji::Operand& operand)':

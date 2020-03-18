@@ -6,7 +6,7 @@ brief: A _lightweight_ enum describing the possible operand types
 description: |
     This enum describes possible operand types.
     It is primarily used for LIGHTWEIGHT __error__ checking, like if a type of operand is in a list of other operands.
-    This is **NOT** meant to be used for storing operands with their information, for that you should use [`momiji::Operand`](/userapi/Parser#typedefs).
+    This is **NOT** meant to be used for storing operands with their information, for that you should use [`momiji::Operand`]({{ '/userapi/Parser#typedefs' | relative_url }}).
 declaration: 'enum class ParserOperand : std::int8_t'
 values:
     - name: DataRegister
@@ -28,7 +28,7 @@ flags:
 
 ### Remarks
 
-This is completely different from [`momiji::Operand`](/userapi/Parser#typedefs)!
+This is completely different from [`momiji::Operand`]({{ '/userapi/Parser#typedefs' | relative_url }})!
 
 When manipulating __VALUES OF OPERANDS__ you should use that one!
 

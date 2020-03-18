@@ -9,7 +9,7 @@
     {% for class in classes %}
     <tr>
         <td>
-            <a href="{{ class.url }}">{{ class.title | escape }}</a>
+            <a href="{{ class.url | relative_url }}">{{ class.title | escape }}</a>
         </td>
         <td>
             {% if class.brief %}

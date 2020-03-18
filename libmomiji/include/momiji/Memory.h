@@ -42,10 +42,10 @@ namespace momiji
     };
 
     template <typename Tag>
-    class MemoryView;
+    class MemorySpan;
 
     template <typename Tag>
-    class ConstMemoryView;
+    class MemoryView;
 
     template <typename Container>
     class BasicMemory
@@ -108,8 +108,7 @@ namespace momiji
     };
 
     template <typename Tag>
-    class ModifiableMemory final
-        : private BasicMemory<std::vector<std::uint8_t>>
+    class ModifiableMemory final : public BasicMemory<std::vector<std::uint8_t>>
     {
     public:
         ModifiableMemory() = default;
@@ -132,8 +131,8 @@ namespace momiji
         void pop8();
 
     private:
+        friend class MemorySpan<Tag>;
         friend class MemoryView<Tag>;
-        friend class ConstMemoryView<Tag>;
     };
 
     struct NullMemoryView
@@ -142,10 +141,10 @@ namespace momiji
 
     // TODO(andry): Bad name
     template <typename Tag>
-    class MemoryView final : private BasicMemory<gsl::span<std::uint8_t>>
+    class MemorySpan final : public BasicMemory<gsl::span<std::uint8_t>>
     {
     public:
-        MemoryView(ModifiableMemory<Tag>& mem)
+        MemorySpan(ModifiableMemory<Tag>& mem)
         {
             m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
 
@@ -154,74 +153,73 @@ namespace momiji
             staticMarker     = mem.staticMarker;
         }
 
-        MemoryView(gsl::span<std::uint8_t> span)
+        MemorySpan(gsl::span<std::uint8_t> span)
         {
             m_data = span;
         }
 
-        MemoryView(NullMemoryView /*unused*/)
+        MemorySpan(NullMemoryView /*unused*/)
         {
             m_data = { gsl::null_span {} };
         }
 
         template <typename T>
-        MemoryView& operator=(const T& oth)
+        MemorySpan& operator=(const T& oth)
         {
-            MemoryView newMem { oth };
+            MemorySpan newMem { oth };
             std::swap(*this, newMem);
 
             return *this;
         }
 
         template <typename T>
-        MemoryView& operator=(T&& oth)
+        MemorySpan& operator=(T&& oth)
         {
-            MemoryView newMem { std::forward<T>(oth) };
+            MemorySpan newMem { std::forward<T>(oth) };
             std::swap(*this, newMem);
 
             return *this;
-        }
-
-    private:
-        friend class ConstMemoryView<Tag>;
-    };
-
-    template <typename Tag>
-    class ConstMemoryView final
-        : private BasicMemory<gsl::span<const std::uint8_t>>
-    {
-    public:
-        ConstMemoryView(const ModifiableMemory<Tag>& mem)
-        {
-            m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
-
-            executableMarker = mem.executableMarker;
-            stackMarker      = mem.stackMarker;
-            staticMarker     = mem.staticMarker;
-        }
-
-        ConstMemoryView(const MemoryView<Tag>& mem)
-        {
-            m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
-
-            executableMarker = mem.executableMarker;
-            stackMarker      = mem.stackMarker;
-            staticMarker     = mem.staticMarker;
         }
 
     private:
         friend class MemoryView<Tag>;
     };
 
+    template <typename Tag>
+    class MemoryView final : public BasicMemory<gsl::span<const std::uint8_t>>
+    {
+    public:
+        MemoryView(const ModifiableMemory<Tag>& mem)
+        {
+            m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
+
+            executableMarker = mem.executableMarker;
+            stackMarker      = mem.stackMarker;
+            staticMarker     = mem.staticMarker;
+        }
+
+        MemoryView(const MemorySpan<Tag>& mem)
+        {
+            m_data = { mem.m_data.data(), asl::ssize(mem.m_data) };
+
+            executableMarker = mem.executableMarker;
+            stackMarker      = mem.stackMarker;
+            staticMarker     = mem.staticMarker;
+        }
+
+    private:
+        friend class MemorySpan<Tag>;
+    };
+
     using ExecutableMemory =
         ModifiableMemory<momiji::details::ExecutableMemoryTag>;
     using ExecutableMemoryView =
-        MemoryView<momiji::details::ExecutableMemoryTag>;
+        MemorySpan<momiji::details::ExecutableMemoryTag>;
     using ConstExecutableMemoryView =
-        ConstMemoryView<momiji::details::ExecutableMemoryTag>;
+        MemoryView<momiji::details::ExecutableMemoryTag>;
 
     using StackMemory     = ModifiableMemory<momiji::details::StackMemoryTag>;
-    using StackMemoryView = MemoryView<momiji::details::StackMemoryTag>;
+    using StackMemoryView = MemorySpan<momiji::details::StackMemoryTag>;
 
     // BasicMemory implementation
 

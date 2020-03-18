@@ -30,7 +30,7 @@ flags:
  *  If the decoder finds an ill-formed binary (which, in turn, means that an
     ill-formed instruction was found) then an illegal instruction will be
     generated. Upon invoking such instruction a trap will be signaled to the
-    running [`momiji::System`](/userapi/System).
+    running [`momiji::System`]({{ '/userapi/System' | relative_url }}).
 
  *  No information about __what__ instruction is being executed is provided,
     other than the decoded string.

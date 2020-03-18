@@ -21,7 +21,7 @@ flags:
     - unstable-api
 ---
 
-The resulting [`momiji::ExecutableMemory`](/userapi/Memory) contains the direct representation of the source
+The resulting [`momiji::ExecutableMemory`]({{ '/userapi/Memory' | relative_url }}) contains the direct representation of the source
 code in binary.
 
-The supported way to interpret it is to pass the binary to the [Decoder](/userapi/Decoder) to decode a specific location.
+The supported way to interpret it is to pass the binary to the [Decoder]({{ '/userapi/Decoder' | relative_url }}) to decode a specific location.

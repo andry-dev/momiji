@@ -109,21 +109,21 @@ If you think something is missing, please
 
 ## Building
 
-The first thing you may want to do is [build](/building) the library for your OS.
+The first thing you may want to do is [build]({{ '/building' | relative_url }}) the library for your OS.
 
 ## Tutorials
 
-If you are new, this is the place for you. See the [tutorials](/tutorials).
+If you are new, this is the place for you. See the [tutorials]({{ '/tutorials' | relative_url }}).
 
 ## Guides
 
 ## Public API Reference
 
-[Here](/userapi) you can find the public API reference for the library.
+[Here]({{ '/userapi' | relative_url }}) you can find the public API reference for the library.
 
 ## Private API Reference
 
-Do you want to know how it all works or contribute? [Here](/devapi) you can find
+Do you want to know how it all works or contribute? [Here]({{ '/devapi' | relative_url }}) you can find
 the reference for the internal API of the library.
 
 ## Troubleshooting

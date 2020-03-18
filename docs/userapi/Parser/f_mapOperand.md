@@ -3,7 +3,7 @@ layout: function
 title: momiji::mapOperand
 in-header: <momiji/Parser.h>
 brief: |
-    Executes a functor to an [`momiji::Operand`](/userapi/Parser#typedefs) if
+    Executes a functor to an [`momiji::Operand`]({{ '/userapi/Parser#typedefs' | relative_url }}) if
     it holds an `OperandType`.
 
 overloads:

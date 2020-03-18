@@ -8,6 +8,7 @@
 #include <string_view>
 #include <variant>
 #include <vector>
+#include <optional>
 
 #include <gsl/span>
 

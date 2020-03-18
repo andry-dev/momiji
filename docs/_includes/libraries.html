@@ -8,7 +8,7 @@
 <table>
     {% for lib in libraries %}
     <tr>
-        <td><a href="{{ lib.url }}">{{ lib.title }}</a></td>
+        <td><a href="{{ lib.url | relative_url }}">{{ lib.title }}</a></td>
         {% if lib.brief %}
         <td>{{ lib.brief }}</td>
         {% else %}
