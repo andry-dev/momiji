@@ -10,7 +10,7 @@ A "System state" is a particular value in time of a [`momiji::System`]({{ '/user
 This class simply manages a collection of `System`s to allow rollback.
 
 By default a new state is created when `step()` is invoked, this can be changed
-by tweaking [`EmulatorSettings::RetainStates`]({{ '/userapi/EmulatorSettings' | relative_url }}). Creating a new state implies copying
+by tweaking [`EmulatorSettings::RetainStates`]({{ '/userapi/Emulator/c_EmulatorSettings' | relative_url }}). Creating a new state implies copying
 all the data from the previous `System` to the new one and executing the next
 instruction, this is unavoidable to implement non-destructive writes.
 

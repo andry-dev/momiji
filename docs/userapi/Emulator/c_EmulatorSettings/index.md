@@ -2,7 +2,7 @@
 layout: class
 title: momiji::EmulatorSettings
 in-header: "<momiji/Emulator.h>"
-description: A class which contains settings for the Emulator
+description: A class which contains settings for `momiji::Emulator`
 brief: Settings for the Emulator
 declaration: struct EmulatorSettings
 fields:

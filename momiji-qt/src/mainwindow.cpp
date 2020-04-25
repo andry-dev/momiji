@@ -280,7 +280,7 @@ void MainWindow::updateRegisters()
 
 void MainWindow::updateEmuValues()
 {
-    const auto& lastSys = m_emulator.getStates().back();
+    const auto& lastSys = m_emulator.constStates().back();
     const auto pc       = lastSys.cpu.programCounter;
     const auto sp       = lastSys.cpu.addressRegisters[7];
 

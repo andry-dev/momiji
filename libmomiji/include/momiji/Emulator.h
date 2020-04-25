@@ -67,7 +67,10 @@ namespace momiji
         Emulator();
         Emulator(EmulatorSettings);
 
-        [[nodiscard]] const std::vector<momiji::System>& getStates() const;
+        [[nodiscard, deprecated("Use the states() function")]] const std::vector<momiji::System>& getStates() const;
+
+        [[nodiscard]] gsl::span<momiji::System> states() noexcept;
+        [[nodiscard]] gsl::span<const momiji::System> constStates() const noexcept;
 
         std::optional<momiji::ParserError> newState(const std::string& str);
         void newState(momiji::ExecutableMemory binary);

@@ -40,7 +40,7 @@ int main()
     emu.step(); // Executes the move
     emu.step(); // Executes the add
 
-    const auto& sys = emu.getStates().back();
+    const auto& sys = emu.constStates().back();
 
     std::cout << sys.cpu.dataRegisters[0].raw() << '\n';
 }

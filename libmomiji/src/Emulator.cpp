@@ -33,6 +33,17 @@ namespace momiji
         return m_systemStates;
     }
 
+    [[nodiscard]] gsl::span<momiji::System> Emulator::states() noexcept
+    {
+        return { m_systemStates.data(), asl::ssize(m_systemStates) };
+    }
+
+    [[nodiscard]] gsl::span<const momiji::System> Emulator::constStates() const
+        noexcept
+    {
+        return { m_systemStates.data(), asl::ssize(m_systemStates) };
+    }
+
     std::optional<momiji::ParserError>
     Emulator::newState(const std::string& str)
     {

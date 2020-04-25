@@ -60,7 +60,7 @@ int main(int argc, const char** argv)
 
     momiji::continueEmulatorExecution(emu);
 
-    const auto& state = emu.getStates().back();
+    const auto& state = emu.constStates().back();
 
     std::printf("--- Executable Memory Dump ---\n");
 

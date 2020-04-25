@@ -315,7 +315,7 @@ void gui()
         {
             ImGui::Begin("Memory dump");
 
-            const auto& states = emu.getStates();
+            const auto states = emu.constStates();
 
             if (states.size() > 1)
             {
@@ -516,7 +516,7 @@ void gui()
             ImGui::Separator();
             ImGui::NewLine();
 
-            const auto& last = emu.getStates().back();
+            auto& last = emu.states().back();
 
             ImGui::SameLine();
             ImGui::Text("Registers");
@@ -564,7 +564,7 @@ void gui()
             }
             ImGui::EndGroup();
 
-            auto pc = last.cpu.programCounter.raw();
+            auto pc = last.cpu.programCounter.ptr();
             ImGui::BeginGroup();
             ImGui::Text("PC");
             ImGui::SameLine();
@@ -597,7 +597,7 @@ void gui()
         {
             ImGui::Begin("Stack");
 
-            const auto& states = emu.getStates();
+            const auto states = emu.states();
 
             if (states.size() > 1)
             {

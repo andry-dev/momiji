@@ -47,8 +47,8 @@ int main(int argc, const char** argv)
     momiji::continueEmulatorExecution(emuProg1);
     momiji::continueEmulatorExecution(emuProg2);
 
-    const auto& state1 = emuProg1.getStates().back();
-    const auto& state2 = emuProg2.getStates().back();
+    const auto state1 = emuProg1.constStates().back();
+    const auto state2 = emuProg2.constStates().back();
 
     std::printf("--- Executable Memory Dump ---\n");
 

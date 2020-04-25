@@ -1,21 +1,25 @@
 {% if page.flags contains 'unstable-api' %}
-
 <fieldset class="warning-box">
     <legend class="warning">UNSTABLE API</legend>
 
     <label>The following component and its children doesn't have a stable API, this means that in the future the API will change unexpectedly. <strong>This also implies that the ABI is unstable.</strong></label>
 </fieldset>
-
 {% endif %}
 
 {% if page.flags contains 'unstable-abi' %}
-
 <fieldset class="warning-box">
     <legend class="warning">UNSTABLE ABI</legend>
 
     <label>The following component doesn't have a stable ABI, this means that after every library update you <em>must</em> rebuild you application against the new version of the library.</label>
 </fieldset>
+{% endif %}
 
+{% if page.flags contains 'deprecated' %}
+<fieldset class="warning-box">
+    <legend class="warning">DEPRECATED</legend>
+
+    <label>The following component is deprecated or superseded by another component.</label>
+</fieldset>
 {% endif %}
 
 {% if page.flags contains 'incomplete' %}
