@@ -10,7 +10,7 @@
     {% for method in methods %}
         {% if method.ctor %}
             <tr>
-                <td><a href="{{ method.url }}">(constructor)</a></td>
+                <td><a href="{{ method.url | relative_url }}">(constructor)</a></td>
             </tr>
         {% endif %}
     {% endfor %}
@@ -18,7 +18,7 @@
     {% for method in methods %}
         {% if method.dtor %}
             <tr>
-                <td><a href="{{ method.url }}">(destructor)</a></td>
+                <td><a href="{{ method.url | relative_url }}">(destructor)</a></td>
             </tr>
         {% endif %}
     {% endfor %}
@@ -30,7 +30,7 @@
 
         <tr>
             <td>
-                <a href="{{ method.url }}">{{ method.title | escape }}</a>
+                <a href="{{ method.url | relative_url }}">{{ method.title | escape }}</a>
             </td>
             <td>
                 {% if method.brief %}

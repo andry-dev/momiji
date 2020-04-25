@@ -4,4 +4,7 @@ description: m68k emulator infrastructure
 repository: https://github.com/andry-dev/momiji
 exclude:
     - ".gitignore"
+    - "vendor"
 baseurl: /momiji/
+plugins:
+    - jekyll-liquify

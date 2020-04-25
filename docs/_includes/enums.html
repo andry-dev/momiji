@@ -7,7 +7,7 @@
 <table>
     {% for x in enums %}
         <tr>
-            <td><a href="{{ x.url }}">{{ x.title | escape }}</a></td>
+            <td><a href="{{ x.url | relative_url }}">{{ x.title | escape }}</a></td>
 
             <td>
                 {% if x.brief %}

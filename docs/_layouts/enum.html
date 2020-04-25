@@ -10,7 +10,7 @@ layout: default
     {% for val in page.values %}
         <tr>
             <td>{{ val.name }}</td>
-            <td>{{ val.description | markdownify }}</td>
+            <td>{{ val.description | liquify | markdownify }}</td>
         </tr>
     {% endfor %}
 </table>

@@ -15,5 +15,7 @@ CMakeSettings.json
 docs/.jekyll-cache
 docs/.bundle/
 docs/_site/
+docs/vendor/
+docs/Gemfile.lock
 
 momiji-qt/**/*.*~

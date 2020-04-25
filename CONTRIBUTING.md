@@ -72,6 +72,7 @@ The "Component X/Y/Z" can be one of the following:
 | `New tool`     | Used when a new tool is made, under `momiji-tools` |
 | `Instructions` | Affects changes to the implementation of the instructions (also used when new instructions are implemented). |
 | `Todo`         | Add or remove items in `Todo.md` |
+| `Docs`         | Changes to the documentation and/or this file. |
 | `Compiler`     | Affects anything in `libmomiji/include/momiji/Compiler.h` and `libmomiji/src/Compiler` |
 | `Decoder`      | Affects anything in `libmomiji/include/momiji/Decoder.h` and `libmomiji/src/Decoder` |
 | `Emulator`     | Affects anything in `libmomiji/include/momiji/Emulator.h` and `libmomiji/src/Emulator.cpp` |
