@@ -29,9 +29,14 @@ int main(int argc, const char** argv)
         return 1;
     }
 
-    std::string sourceCode = utils::readFile(args[0]);
+    auto sourceCode = utils::readFile(args[0]);
+    if (!sourceCode)
+    {
+        std::cout << "File does not exist! Exiting.\n";
+        return 1;
+    }
 
-    auto parsedInstr = momiji::parse(sourceCode);
+    auto parsedInstr = momiji::parse(*sourceCode);
 
     if (!parsedInstr)
     {

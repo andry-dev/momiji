@@ -4,6 +4,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -30,9 +31,15 @@ namespace utils
         return args;
     }
 
-    inline std::string readFile(std::string_view path)
+    inline std::optional<std::string> readFile(std::string_view path)
     {
         FILE* file = std::fopen(path.data(), "r");
+
+        if (file == nullptr)
+        {
+            return std::nullopt;
+        }
+
         std::fseek(file, 0, SEEK_END);
         const auto length = std::ftell(file);
 
@@ -42,12 +49,17 @@ namespace utils
         std::fread(content.data(), 1, std::size_t(length), file);
         std::fclose(file);
 
-        return content;
+        return std::move(content);
     }
 
-    inline momiji::ExecutableMemory readBinary(std::string_view path)
+    inline std::optional<momiji::ExecutableMemory> readBinary(std::string_view path)
     {
         FILE* file = std::fopen(path.data(), "r");
+
+        if (file == nullptr)
+        {
+            return std::nullopt;
+        }
 
         std::fseek(file, 0, SEEK_END);
         const auto length = std::ftell(file);
@@ -58,7 +70,7 @@ namespace utils
         std::fread(mem.data(), 1, std::size_t(length), file);
         std::fclose(file);
 
-        return mem;
+        return std::move(mem);
     }
 
     inline void writeFile(std::string_view path,

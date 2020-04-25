@@ -21,7 +21,18 @@ int main(int argc, const char** argv)
     }
 
     auto memProg1 = utils::readBinary(args[0]);
+    if (!memProg1)
+    {
+        std::cout << "The first file does not exist! Exiting.\n";
+        return 1;
+    }
+
     auto memProg2 = utils::readBinary(args[1]);
+    if (!memProg2)
+    {
+        std::cout << "The second file does not exist! Exiting.\n";
+        return 1;
+    }
 
     momiji::EmulatorSettings settings;
     settings.retainStates = momiji::EmulatorSettings::RetainStates::Never;
@@ -30,18 +41,11 @@ int main(int argc, const char** argv)
     momiji::Emulator emuProg1 { settings };
     momiji::Emulator emuProg2 { settings };
 
-    emuProg1.newState(memProg1);
-    emuProg2.newState(memProg2);
+    emuProg1.newState(*memProg1);
+    emuProg2.newState(*memProg2);
 
-    while (emuProg1.step())
-    {
-        // Intentionally blank
-    }
-
-    while (emuProg2.step())
-    {
-        // Intentionally blank
-    }
+    momiji::continueEmulatorExecution(emuProg1);
+    momiji::continueEmulatorExecution(emuProg2);
 
     const auto& state1 = emuProg1.getStates().back();
     const auto& state2 = emuProg2.getStates().back();

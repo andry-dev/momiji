@@ -45,17 +45,20 @@ int main(int argc, const char** argv)
 
     auto binary = utils::readBinary(args[0]);
 
+    if (!binary)
+    {
+        std::cout << "The file does not exist! Exiting.\n";
+        return 1;
+    }
+
     momiji::EmulatorSettings settings;
     settings.retainStates = momiji::EmulatorSettings::RetainStates::Never;
     settings.stackSize    = momiji::utils::make_kb(1);
 
     momiji::Emulator emu { settings };
-    emu.newState(binary);
+    emu.newState(*binary);
 
-    while (emu.step())
-    {
-        // Intentionally blank
-    }
+    momiji::continueEmulatorExecution(emu);
 
     const auto& state = emu.getStates().back();
 
