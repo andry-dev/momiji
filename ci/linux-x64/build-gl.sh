@@ -7,7 +7,7 @@ conan create . andry/dev
 
 cd ../../../build
 
-conan install --build=missing ..
+conan install --build missing ..
 
 cmake .. ${cmake_args} -DMOMIJI_BUILD_GL_GUI=1
 
