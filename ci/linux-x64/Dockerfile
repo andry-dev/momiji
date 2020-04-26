@@ -1,4 +1,4 @@
-FROM ubuntu:19.04
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y update && \
@@ -9,6 +9,7 @@ RUN apt-get -y update && \
                          libxv-dev libxpresent-dev libxfixes-dev libxaw7-dev \
                          libfs-dev libfontenc-dev libdmx-dev libxcursor-dev \
                          libxkbcommon-dev libxkbcommon-x11-dev \
+                         xorg-dev \
                          ninja-build qtbase5-dev qtbase5-dev-tools \
                          qttools5-dev qttools5-dev-tools \
                          libqt5svg5 \
