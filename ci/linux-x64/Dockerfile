@@ -9,7 +9,7 @@ RUN apt-get -y update && \
                          libxv-dev libxpresent-dev libxfixes-dev libxaw7-dev \
                          libfs-dev libfontenc-dev libdmx-dev libxcursor-dev \
                          libxkbcommon-dev libxkbcommon-x11-dev \
-                         xorg-dev \
+                         xorg-dev cmake \
                          ninja-build qtbase5-dev qtbase5-dev-tools \
                          qttools5-dev qttools5-dev-tools \
                          libqt5svg5 \
@@ -23,7 +23,7 @@ RUN apt-get -y update && \
 
 RUN pip3 install conan
 
-ADD https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh /cmake-3.15.3-Linux-x86_64.sh
-RUN mkdir /opt/cmake && \
-    sh /cmake-3.15.3-Linux-x86_64.sh --prefix=/opt/cmake --skip-license && \
-    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+#ADD https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh /cmake-3.15.3-Linux-x86_64.sh
+#RUN mkdir /opt/cmake && \
+#    sh /cmake-3.15.3-Linux-x86_64.sh --prefix=/opt/cmake --skip-license && \
+#    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
