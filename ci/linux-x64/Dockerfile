@@ -8,6 +8,8 @@ RUN apt-get -y update && \
                          libxt-dev libxmu-dev libxfont-dev libxinerama-dev \
                          libxv-dev libxpresent-dev libxfixes-dev libxaw7-dev \
                          libfs-dev libfontenc-dev libdmx-dev libxcursor-dev \
+                         libxcb-dri3-dev libxcb-dri2-dev libxcb-glx0-dev \
+                         libxcb-present-dev libxcb-sync-dev libx11-xcb-dev \
                          libxkbcommon-dev libxkbcommon-x11-dev \
                          xorg-dev cmake \
                          ninja-build qtbase5-dev qtbase5-dev-tools \
