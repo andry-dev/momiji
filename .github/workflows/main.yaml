@@ -1,6 +1,6 @@
 name: Build
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
     build-linux:
@@ -42,9 +42,10 @@ jobs:
                 modules: [lib, cli, qt, gl, all]
 
         steps:
-            - name: Remove choco's CPack
-              run:
-                  del C:\ProgramData\Chocolatey\bin\cpack.exe
+            #- name: Remove choco's CPack
+            #  run: |
+            #      dir C:\ProgramData\chocolatey\bin\
+            #      del C:\ProgramData\chocolatey\bin\cpack.exe
             - name: Install conan
               run: pip3 install conan
             - uses: actions/checkout@v1

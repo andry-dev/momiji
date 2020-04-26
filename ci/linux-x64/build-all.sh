@@ -8,7 +8,7 @@ conan create . andry/dev
 
 cd ../../../build
 
-conan install ..
+conan install --build missing ..
 
 
 cmake .. ${cmake_args} \

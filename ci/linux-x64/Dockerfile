@@ -1,4 +1,4 @@
-FROM ubuntu:19.04
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y update && \
@@ -8,7 +8,10 @@ RUN apt-get -y update && \
                          libxt-dev libxmu-dev libxfont-dev libxinerama-dev \
                          libxv-dev libxpresent-dev libxfixes-dev libxaw7-dev \
                          libfs-dev libfontenc-dev libdmx-dev libxcursor-dev \
+                         libxcb-dri3-dev libxcb-dri2-0-dev libxcb-glx0-dev \
+                         libxcb-present-dev libxcb-sync-dev libx11-xcb-dev \
                          libxkbcommon-dev libxkbcommon-x11-dev \
+                         xorg-dev cmake \
                          ninja-build qtbase5-dev qtbase5-dev-tools \
                          qttools5-dev qttools5-dev-tools \
                          libqt5svg5 \
@@ -22,7 +25,7 @@ RUN apt-get -y update && \
 
 RUN pip3 install conan
 
-ADD https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh /cmake-3.15.3-Linux-x86_64.sh
-RUN mkdir /opt/cmake && \
-    sh /cmake-3.15.3-Linux-x86_64.sh --prefix=/opt/cmake --skip-license && \
-    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+#ADD https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh /cmake-3.15.3-Linux-x86_64.sh
+#RUN mkdir /opt/cmake && \
+#    sh /cmake-3.15.3-Linux-x86_64.sh --prefix=/opt/cmake --skip-license && \
+#    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
