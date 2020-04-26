@@ -43,7 +43,8 @@ jobs:
 
         steps:
             - name: Remove choco's CPack
-              run:
+              run: |
+                  dir C:\ProgramData\chocolatey\bin\
                   del C:\ProgramData\chocolatey\bin\cpack.exe
             - name: Install conan
               run: pip3 install conan
