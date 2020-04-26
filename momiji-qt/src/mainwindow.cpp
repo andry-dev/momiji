@@ -262,7 +262,7 @@ void MainWindow::parse()
 
 void MainWindow::updateRegisters()
 {
-    const auto& states  = m_emulator.getStates();
+    const auto states  = m_emulator.constStates();
     const auto& lastSys = states.back();
 
     const auto pc = lastSys.cpu.programCounter;
